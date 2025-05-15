@@ -1,5 +1,5 @@
 import 'package:jost_pay_wallet/Provider/DashboardProvider.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/DashboardScreen.dart';
+import 'package:jost_pay_wallet/bottom_nav.dart';
 import 'package:jost_pay_wallet/Values/NewColor.dart';
 import 'package:jost_pay_wallet/Values/NewStyle.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +46,7 @@ class _PinScreenState extends State<PinScreen> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => const DashboardScreen()));
+            builder: (context) => const BottomNav()));
   }
 
   loginAccount() async {
@@ -66,7 +66,7 @@ class _PinScreenState extends State<PinScreen> {
       });
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const DashboardScreen()),
+        MaterialPageRoute(builder: (context) => const BottomNav()),
       );
       if (accountProvider.isSuccess == true) {
         isLoading = false;

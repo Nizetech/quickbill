@@ -6,7 +6,7 @@ import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/NewColor.dart';
 import 'package:jost_pay_wallet/Values/NewStyle.dart';
 
-import '../DashboardScreen.dart';
+import '../../../bottom_nav.dart';
 
 class CableBills extends StatefulWidget {
   const CableBills({super.key});
@@ -74,7 +74,7 @@ class _CableBillsState extends State<CableBills> {
                   onTap: () => Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const DashboardScreen())),
+                          builder: (context) => const BottomNav())),
                   child: Image.asset(
                     'assets/images/arrow_left.png',
                   ),

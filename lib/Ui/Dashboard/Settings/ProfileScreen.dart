@@ -4,7 +4,7 @@ import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../DashboardScreen.dart';
+import '../../../bottom_nav.dart';
 
 class ProfileScreen extends StatefulWidget {
   final Map<String, dynamic> data;
@@ -51,7 +51,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   onTap: () => Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const DashboardScreen())),
+                          builder: (context) => const BottomNav())),
                   child: Image.asset(
                     'assets/images/arrow_left.png',
                     color: themeProvider.isDarkMode()

@@ -59,5 +59,13 @@ class Helper {
     );
   }
 
+}
 
+String truncateEmail(String email) {
+  // truncate the email before the '@' symbol and replace with ***** e.g '****@gmail.com'
+  final List<String> parts = email.split('@');
+  if (parts.length == 2) {
+    return '${parts[0].substring(0, 3)}****@${parts[1]}';
+  }
+  return email;
 }

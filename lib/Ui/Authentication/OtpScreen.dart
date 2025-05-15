@@ -1,7 +1,8 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jost_pay_wallet/Ui/Authentication/SignUpScreen.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/DashboardScreen.dart';
+import 'package:jost_pay_wallet/bottom_nav.dart';
 import 'package:flutter/material.dart';
+import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jost_pay_wallet/Values/NewStyle.dart';
 import 'package:jost_pay_wallet/Values/NewColor.dart';
@@ -10,7 +11,8 @@ import '../../Values/MyStyle.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 
 class OtpScreen extends StatefulWidget {
-  const OtpScreen({super.key});
+  final String email;
+  const OtpScreen({super.key, required this.email});
 
   @override
   State<OtpScreen> createState() => _OtpScreenState();
@@ -23,10 +25,6 @@ class _OtpScreenState extends State<OtpScreen> {
   bool isLoading = false;
   bool clearText = false;
 
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,11 +62,11 @@ class _OtpScreenState extends State<OtpScreen> {
               const SizedBox(
                 height: 16,
               ),
-              const Row(
+              Row(
                 children: [
                   Text('We send a code to ', style: MyStyle.tx16Gray),
                   Text(
-                    "( *****@mail.com ).",
+                    truncateEmail(widget.email),
                     style: MyStyle.tx16Green,
                   )
                 ],
@@ -126,7 +124,7 @@ class _OtpScreenState extends State<OtpScreen> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      const DashboardScreen()))
+                                      const BottomNav()))
                         },
                         style: TextButton.styleFrom(
                           backgroundColor: MyColor.greenColor,

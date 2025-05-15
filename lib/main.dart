@@ -4,8 +4,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:jost_pay_wallet/Provider/Auth_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Static/onboarding_screen.dart';
+import 'package:jost_pay_wallet/constants/constants.dart';
 import 'package:provider/provider.dart';
 // import 'package:uni_links/uni_links.dart';
 
@@ -24,6 +28,8 @@ void main() async {
   await ScreenUtil.ensureScreenSize();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  await Hive.initFlutter();
+  await Hive.openBox(kAppName);
   runApp(const MyApp());
 }
 
@@ -89,6 +95,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (context) => TransectionProvider()),
         ChangeNotifierProvider(create: (context) => BuySellProvider()),
         ChangeNotifierProvider(create: (context) => ExchangeProvider()),
+        ChangeNotifierProvider(create: (context) => AuthProvider()),
         ChangeNotifierProvider(create: (context) => ThemeProvider()),
       ],
       child: Consumer<ThemeProvider>(builder: (context, themeProvider, child) {
@@ -97,7 +104,7 @@ class _MyAppState extends State<MyApp> {
           designSize: const Size(375, 812),
           minTextAdapt: true,
           splitScreenMode: true,
-          child: MaterialApp(
+          child: GetMaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'JostPayWallet',
             theme: themeProvider.lightTheme,

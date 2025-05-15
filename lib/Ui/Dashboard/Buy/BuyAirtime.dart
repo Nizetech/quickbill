@@ -6,7 +6,7 @@ import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:provider/provider.dart';
 
-import '../DashboardScreen.dart';
+import '../../../bottom_nav.dart';
 
 class BuyAirtime extends StatefulWidget {
   const BuyAirtime({super.key});
@@ -75,7 +75,7 @@ class _BuyAirtimeState extends State<BuyAirtime> {
                   onTap: () => Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const DashboardScreen())),
+                          builder: (context) => const BottomNav())),
                   child: Image.asset(
                     'assets/images/arrow_left.png',
                     color: themeProvider.isDarkMode()

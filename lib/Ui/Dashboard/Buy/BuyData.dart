@@ -7,7 +7,7 @@ import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:provider/provider.dart';
 
 import '../AddFunds.dart';
-import '../DashboardScreen.dart';
+import '../../../bottom_nav.dart';
 
 class BuyData extends StatefulWidget {
   const BuyData({super.key});
@@ -204,7 +204,7 @@ class _BuyDataState extends State<BuyData> {
                   onTap: () => Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const DashboardScreen())),
+                          builder: (context) => const BottomNav())),
                   child: Image.asset(
                     'assets/images/arrow_left.png',
                     color: themeProvider.isDarkMode()

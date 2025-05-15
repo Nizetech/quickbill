@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 
-import '../DashboardScreen.dart';
+import '../../../bottom_nav.dart';
 
 class ElectricitySuccess extends StatefulWidget {
   const ElectricitySuccess({super.key});
@@ -40,7 +40,7 @@ class _ElectricitySuccessState extends State<ElectricitySuccess> {
               onTap: () => Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const DashboardScreen())),
+                      builder: (context) => const BottomNav())),
               child: Text('Share Receipt', style: MyStyle.tx16Green.copyWith(
                   fontWeight: FontWeight.w600
               ),),

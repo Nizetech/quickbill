@@ -15,7 +15,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../LocalDb/Local_Account_address.dart';
 import '../../../Provider/Token_Provider.dart';
-import '../../Dashboard/DashboardScreen.dart';
+import '../../../bottom_nav.dart';
 
 class ImportWalletScreen extends StatefulWidget {
   bool isNew;
@@ -173,7 +173,7 @@ class _ImportWalletScreenState extends State<ImportWalletScreen> {
     // ignore: use_build_context_synchronously
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => const DashboardScreen()
+      MaterialPageRoute(builder: (context) => const BottomNav()
       ),(route) => false,
     );
 

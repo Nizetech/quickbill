@@ -8,7 +8,7 @@ import 'package:jost_pay_wallet/LocalDb/Local_Account_provider.dart';
 import 'package:jost_pay_wallet/LocalDb/Local_Network_Provider.dart';
 import 'package:jost_pay_wallet/Provider/Account_Provider.dart';
 import 'package:jost_pay_wallet/Provider/Token_Provider.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/DashboardScreen.dart';
+import 'package:jost_pay_wallet/bottom_nav.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
@@ -123,7 +123,7 @@ class _VerifyRecoveryPhraseState extends State<VerifyRecoveryPhrase> {
                   Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DashboardScreen(),
+                        builder: (context) => const BottomNav(),
                     ), (route) => false
                   );
                 },
@@ -255,7 +255,7 @@ class _VerifyRecoveryPhraseState extends State<VerifyRecoveryPhrase> {
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-          builder: (context) => const DashboardScreen(),
+          builder: (context) => const BottomNav(),
         ),
             (route) => false,
       );

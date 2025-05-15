@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/DashboardScreen.dart';
+import 'package:jost_pay_wallet/bottom_nav.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 
 class Pay4meSuccessScreen extends StatefulWidget {
@@ -44,7 +44,7 @@ class _Pay4meSuccessScreenState extends State<Pay4meSuccessScreen> {
                 onTap: () => Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const DashboardScreen())),
+                        builder: (context) => const BottomNav())),
                 child: Text(
                   'Go Homepage',
                   style:

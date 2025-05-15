@@ -5,7 +5,7 @@ import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:provider/provider.dart';
 
 import '../../Values/MyColor.dart';
-import '../Dashboard/DashboardScreen.dart';
+import '../../bottom_nav.dart';
 
 class Deposit extends StatefulWidget {
   const Deposit({super.key});
@@ -61,7 +61,7 @@ class _DepositState extends State<Deposit> {
                   onTap: () => Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const DashboardScreen())),
+                          builder: (context) => const BottomNav())),
                   child: Image.asset(
                     'assets/images/arrow_left.png',
                     color: themeProvider.isDarkMode()

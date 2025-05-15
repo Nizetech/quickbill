@@ -9,7 +9,7 @@ import 'package:jost_pay_wallet/LocalDb/Local_Token_provider.dart';
 import 'package:jost_pay_wallet/Models/NetworkModel.dart';
 import 'package:jost_pay_wallet/Provider/Account_Provider.dart';
 import 'package:jost_pay_wallet/Provider/Token_Provider.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/DashboardScreen.dart';
+import 'package:jost_pay_wallet/bottom_nav.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/HistoryScreen.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/AddAssetsScreen.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/BuyCoin/BuyCoinScreen.dart';
@@ -493,7 +493,7 @@ class _CoinScreenState extends State<CoinScreen> {
                         onTap: () {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
-                            return const DashboardScreen();
+                            return const BottomNav();
                           }));
                           // Handle button press
                         },

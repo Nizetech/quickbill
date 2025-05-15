@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/DashboardScreen.dart';
+import 'package:jost_pay_wallet/bottom_nav.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Deposit.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
@@ -81,7 +81,7 @@ class _AddFundsState extends State<AddFunds> {
                       onTap: () => Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const DashboardScreen())),
+                              builder: (context) => const BottomNav())),
                       child: Image.asset(
                         'assets/images/arrow_left.png',
                         color: themeProvider.isDarkMode()

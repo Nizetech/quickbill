@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:jost_pay_wallet/Provider/Token_Provider.dart';
 import 'package:jost_pay_wallet/Provider/Transection_Provider.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/DashboardScreen.dart';
+import 'package:jost_pay_wallet/bottom_nav.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/SellCoin/SellCoinDetailScreen.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/NewStyle.dart';
@@ -222,7 +222,7 @@ class _SellCoinConfirmScreenState extends State<SellCoinConfirmScreen> {
                     child: TextButton(
                       onPressed: () => (Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                            return const DashboardScreen();
+                        return const BottomNav();
                           }))),
                       style: TextButton.styleFrom(
                         backgroundColor: MyColor.backgroundColor,

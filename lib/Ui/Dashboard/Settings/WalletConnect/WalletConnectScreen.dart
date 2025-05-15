@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jost_pay_wallet/LocalDb/Local_Account_address.dart';
 import 'package:jost_pay_wallet/LocalDb/Local_Walletv2_provider.dart';
 import 'package:jost_pay_wallet/Provider/Token_Provider.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/DashboardScreen.dart';
+import 'package:jost_pay_wallet/bottom_nav.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Settings/WalletConnect/signTransactions2.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/SendToken/QrScannerPage.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';

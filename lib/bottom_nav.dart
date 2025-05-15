@@ -35,24 +35,23 @@ import 'package:wallet_connect_dart_v2/utils/error.dart';
 import 'package:wallet_connect_dart_v2/wc_utils/jsonrpc/models/models.dart';
 import 'package:web3dart/web3dart.dart';
 
-import '../../Values/utils.dart';
-import 'DashboardWalletConnect/SessionRequest.dart';
-import 'DashboardWalletConnect/SignTransaction.dart';
-import 'DashboardWalletConnect/WalletSign.dart';
-import 'DashboardWalletConnect/WalletTransaction.dart';
-import 'Settings/WalletConnect/walletv2_models/ethereum/wc_ethereum_transaction.dart';
+import 'Values/utils.dart';
+import 'Ui/Dashboard/DashboardWalletConnect/SessionRequest.dart';
+import 'Ui/Dashboard/DashboardWalletConnect/SignTransaction.dart';
+import 'Ui/Dashboard/DashboardWalletConnect/WalletSign.dart';
+import 'Ui/Dashboard/DashboardWalletConnect/WalletTransaction.dart';
+import 'Ui/Dashboard/Settings/WalletConnect/walletv2_models/ethereum/wc_ethereum_transaction.dart';
 
 SignClient? signClient;
 
-class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({super.key});
+class BottomNav extends StatefulWidget {
+  const BottomNav({super.key});
 
   @override
-  State<DashboardScreen> createState() => _DashboardScreenState();
+  State<BottomNav> createState() => _BottomNavState();
 }
 
-class _DashboardScreenState extends State<DashboardScreen>
-    with WidgetsBindingObserver {
+class _BottomNavState extends State<BottomNav> with WidgetsBindingObserver {
   List body = [
     const WalletScreen(),
     const Services(),

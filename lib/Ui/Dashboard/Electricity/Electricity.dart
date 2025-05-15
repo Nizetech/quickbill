@@ -6,7 +6,7 @@ import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/NewColor.dart';
 import 'package:jost_pay_wallet/Values/NewStyle.dart';
 
-import '../DashboardScreen.dart';
+import '../../../bottom_nav.dart';
 
 class Electricity extends StatefulWidget {
   const Electricity({super.key});
@@ -204,7 +204,7 @@ class _ElectricityState extends State<Electricity> {
                   onTap: () => Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const DashboardScreen())),
+                          builder: (context) => const BottomNav())),
                   child: Image.asset(
                     'assets/images/arrow_left.png',
                   ),

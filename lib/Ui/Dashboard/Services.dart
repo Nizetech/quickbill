@@ -13,7 +13,7 @@ import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:provider/provider.dart';
 
-import '../Dashboard/DashboardScreen.dart';
+import '../../bottom_nav.dart';
 
 class Services extends StatefulWidget {
   const Services({super.key});
@@ -49,7 +49,7 @@ class _ServicesState extends State<Services> {
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const DashboardScreen()));
+                                builder: (context) => const BottomNav()));
                       },
                       child: Image.asset(
                         'assets/images/arrow_left.png',

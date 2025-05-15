@@ -14,7 +14,7 @@ import 'package:jost_pay_wallet/LocalDb/Local_Account_provider.dart';
 import 'package:jost_pay_wallet/Provider/Account_Provider.dart';
 import 'package:jost_pay_wallet/Provider/Token_Provider.dart';
 import 'package:jost_pay_wallet/Ui/Authentication/WelcomeScreen.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/DashboardScreen.dart';
+import 'package:jost_pay_wallet/bottom_nav.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:custom_pin_screen/custom_pin_screen.dart';
@@ -230,7 +230,7 @@ class _LoginWithPassCodeState extends State<LoginWithPassCode> {
         // ignore: use_build_context_synchronously
         await Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => const DashboardScreen()),
+          MaterialPageRoute(builder: (context) => const BottomNav()),
           (route) => true,
         );
       }

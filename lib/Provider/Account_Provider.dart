@@ -5,8 +5,12 @@ import 'package:jost_pay_wallet/ApiHandlers/ApiHandle.dart';
 import '../LocalDb/Local_Account_provider.dart';
 
 class AccountProvider with ChangeNotifier {
-  bool isLoading = false;
   bool isSuccess = false;
+  bool isLoading = false;
+  void setLoading(bool value) {
+    isLoading = value;
+    notifyListeners();
+  }
 
   var accountData;
   bool isAccountLoad = false;
@@ -70,6 +74,7 @@ class AccountProvider with ChangeNotifier {
       }
     });
   }
+
 
   bool isAccount = false;
   var checkAccountList;

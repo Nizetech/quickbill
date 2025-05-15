@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../../Values/MyColor.dart';
 import '../../Values/NewColor.dart';
-import '../Dashboard/DashboardScreen.dart';
+import '../../bottom_nav.dart';
 
 class Helpsupport extends StatefulWidget {
   const Helpsupport({super.key});
@@ -40,7 +40,7 @@ class _HelpsupportState extends State<Helpsupport> {
                         onTap: () => Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const DashboardScreen())),
+                                builder: (context) => const BottomNav())),
                         child: Image.asset(
                           'assets/images/arrow_left.png',
                           color: themeProvider.isDarkMode()

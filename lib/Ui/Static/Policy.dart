@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 
-import '../Dashboard/DashboardScreen.dart';
+import '../../bottom_nav.dart';
 
 class Policy extends StatefulWidget {
   const Policy({super.key});
@@ -36,7 +36,7 @@ class _PolicyState extends State<Policy> {
                   onTap: () => Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const DashboardScreen())),
+                          builder: (context) => const BottomNav())),
                   child: Image.asset(
                     'assets/images/arrow_left.png',
                   ),

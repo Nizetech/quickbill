@@ -5,7 +5,7 @@ import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:provider/provider.dart';
 
 import '../../Values/MyColor.dart';
-import '../Dashboard/DashboardScreen.dart';
+import '../../bottom_nav.dart';
 
 class Accountsetting extends StatefulWidget {
   const Accountsetting({super.key});
@@ -47,7 +47,7 @@ class _AccountsettingState extends State<Accountsetting> {
                   onTap: () => Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const DashboardScreen())),
+                          builder: (context) => const BottomNav())),
                   child: Image.asset(
                     'assets/images/arrow_left.png',
                     color: themeProvider.isDarkMode()

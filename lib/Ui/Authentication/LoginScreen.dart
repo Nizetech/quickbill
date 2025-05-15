@@ -7,7 +7,7 @@ import 'package:jost_pay_wallet/LocalDb/Local_Token_provider.dart';
 import 'package:jost_pay_wallet/LocalDb/Local_Walletv2_provider.dart';
 import 'package:jost_pay_wallet/Provider/DashboardProvider.dart';
 import 'package:jost_pay_wallet/Ui/Authentication/WelcomeScreen.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/DashboardScreen.dart';
+import 'package:jost_pay_wallet/bottom_nav.dart';
 import 'package:jost_pay_wallet/Values/utils.dart';
 import 'package:local_auth_ios/types/auth_messages_ios.dart';
 import 'package:flutter/material.dart';
@@ -215,7 +215,7 @@ class _LoginScreenState extends State<LoginScreen> {
         // ignore: use_build_context_synchronously
         await Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => const DashboardScreen()),
+          MaterialPageRoute(builder: (context) => const BottomNav()),
           (route) => true,
         );
       }

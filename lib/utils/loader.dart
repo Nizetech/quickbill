@@ -25,7 +25,7 @@ void showLoader(
                 width: 65,
                 child: LoadingIndicator(
                   indicatorType: Indicator.ballClipRotate,
-                  colors: [MyColor.lightGreenColor],
+                  colors: [MyColor.greenColor.withOpacity(.7)],
                   strokeWidth: 5,
                   pathBackgroundColor:
                       //  showPathBackground ?

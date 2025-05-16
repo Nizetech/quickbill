@@ -35,7 +35,7 @@ class CustomButton extends StatelessWidget {
                   color: MyColor.mainWhiteColor,
                 ))
             : Text(
-                "Sign Up",
+                text,
                 style: NewStyle.btnTx16SplashBlue
                     .copyWith(color: NewColor.mainWhiteColor),
               ),

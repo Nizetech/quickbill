@@ -22,7 +22,7 @@ CancelToken cancelToken = CancelToken();
 // ======================================================
 //================== Dio Initialization =================
 //=======================================================
-  static Dio createDio() {
+static Dio createDio() {
     final dio = Dio(
 // static late dio.CancelToken cancelToken;
       BaseOptions(
@@ -44,16 +44,17 @@ CancelToken cancelToken = CancelToken();
     //TODO uncomment this line when you want to use auth header
     //! LocalCacheImpl().getToken();
     //  LocalCacheImpl().getToken();
-    if (token.isNotEmpty) {
+    // if (token.isNotEmpty) {
       return {
-        "Authorization": "Bearer $token",
+      // "Authorization": "Bearer $token",
+      "Content-Type": "application/x-www-form-urlencoded",
       };
-    }
+    // }
 
-    print("====== GetAuthHeader ======");
-    print(token);
+    // print("====== GetAuthHeader ======");
+    // print(token);
 
-    return {};
+    // return {};
   }
 
 // ======================================================

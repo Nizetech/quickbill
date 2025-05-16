@@ -1,6 +1,8 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
+import 'package:jost_pay_wallet/Ui/Authentication/change_password.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:provider/provider.dart';
 
@@ -21,7 +23,8 @@ class _AccountsettingState extends State<Accountsetting> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) {
-        final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
+        final themeProvider =
+            Provider.of<ThemeProvider>(context, listen: false);
         setState(() {
           _isSwitched = themeProvider.isDarkMode();
         });
@@ -250,28 +253,31 @@ class _AccountsettingState extends State<Accountsetting> {
                   const SizedBox(
                     height: 24,
                   ),
-                  Row(
-                    children: [
-                      Image.asset('assets/images/lock-password.png',
-                          color: themeProvider.isDarkMode()
-                              ? const Color(0XFFAAAAAA)
-                              : MyColor.lightBlackColor),
-                      const SizedBox(
-                        width: 12,
-                      ),
-                      Text(
-                        'Change My password',
-                        style: MyStyle.tx16LightBlack.copyWith(
+                  GestureDetector(
+                    onTap: () => Get.to(ChangePassword()),
+                    child: Row(
+                      children: [
+                        Image.asset('assets/images/lock-password.png',
                             color: themeProvider.isDarkMode()
                                 ? const Color(0XFFAAAAAA)
                                 : MyColor.lightBlackColor),
-                      ),
-                      const Spacer(),
-                      Image.asset('assets/images/arrow-right.png',
-                          color: themeProvider.isDarkMode()
-                              ? const Color(0XFFAAAAAA)
-                              : MyColor.lightBlackColor)
-                    ],
+                        const SizedBox(
+                          width: 12,
+                        ),
+                        Text(
+                          'Change My password',
+                          style: MyStyle.tx16LightBlack.copyWith(
+                              color: themeProvider.isDarkMode()
+                                  ? const Color(0XFFAAAAAA)
+                                  : MyColor.lightBlackColor),
+                        ),
+                        const Spacer(),
+                        Image.asset('assets/images/arrow-right.png',
+                            color: themeProvider.isDarkMode()
+                                ? const Color(0XFFAAAAAA)
+                                : MyColor.lightBlackColor)
+                      ],
+                    ),
                   ),
                   const SizedBox(
                     height: 24,

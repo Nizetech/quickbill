@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 
 class ThemeProvider extends ChangeNotifier {
@@ -45,10 +46,13 @@ class ThemeProvider extends ChangeNotifier {
           onTertiary: MyColor.darkColor,
         ),
         // brightness: Brightness.light,
+        
         primarySwatch: kPrimaryColor,
         scaffoldBackgroundColor: MyColor.mainWhiteColor,
         appBarTheme: const AppBarTheme(
+          surfaceTintColor: Colors.white,
           backgroundColor: MyColor.backgroundColor,
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
           elevation: 0,
         ),
       );

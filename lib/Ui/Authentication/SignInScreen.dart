@@ -1,10 +1,9 @@
-import 'dart:async';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/Auth_provider.dart';
 import 'package:jost_pay_wallet/Ui/Authentication/OtpScreen.dart';
 import 'package:jost_pay_wallet/Ui/Authentication/SignUpScreen.dart';
-import 'package:jost_pay_wallet/bottom_nav.dart';
-import 'package:jost_pay_wallet/Values/NewColor.dart';
+import 'package:jost_pay_wallet/Ui/Authentication/forget_password.dart';
 import 'package:jost_pay_wallet/Values/NewStyle.dart';
 import 'package:flutter/material.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
@@ -12,8 +11,6 @@ import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/common/button.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -32,21 +29,21 @@ class _SignInScreenState extends State<SignInScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final String _response = "";
+  // final String _response = "";
 
-  static Future<void> saveToken(String token) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString("token", token);
-  }
+  // static Future<void> saveToken(String token) async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   await prefs.setString("token", token);
+  // }
 
-  Future<void> _launchURL(String url) async {
-    final Uri uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
+  // Future<void> _launchURL(String url) async {
+  //   final Uri uri = Uri.parse(url);
+  //   if (await canLaunchUrl(uri)) {
+  //     await launchUrl(uri);
+  //   } else {
+  //     throw 'Could not launch $url';
+  //   }
+  // }
 
   void _validateForm(AuthProvider model) async {
     if (_formKey.currentState?.validate() ?? false) {
@@ -55,8 +52,8 @@ class _SignInScreenState extends State<SignInScreen> {
       });
 
       final Map<String, dynamic> body = {
-        "email": _emailController.text,
-        "password": _passwordController.text,
+        "email": _emailController.text.trim(),
+        "password": _passwordController.text.trim(),
       };
       // loginAccount();
       model.login(body);
@@ -176,28 +173,35 @@ class _SignInScreenState extends State<SignInScreen> {
                             return null;
                           },
                         ),
-                        SizedBox(height: 5),
+
                         Align(
                           alignment: Alignment.bottomRight,
-                          child: Text(
+                          child: TextButton(
+                            onPressed: () => Get.to(ForgotPassword()),
+                            child: Text(
                             'Forgot Password?',
-                            // style: NewStyle.tx14SplashWhite
-                            //     .copyWith(color: MyColor.greenColor),
+                              style: NewStyle.tx14SplashWhite
+                                  .copyWith(color: MyColor.greenColor),
+                            ),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 12),
                   CustomButton(
                       text: 'Login',
                       isLoading: model.isLoading,
-                      onTap: () => _validateForm(model)),
+                      onTap: ()
+                          // => Get.offAll(BottomNav())),
+                          =>
+                          _validateForm(model)),
                   const SizedBox(
-                    height: 40,
+                    height: 10,
                   ),
                   Row(
-                    mainAxisSize: MainAxisSize.min,
+                    
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         'Don’t have an account? ',

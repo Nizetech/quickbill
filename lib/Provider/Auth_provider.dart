@@ -17,7 +17,7 @@ class AuthProvider with ChangeNotifier {
 
   Future<void> createAccount(Map<String, dynamic> data) async {
     try {
-      setLoading(true);
+      // setLoading(true);
       showLoader();
       AuthRepo().register(data).then((value) {
         log('Value: $value');
@@ -45,28 +45,139 @@ class AuthProvider with ChangeNotifier {
 
   Future<void> login(Map<String, dynamic> data) async {
     try {
-      setLoading(true);
+      // setLoading(true);
       showLoader();
-      AuthRepo().login(data).then((value) {
+      final res = await AuthRepo().login(data).then((value) {
         log('Value: $value');
         setLoading(false);
+        hideLoader();
+        if (value.isNotEmpty) {
+          if (value['result'] == false) {
+            ErrorToast(value['message']);
+            return;
+          } else {
+            Get.to(OtpScreen(email: data['email']));
+            if (value['message'] != null && value['message'] != '') {
+              SuccessToast(value['message']);
+            } else {
+              SuccessToast('An OTP has been sent to your email');
+            }
+          }
+          notifyListeners();
+        } else {
+          // hideLoader();
+        }
+      });
+      log('Value: $res');
+    } catch (e) {
+      log('Error: $e');
+      setLoading(false);
+      ErrorToast(e.toString());
+    }
+  }
+
+  Future<void> resendOtp(String email, {bool isForgetPass = false}) async {
+    try {
+      // setLoading(true);
+      showLoader();
+      AuthRepo().resendOTP(email).then((value) {
+        log('Value: $value');
+        hideLoader();
+        setLoading(false);
+        if (value.isEmpty) return;
         if (value['result'] == false) {
-          hideLoader();
           ErrorToast(value['message']);
         } else {
           hideLoader();
-          Get.offAll(BottomNav());
-          if (value['message'] != null) {
-            SuccessToast(value['message']);
+          if (isForgetPass) {
+            Get.to(OtpScreen(email: email));
+          }
+          SuccessToast('An OTP has been sent to your email');
+        }
+        notifyListeners();
+      });
+    } catch (e) {
+      log('Error: $e');
+      setLoading(false);
+    }
+  }
+
+  Future<void> verifyOtp(String email) async {
+    try {
+      // setLoading(true);
+      showLoader();
+      AuthRepo().resendOTP(email).then((value) {
+        log('Value: $value');
+        hideLoader();
+        setLoading(false);
+        if (value.isEmpty) return;
+        if (value['result'] == false) {
+          ErrorToast(value['message']);
+        } else {
+          SuccessToast('An OTP has been sent to your email');
+        }
+        notifyListeners();
+      });
+    } catch (e) {
+      log('Error: $e');
+      setLoading(false);
+    }
+  }
+
+  Future<void> confirmOtp(Map<String, dynamic> data,
+      {bool isForgetPass = false}) async {
+    try {
+      // setLoading(true);
+      showLoader();
+      AuthRepo().verifyOTP(data).then((value) {
+        log('Value: $value');
+        setLoading(false);
+        hideLoader();
+        if (value.isEmpty) return;
+        if (value['result'] == false) {
+          ErrorToast(value['message']);
+        } else {
+          if (isForgetPass) {
+            return;
           } else {
-            SuccessToast('Login Successful');
+            Get.offAll(BottomNav());
+            if (value['message'] != null && value['message'] != '') {
+              SuccessToast(value['message']);
+            } else {
+              SuccessToast('Login Successful');
+            }
           }
         }
         notifyListeners();
       });
-      hideLoader();
+    } catch (e) {
+      log('Error: $e');
       setLoading(false);
-      notifyListeners();
+      ErrorToast(e.toString());
+    }
+  }
+
+  Future<void> changePassword(Map<String, dynamic> data) async {
+    try {
+      // setLoading(true);
+      showLoader();
+      AuthRepo().changePassword(data).then((value) {
+        log('Value: $value');
+        setLoading(false);
+        hideLoader();
+        if (value.isEmpty) return;
+        if (value['result'] == false) {
+          ErrorToast(value['message']);
+        } else {
+          hideLoader();
+          if (value['message'] != null && value['message'] != '') {
+            SuccessToast(value['message']);
+          } else {
+            SuccessToast('Password Changed Successfully');
+          }
+        }
+        notifyListeners();
+      });
     } catch (e) {
       log('Error: $e');
       setLoading(false);

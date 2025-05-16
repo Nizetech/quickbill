@@ -34,16 +34,17 @@ class AuthRepo {
   Future<Map<String, dynamic>> login(Map<String, dynamic> data) async {
     try {
       log('Login Details: $data');
-      final response = await client.post(
+      Map<String, dynamic> response = await client.post(
         ApiRoute.login,
         body: data,
       );
-      log('Register: $response');
-      if (response['data']['token'] != null) {
+      log('Register: $response, ${response.runtimeType}');
+      if (response['token'] != null) {
         box.put(kAccessToken, response['token']);
       }
       return response;
     } catch (e) {
+      log('Errrrr');
       // hideLoader();
       ErrorToast(e.toString());
       return {};
@@ -58,9 +59,13 @@ class AuthRepo {
       final response = await client.post(ApiRoute.resendOtp, body: {
         'email': email
       }, requestHeaders: {
-        'Authorization': 'Bearer $token',
+        'Authorization': token,
       });
       log('Register: $response');
+
+      if (response['token'] != null) {
+        box.put(kAccessToken, response['token']);
+      }
 
       return response;
     } catch (e) {
@@ -77,9 +82,12 @@ class AuthRepo {
       // log('Login Details: $email');
       final response =
           await client.post(ApiRoute.verifyOtp, body: data, requestHeaders: {
-        'Authorization': 'Bearer $token',
+        'Authorization': token,
       });
       log('Register: $response');
+      if (response['token'] != null) {
+        box.put(kAccessToken, response['token']);
+      }
       return response;
     } catch (e) {
       // hideLoader();
@@ -95,7 +103,7 @@ class AuthRepo {
       // log('Login Details: $email');
       final response = await client
           .post(ApiRoute.changePassword, body: data, requestHeaders: {
-        'Authorization': 'Bearer $token',
+        'Authorization': token,
       });
       log('Register: $response');
       return response;

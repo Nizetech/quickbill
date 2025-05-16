@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jost_pay_wallet/Provider/Auth_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Static/onboarding_screen.dart';
+import 'package:jost_pay_wallet/bottom_nav.dart';
 import 'package:jost_pay_wallet/constants/constants.dart';
 import 'package:provider/provider.dart';
 // import 'package:uni_links/uni_links.dart';
@@ -76,16 +78,27 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-
-    _handleInitialUri();
-    _handleIncomingLinks();
+    getToken();
+    // _handleInitialUri();
+    // _handleIncomingLinks();
   }
 
-  
+  final box = Hive.box(kAppName);
+
+  String token = '';
+
+  FutureOr getToken() async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      token = await box.get(kAccessToken);
+      print(token);
+      setState(() {});
+    });
+  }
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    log('My token is $token');
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => DashboardProvider()),
@@ -110,7 +123,8 @@ class _MyAppState extends State<MyApp> {
             theme: themeProvider.lightTheme,
             darkTheme: themeProvider.darkTheme,
             themeMode: themeProvider.themeMode,
-            home: const OnboardingScreen(),
+            home:
+                token.isNotEmpty ? const BottomNav() : const OnboardingScreen(),
           ),
         );
       }),

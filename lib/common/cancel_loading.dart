@@ -10,7 +10,9 @@ class CancelLoading {
   final auth = Provider.of<AuthProvider>(Get.context!, listen: false);
 
   cancelLoading() {
+    if (Get.isDialogOpen!) {
     hideLoader();
+    }
     accountProvider.setLoading(false);
     auth.setLoading(false);
   }

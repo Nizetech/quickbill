@@ -96,7 +96,7 @@ class _PinScreenState extends State<PinScreen> {
     accountProvider = Provider.of<AccountProvider>(context, listen: true);
     tokenProvider = Provider.of<TokenProvider>(context, listen: true);
     dashProvider = Provider.of<DashboardProvider>(context, listen: true);
-    var height = MediaQuery.of(context).size.height;
+    // var height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

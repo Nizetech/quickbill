@@ -433,6 +433,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   color: MyColor.mainWhiteColor,
                                 ))),
                   ),
+                  
                   Visibility(
                       visible: errorText.isNotEmpty,
                       child: Padding(

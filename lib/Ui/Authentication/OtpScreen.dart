@@ -15,7 +15,12 @@ import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 class OtpScreen extends StatefulWidget {
   final String email;
   final bool isForgetPass;
-  const OtpScreen({super.key, required this.email, this.isForgetPass = false});
+  final bool is2Fa;
+  const OtpScreen(
+      {super.key,
+      required this.email,
+      this.isForgetPass = false,
+      this.is2Fa = false});
 
   @override
   State<OtpScreen> createState() => _OtpScreenState();
@@ -63,6 +68,12 @@ class _OtpScreenState extends State<OtpScreen> {
                 const SizedBox(
                   height: 16,
                 ),
+                widget.is2Fa
+                    ? const Text(
+                        'Enter your Google Authenticator code to verify your identity',
+                        style: MyStyle.tx14Black,
+                      )
+                    :
                 Row(
                   children: [
                     Text('We send a code to ', style: MyStyle.tx16Gray),
@@ -106,6 +117,7 @@ class _OtpScreenState extends State<OtpScreen> {
                   },
                 ),
                 const SizedBox(height: 14),
+                if (!widget.is2Fa)
                 TextButton(
                   onPressed: () {
                     model.resendOtp(widget.email);
@@ -131,6 +143,7 @@ class _OtpScreenState extends State<OtpScreen> {
                               ErrorToast("Please enter OTP");
                             } else {
                               model.confirmOtp(
+                                  is2fa: widget.is2Fa,
                                   isForgetPass: widget.isForgetPass,
                                   {
                                     "email": widget.email,

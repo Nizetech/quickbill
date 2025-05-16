@@ -56,7 +56,10 @@ class AuthProvider with ChangeNotifier {
             ErrorToast(value['message']);
             return;
           } else {
-            Get.to(OtpScreen(email: data['email']));
+            Get.to(OtpScreen(
+                is2Fa: value['login_method'] != null &&
+                    value['login_method'] != 'email',
+                email: data['email']));
             if (value['message'] != null && value['message'] != '') {
               SuccessToast(value['message']);
             } else {
@@ -125,11 +128,11 @@ class AuthProvider with ChangeNotifier {
   }
 
   Future<void> confirmOtp(Map<String, dynamic> data,
-      {bool isForgetPass = false}) async {
+      {bool isForgetPass = false, bool is2fa = false}) async {
     try {
       // setLoading(true);
       showLoader();
-      AuthRepo().verifyOTP(data).then((value) {
+      AuthRepo().verifyOTP(data, is2fa: is2fa).then((value) {
         log('Value: $value');
         setLoading(false);
         hideLoader();

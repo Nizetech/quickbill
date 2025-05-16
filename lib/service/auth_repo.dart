@@ -76,12 +76,16 @@ class AuthRepo {
   }
 
   // verify otp
-  Future<Map<String, dynamic>> verifyOTP(Map<String, dynamic> data) async {
+  Future<Map<String, dynamic>> verifyOTP(Map<String, dynamic> data,
+      {bool is2fa = false}) async {
     String token = await box.get(kAccessToken);
     try {
       // log('Login Details: $email');
       final response =
-          await client.post(ApiRoute.verifyOtp, body: data, requestHeaders: {
+          await client.post(
+          is2fa ? ApiRoute.verify2fa : ApiRoute.verifyOtp,
+          body: is2fa ? {'code': data['code']} : data,
+          requestHeaders: {
         'Authorization': token,
       });
       log('Register: $response');

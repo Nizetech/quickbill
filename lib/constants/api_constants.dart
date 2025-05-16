@@ -5,5 +5,6 @@ class ApiRoute {
   static String login = 'login';
   static String resendOtp = 'get-email-code';
   static String verifyOtp = 'verify-email';
+  static String verify2fa = 'verify-2fa';
   static String changePassword = 'change-password';
 }

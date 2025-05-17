@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:jost_pay_wallet/Provider/Auth_provider.dart';
@@ -37,7 +39,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _lastName = TextEditingController();
   final _firstName = TextEditingController();
   final _phoneNumberController = TextEditingController();
-  // final String _response = '';
+  String selectedCountryCode = '234';
   String selectedCountry = 'NG';
 
   // static Future<void> saveToken(String token) async {
@@ -57,10 +59,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
           "first_name": _firstName.text.trim(),
           "last_name": _lastName.text.trim(),
           'country': selectedCountry,
-          "phone": _phoneNumberController.text.trim(),
+          "phone":
+              // remove the first zero from the phone number if it starts with 0
+              selectedCountry == 'NG' &&
+                      _phoneNumberController.text.trim().startsWith('0')
+                  ? '+$selectedCountryCode${_phoneNumberController.text.trim().substring(1)}'
+                  : '+$selectedCountryCode${_phoneNumberController.text.trim()}'
         });
       }
-     
     } else {}
   }
 
@@ -116,7 +122,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 20),
-      
+
                       const Text.rich(
                         TextSpan(
                           text: 'Create a ',
@@ -148,7 +154,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           fontFamily: 'SF Pro Rounded',
                         ),
                         controller: _firstName,
-                        decoration: NewStyle.authInputDecoration,
+                        decoration: NewStyle.authInputDecoration.copyWith(
+                          hintText: 'Enter your first name',
+                        ),
                         keyboardType: TextInputType.emailAddress,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -172,7 +180,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           fontFamily: 'SF Pro Rounded',
                         ),
                         controller: _lastName,
-                        decoration: NewStyle.authInputDecoration,
+                        decoration: NewStyle.authInputDecoration.copyWith(
+                          hintText: 'Enter your last name',
+                        ),
                         keyboardType: TextInputType.emailAddress,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -196,11 +206,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           fontFamily: 'SF Pro Rounded',
                         ),
                         controller: _emailController,
-                        decoration: NewStyle.authInputDecoration,
+                        decoration: NewStyle.authInputDecoration.copyWith(
+                          hintText: 'Enter your email address',
+                        ),
                         keyboardType: TextInputType.emailAddress,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter some text';
+                            return 'Please enter a valid email address';
                           } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
                               .hasMatch(value)) {
                             return 'Please enter a valid email address';
@@ -247,7 +259,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           Icons.keyboard_arrow_down,
                           color: MyColor.lightBlackColor,
                         ),
-                        decoration: NewStyle.authInputDecoration,
+                        decoration: NewStyle.authInputDecoration.copyWith(
+                          hintText: '8061560000',
+                        ),
                         style: NewStyle.tx14SplashWhite.copyWith(
                           color: MyColor.lightBlackColor,
                           fontSize: 14,
@@ -257,16 +271,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         onCountryChanged: (country) {
                           setState(() {
                             selectedCountry = country.code;
+                            selectedCountryCode = country.dialCode;
                           });
                         },
                         validator: (value) {
                           if (value == null || value.number.isEmpty) {
-                            return 'Please enter some text';
+                            return 'Please enter a valid phone number';
+                          } else if (!RegExp(r'^\+(?:[0-9] ?){6,14}[0-9]$')
+                              .hasMatch(value.number)) {
+                            return 'Please enter a valid phone number';
                           }
-                          // else if (!RegExp(r'^\+(?:[0-9] ?){6,14}[0-9]$')
-                          //     .hasMatch(value)) {
-                          //   return 'Please enter a valid phone number';
-                          // }
                           return null;
                         },
                       ),
@@ -285,7 +299,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           fontFamily: 'SF Pro Rounded',
                         ),
                         // controller: _phoneNumberController,
-                        decoration: NewStyle.authInputDecoration,
+                        decoration: NewStyle.authInputDecoration.copyWith(
+                          hintText: 'Enter your refer ID',
+                        ),
                         keyboardType: TextInputType.phone,
                       ),
                       const SizedBox(height: 14),
@@ -304,11 +320,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         controller: _passwordController,
                         obscureText: true,
-                        decoration: NewStyle.authInputDecoration,
+                        decoration: NewStyle.authInputDecoration.copyWith(
+                          hintText: 'Enter your password',
+                        ),
                         keyboardType: TextInputType.emailAddress,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter some text';
+                            return 'Please enter a password';
                           } else if (value.length < 8) {
                             return 'Please enter at least 8 letters';
                           }
@@ -335,11 +353,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         controller: _confirmPasswordController,
                         obscureText: true,
-                        decoration: NewStyle.authInputDecoration,
+                        decoration: NewStyle.authInputDecoration.copyWith(
+                          hintText: 'Re-enter your password',
+                        ),
                         keyboardType: TextInputType.emailAddress,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter some text';
+                            return 'Please enter confirm password';
                           } else if (value.length < 8) {
                             return 'Please enter at least 8 letters';
                           }
@@ -357,48 +377,47 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 CustomButton(
                     text: 'Sign Up',
                     isLoading: model.isLoading,
-                    onTap: () => _validateForm(model)),
+                    onTap: () {
+                      _validateForm(model);
+                    }),
                 Column(children: [
                   const SizedBox(height: 17),
                   if (!model.isLoading)
-                    Container(
-                      child: Row(mainAxisSize: MainAxisSize.min, children: [
-                        Text(
-                          'Already have an account? ',
-                          style: NewStyle.btnTx16SplashBlue.copyWith(
-                              color: MyColor.signGray,
-                              fontWeight: FontWeight.w500),
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                      Text(
+                        'Already have an account? ',
+                        style: NewStyle.btnTx16SplashBlue.copyWith(
+                            color: MyColor.signGray,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SignInScreen())),
+                        child: Row(
+                          children: [
+                            Image.asset('assets/images/signin-icon.png'),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            Text(
+                              'Login',
+                              style: NewStyle.btnTx16SplashBlue.copyWith(
+                                  color: MyColor.greenColor,
+                                  fontWeight: FontWeight.w500),
+                            )
+                          ],
                         ),
-                        TextButton(
-                          onPressed: () => Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const SignInScreen())),
-                          child: Row(
-                            children: [
-                              Image.asset('assets/images/signin-icon.png'),
-                              const SizedBox(
-                                width: 8,
-                              ),
-                              Text(
-                                'Login',
-                                style: NewStyle.btnTx16SplashBlue.copyWith(
-                                    color: MyColor.greenColor,
-                                    fontWeight: FontWeight.w500),
-                              )
-                            ],
-                          ),
-                        ),
-                      ]),
-                    ),
+                      ),
+                    ]),
                   const SizedBox(height: 34),
                 ])
               ],
             ),
           ),
         );
-      }
-      ),
+      }),
     );
   }
 }

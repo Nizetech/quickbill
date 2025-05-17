@@ -83,6 +83,7 @@ class _OtpScreenState extends State<OtpScreen> {
                     )
                   ],
                 ),
+                if (!widget.is2Fa)
                 const Row(
                   children: [
                     Text(

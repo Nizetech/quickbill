@@ -34,11 +34,11 @@ class AuthProvider with ChangeNotifier {
         }
         notifyListeners();
       });
-      setLoading(false);
+      // setLoading(false);
       notifyListeners();
     } catch (e) {
       log('Error: $e');
-      setLoading(false);
+      // setLoading(false);
       ErrorToast(e.toString());
     }
   }
@@ -49,7 +49,7 @@ class AuthProvider with ChangeNotifier {
       showLoader();
       final res = await AuthRepo().login(data).then((value) {
         log('Value: $value');
-        setLoading(false);
+        // setLoading(false);
         hideLoader();
         if (value.isNotEmpty) {
           if (value['result'] == false) {
@@ -63,18 +63,20 @@ class AuthProvider with ChangeNotifier {
             if (value['message'] != null && value['message'] != '') {
               SuccessToast(value['message']);
             } else {
-              SuccessToast('An OTP has been sent to your email');
+              SuccessToast(value['login_method'] != null &&
+                      value['login_method'] != 'email'
+                  ? "Enter Google Authenticator code"
+                  : 'An OTP has been sent to your email');
             }
           }
           notifyListeners();
         } else {
-          // hideLoader();
         }
       });
       log('Value: $res');
     } catch (e) {
       log('Error: $e');
-      setLoading(false);
+      // setLoading(false);
       ErrorToast(e.toString());
     }
   }
@@ -86,7 +88,7 @@ class AuthProvider with ChangeNotifier {
       AuthRepo().resendOTP(email).then((value) {
         log('Value: $value');
         hideLoader();
-        setLoading(false);
+        // setLoading(false);
         if (value.isEmpty) return;
         if (value['result'] == false) {
           ErrorToast(value['message']);
@@ -101,7 +103,7 @@ class AuthProvider with ChangeNotifier {
       });
     } catch (e) {
       log('Error: $e');
-      setLoading(false);
+      // setLoading(false);
     }
   }
 
@@ -112,7 +114,7 @@ class AuthProvider with ChangeNotifier {
       AuthRepo().resendOTP(email).then((value) {
         log('Value: $value');
         hideLoader();
-        setLoading(false);
+        // setLoading(false);
         if (value.isEmpty) return;
         if (value['result'] == false) {
           ErrorToast(value['message']);
@@ -123,7 +125,7 @@ class AuthProvider with ChangeNotifier {
       });
     } catch (e) {
       log('Error: $e');
-      setLoading(false);
+      // setLoading(false);
     }
   }
 
@@ -134,7 +136,7 @@ class AuthProvider with ChangeNotifier {
       showLoader();
       AuthRepo().verifyOTP(data, is2fa: is2fa).then((value) {
         log('Value: $value');
-        setLoading(false);
+        // setLoading(false);
         hideLoader();
         if (value.isEmpty) return;
         if (value['result'] == false) {
@@ -155,7 +157,7 @@ class AuthProvider with ChangeNotifier {
       });
     } catch (e) {
       log('Error: $e');
-      setLoading(false);
+      // setLoading(false);
       ErrorToast(e.toString());
     }
   }
@@ -166,7 +168,7 @@ class AuthProvider with ChangeNotifier {
       showLoader();
       AuthRepo().changePassword(data).then((value) {
         log('Value: $value');
-        setLoading(false);
+        // setLoading(false);
         hideLoader();
         if (value.isEmpty) return;
         if (value['result'] == false) {
@@ -183,7 +185,7 @@ class AuthProvider with ChangeNotifier {
       });
     } catch (e) {
       log('Error: $e');
-      setLoading(false);
+      // setLoading(false);
       ErrorToast(e.toString());
     }
   }

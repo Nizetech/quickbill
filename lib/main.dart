@@ -90,7 +90,7 @@ class _MyAppState extends State<MyApp> {
   FutureOr getToken() async {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       token = await box.get(kAccessToken);
-      print(token);
+      log(token);
       setState(() {});
     });
   }

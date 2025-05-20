@@ -40,7 +40,9 @@ class ThemeProvider extends ChangeNotifier {
           onPrimary: MyColor.splashBtn,
           secondary: MyColor.lightGreenColor,
           onSecondary: MyColor.lightGreenColor,
+          surfaceContainer: MyColor.lightGrayColor,
           brightness: Brightness.dark,
+          secondaryContainer: MyColor.cardlightBgColor,
           tertiary: MyColor.darkColor,
           onTertiary: MyColor.darkColor,
         ),
@@ -59,6 +61,8 @@ class ThemeProvider extends ChangeNotifier {
         colorScheme: const ColorScheme.dark(
           primary: MyColor.splashBtn,
           onPrimary: MyColor.splashBtn,
+          surfaceContainer: MyColor.darkGrishColor,
+          secondaryContainer: MyColor.cardDarkBgColor,
           secondary: MyColor.lightPrimaryDarkColor,
           onSecondary: MyColor.lightPrimaryDarkColor,
           brightness: Brightness.dark,

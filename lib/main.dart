@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/DashboardScreen.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Services.dart';
 import 'package:jost_pay_wallet/Ui/Static/onboarding_screen.dart';
 import 'package:provider/provider.dart';
 // import 'package:uni_links/uni_links.dart';
@@ -75,8 +77,6 @@ class _MyAppState extends State<MyApp> {
     _handleIncomingLinks();
   }
 
-  
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -103,7 +103,8 @@ class _MyAppState extends State<MyApp> {
             theme: themeProvider.lightTheme,
             darkTheme: themeProvider.darkTheme,
             themeMode: themeProvider.themeMode,
-            home: const OnboardingScreen(),
+            // home: const OnboardingScreen(),
+            home: const DashboardScreen(),
           ),
         );
       }),

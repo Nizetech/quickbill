@@ -6,6 +6,13 @@ import 'package:jost_pay_wallet/Provider/DashboardProvider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyAirtime.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyData.dart';
+import 'package:jost_pay_wallet/Ui/Domain/domain_screen.dart';
+import 'package:jost_pay_wallet/Ui/Paint/paint_history.dart';
+import 'package:jost_pay_wallet/Ui/Paint/paint_screen.dart';
+import 'package:jost_pay_wallet/Ui/Scripts/script_screen.dart';
+import 'package:jost_pay_wallet/Ui/car/carsell_screen.dart';
+import 'package:jost_pay_wallet/Ui/car/repair_screen.dart';
+import 'package:jost_pay_wallet/Ui/car/repairdetail_screen.dart';
 import 'package:jost_pay_wallet/Ui/giftCard/buy_gift_card_screen.dart';
 import 'package:jost_pay_wallet/Ui/pay4me/pay4me_screen.dart';
 import 'package:jost_pay_wallet/Ui/promotions/social_boost.dart';
@@ -32,8 +39,12 @@ class _ServicesState extends State<Services> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     final themedata = Theme.of(context).colorScheme;
+
     final dashProvider = Provider.of<DashboardProvider>(context, listen: true);
     return Scaffold(
+      backgroundColor: themeProvider.isDarkMode()
+          ? MyColor.dark02Color
+          : MyColor.mainWhiteColor,
       body: Stack(
         children: <Widget>[
           Padding(
@@ -99,8 +110,7 @@ class _ServicesState extends State<Services> {
                               width: 155,
                               height: 110,
                               decoration: BoxDecoration(
-                                  color: themedata.secondary
-                                      .withValues(alpha: 0.6),
+                                  color: themedata.secondaryContainer,
                                   borderRadius: BorderRadius.circular(13.5)),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -115,7 +125,7 @@ class _ServicesState extends State<Services> {
                                     // padding: const EdgeInsets.all(13),
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(
-                                        color: themedata.secondary,
+                                        color: themedata.surfaceContainer,
                                         shape: BoxShape.circle),
                                     child: Transform.translate(
                                       offset: const Offset(0, 10),
@@ -129,12 +139,8 @@ class _ServicesState extends State<Services> {
                                   const SizedBox(
                                     height: 4,
                                   ),
-                                  Text(
-                                    'Airtime',
-                                    style: MyStyle.tx9Green.copyWith(
-                                      color: themedata.tertiary,
-                                    ),
-                                  ),
+                                  Text('Airtime',
+                                      style: MyStyle.tx9Green.copyWith()),
                                   const SizedBox(
                                     height: 4,
                                   ),
@@ -146,12 +152,13 @@ class _ServicesState extends State<Services> {
                                       decoration: BoxDecoration(
                                           color: themedata.secondary,
                                           borderRadius:
-                                              BorderRadius.circular(4)),
+                                              BorderRadius.circular(8)),
                                       child: Text(
                                         'Buy Now',
-                                        style: MyStyle.tx9Green.copyWith(
-                                          color: themedata.tertiary,
-                                        ),
+                                        style: MyStyle.tx11Grey.copyWith(
+                                            color: MyColor.greenColor,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 9),
                                       ),
                                     ),
                                   )
@@ -169,8 +176,7 @@ class _ServicesState extends State<Services> {
                               width: 155,
                               height: 110,
                               decoration: BoxDecoration(
-                                  color: themedata.secondary
-                                      .withValues(alpha: 0.6),
+                                  color: themedata.secondaryContainer,
                                   borderRadius: BorderRadius.circular(13.5)),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -185,7 +191,7 @@ class _ServicesState extends State<Services> {
                                     // padding: const EdgeInsets.all(13),
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(
-                                        color: themedata.secondary,
+                                        color: themedata.surfaceContainer,
                                         shape: BoxShape.circle),
                                     child: Transform.translate(
                                       offset: const Offset(0, 10),
@@ -201,9 +207,7 @@ class _ServicesState extends State<Services> {
                                   ),
                                   Text(
                                     'Data',
-                                    style: MyStyle.tx9Green.copyWith(
-                                      color: themedata.tertiary,
-                                    ),
+                                    style: MyStyle.tx9Green.copyWith(),
                                   ),
                                   const SizedBox(
                                     height: 4,
@@ -214,14 +218,15 @@ class _ServicesState extends State<Services> {
                                       height: 20,
                                       alignment: Alignment.center,
                                       decoration: BoxDecoration(
-                                          color: themedata.secondary,
+                                          color: themedata.surfaceContainer,
                                           borderRadius:
-                                              BorderRadius.circular(4)),
+                                              BorderRadius.circular(8)),
                                       child: Text(
                                         'Buy Now',
-                                        style: MyStyle.tx9Green.copyWith(
-                                          color: themedata.tertiary,
-                                        ),
+                                        style: MyStyle.tx11Grey.copyWith(
+                                            color: MyColor.greenColor,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 9),
                                       ),
                                     ),
                                   )
@@ -245,7 +250,7 @@ class _ServicesState extends State<Services> {
                               left: 0,
                               right: 0,
                               child: DottedBorder(
-                                color: MyColor.borderColor,
+                                color: MyColor.outlineDashColor,
                                 strokeWidth: 1,
                                 dashPattern: const [
                                   6,
@@ -264,7 +269,7 @@ class _ServicesState extends State<Services> {
                         ),
                       ),
                       const SizedBox(
-                        height: 20,
+                        height: 27,
                       ),
                       Text(
                         'Finance',
@@ -289,8 +294,7 @@ class _ServicesState extends State<Services> {
                               width: 155,
                               height: 110,
                               decoration: BoxDecoration(
-                                  color: themedata.secondary
-                                      .withValues(alpha: 0.6),
+                                  color: themedata.secondaryContainer,
                                   borderRadius: BorderRadius.circular(13.5)),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -305,7 +309,7 @@ class _ServicesState extends State<Services> {
                                     // padding: const EdgeInsets.all(13),
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(
-                                        color: themedata.secondary,
+                                        color: themedata.surfaceContainer,
                                         shape: BoxShape.circle),
                                     child: Transform.translate(
                                         offset: const Offset(0, 0),
@@ -320,9 +324,7 @@ class _ServicesState extends State<Services> {
                                   ),
                                   Text(
                                     'Pay4me',
-                                    style: MyStyle.tx9Green.copyWith(
-                                      color: themedata.tertiary,
-                                    ),
+                                    style: MyStyle.tx9Green.copyWith(),
                                   ),
                                   const SizedBox(
                                     height: 4,
@@ -335,12 +337,13 @@ class _ServicesState extends State<Services> {
                                       decoration: BoxDecoration(
                                           color: themedata.secondary,
                                           borderRadius:
-                                              BorderRadius.circular(4)),
+                                              BorderRadius.circular(8)),
                                       child: Text(
                                         'Try Now',
-                                        style: MyStyle.tx9Green.copyWith(
-                                          color: themedata.tertiary,
-                                        ),
+                                        style: MyStyle.tx11Grey.copyWith(
+                                            color: MyColor.greenColor,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 9),
                                       ),
                                     ),
                                   )
@@ -362,8 +365,7 @@ class _ServicesState extends State<Services> {
                               width: 155,
                               height: 110,
                               decoration: BoxDecoration(
-                                  color: themedata.secondary
-                                      .withValues(alpha: 0.6),
+                                  color: themedata.secondaryContainer,
                                   borderRadius: BorderRadius.circular(13.5)),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -378,7 +380,7 @@ class _ServicesState extends State<Services> {
                                     // padding: const EdgeInsets.all(13),
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(
-                                        color: themedata.secondary,
+                                        color: themedata.surfaceContainer,
                                         shape: BoxShape.circle),
                                     child: Transform.translate(
                                         offset: const Offset(0, 0),
@@ -393,27 +395,26 @@ class _ServicesState extends State<Services> {
                                   ),
                                   Text(
                                     'Buy Gift Cards',
-                                    style: MyStyle.tx9Green.copyWith(
-                                      color: themedata.tertiary,
-                                    ),
+                                    style: MyStyle.tx9Green.copyWith(),
                                   ),
                                   const SizedBox(
                                     height: 4,
                                   ),
                                   Center(
                                     child: Container(
-                                      width: 80,
+                                      width: 52,
                                       height: 20,
                                       alignment: Alignment.center,
                                       decoration: BoxDecoration(
-                                          color: themedata.secondary,
+                                          color: themedata.surfaceContainer,
                                           borderRadius:
-                                              BorderRadius.circular(4)),
+                                              BorderRadius.circular(8)),
                                       child: Text(
                                         'Buy Now',
-                                        style: MyStyle.tx9Green.copyWith(
-                                          color: themedata.tertiary,
-                                        ),
+                                        style: MyStyle.tx11Grey.copyWith(
+                                            color: MyColor.greenColor,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 9),
                                       ),
                                     ),
                                   )
@@ -437,7 +438,7 @@ class _ServicesState extends State<Services> {
                               left: 0,
                               right: 0,
                               child: DottedBorder(
-                                color: MyColor.borderColor,
+                                color: MyColor.outlineDashColor,
                                 strokeWidth: 1,
                                 dashPattern: const [
                                   6,
@@ -456,10 +457,10 @@ class _ServicesState extends State<Services> {
                         ),
                       ),
                       const SizedBox(
-                        height: 20,
+                        height: 38,
                       ),
                       Text(
-                        'Media',
+                        'Web & Social services',
                         style: MyStyle.tx18Black.copyWith(
                             fontWeight: FontWeight.w400,
                             color: themedata.tertiary),
@@ -472,15 +473,14 @@ class _ServicesState extends State<Services> {
                           GestureDetector(
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const SocialBoost(),
+                                builder: (context) => const DomainScreen(),
                               ));
                             },
                             child: Container(
                               width: 155,
                               height: 110,
                               decoration: BoxDecoration(
-                                  color: themedata.secondary
-                                      .withValues(alpha: 0.6),
+                                  color: themedata.secondaryContainer,
                                   borderRadius: BorderRadius.circular(13.5)),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -495,14 +495,82 @@ class _ServicesState extends State<Services> {
                                     // padding: const EdgeInsets.all(13),
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(
-                                        color: themedata.secondary,
+                                        color: themedata.surfaceContainer,
+                                        shape: BoxShape.circle),
+                                    child: Transform.translate(
+                                        offset: const Offset(0, 0),
+                                        child: SvgPicture.asset(
+                                          'assets/images/svg/web-security.svg',
+                                          height: 24.r,
+                                          width: 24.r,
+                                        )),
+                                  ),
+                                  const SizedBox(
+                                    height: 4,
+                                  ),
+                                  Text(
+                                    'Hosting & Domain',
+                                    style: MyStyle.tx9Green.copyWith(),
+                                  ),
+                                  const SizedBox(
+                                    height: 4,
+                                  ),
+                                  Center(
+                                    child: Container(
+                                      width: 52,
+                                      height: 20,
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                          color: themedata.secondary,
+                                          borderRadius:
+                                              BorderRadius.circular(8)),
+                                      child: Text(
+                                        'Buy Now',
+                                        style: MyStyle.tx11Grey.copyWith(
+                                            color: MyColor.greenColor,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 9),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                          const Spacer(),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const SocialBoost(),
+                              ));
+                            },
+                            child: Container(
+                              width: 155,
+                              height: 110,
+                              decoration: BoxDecoration(
+                                  color: themedata.secondaryContainer,
+                                  borderRadius: BorderRadius.circular(13.5)),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const SizedBox(
+                                    height: 12,
+                                  ),
+                                  Container(
+                                    height: 41,
+                                    width: 41,
+                                    // padding: const EdgeInsets.all(13),
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        color: themedata.surfaceContainer,
                                         shape: BoxShape.circle),
                                     child: Transform.translate(
                                         offset: const Offset(0, 0),
                                         child: SvgPicture.asset(
                                           'assets/images/svg/socialBoost.svg',
-                                          height: 20.r,
-                                          width: 20.r,
+                                          height: 24.r,
+                                          width: 24.r,
                                         )),
                                   ),
                                   const SizedBox(
@@ -510,27 +578,26 @@ class _ServicesState extends State<Services> {
                                   ),
                                   Text(
                                     'Social Boost',
-                                    style: MyStyle.tx9Green.copyWith(
-                                      color: themedata.tertiary,
-                                    ),
+                                    style: MyStyle.tx9Green.copyWith(),
                                   ),
                                   const SizedBox(
                                     height: 4,
                                   ),
                                   Center(
                                     child: Container(
-                                      width: 80,
+                                      width: 60,
                                       height: 20,
                                       alignment: Alignment.center,
                                       decoration: BoxDecoration(
                                           color: themedata.secondary,
                                           borderRadius:
-                                              BorderRadius.circular(4)),
+                                              BorderRadius.circular(8)),
                                       child: Text(
                                         'Boost Now',
-                                        style: MyStyle.tx9Green.copyWith(
-                                          color: themedata.tertiary,
-                                        ),
+                                        style: MyStyle.tx11Grey.copyWith(
+                                            color: MyColor.greenColor,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 9),
                                       ),
                                     ),
                                   )
@@ -541,9 +608,330 @@ class _ServicesState extends State<Services> {
                         ],
                       ),
                       const SizedBox(
+                        height: 23,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const ScriptScreen(),
+                          ));
+                        },
+                        child: Container(
+                          width: 155,
+                          height: 110,
+                          decoration: BoxDecoration(
+                              color: themedata.secondaryContainer,
+                              borderRadius: BorderRadius.circular(13.5)),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const SizedBox(
+                                height: 12,
+                              ),
+                              Container(
+                                height: 41,
+                                width: 41,
+                                // padding: const EdgeInsets.all(13),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color: themedata.surfaceContainer,
+                                    shape: BoxShape.circle),
+                                child: Transform.translate(
+                                    offset: const Offset(0, 0),
+                                    child: SvgPicture.asset(
+                                      'assets/images/svg/code.svg',
+                                      height: 24.r,
+                                      width: 24.r,
+                                    )),
+                              ),
+                              const SizedBox(
+                                height: 4,
+                              ),
+                              Text(
+                                'Scripts & Template',
+                                style: MyStyle.tx9Green.copyWith(),
+                              ),
+                              const SizedBox(
+                                height: 4,
+                              ),
+                              Center(
+                                child: Container(
+                                  width: 52,
+                                  height: 20,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                      color: themedata.secondary,
+                                      borderRadius: BorderRadius.circular(8)),
+                                  child: Text(
+                                    'Buy Now',
+                                    style: MyStyle.tx11Grey.copyWith(
+                                        color: MyColor.greenColor,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 9),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 24,
+                      ),
+                      SizedBox(
+                        width: double.infinity, // Full width of the screen
+                        height: 4, // Adjust height as needed
+                        child: Stack(
+                          children: [
+                            // Bottom border
+                            Positioned(
+                              bottom: 0,
+                              left: 0,
+                              right: 0,
+                              child: DottedBorder(
+                                color: MyColor.outlineDashColor,
+                                strokeWidth: 1,
+                                dashPattern: const [
+                                  6,
+                                  3
+                                ], // Dash pattern: 6 units line, 3 units space
+                                customPath: (size) => Path()
+                                  ..moveTo(0, 0)
+                                  ..lineTo(size.width, 0),
+                                child: Container(
+                                  height:
+                                      0, // The container for the border can have a height of 0
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 38,
+                      ),
+                      Text(
+                        'Automotive Care & Services',
+                        style: MyStyle.tx18Black.copyWith(
+                            fontWeight: FontWeight.w400,
+                            color: themedata.tertiary),
+                      ),
+                      const SizedBox(
                         height: 20,
                       ),
-
+                      Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                    const RepairdetailScreen(),
+                              ));
+                            },
+                            child: Container(
+                              width: 155,
+                              height: 110,
+                              decoration: BoxDecoration(
+                                  color: themedata.secondaryContainer,
+                                  borderRadius: BorderRadius.circular(13.5)),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const SizedBox(
+                                    height: 12,
+                                  ),
+                                  Container(
+                                    height: 41,
+                                    width: 41,
+                                    // padding: const EdgeInsets.all(13),
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        color: themedata.surfaceContainer,
+                                        shape: BoxShape.circle),
+                                    child: Transform.translate(
+                                        offset: const Offset(0, 0),
+                                        child: SvgPicture.asset(
+                                          'assets/images/svg/repair.svg',
+                                          height: 24.r,
+                                          width: 24.r,
+                                        )),
+                                  ),
+                                  const SizedBox(
+                                    height: 4,
+                                  ),
+                                  Text(
+                                    'Automobile & Repairs',
+                                    style: MyStyle.tx9Green.copyWith(),
+                                  ),
+                                  const SizedBox(
+                                    height: 4,
+                                  ),
+                                  Center(
+                                    child: Container(
+                                      width: 52,
+                                      height: 20,
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                          color: themedata.secondary,
+                                          borderRadius:
+                                              BorderRadius.circular(8)),
+                                      child: Text(
+                                        'Buy Now',
+                                        style: MyStyle.tx11Grey.copyWith(
+                                            color: MyColor.greenColor,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 9),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                          const Spacer(),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const PaintHistory(),
+                              ));
+                            },
+                            child: Container(
+                              width: 155,
+                              height: 110,
+                              decoration: BoxDecoration(
+                                  color: themedata.secondaryContainer,
+                                  borderRadius: BorderRadius.circular(13.5)),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const SizedBox(
+                                    height: 12,
+                                  ),
+                                  Container(
+                                    height: 41,
+                                    width: 41,
+                                    // padding: const EdgeInsets.all(13),
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        color: themedata.surfaceContainer,
+                                        shape: BoxShape.circle),
+                                    child: Transform.translate(
+                                        offset: const Offset(0, 0),
+                                        child: SvgPicture.asset(
+                                          'assets/images/svg/spray.svg',
+                                          height: 24.r,
+                                          width: 24.r,
+                                        )),
+                                  ),
+                                  const SizedBox(
+                                    height: 4,
+                                  ),
+                                  Text(
+                                    'Paint & Spray booth',
+                                    style: MyStyle.tx9Green.copyWith(),
+                                  ),
+                                  const SizedBox(
+                                    height: 4,
+                                  ),
+                                  Center(
+                                    child: Container(
+                                      width: 66,
+                                      height: 20,
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                          color: themedata.secondary,
+                                          borderRadius:
+                                              BorderRadius.circular(8)),
+                                      child: Text(
+                                        'Schedule Now',
+                                        style: MyStyle.tx11Grey.copyWith(
+                                            color: MyColor.greenColor,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 9),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 23,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const CarsellScreen(),
+                          ));
+                        },
+                        child: Container(
+                          width: 155,
+                          height: 110,
+                          decoration: BoxDecoration(
+                              color: themedata.secondaryContainer,
+                              borderRadius: BorderRadius.circular(13.5)),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const SizedBox(
+                                height: 12,
+                              ),
+                              Container(
+                                height: 41,
+                                width: 41,
+                                // padding: const EdgeInsets.all(13),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color: themedata.surfaceContainer,
+                                    shape: BoxShape.circle),
+                                child: Transform.translate(
+                                    offset: const Offset(0, 0),
+                                    child: SvgPicture.asset(
+                                      'assets/images/svg/car.svg',
+                                      height: 24.r,
+                                      width: 24.r,
+                                    )),
+                              ),
+                              const SizedBox(
+                                height: 4,
+                              ),
+                              Text(
+                                'Car sales',
+                                style: MyStyle.tx9Green.copyWith(),
+                              ),
+                              const SizedBox(
+                                height: 4,
+                              ),
+                              Center(
+                                child: Container(
+                                  width: 52,
+                                  height: 20,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                      color: themedata.secondary,
+                                      borderRadius: BorderRadius.circular(8)),
+                                  child: Text(
+                                    'Buy Now',
+                                    style: MyStyle.tx11Grey.copyWith(
+                                        color: MyColor.greenColor,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 9),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 27,
+                      ),
                       // const SizedBox(
                       //   height: 24,
                       // ),

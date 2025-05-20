@@ -18,6 +18,10 @@ import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyAirtime.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyData.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Services.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Support/SupportScreen.dart';
+import 'package:jost_pay_wallet/Ui/Domain/domain_screen.dart';
+import 'package:jost_pay_wallet/Ui/Paint/paint_history.dart';
+import 'package:jost_pay_wallet/Ui/Paint/paint_screen.dart';
+import 'package:jost_pay_wallet/Ui/car/repairdetail_screen.dart';
 import 'package:jost_pay_wallet/Ui/pay4me/pay4me_screen.dart';
 import 'package:jost_pay_wallet/Ui/promotions/promo_screen.dart';
 import 'package:jost_pay_wallet/Ui/promotions/socials_screen.dart';
@@ -1283,6 +1287,196 @@ class _WalletScreenState extends State<WalletScreen> {
                                       Row(
                                         children: [
                                           Text('Social Boost',
+                                              style: MyStyle.tx12Black.copyWith(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .tertiary))
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () => Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const Pay4meScreen())),
+                                          child: Container(
+                                            width: 61,
+                                            height: 56.5,
+                                            padding: EdgeInsets.all(16.r),
+                                            decoration: BoxDecoration(
+                                              color: Theme.of(context)
+                                                  .scaffoldBackgroundColor,
+                                              borderRadius:
+                                                  BorderRadius.circular(14),
+                                              boxShadow: const [
+                                                MyStyle.widgetShadow,
+                                              ],
+                                            ),
+                                            child: SvgPicture.asset(
+                                              'assets/images/svg/payment.svg',
+                                              height: 33.r,
+                                              width: 33.r,
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 24,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text('Pay4me',
+                                            style: MyStyle.tx12Black.copyWith(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .tertiary))
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 22),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        GestureDetector(
+                                            onTap: () => Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const RepairdetailScreen())),
+                                            child: Container(
+                                              width: 61,
+                                              height: 56.5,
+                                              decoration: BoxDecoration(
+                                                color: Theme.of(context)
+                                                    .scaffoldBackgroundColor,
+                                                borderRadius:
+                                                    BorderRadius.circular(14),
+                                                boxShadow: const [
+                                                  MyStyle.widgetShadow,
+                                                ],
+                                              ),
+                                              child: Image.asset(
+                                                'assets/images/dashboard/repair.png',
+                                                scale: 1.4,
+                                              ),
+                                            ))
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 24,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text('Repairs',
+                                            style: MyStyle.tx12Black.copyWith(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .tertiary))
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        InkWell(
+                                          onTap: () => Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const DomainScreen())),
+                                          child: Container(
+                                            width: 61,
+                                            height: 56.5,
+                                            decoration: BoxDecoration(
+                                              color: Theme.of(context)
+                                                  .scaffoldBackgroundColor,
+                                              borderRadius:
+                                                  BorderRadius.circular(14),
+                                              boxShadow: const [
+                                                MyStyle.widgetShadow,
+                                              ],
+                                            ),
+                                            child: Image.asset(
+                                              'assets/images/dashboard/web-security.png',
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 24,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text('Hosting & Domain',
+                                            style: MyStyle.tx12Black.copyWith(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .tertiary))
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const PaintHistory())),
+                                child: Container(
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Container(
+                                            width: 61,
+                                            height: 56.5,
+                                            padding: EdgeInsets.all(16.r),
+                                            decoration: BoxDecoration(
+                                              color: Theme.of(context)
+                                                  .scaffoldBackgroundColor,
+                                              borderRadius:
+                                                  BorderRadius.circular(14),
+                                              boxShadow: const [
+                                                MyStyle.widgetShadow,
+                                              ],
+                                            ),
+                                            child: Image.asset(
+                                              'assets/images/dashboard/spray.png',
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 24,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text('Spray',
                                               style: MyStyle.tx12Black.copyWith(
                                                   color: Theme.of(context)
                                                       .colorScheme

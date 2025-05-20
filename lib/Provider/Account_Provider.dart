@@ -1,15 +1,106 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:jost_pay_wallet/ApiHandlers/ApiHandle.dart';
+import 'package:jost_pay_wallet/Models/transactions.dart';
+import 'package:jost_pay_wallet/Models/user_model.dart';
+import 'package:jost_pay_wallet/service/account_repo.dart';
+import 'package:jost_pay_wallet/utils/loader.dart';
+import 'package:jost_pay_wallet/utils/toast.dart';
 import '../LocalDb/Local_Account_provider.dart';
 
 class AccountProvider with ChangeNotifier {
   bool isSuccess = false;
   bool isLoading = false;
+  UserModel? userModel;
+  num? balance;
+  TransactionModel? transactionModel;
+
+  
   void setLoading(bool value) {
     isLoading = value;
     notifyListeners();
+  }
+
+  // get User Profile
+  Future<void> getUserProfile() async {
+    try {
+      // setLoading(true);
+      showLoader();
+      AccountRepo().getProfile().then((value) {
+        log('Value: $value');
+        setLoading(false);
+        if (value['result'] == false) {
+          hideLoader();
+          ErrorToast(value['message']);
+        } else {
+          hideLoader();
+          userModel = UserModel.fromJson(value);
+        }
+        notifyListeners();
+      });
+      // setLoading(false);
+      notifyListeners();
+    } catch (e) {
+      log('Error: $e');
+      // setLoading(false);
+      ErrorToast(e.toString());
+    }
+  }
+
+  // get User Balance
+  Future<void> getUserBalance() async {
+    try {
+      setLoading(true);
+      // showLoader();
+      AccountRepo().getBalance().then((value) {
+        log('Value: $value');
+        setLoading(false);
+        if (value['result'] == false) {
+          // hideLoader();
+          ErrorToast(value['message']);
+        } else {
+          // hideLoader();
+          // userModel = UserModel.fromJson(value);
+          setLoading(false);
+          balance = num.parse(value['balance'].toString());
+        }
+        notifyListeners();
+      });
+      setLoading(false);
+      notifyListeners();
+    } catch (e) {
+      log('Error: $e');
+      setLoading(false);
+      ErrorToast(e.toString());
+    }
+  }
+
+  // get Transaction History
+  Future<void> getTrasactions({bool isLoading = true}) async {
+    try {
+      // setLoading(true);
+      if (isLoading) showLoader();
+
+      AccountRepo().getTransactions().then((value) {
+        log('Value: $value');
+        // setLoading(false);
+        if (value['result'] == false) {
+          if (isLoading) hideLoader();
+          ErrorToast(value['message']);
+        } else {
+          if (isLoading) hideLoader();
+          // userModel = UserModel.fromJson(value);
+          transactionModel = TransactionModel.fromJson(value);
+        }
+        notifyListeners();
+      });
+    } catch (e) {
+      log('Error: $e');
+      // setLoading(false);
+      ErrorToast(e.toString());
+    }
   }
 
   var accountData;

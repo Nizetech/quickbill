@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jost_pay_wallet/Provider/Account_Provider.dart';
 import 'package:jost_pay_wallet/Provider/Auth_provider.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
@@ -6,59 +7,76 @@ import 'package:jost_pay_wallet/Values/NewStyle.dart';
 import 'package:jost_pay_wallet/common/button.dart';
 import 'package:provider/provider.dart';
 
-class ChangePassword extends StatelessWidget {
-  const ChangePassword({super.key});
+class EditProfileScreen extends StatefulWidget {
+  const EditProfileScreen({super.key});
+
+  @override
+  State<EditProfileScreen> createState() => _EditProfileScreenState();
+}
+
+class _EditProfileScreenState extends State<EditProfileScreen> {
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    final auth = Provider.of<AccountProvider>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      firstName.text = auth.userModel!.user!.firstName!;
+      lastName.text = auth.userModel!.user!.lastName!;
+      phoneNumber.text = auth.userModel!.user!.phoneNumber!;
+      setState(() {});
+    });
+  }
+
+  final firstName = TextEditingController();
+  final lastName = TextEditingController();
+  final phoneNumber = TextEditingController();
+
+  void _validateForm(AuthProvider model, AccountProvider account) async {
+    if (_formKey.currentState?.validate() ?? false) {
+      // loginAccount();
+      model.updateProfile(account: account, {
+        "first_name": "${firstName.text.trim()} ",
+        "last_name": lastName.text.trim(),
+        "phone": phoneNumber.text.trim(),
+      });
+    } else {
+      // Form is invalid, no action needed here since warnings are shown automatically
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
-    final cfmPwd = TextEditingController();
-    final newPwd = TextEditingController();
-    final currentPwd = TextEditingController();
-    void _validateForm(AuthProvider model) async {
-      if (_formKey.currentState?.validate() ?? false) {
-        // loginAccount();
-        model.changePassword({
-          "current_password": currentPwd.text.trim(),
-          "new_password": newPwd.text.trim(),
-          "confirm_password": cfmPwd.text.trim()
-        });
-      } else {
-        // Form is invalid, no action needed here since warnings are shown automatically
-      }
-    }
-
     return Scaffold(
       appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.fromLTRB(15, 10, 1, 0),
-          child: BackBtn()
-        ),
+        leading: const Padding(
+            padding: EdgeInsets.fromLTRB(15, 10, 1, 0), child: BackBtn()),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
       body: Consumer<AuthProvider>(builder: (context, model, _) {
         return Form(
           key: _formKey,
-          child: SingleChildScrollView(
+          child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 40),
+                const SizedBox(height: 20),
                 Text(
-                  'Change Password',
+                  'Edit Profile',
                   style: NewStyle.tx28White
                       .copyWith(fontSize: 24, color: MyColor.blackColor),
                 ),
                 const SizedBox(height: 7),
                 const Text(
-                  'Carefully enter your correct password',
+                  'Edit your profile details',
                   style: MyStyle.tx16Gray,
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 Text(
-                  'Current Password',
+                  'First Name',
                   style: NewStyle.tx14SplashWhite.copyWith(
                       color: MyColor.lightBlackColor,
                       fontWeight: FontWeight.w700,
@@ -66,23 +84,20 @@ class ChangePassword extends StatelessWidget {
                 ),
                 TextFormField(
                   style: MyStyle.tx14Black,
-                  controller: currentPwd,
-                  obscureText: true,
+                  controller: firstName,
                   decoration: NewStyle.authInputDecoration
-                      .copyWith(hintText: 'Enter your current password'),
+                      .copyWith(hintText: 'Enter your first name'),
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your current password';
-                    } else if (value.length < 8) {
-                      return 'Please enter at least 8 letters';
+                      return 'Please enter your first name';
                     }
                     return null;
                   },
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  'New Password',
+                  'Last Name',
                   style: NewStyle.tx14SplashWhite.copyWith(
                       color: MyColor.lightBlackColor,
                       fontWeight: FontWeight.w700,
@@ -90,23 +105,20 @@ class ChangePassword extends StatelessWidget {
                 ),
                 TextFormField(
                   style: MyStyle.tx14Black,
-                  controller: newPwd,
-                  obscureText: true,
+                  controller: lastName,
                   decoration: NewStyle.authInputDecoration
-                      .copyWith(hintText: 'Enter your new password'),
+                      .copyWith(hintText: 'Enter your last name'),
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your new password';
-                    } else if (value.length < 8) {
-                      return 'Please enter at least 8 letters';
+                      return 'Please enter your last name';
                     }
                     return null;
                   },
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  'Confirm Password',
+                  'Phone Number',
                   style: NewStyle.tx14SplashWhite.copyWith(
                       color: MyColor.lightBlackColor,
                       fontWeight: FontWeight.w700,
@@ -114,25 +126,23 @@ class ChangePassword extends StatelessWidget {
                 ),
                 TextFormField(
                   style: MyStyle.tx14Black,
-                  controller: cfmPwd,
-                  obscureText: true,
+                  controller: phoneNumber,
                   decoration: NewStyle.authInputDecoration
-                      .copyWith(hintText: 'Enter your confirm password'),
-                  keyboardType: TextInputType.emailAddress,
+                      .copyWith(hintText: '8061560000'),
+                  keyboardType: TextInputType.phone,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please re-enter your password';
-                    } else if (value.length < 8) {
-                      return 'Please enter at least 8 letters';
+                      return 'Please enter your phone number';
                     }
                     return null;
                   },
                 ),
-                SizedBox(height: 40),
+                const SizedBox(height: 20),
                 CustomButton(
-                    text: 'Verify',
-                    isLoading: model.isLoading,
-                    onTap: () => _validateForm(model)),
+                    text: 'Update Profile',
+                    onTap: () =>
+                        _validateForm(model, context.read<AccountProvider>()),
+                    isLoading: model.isLoading),
               ],
             ),
           ),

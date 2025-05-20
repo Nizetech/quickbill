@@ -32,6 +32,7 @@ dependencies:
   loading_indicator: ^3.1.1
   mobile_scanner: ^3.5.5
   flutter_inappwebview: ^5.8.0
+  collection:
   http: ^1.1.2
   path_provider: ^2.1.1
   sqflite: ^2.3.0

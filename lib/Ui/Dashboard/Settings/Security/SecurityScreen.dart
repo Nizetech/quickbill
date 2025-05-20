@@ -94,30 +94,30 @@ class _SecurityScreenState extends State<SecurityScreen> {
       "new_password":pinNotSave ? setPassCodeController.text : newPassword,
     };
 
-    // print(json.encode(data));
-    await accountProvider.forgotPassword(data, "/changePassword");
+    // // print(json.encode(data));
+    // await accountProvider.forgotPassword(data, "/changePassword");
 
-    if(accountProvider.isPassword){
-      sharedPreferences.setBool("passwordType", true);
-      if(passwordType){
-         sharedPreferences.setString('passcode',newPassword);
-         sharedPreferences.setBool('passwordType',passwordType);
-      }else{
-        sharedPreferences.setString('password',newPassword);
-        sharedPreferences.setBool('passwordType',passwordType);
-      }
-      if(pinNotSave){
-        sharedPreferences.setString('passcode',setPassCodeController.text);
-        savePasscode = sharedPreferences.getString('passcode')?? "";
-        setState(() {
-          passwordType = true;
-          sharedPreferences.setBool('passwordType',passwordType);
+    // if(accountProvider.isPassword){
+    //   sharedPreferences.setBool("passwordType", true);
+    //   if(passwordType){
+    //      sharedPreferences.setString('passcode',newPassword);
+    //      sharedPreferences.setBool('passwordType',passwordType);
+    //   }else{
+    //     sharedPreferences.setString('password',newPassword);
+    //     sharedPreferences.setBool('passwordType',passwordType);
+    //   }
+    //   if(pinNotSave){
+    //     sharedPreferences.setString('passcode',setPassCodeController.text);
+    //     savePasscode = sharedPreferences.getString('passcode')?? "";
+    //     setState(() {
+    //       passwordType = true;
+    //       sharedPreferences.setBool('passwordType',passwordType);
 
-          pinNotSave = false;
-        });
-        Helper.dialogCall.showToast(context, "A New Passcode has been set");
-      }
-    }
+    //       pinNotSave = false;
+    //     });
+    //     Helper.dialogCall.showToast(context, "A New Passcode has been set");
+    //   }
+    // }
 
     setState(() {
       isLoading = false;
@@ -300,7 +300,8 @@ class _SecurityScreenState extends State<SecurityScreen> {
                             // new passcode
                             TextFormField(
                                 obscureText: hideSetCode,
-                                readOnly: accountProvider.passwordLoading,
+                                      readOnly: true,
+                                      // accountProvider.passwordLoading,
                                 controller: setPassCodeController,
                                 inputFormatters: [
                                   FilteringTextInputFormatter.digitsOnly,
@@ -383,7 +384,8 @@ class _SecurityScreenState extends State<SecurityScreen> {
 
                             //Confirm new passcode
                             TextFormField(
-                                readOnly: accountProvider.passwordLoading,
+                                      readOnly: true,
+                                      //  accountProvider.passwordLoading,
                                 obscureText: hideSetReCode,
                                 keyboardType: TextInputType.number,
                                 inputFormatters: [
@@ -482,7 +484,8 @@ class _SecurityScreenState extends State<SecurityScreen> {
                           Visibility(
                             visible: savePasscode.isNotEmpty ,
                             child: TextFormField(
-                                readOnly: accountProvider.passwordLoading,
+                                          readOnly: false,
+                                          // accountProvider.passwordLoading,
                                 obscureText: hideOldCode,
                                 validator: (value) {
                                   if(value!.isEmpty){
@@ -564,7 +567,8 @@ class _SecurityScreenState extends State<SecurityScreen> {
 
                           // new passcode
                           TextFormField(
-                              readOnly: accountProvider.passwordLoading,
+                                        readOnly: false,
+                                        //  accountProvider.passwordLoading,
                               controller: newPassCodeController,
                               obscureText: hideNewCode,
                               inputFormatters:[
@@ -643,7 +647,8 @@ class _SecurityScreenState extends State<SecurityScreen> {
 
                           //Confirm new passcode
                           TextFormField(
-                              readOnly: accountProvider.passwordLoading,
+                                        readOnly: false,
+                                        //  accountProvider.passwordLoading,
                               onChanged: (value) {
                                 if(value.isEmpty){
                                   reNewCodeError = "please enter you passcode";
@@ -733,7 +738,8 @@ class _SecurityScreenState extends State<SecurityScreen> {
                           Visibility(
                             visible: savePassword.isNotEmpty,
                             child: TextFormField(
-                                readOnly: accountProvider.passwordLoading,
+                                          readOnly: false,
+                                          //  accountProvider.passwordLoading,
                                 keyboardType:TextInputType.text,
                                 obscureText: hideOldPass,
                                 onChanged: (value) {
@@ -799,7 +805,8 @@ class _SecurityScreenState extends State<SecurityScreen> {
 
                           // new passcode
                           TextFormField(
-                            readOnly: accountProvider.passwordLoading,
+                                        readOnly: false,
+                                        // accountProvider.passwordLoading,
                             controller: newPassController,
                               obscureText: hideNewPass,
                               keyboardType: TextInputType.text,
@@ -862,7 +869,8 @@ class _SecurityScreenState extends State<SecurityScreen> {
 
                           //Confirm new passcode
                           TextFormField(
-                            readOnly: accountProvider.passwordLoading,
+                                        readOnly: false,
+                                        // accountProvider.passwordLoading,
                               keyboardType: TextInputType.text,
                               obscureText: hideReNewPass,
                               onChanged: (value) {
@@ -928,7 +936,8 @@ class _SecurityScreenState extends State<SecurityScreen> {
                     const SizedBox(height: 25),
 
 
-                   accountProvider.passwordLoading || isLoading
+                  //  accountProvider.passwordLoading || 
+                    isLoading
                         ?
                     Helper.dialogCall.showLoader()
                         :

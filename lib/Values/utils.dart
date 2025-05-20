@@ -8,8 +8,9 @@ class Utils {
   static String usdtBsc = "usdtbsc";
   static String pageType = "";
   static String pageType1 = "";
-  static String termsUrl = "https://instantexchangers.net/terms";
-  static String privacyUrl = "https://instantexchangers.net/privacy";
+  static String aboutUs = "https://project.jostpay.com/our/aboutus";
+  static String termsUrl = "https://project.jostpay.com/terms";
+  static String privacyUrl = "https://project.jostpay.com/privacy";
   static String amlUrl = "https://instantexchangers.net/aml";
   static String verifyUrl = "https://www.instantexchangers.net";
   static String sellUrl = "https://instantexchangers.net/sell/final?transaction=";

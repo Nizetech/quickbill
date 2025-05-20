@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:jost_pay_wallet/Provider/Account_Provider.dart';
 import 'package:jost_pay_wallet/Provider/DashboardProvider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Authentication/SignInScreen.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/HelpSupport.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Settings/ProfileScreen.dart';
-import 'package:jost_pay_wallet/Ui/Static/AboutUs.dart';
 import 'package:jost_pay_wallet/Ui/Static/AccountSetting.dart';
-import 'package:jost_pay_wallet/Ui/Static/Policy.dart';
-import 'package:jost_pay_wallet/Ui/Static/Terms.dart';
+import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
+import 'package:jost_pay_wallet/Values/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -58,558 +58,558 @@ class _SettingScreenState extends State<SettingScreen> {
     });
   }
 
-  Future<void> _launchURL(String url) async {
-    final Uri uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
+  // Future<void> _launchURL(String url) async {
+  //   final Uri uri = Uri.parse(url);
+  //   if (await canLaunchUrl(uri)) {
+  //     await launchUrl(uri);
+  //   } else {
+  //     throw 'Could not launch $url';
+  //   }
+  // }
 
-  Future<void> _showLogoutDialog(BuildContext context) async {
-    final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
-    final themedata = Theme.of(context).colorScheme;
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return Dialog(
-          child: Container(
-              decoration: BoxDecoration(
-                  color: MyColor.backgroundColor,
-                  border: Border.all(
-                    color: MyColor.darkGreyColor,
-                    width: 0.5,
-                  ),
-                  borderRadius: BorderRadius.circular(6.0)),
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Text('Delete Account',
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: themeProvider.isDarkMode()
-                              ? const Color(0XFFCBD2EB)
-                              : const Color(0xff30333A))),
-                  const SizedBox(height: 16.0),
-                  Text(
-                      'Your request to delete your account will be sent to the admin team, and your account information will be removed within 24 hours. Please confirm if you’d like to proceed.',
-                      style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                          color: themeProvider.isDarkMode()
-                              ? const Color(0XFFCBD2EB)
-                              : const Color(0xff30333A))),
-                  const SizedBox(height: 24.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      TextButton(
-                        child: const Text('Confirm'),
-                        onPressed: () async {
-                          final prefs = await SharedPreferences.getInstance();
-                          await prefs.remove('token');
-
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const SignInScreen()),
-                            (Route<dynamic> route) =>
-                                false, // This removes all routes
-                          );
-                        },
-                      ),
-                      TextButton(
-                        child: const Text('Cancel'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ],
-                  )
-                ],
-              )),
-        );
-      },
-    );
-  }
+  // Future<void> _showLogoutDialog(BuildContext context) async {
+  //   final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
+  //   final themedata = Theme.of(context).colorScheme;
+  //   return showDialog<void>(
+  //     context: context,
+  //     barrierDismissible: true,
+  //     builder: (BuildContext context) {
+  //       return Dialog(
+  //         child: Container(
+  //             decoration: BoxDecoration(
+  //                 color: MyColor.backgroundColor,
+  //                 border: Border.all(
+  //                   color: MyColor.darkGreyColor,
+  //                   width: 0.5,
+  //                 ),
+  //                 borderRadius: BorderRadius.circular(6.0)),
+  //             padding: const EdgeInsets.all(16.0),
+  //             child: Column(
+  //               mainAxisAlignment: MainAxisAlignment.start,
+  //               mainAxisSize: MainAxisSize.min,
+  //               children: <Widget>[
+  //                 Text('Delete Account',
+  //                     style: TextStyle(
+  //                         fontSize: 20,
+  //                         fontWeight: FontWeight.bold,
+  //                         color: themeProvider.isDarkMode()
+  //                             ? const Color(0XFFCBD2EB)
+  //                             : const Color(0xff30333A))),
+  //                 const SizedBox(height: 16.0),
+  //                 Text(
+  //                     'Your request to delete your account will be sent to the admin team, and your account information will be removed within 24 hours. Please confirm if you’d like to proceed.',
+  //                     style: TextStyle(
+  //                         fontSize: 12,
+  //                         fontWeight: FontWeight.bold,
+  //                         color: themeProvider.isDarkMode()
+  //                             ? const Color(0XFFCBD2EB)
+  //                             : const Color(0xff30333A))),
+  //                 const SizedBox(height: 24.0),
+  //                 Row(
+  //                   mainAxisAlignment: MainAxisAlignment.end,
+  //                   children: <Widget>[
+  //                     TextButton(
+  //                       child: const Text('Confirm'),
+  //                       onPressed: () async {
+  //                         final prefs = await SharedPreferences.getInstance();
+  //                         await prefs.remove('token');
+  //                         Navigator.pushAndRemoveUntil(
+  //                           context,
+  //                           MaterialPageRoute(
+  //                               builder: (context) => const SignInScreen()),
+  //                           (Route<dynamic> route) =>
+  //                               false, // This removes all routes
+  //                         );
+  //                       },
+  //                     ),
+  //                     TextButton(
+  //                       child: const Text('Cancel'),
+  //                       onPressed: () {
+  //                         Navigator.of(context).pop();
+  //                       },
+  //                     ),
+  //                   ],
+  //                 )
+  //               ],
+  //             )),
+  //       );
+  //     },
+  //   );
+  // }
 
   @override
   void initState() {
     super.initState();
-    getWalletName();
-    getProfileInfo();
+    // getWalletName();
+    // getProfileInfo();
+    var accountProvider = Provider.of<AccountProvider>(context, listen: false);
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (accountProvider.userModel == null) {
+        accountProvider.getUserProfile();
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     final themedata = Theme.of(context).colorScheme;
-
     final dashProvider = Provider.of<DashboardProvider>(context, listen: true);
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 68),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                InkWell(
-                  onTap: () =>       dashProvider.changeBottomIndex(0),
-                  child: Image.asset(
-                    'assets/images/arrow_left.png',
-                    color: themeProvider.isDarkMode()
-                        ? MyColor.mainWhiteColor
-                        : MyColor.dark01Color,
-                  ),
-                ),
-                const Spacer(),
-                Transform.translate(
-                  offset: const Offset(-20, 0),
-                  child: Text(
-                    'Profile',
-                    style:
-                        MyStyle.tx18Black.copyWith(color: themedata.tertiary),
-                  ),
-                ),
-                const Spacer(), // Adds flexible space after the text
-              ],
-            ),
-            const SizedBox(height: 54),
-            Center(
-              child: Image.asset(
-                'assets/images/avatar-lg.png',
-                width: 100,
-                height: 100,
-              ),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Center(
-              child: Text(
-                'Yemi Oshor',
-                style: MyStyle.tx18Black.copyWith(color: themedata.tertiary),
-              ),
-            ),
-            const SizedBox(
-              height: 4,
-            ),
-            Center(
-              child: Text(
-                'YemiOshor82@gmail.com',
-                style: MyStyle.tx12Black.copyWith(
-                    color: themeProvider.isDarkMode()
-                        ? const Color(0XFFCBD2EB)
-                        : const Color(0xff30333A)),
-              ),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            Expanded(
-                child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+      body: Consumer<AccountProvider>(builder: (context, model, _) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 68),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
                 children: [
-                  Container(
-                    padding: const EdgeInsets.only(top: 8, bottom: 8),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  ProfileScreen(data: profile),
-                            ));
-                      },
-                      child: Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                color:
-                                    Theme.of(context).scaffoldBackgroundColor),
-                            child: Image.asset(
-                              "assets/images/user-edit-01.png",
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          Text("Edit Information",
-                              style: MyStyle.tx14Black.copyWith(
-                                fontWeight: FontWeight.w500,
-                                color: themeProvider.isDarkMode()
-                                    ? const Color(0XFFCBD2EB)
-                                    : const Color(0xff30333A),
-                              )),
-                          const Spacer(),
-                          Image.asset(
-                            "assets/images/right.png",
-                            fit: BoxFit.cover,
-                          ),
-                        ],
-                      ),
+                  InkWell(
+                    onTap: () => dashProvider.changeBottomIndex(0),
+                    child: Image.asset(
+                      'assets/images/arrow_left.png',
+                      color: themeProvider.isDarkMode()
+                          ? MyColor.mainWhiteColor
+                          : MyColor.dark01Color,
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  Container(
-                    padding: const EdgeInsets.only(top: 8, bottom: 8),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  ProfileScreen(data: profile),
-                            ));
-                      },
-                      child: Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                color:
-                                    Theme.of(context).scaffoldBackgroundColor),
-                            child: Image.asset(
-                              "assets/images/mic-02.png",
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          Text("Voice Recognition",
-                              style: MyStyle.tx14Black.copyWith(
-                                fontWeight: FontWeight.w500,
-                                color: themeProvider.isDarkMode()
-                                    ? const Color(0XFFCBD2EB)
-                                    : const Color(0xff30333A),
-                              )),
-                          const Spacer(),
-                          Image.asset(
-                            "assets/images/right.png",
-                            fit: BoxFit.cover,
-                          ),
-                        ],
-                      ),
+                  const Spacer(),
+                  Transform.translate(
+                    offset: const Offset(-20, 0),
+                    child: Text(
+                      'Profile',
+                      style:
+                          MyStyle.tx18Black.copyWith(color: themedata.tertiary),
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  Container(
-                    padding: const EdgeInsets.only(top: 8, bottom: 8),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  ProfileScreen(data: profile),
-                            ));
-                      },
-                      child: Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                color:
-                                    Theme.of(context).scaffoldBackgroundColor),
-                            child: Image.asset(
-                              "assets/images/gift.png",
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          Text("Referral Code",
-                              style: MyStyle.tx14Black.copyWith(
-                                fontWeight: FontWeight.w500,
-                                color: themeProvider.isDarkMode()
-                                    ? const Color(0XFFCBD2EB)
-                                    : const Color(0xff30333A),
-                              )),
-                          const Spacer(),
-                          Image.asset(
-                            "assets/images/right.png",
-                            fit: BoxFit.cover,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Container(
-                      height: 0.5,
-                      decoration:
-                          const BoxDecoration(color: Color(0xFFF3F4F6))),
-                  const SizedBox(height: 16),
-                  Container(
-                    padding: const EdgeInsets.only(top: 8, bottom: 8),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const Terms(),
-                            ));
-                      },
-                      child: Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                color:
-                                    Theme.of(context).scaffoldBackgroundColor),
-                            child: Image.asset(
-                              "assets/images/google-doc.png",
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          Text("Terms",
-                              style: MyStyle.tx14Black.copyWith(
-                                fontWeight: FontWeight.w500,
-                                color: themeProvider.isDarkMode()
-                                    ? const Color(0XFFCBD2EB)
-                                    : const Color(0xff30333A),
-                              )),
-                          const Spacer(),
-                          Image.asset(
-                            "assets/images/right.png",
-                            fit: BoxFit.cover,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  Container(
-                    padding: const EdgeInsets.only(top: 8, bottom: 8),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const Policy(),
-                            ));
-                      },
-                      child: Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                color:
-                                    Theme.of(context).scaffoldBackgroundColor),
-                            child: Image.asset(
-                              "assets/images/document-attachment.png",
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          Text("Privacy",
-                              style: MyStyle.tx14Black.copyWith(
-                                fontWeight: FontWeight.w500,
-                                color: themeProvider.isDarkMode()
-                                    ? const Color(0XFFCBD2EB)
-                                    : const Color(0xff30333A),
-                              )),
-                          const Spacer(),
-                          Image.asset(
-                            "assets/images/right.png",
-                            fit: BoxFit.cover,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  Container(
-                    padding: const EdgeInsets.only(top: 8, bottom: 8),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const Accountsetting(),
-                            ));
-                      },
-                      child: Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                color:
-                                    Theme.of(context).scaffoldBackgroundColor),
-                            child: Image.asset(
-                              "assets/images/settings-02.png",
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          Text("Settings",
-                              style: MyStyle.tx14Black.copyWith(
-                                fontWeight: FontWeight.w500,
-                                color: themeProvider.isDarkMode()
-                                    ? const Color(0XFFCBD2EB)
-                                    : const Color(0xff30333A),
-                              )),
-                          const Spacer(),
-                          Image.asset(
-                            "assets/images/right.png",
-                            fit: BoxFit.cover,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Container(
-                      height: 0.5,
-                      decoration:
-                          const BoxDecoration(color: Color(0xFFF3F4F6))),
-                  const SizedBox(height: 16),
-                  Container(
-                    padding: const EdgeInsets.only(top: 8, bottom: 8),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const AboutUs(),
-                            ));
-                      },
-                      child: Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                color:
-                                    Theme.of(context).scaffoldBackgroundColor),
-                            child: Image.asset(
-                              "assets/images/help-square.png",
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          Text("About Us",
-                              style: MyStyle.tx14Black.copyWith(
-                                fontWeight: FontWeight.w500,
-                                color: themeProvider.isDarkMode()
-                                    ? const Color(0XFFCBD2EB)
-                                    : const Color(0xff30333A),
-                              )),
-                          const Spacer(),
-                          Image.asset(
-                            "assets/images/right.png",
-                            fit: BoxFit.cover,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  Container(
-                    padding: const EdgeInsets.only(top: 8, bottom: 8),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const Helpsupport(),
-                            ));
-                      },
-                      child: Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                color:
-                                    Theme.of(context).scaffoldBackgroundColor),
-                            child: Image.asset(
-                              "assets/images/message-question.png",
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          Text("Help & Support",
-                              style: MyStyle.tx14Black.copyWith(
-                                fontWeight: FontWeight.w500,
-                                color: themeProvider.isDarkMode()
-                                    ? const Color(0XFFCBD2EB)
-                                    : const Color(0xff30333A),
-                              )),
-                          const Spacer(),
-                          Image.asset(
-                            "assets/images/right.png",
-                            fit: BoxFit.cover,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  Container(
-                    padding: const EdgeInsets.only(top: 8, bottom: 8),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const SignInScreen(),
-                            ));
-                      },
-                      child: Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                color:
-                                    Theme.of(context).scaffoldBackgroundColor),
-                            child: Image.asset(
-                              "assets/images/logout-05.png",
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          Text("Sign out",
-                              style: MyStyle.tx14Black.copyWith(
-                                fontWeight: FontWeight.w500,
-                                color: Colors.red,
-                              )),
-                          const Spacer(),
-                          Image.asset(
-                            "assets/images/right.png",
-                            fit: BoxFit.cover,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  const Spacer(), // Adds flexible space after the text
                 ],
               ),
-            ))
-          ],
-        ),
+              const SizedBox(height: 30),
+              Center(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(50),
+                  child: Image.asset(
+                    'assets/images/avatar.jpeg',
+                    width: 100,
+                    height: 100,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              Center(
+                child: Text(
+                  "${model.userModel?.user?.firstName?.capitalizeFirst ?? ""} ${model.userModel?.user?.lastName ?? ""}",
+                  style: MyStyle.tx18Black.copyWith(color: themedata.tertiary),
+                ),
+              ),
+              const SizedBox(
+                height: 4,
+              ),
+              Center(
+                child: Text(
+                  model.userModel?.user?.email ?? "",
+                  style: MyStyle.tx12Black.copyWith(
+                      color: themeProvider.isDarkMode()
+                          ? const Color(0XFFCBD2EB)
+                          : const Color(0xff30333A)),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Expanded(
+                  child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.only(top: 8, bottom: 8),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    ProfileScreen(data: profile),
+                              ));
+                        },
+                        child: Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: Theme.of(context)
+                                      .scaffoldBackgroundColor),
+                              child: Image.asset(
+                                "assets/images/user-edit-01.png",
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Text("Edit Information",
+                                style: MyStyle.tx14Black.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  color: themeProvider.isDarkMode()
+                                      ? const Color(0XFFCBD2EB)
+                                      : const Color(0xff30333A),
+                                )),
+                            const Spacer(),
+                            Image.asset(
+                              "assets/images/right.png",
+                              fit: BoxFit.cover,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    // Container(
+                    //   padding: const EdgeInsets.only(top: 8, bottom: 8),
+                    //   child: InkWell(
+                    //     onTap: () {
+                    //       Navigator.push(
+                    //           context,
+                    //           MaterialPageRoute(
+                    //             builder: (context) =>
+                    //                 ProfileScreen(data: profile),
+                    //           ));
+                    //     },
+                    //     child: Row(
+                    //       children: [
+                    //         Container(
+                    //           padding: const EdgeInsets.all(8),
+                    //           decoration: BoxDecoration(
+                    //               borderRadius: BorderRadius.circular(12),
+                    //               color:
+                    //                   Theme.of(context).scaffoldBackgroundColor),
+                    //           child: Image.asset(
+                    //             "assets/images/mic-02.png",
+                    //             fit: BoxFit.cover,
+                    //           ),
+                    //         ),
+                    //         const SizedBox(width: 16),
+                    //         Text("Voice Recognition",
+                    //             style: MyStyle.tx14Black.copyWith(
+                    //               fontWeight: FontWeight.w500,
+                    //               color: themeProvider.isDarkMode()
+                    //                   ? const Color(0XFFCBD2EB)
+                    //                   : const Color(0xff30333A),
+                    //             )),
+                    //         const Spacer(),
+                    //         Image.asset(
+                    //           "assets/images/right.png",
+                    //           fit: BoxFit.cover,
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
+                    // const SizedBox(height: 8),
+                    Container(
+                      padding: const EdgeInsets.only(top: 8, bottom: 8),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    ProfileScreen(data: profile),
+                              ));
+                        },
+                        child: Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: Theme.of(context)
+                                      .scaffoldBackgroundColor),
+                              child: Image.asset(
+                                "assets/images/gift.png",
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Text("Referral Code",
+                                style: MyStyle.tx14Black.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  color: themeProvider.isDarkMode()
+                                      ? const Color(0XFFCBD2EB)
+                                      : const Color(0xff30333A),
+                                )),
+                            const Spacer(),
+                            Image.asset(
+                              "assets/images/right.png",
+                              fit: BoxFit.cover,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Container(
+                        height: 0.5,
+                        decoration:
+                            const BoxDecoration(color: Color(0xFFF3F4F6))),
+                    const SizedBox(height: 16),
+                    Container(
+                      padding: const EdgeInsets.only(top: 8, bottom: 8),
+                      child: InkWell(
+                        onTap: () => launchWeb(Utils.termsUrl),
+                        child: Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: Theme.of(context)
+                                      .scaffoldBackgroundColor),
+                              child: Image.asset(
+                                "assets/images/google-doc.png",
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Text("Terms",
+                                style: MyStyle.tx14Black.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  color: themeProvider.isDarkMode()
+                                      ? const Color(0XFFCBD2EB)
+                                      : const Color(0xff30333A),
+                                )),
+                            const Spacer(),
+                            Image.asset(
+                              "assets/images/right.png",
+                              fit: BoxFit.cover,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    // const SizedBox(
+                    //   height: 8,
+                    // ),
+                    Container(
+                      padding: const EdgeInsets.only(top: 8, bottom: 8),
+                      child: InkWell(
+                        onTap: () => launchWeb(Utils.privacyUrl),
+                        child: Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: Theme.of(context)
+                                      .scaffoldBackgroundColor),
+                              child: Image.asset(
+                                "assets/images/document-attachment.png",
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Text("Privacy",
+                                style: MyStyle.tx14Black.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  color: themeProvider.isDarkMode()
+                                      ? const Color(0XFFCBD2EB)
+                                      : const Color(0xff30333A),
+                                )),
+                            const Spacer(),
+                            Image.asset(
+                              "assets/images/right.png",
+                              fit: BoxFit.cover,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    // const SizedBox(
+                    //   height: 8,
+                    // ),
+                    Container(
+                      padding: const EdgeInsets.only(top: 8, bottom: 8),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const Accountsetting(),
+                              ));
+                        },
+                        child: Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: Theme.of(context)
+                                      .scaffoldBackgroundColor),
+                              child: Image.asset(
+                                "assets/images/settings-02.png",
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Text("Settings",
+                                style: MyStyle.tx14Black.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  color: themeProvider.isDarkMode()
+                                      ? const Color(0XFFCBD2EB)
+                                      : const Color(0xff30333A),
+                                )),
+                            const Spacer(),
+                            Image.asset(
+                              "assets/images/right.png",
+                              fit: BoxFit.cover,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Container(
+                        height: 0.5,
+                        decoration:
+                            const BoxDecoration(color: Color(0xFFF3F4F6))),
+                    const SizedBox(height: 16),
+                    Container(
+                      padding: const EdgeInsets.only(top: 8, bottom: 8),
+                      child: InkWell(
+                        onTap: () {
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //       builder: (context) => const AboutUs(),
+                          //     ));
+                          launchWeb(Utils.aboutUs);
+                        },
+                        child: Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: Theme.of(context)
+                                      .scaffoldBackgroundColor),
+                              child: Image.asset(
+                                "assets/images/help-square.png",
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Text("About Us",
+                                style: MyStyle.tx14Black.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  color: themeProvider.isDarkMode()
+                                      ? const Color(0XFFCBD2EB)
+                                      : const Color(0xff30333A),
+                                )),
+                            const Spacer(),
+                            Image.asset(
+                              "assets/images/right.png",
+                              fit: BoxFit.cover,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    // const SizedBox(
+                    //   height: 8,
+                    // ),
+                    Container(
+                      padding: const EdgeInsets.only(top: 8, bottom: 8),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const Helpsupport(),
+                              ));
+                        },
+                        child: Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: Theme.of(context)
+                                      .scaffoldBackgroundColor),
+                              child: Image.asset(
+                                "assets/images/message-question.png",
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Text("Help & Support",
+                                style: MyStyle.tx14Black.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  color: themeProvider.isDarkMode()
+                                      ? const Color(0XFFCBD2EB)
+                                      : const Color(0xff30333A),
+                                )),
+                            const Spacer(),
+                            Image.asset(
+                              "assets/images/right.png",
+                              fit: BoxFit.cover,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    // const SizedBox(
+                    //   height: 8,
+                    // ),
+                    Container(
+                      padding: const EdgeInsets.only(top: 8, bottom: 8),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const SignInScreen(),
+                              ));
+                        },
+                        child: Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: Theme.of(context)
+                                      .scaffoldBackgroundColor),
+                              child: Image.asset(
+                                "assets/images/logout-05.png",
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Text("Sign out",
+                                style: MyStyle.tx14Black.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.red,
+                                )),
+                            const Spacer(),
+                            Image.asset(
+                              "assets/images/right.png",
+                              fit: BoxFit.cover,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ))
+            ],
+          ),
+        );
+      }
       ),
     );
   }

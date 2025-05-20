@@ -43,3 +43,28 @@ class CustomButton extends StatelessWidget {
     );
   }
 }
+
+class BackBtn extends StatelessWidget {
+  const BackBtn({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Container(
+          padding: EdgeInsets.all(5),
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+            border: Border.all(color: MyColor.blackColor, width: 1),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: const Icon(
+            Icons.arrow_back_ios_new,
+            color: MyColor.blackColor,
+            size: 20,
+          ),
+        ));
+  }
+}

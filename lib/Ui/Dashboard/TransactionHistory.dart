@@ -1,11 +1,17 @@
+import 'dart:developer';
+
+import 'package:collection/collection.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:jost_pay_wallet/Models/transactions.dart';
+import 'package:jost_pay_wallet/Provider/Account_Provider.dart';
 import 'package:jost_pay_wallet/Provider/DashboardProvider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/history_card.dart';
+import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:provider/provider.dart';
-
 
 class Transactionhistory extends StatefulWidget {
   const Transactionhistory({super.key});
@@ -52,17 +58,31 @@ class _TransactionhistoryState extends State<Transactionhistory> {
       'img': 'assets/images/icon-2.png'
     },
   ];
-
+  Map<dynamic, List> groupByData = {};
   @override
   void initState() {
     super.initState();
+    final account = Provider.of<AccountProvider>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (account.transactionModel == null) {
+        account.getTrasactions();
+      }
+      if (account.transactionModel == null) return;
+      // groupByData = groupBy(account.transactionModel!,
+      //     (obj) => obj['created_at'].substring(0, 10));
+      groupByData = groupBy(
+        account.transactionModel!.data!,
+        (obj) => obj.transDate.toString().substring(0, 10),
+      );
+      setState(() {});
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     final themedata = Theme.of(context).colorScheme;
-
+    log('groupByData: $groupByData');
     final dashProvider = Provider.of<DashboardProvider>(context, listen: true);
     return Scaffold(
       body: Padding(
@@ -106,237 +126,56 @@ class _TransactionhistoryState extends State<Transactionhistory> {
                 )
               ],
             ),
-            const SizedBox(
-              height: 12,
-            ),
             Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Today, Jul 02',
-                        style: MyStyle.tx14Black.copyWith(
-                          color: themedata.tertiary,
-                        ),
+              child: ListView.separated(
+                  itemCount: groupByData.length,
+                  physics: const AlwaysScrollableScrollPhysics(
+                    parent: BouncingScrollPhysics(),
+                  ),
+                  separatorBuilder: (context, index) {
+                    return DottedBorder(
+                      child: SizedBox(
+                        height: 0,
                       ),
-                    ),
-                    SizedBox(
-                      height: 400, // Set a fixed height here
-                      child: ListView.builder(
-                        itemCount: data.length,
-                        padding: const EdgeInsets.all(0),
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          var list = data[index];
-                          return Container(
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  width: 0.4,
-                                  color: themeProvider.isDarkMode()
-                                      ? MyColor.borderDarkColor
-                                      : MyColor.borderColor,
-                                ),
-                              ),
-                            ),
-                            child: Column(
-                              children: [
-                                const SizedBox(height: 16),
-                                Row(
-                                  children: [
-                                    Container(
-                                      height: 41,
-                                      width: 41,
-                                      decoration: BoxDecoration(
-                                        // color: MyColor.grey01Color,
-                                        borderRadius:
-                                            BorderRadius.circular(12.3),
-                                      ),
-                                      child: Image.asset(list['img']),
-                                    ),
-                                    const SizedBox(width: 6),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(list['number'],
-                                            style: MyStyle.tx12Black.copyWith(
-                                                color: themedata.tertiary)),
-                                        const SizedBox(height: 4),
-                                        Text(list['date'],
-                                            style: MyStyle.tx12Black.copyWith(
-                                                color: themeProvider
-                                                        .isDarkMode()
-                                                    ? const Color(0XFFCBD2EB)
-                                                    : const Color(0xff30333A))),
-                                      ],
-                                    ),
-                                    const Spacer(),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        Text(list['amount'],
-                                            style: MyStyle.tx12Black.copyWith(
-                                                color: themedata.tertiary)),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              list['status'],
-                                              style: MyStyle.tx11Grey.copyWith(
-                                                color: list['status'] ==
-                                                        'Successful'
-                                                    ? MyColor.dark01GreenColor
-                                                    : Colors.red,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 16),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                    SizedBox(
-                      width: double.infinity, // Full width of the screen
-                      height: 4, // Adjust height as needed
-                      child: Stack(
-                        children: [
-                          // Bottom border
-                          Positioned(
-                            bottom: 0,
-                            left: 0,
-                            right: 0,
-                            child: DottedBorder(
-                              color: themeProvider.isDarkMode()
-                                  ? MyColor.borderDarkColor
-                                  : MyColor.borderColor,
-                              strokeWidth: 1,
-                              dashPattern: const [
-                                6,
-                                3
-                              ], // Dash pattern: 6 units line, 3 units space
-                              customPath: (size) => Path()
-                                ..moveTo(0, 0)
-                                ..lineTo(size.width, 0),
-                              child: Container(
-                                height:
-                                    0, // The container for the border can have a height of 0
-                              ),
-                            ),
+                      color: themeProvider.isDarkMode()
+                          ? MyColor.borderDarkColor
+                          : MyColor.borderColor,
+                      strokeWidth: 1,
+                      dashPattern: const [
+                        6,
+                        3
+                      ], // Dash pattern: 6 units line, 3 units space
+                      customPath: (size) => Path()
+                        ..moveTo(0, 0)
+                        ..lineTo(size.width, 0),
+                    );
+                  },
+                  itemBuilder: (context, i) {
+                    String key = groupByData.keys.elementAt(i);
+                    List value = groupByData[key]!;
+                    return Column(children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          isToday(DateTime.parse(key)),
+                          style: MyStyle.tx14Black.copyWith(
+                            color: themedata.tertiary,
                           ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Yesterday, Jul 01',
-                        style: MyStyle.tx14Black.copyWith(
-                          color: themedata.tertiary,
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    SizedBox(
-                      height: 400, // Set a fixed height here
-                      child: ListView.builder(
-                        itemCount: data.length,
+                      const SizedBox(height: 20),
+                      ListView.builder(
+                        itemCount: value.length,
                         padding: const EdgeInsets.all(0),
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
-                          var list = data[index];
-                          return Container(
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  width: 0.4,
-                                  color: themeProvider.isDarkMode()
-                                      ? MyColor.borderDarkColor
-                                      : MyColor.borderColor,
-                                ),
-                              ),
-                            ),
-                            child: Column(
-                              children: [
-                                const SizedBox(height: 16),
-                                Row(
-                                  children: [
-                                    Container(
-                                      height: 41,
-                                      width: 41,
-                                      decoration: BoxDecoration(
-                                        // color: MyColor.grey01Color,
-                                        borderRadius:
-                                            BorderRadius.circular(12.3),
-                                      ),
-                                      child: Image.asset(list['img']),
-                                    ),
-                                    const SizedBox(width: 6),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(list['number'],
-                                            style: MyStyle.tx12Black.copyWith(
-                                                color: themedata.tertiary)),
-                                        const SizedBox(height: 4),
-                                        Text(list['date'],
-                                            style: MyStyle.tx12Black.copyWith(
-                                                color: themeProvider
-                                                        .isDarkMode()
-                                                    ? const Color(0XFFCBD2EB)
-                                                    : const Color(0xff30333A))),
-                                      ],
-                                    ),
-                                    const Spacer(),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        Text(list['amount'],
-                                            style: MyStyle.tx12Black.copyWith(
-                                                color: themedata.tertiary)),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              list['status'],
-                                              style: MyStyle.tx11Grey.copyWith(
-                                                color: list['status'] ==
-                                                        'Successful'
-                                                    ? MyColor.dark01GreenColor
-                                                    : Colors.red,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 16),
-                              ],
-                            ),
-                          );
+                          Transaction transaction = value[index];
+                          return HistoryCard(transaction: transaction);
                         },
                       ),
-                    ),
-                  ],
-                ),
-              ),
+                    ]);
+                  }),
             )
           ],
         ),

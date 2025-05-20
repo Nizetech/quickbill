@@ -100,6 +100,27 @@ class AuthRepo {
     }
   }
 
+  // verify otp
+  Future<Map<String, dynamic>> updateProfile(Map<String, dynamic> data,
+      {bool is2fa = false}) async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response = await client
+          .post(ApiRoute.updateProfile, body: data, requestHeaders: {
+        'Authorization': token,
+      });
+      // log('Register: $response');
+      if (response['token'] != null) {
+        box.put(kAccessToken, response['token']);
+      }
+      return response;
+    } catch (e) {
+      // hideLoader();
+      ErrorToast(e.toString());
+      return {};
+    }
+  }
+
   // change password
   Future<Map<String, dynamic>> changePassword(Map<String, dynamic> data) async {
     String token = await box.get(kAccessToken);
@@ -118,21 +139,4 @@ class AuthRepo {
     }
   }
 
-  // change password
-  // Future<Map<String, dynamic>> changePassword(Map<String, dynamic> data) async {
-  //   String token = await box.get(kAccessToken);
-  //   try {
-  //     // log('Login Details: $email');
-  //     final response = await client
-  //         .post(ApiRoute.changePassword, body: data, requestHeaders: {
-  //       'Authorization': 'Bearer $token',
-  //     });
-  //     log('Register: $response');
-  //     return response;
-  //   } catch (e) {
-  //     // hideLoader();
-  //     ErrorToast(e.toString());
-  //     return {};
-  //   }
-  // }
 }

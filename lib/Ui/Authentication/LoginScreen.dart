@@ -364,7 +364,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
-
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -391,7 +390,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         .copyWith(fontSize: 14, color: MyColor.grey01Color),
                   ),
                   SizedBox(height: height * 0.09),
-
                   //password field
                   TextFormField(
                     controller: passwordController,

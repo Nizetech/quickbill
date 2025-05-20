@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Helper {
   static final Helper dialogCall = Helper._();
@@ -68,4 +70,36 @@ String truncateEmail(String email) {
     return '${parts[0].substring(0, 3)}****@${parts[1]}';
   }
   return email;
+}
+
+void launchWeb(String url) async {
+  await launchUrl(
+    Uri.parse(url),
+    mode: LaunchMode.externalApplication,
+  );
+}
+
+String formatNumber(num number) {
+  final formatter = NumberFormat('#,###');
+  return formatter.format(int.parse(number.toString()));
+}
+
+String formatDateTime(DateTime dateTime) {
+  return DateFormat('MMMM d, h:mm a').format(dateTime);
+}
+
+String formatDate(DateTime dateTime) {
+  return DateFormat('MMMM dd').format(dateTime);
+}
+
+// is today date
+String isToday(DateTime date) {
+  var diff = DateTime.now().difference(date);
+  if (diff.inDays == 0) {
+    return 'Today, ${formatDate(date)}';
+  } else if (diff.inDays == 1) {
+    return 'Yesterday, ${formatDate(date)}';
+  } else {
+    return formatDate(date);
+  }
 }

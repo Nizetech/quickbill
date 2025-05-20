@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jost_pay_wallet/Provider/Account_Provider.dart';
 import 'package:jost_pay_wallet/Ui/Authentication/OtpScreen.dart';
 import 'package:jost_pay_wallet/bottom_nav.dart';
 import 'package:jost_pay_wallet/service/auth_repo.dart';
@@ -70,8 +71,7 @@ class AuthProvider with ChangeNotifier {
             }
           }
           notifyListeners();
-        } else {
-        }
+        } else {}
       });
       log('Value: $res');
     } catch (e) {
@@ -151,6 +151,37 @@ class AuthProvider with ChangeNotifier {
             } else {
               SuccessToast('Login Successful');
             }
+          }
+        }
+        notifyListeners();
+      });
+    } catch (e) {
+      log('Error: $e');
+      // setLoading(false);
+      ErrorToast(e.toString());
+    }
+  }
+
+  Future<void> updateProfile(Map<String, dynamic> data,
+      {required AccountProvider account}) async {
+    try {
+      // setLoading(true);
+      showLoader();
+      AuthRepo().updateProfile(data).then((value) async {
+        log('Value: $value');
+        // setLoading(false);
+        hideLoader();
+        if (value.isEmpty) return;
+        if (value['result'] == false) {
+          ErrorToast(value['message']);
+        } else {
+          await account.getUserProfile();
+          hideLoader();
+          Get.back();
+          if (value['message'] != null && value['message'] != '') {
+            SuccessToast(value['message']);
+          } else {
+            SuccessToast('Profile Updated Successfully');
           }
         }
         notifyListeners();

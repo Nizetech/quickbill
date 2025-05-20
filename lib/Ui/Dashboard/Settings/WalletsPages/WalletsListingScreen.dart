@@ -139,11 +139,11 @@ class _WalletsListingScreenState extends State<WalletsListingScreen> {
       "device_id":deviceId,
     };
 
-    await accountProvider.deleteAccount(data,'/deleteAccount');
+    // await accountProvider.deleteAccount(data,'/deleteAccount');
 
-    if(accountProvider.isdeleted == true){
-      deleteLocal(selectedAccountId,index);
-    }
+    // if(accountProvider.isdeleted == true){
+    //   deleteLocal(selectedAccountId,index);
+    // }
 
   }
 

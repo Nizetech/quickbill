@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:jost_pay_wallet/ApiHandlers/ApiHandle.dart';
+import 'package:jost_pay_wallet/Models/notification_model.dart';
 import 'package:jost_pay_wallet/Models/transactions.dart';
 import 'package:jost_pay_wallet/Models/user_model.dart';
 import 'package:jost_pay_wallet/service/account_repo.dart';
@@ -15,7 +16,8 @@ class AccountProvider with ChangeNotifier {
   bool isLoading = false;
   UserModel? userModel;
   num? balance;
-  TransactionModel? transactionModel;
+  TransactionModel? transactionModel; 
+  NotificationModel? notificationModel; 
 
   
   void setLoading(bool value) {
@@ -45,6 +47,31 @@ class AccountProvider with ChangeNotifier {
     } catch (e) {
       log('Error: $e');
       // setLoading(false);
+      ErrorToast(e.toString());
+    }
+  }
+
+  // get Notification
+  Future<void> getNotification() async {
+    try {
+      // setLoading(true);
+      // showLoader();
+      AccountRepo().getNotification().then((value) {
+        log('Value: $value');
+        // setLoading(false);
+        if (value['result'] == false) {
+          // hideLoader();
+          ErrorToast(value['message']);
+        } else {
+          // hideLoader();
+          notificationModel = NotificationModel.fromJson(value);
+        }
+        notifyListeners();
+      });
+      // setLoading(false);
+      notifyListeners();
+    } catch (e) {
+      log('Error: $e');
       ErrorToast(e.toString());
     }
   }

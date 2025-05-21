@@ -80,7 +80,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     final themedata = Theme.of(context).colorScheme;
     final model = context.watch<AuthProvider>();
     return Scaffold(
-      backgroundColor: Colors.white,
+  
       appBar: AppBar(
         leading: Padding(
           padding: const EdgeInsets.fromLTRB(15, 10, 1, 0),

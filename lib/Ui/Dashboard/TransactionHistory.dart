@@ -11,6 +11,7 @@ import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/history_card.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
+import 'package:jost_pay_wallet/common/button.dart';
 import 'package:provider/provider.dart';
 
 class Transactionhistory extends StatefulWidget {
@@ -90,41 +91,19 @@ class _TransactionhistoryState extends State<Transactionhistory> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                InkWell(
-                  onTap: () => dashProvider.changeBottomIndex(0),
-                  child: Image.asset(
-                    'assets/images/arrow_left.png',
-                    color: themeProvider.isDarkMode()
-                        ? MyColor.mainWhiteColor
-                        : MyColor.dark01Color,
-                  ),
-                ),
-                const Spacer(),
-                const Text(
-                  'Download',
-                  style: MyStyle.tx18Green,
-                ), // Adds flexible space after the text
-              ],
+            BackBtn(
+              onTap: () {
+                dashProvider.changeBottomIndex(0);
+              },
             ),
             const SizedBox(
               height: 30,
             ),
-            Row(
-              children: [
-                Text(
-                  'Transaction History',
-                  style: MyStyle.tx20Grey.copyWith(
-                    color: themedata.tertiary,
-                  ),
-                ),
-                const Spacer(),
-                Image.asset(
-                  'assets/images/search.png',
-                  color: themedata.tertiary,
-                )
-              ],
+            Text(
+              'Transaction History',
+              style: MyStyle.tx20Grey.copyWith(
+                color: themedata.tertiary,
+              ),
             ),
             Expanded(
               child: ListView.separated(

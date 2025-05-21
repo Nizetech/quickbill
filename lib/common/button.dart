@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/NewStyle.dart';
+import 'package:provider/provider.dart';
 
 import '../Values/NewColor.dart';
 
@@ -45,24 +47,34 @@ class CustomButton extends StatelessWidget {
 }
 
 class BackBtn extends StatelessWidget {
-  const BackBtn({super.key});
+  final VoidCallback? onTap;
+  const BackBtn({super.key, this.onTap});
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
+   
     return InkWell(
-        onTap: () {
+        onTap: onTap ??
+            () {
           Navigator.pop(context);
         },
         child: Container(
           padding: EdgeInsets.all(5),
           decoration: BoxDecoration(
             color: Colors.transparent,
-            border: Border.all(color: MyColor.blackColor, width: 1),
+            border: Border.all(
+                color: themeProvider.isDarkMode()
+                    ? MyColor.mainWhiteColor
+                    : MyColor.dark01Color,
+                width: 1),
             borderRadius: BorderRadius.circular(10),
           ),
-          child: const Icon(
+          child: Icon(
             Icons.arrow_back_ios_new,
-            color: MyColor.blackColor,
+            color: themeProvider.isDarkMode()
+                ? MyColor.mainWhiteColor
+                : MyColor.dark01Color,
             size: 20,
           ),
         ));

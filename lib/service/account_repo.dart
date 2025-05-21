@@ -16,6 +16,20 @@ class AccountRepo {
       final response = await client.post(ApiRoute.userProfile, requestHeaders: {
         'Authorization': token,
       });
+      return response;
+    } catch (e) {
+      ErrorToast(e.toString());
+      return {};
+    }
+  }
+
+  Future<Map<String, dynamic>> getNotification() async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response =
+          await client.post(ApiRoute.getNotification, requestHeaders: {
+        'Authorization': token,
+      });
       log('Reponse: $response');
       return response;
     } catch (e) {
@@ -30,7 +44,6 @@ class AccountRepo {
       final response = await client.post(ApiRoute.getBalance, requestHeaders: {
         'Authorization': token,
       });
-      log('Reponse: $response');
       return response;
     } catch (e) {
       ErrorToast(e.toString());
@@ -46,7 +59,6 @@ class AccountRepo {
       }, requestHeaders: {
         'Authorization': token,
       });
-      log('Reponse: $response');
       return response;
     } catch (e) {
       ErrorToast(e.toString());

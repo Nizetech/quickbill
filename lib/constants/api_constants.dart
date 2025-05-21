@@ -15,4 +15,6 @@ class ApiRoute {
   static String updateProfile = 'update-profile';
   static String getBalance = 'get-balance';
   static String getTransactions = 'get-purchases';
+  static String getNotification = 'get-news';
+  static String getPromo = 'get-promos';
 }

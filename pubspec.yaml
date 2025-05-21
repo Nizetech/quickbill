@@ -23,6 +23,7 @@ dependencies:
   declarative_refresh_indicator: ^0.1.0
   dotted_border: ^2.1.0
   dotted_decoration: ^2.0.0
+  dotted_line: ^3.2.3
   eth_sig_util: ^0.0.9
   file_picker: ^10.1.9
   flutter:

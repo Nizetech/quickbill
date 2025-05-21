@@ -164,7 +164,9 @@ class _RewardScreenState extends State<RewardScreen> {
                                     : MyColor.greenColor,
                                 borderRadius: const BorderRadius.only(
                                     topRight: Radius.circular(999),
-                                    bottomRight: Radius.circular(999))),
+                                bottomRight: Radius.circular(999),
+                              ),
+                            ),
                             child: Text(
                               "Copy Code",
                               style: MyStyle.tx12Black.copyWith(

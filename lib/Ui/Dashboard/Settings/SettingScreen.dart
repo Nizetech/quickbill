@@ -6,6 +6,8 @@ import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Authentication/SignInScreen.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/HelpSupport.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Settings/ProfileScreen.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Settings/Rewards/reward_screen.dart';
+import 'package:jost_pay_wallet/Ui/Static/AboutUs.dart';
 import 'package:jost_pay_wallet/Ui/Static/AccountSetting.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
@@ -318,8 +320,7 @@ class _SettingScreenState extends State<SettingScreen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    ProfileScreen(data: profile),
+                                builder: (context) => RewardScreen(),
                               ));
                         },
                         child: Row(
@@ -609,8 +610,7 @@ class _SettingScreenState extends State<SettingScreen> {
             ],
           ),
         );
-      }
-      ),
+      }),
     );
   }
 }

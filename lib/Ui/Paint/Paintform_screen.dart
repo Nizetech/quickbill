@@ -10,6 +10,14 @@ import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
 
+class ItemModel {
+  final String name;
+  final int price;
+  bool selected;
+
+  ItemModel({required this.name, required this.price, this.selected = false});
+}
+
 class PaintformScreen extends StatefulWidget {
   const PaintformScreen({super.key});
 
@@ -24,6 +32,20 @@ class _PaintformScreenState extends State<PaintformScreen> {
     super.initState();
   }
 
+  final List<ItemModel> items = [
+    ItemModel(name: 'Bonnet', price: 30000),
+    ItemModel(name: 'Rear Bumper', price: 12000),
+    ItemModel(name: 'Door (Rear Left)', price: 10000),
+    ItemModel(name: 'Fender (Left)', price: 30000),
+    ItemModel(name: 'Door (Rear Right)', price: 10000),
+    ItemModel(name: 'Door (Front Left)', price: 10000),
+    ItemModel(name: 'Roof', price: 38484),
+    ItemModel(name: 'Door (Front Right)', price: 10000),
+    ItemModel(name: 'Front Bumper', price: 12000),
+    ItemModel(name: 'Fender (Right)', price: 30000),
+    ItemModel(name: 'Boot', price: 12220),
+    ItemModel(name: 'Side Skirts', price: 10000),
+  ];
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
@@ -171,10 +193,10 @@ class _PaintformScreenState extends State<PaintformScreen> {
                               value: e,
                               child: Text(
                                 e,
-                                style: MyStyle.tx14Black.copyWith(
+                                style: MyStyle.tx14White.copyWith(
                                   color: const Color(0xff6B7280),
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
                             );
@@ -291,7 +313,7 @@ class _PaintformScreenState extends State<PaintformScreen> {
                           themedata: themedata,
                           themeProvider: themeProvider),
                       const SizedBox(
-                        height: 58,
+                        height: 37,
                       ),
                     ] else ...[
                       Container(
@@ -303,14 +325,245 @@ class _PaintformScreenState extends State<PaintformScreen> {
                                   ? const Color(0xff131313)
                                   : const Color(0xffF9F9F9)),
                           child: Container(
+                            padding: EdgeInsets.zero,
                             decoration: BoxDecoration(
+                              border: Border.all(
+                                color: isDark
+                                    ? const Color(0xff1B1B1B)
+                                    : const Color(0xffE9EBF8),
+                              ),
                               borderRadius: BorderRadius.circular(15),
                               color: isDark
                                   ? MyColor.dark02Color
                                   : MyColor.mainWhiteColor,
                             ),
-                            child: TouchupOptions(isDark: isDark),
+                            child: Stack(children: [
+                              if (!isDark)
+                                Positioned(
+                                  right: 3,
+                                  top: 10,
+                                  child: SvgPicture.asset(
+                                    'assets/images/svg/check-list.svg',
+                                  ),
+                                ),
+                              ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 20),
+                                itemCount: items.length,
+                                itemBuilder: (context, index) {
+                                  return Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 12, vertical: 4),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Theme(
+                                          data: Theme.of(context).copyWith(
+                                            checkboxTheme: CheckboxThemeData(
+                                              fillColor: WidgetStateProperty
+                                                  .resolveWith<Color>((states) {
+                                                if (states.contains(
+                                                    WidgetState.selected)) {
+                                                  return isDark
+                                                      ? const Color(0xff0B930B)
+                                                      : MyColor.greenColor;
+                                                }
+                                                return Colors.transparent;
+                                              }),
+                                              checkColor: WidgetStateProperty
+                                                  .all<Color>(Colors.white),
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(3)),
+                                              side: WidgetStateBorderSide
+                                                  .resolveWith((states) {
+                                                if (states.contains(
+                                                    WidgetState.selected)) {
+                                                  return BorderSide(
+                                                    color: isDark
+                                                        ? MyColor.mainWhiteColor
+                                                        : const Color(
+                                                            0xffD1D1D1),
+                                                  );
+                                                } else {
+                                                  return BorderSide(
+                                                    color: isDark
+                                                        ? const Color(
+                                                            0xff3B3B3B)
+                                                        : const Color(
+                                                            0xffD1D1D1),
+                                                  );
+                                                }
+                                              }),
+                                            ),
+                                          ),
+                                          child: SizedBox(
+                                            height: 30,
+                                            child: Checkbox(
+                                              value: items[index].selected,
+                                              onChanged: (bool? value) {
+                                                setState(() {
+                                                  items[index].selected =
+                                                      value ?? false;
+                                                });
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Text(
+                                            '${items[index].name} - ₦${items[index].price}',
+                                            style: MyStyle.tx12Black.copyWith(
+                                                color: isDark
+                                                    ? MyColor.mainWhiteColor
+                                                    : const Color(0xff6B7280),
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                            ]),
                           ))
+                    ],
+                    if (package == 'Full Body Painting') ...[
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 19,
+                          vertical: 23,
+                        ).copyWith(bottom: 31, right: 10),
+                        decoration: BoxDecoration(
+                            color: isDark
+                                ? const Color(0xff101010)
+                                : const Color(0xffFCFCFC),
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: isDark
+                                  ? const Color(0xff1B1B1B)
+                                  : const Color(0xffE9EBF8),
+                            )),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 26.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    DotLabel(
+                                      text: "Rent Option",
+                                      value: "Rent Spray Booth",
+                                      dotColor: MyColor.dark01Color,
+                                      labelColor: const Color(0xff6E6D7A),
+                                      textColor: isDark
+                                          ? MyColor.mainWhiteColor
+                                          : MyColor.blackColor,
+                                    ),
+                                    DotLabel(
+                                      text: "Car type",
+                                      dotColor: MyColor.dark01Color,
+                                      value: "Saloon Car",
+                                      labelColor: const Color(0xff6E6D7A),
+                                      textColor: isDark
+                                          ? MyColor.mainWhiteColor
+                                          : MyColor.blackColor,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 22),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 56.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    DotLabel(
+                                      text: "Date",
+                                      value: "Wed, 28 2025",
+                                      dotColor: MyColor.dark01Color,
+                                      labelColor: const Color(0xff6E6D7A),
+                                      textColor: isDark
+                                          ? MyColor.mainWhiteColor
+                                          : MyColor.blackColor,
+                                    ),
+                                    DotLabel(
+                                      text: "Time",
+                                      value: "12:PM",
+                                      dotColor: MyColor.dark01Color,
+                                      labelColor: const Color(0xff6E6D7A),
+                                      textColor: isDark
+                                          ? MyColor.mainWhiteColor
+                                          : MyColor.blackColor,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 22),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 33.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    DotLabel(
+                                      text: "Rental Option",
+                                      value: "Full Body Painting",
+                                      dotColor: MyColor.dark01Color,
+                                      labelColor: const Color(0xff6E6D7A),
+                                      textColor: isDark
+                                          ? MyColor.mainWhiteColor
+                                          : MyColor.blackColor,
+                                    ),
+                                    DotLabel(
+                                      text: "Car Type",
+                                      value: "NIL",
+                                      dotColor: MyColor.dark01Color,
+                                      labelColor: const Color(0xff6E6D7A),
+                                      textColor: isDark
+                                          ? MyColor.mainWhiteColor
+                                          : MyColor.blackColor,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 22),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 60.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    DotLabel(
+                                      text: "Date",
+                                      value: "Wed, 28 2025",
+                                      dotColor: MyColor.dark01Color,
+                                      labelColor: const Color(0xff6E6D7A),
+                                      textColor: isDark
+                                          ? MyColor.mainWhiteColor
+                                          : MyColor.blackColor,
+                                    ),
+                                    DotLabel(
+                                      text: "Time",
+                                      value: "12:PM",
+                                      dotColor: MyColor.dark01Color,
+                                      labelColor: const Color(0xff6E6D7A),
+                                      textColor: isDark
+                                          ? MyColor.mainWhiteColor
+                                          : MyColor.blackColor,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                            ]),
+                      ),
+                      const SizedBox(height: 30),
                     ],
                     Divider(
                       color: isDark
@@ -406,7 +659,7 @@ class _PaintformScreenState extends State<PaintformScreen> {
   }
 }
 
-class TouchupOptions extends StatelessWidget {
+class TouchupOptions extends StatefulWidget {
   const TouchupOptions({
     super.key,
     required this.isDark,
@@ -415,12 +668,18 @@ class TouchupOptions extends StatelessWidget {
   final bool isDark;
 
   @override
+  State<TouchupOptions> createState() => _TouchupOptionsState();
+}
+
+class _TouchupOptionsState extends State<TouchupOptions> {
+  @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Checkbox(
           checkColor: MyColor.mainWhiteColor,
-          activeColor: isDark ? const Color(0xff0B930B) : MyColor.greenColor,
+          activeColor:
+              widget.isDark ? const Color(0xff0B930B) : MyColor.greenColor,
           side: BorderSide(color: const Color(0xffD1D1D1)),
           value: false,
           onChanged: (value) {},
@@ -428,7 +687,9 @@ class TouchupOptions extends StatelessWidget {
         Text(
           "data",
           style: MyStyle.tx12Black.copyWith(
-              color: isDark ? MyColor.mainWhiteColor : const Color(0xff6B7280),
+              color: widget.isDark
+                  ? MyColor.mainWhiteColor
+                  : const Color(0xff6B7280),
               fontWeight: FontWeight.w500),
         )
       ],

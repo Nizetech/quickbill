@@ -31,10 +31,7 @@ class _AlarmScreenState extends State<AlarmScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
-        leading: const Padding(
-          padding: EdgeInsets.fromLTRB(15, 10, 0, 5),
-          child: BackBtn(),
-        ),
+        leading: BackBtn(),
         title: Text(
           "Recent Notifications",
           style: NewStyle.tx28White.copyWith(

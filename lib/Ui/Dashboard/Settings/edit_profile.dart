@@ -50,8 +50,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const Padding(
-            padding: EdgeInsets.fromLTRB(15, 10, 1, 0), child: BackBtn()),
+        leading: BackBtn(),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),

@@ -30,10 +30,7 @@ class ChangePassword extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.fromLTRB(15, 10, 1, 0),
-          child: BackBtn()
-        ),
+        leading: BackBtn(),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),

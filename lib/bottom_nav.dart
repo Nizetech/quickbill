@@ -9,9 +9,6 @@ import 'package:jost_pay_wallet/LocalDb/Local_Network_Provider.dart';
 import 'package:jost_pay_wallet/LocalDb/Local_Walletv2_provider.dart';
 import 'package:jost_pay_wallet/Provider/DashboardProvider.dart';
 import 'package:jost_pay_wallet/Provider/InternetProvider.dart';
-import 'package:jost_pay_wallet/Ui/Authentication/LoginScreen.dart';
-import 'package:jost_pay_wallet/Ui/Authentication/LoginWithPasscode.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Invoice.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Services.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Settings/SettingScreen.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Settings/WalletConnect/walletv2_models/ethereum/wc_ethereum_sign_message.dart';
@@ -127,74 +124,6 @@ class _BottomNavState extends State<BottomNav> with WidgetsBindingObserver {
         selectedAccountPrivateAddress =
             DbAccountAddress.dbAccountAddress.selectAccountPrivateAddress;
       });
-    }
-  }
-
-  @override
-  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
-    // print("pageType ----> ${Utils.pageType}");
-    if (state == AppLifecycleState.paused) {
-      var date = sharedPreferences.getString("loginTime") ?? "";
-
-      DateTime expireDate = DateTime.parse(date);
-
-      // print("expireDate $expireDate");
-      if (date != "") {
-        if (!expireDate.isAfter(DateTime.now())) {
-          setState(() {
-            Utils.pageType = "NewPage";
-          });
-
-          getAccount();
-
-          if (Utils.wcUrlVal == "" &&
-              Utils.pageType == "NewPage" &&
-              Utils.pageType1 != "walletConnect") {
-            SharedPreferences sharedPreferences =
-                await SharedPreferences.getInstance();
-            var passwordType =
-                sharedPreferences.getBool('passwordType') ?? false;
-
-            if (passwordType) {
-              // ignore: use_build_context_synchronously
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const LoginWithPassCode()),
-                // (route) => false,
-              );
-            } else {
-              // ignore: use_build_context_synchronously
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const LoginScreen()),
-                // (route) => false,
-              );
-            }
-          } else {
-            if (Platform.isAndroid) {
-              if (Utils.wcUrlVal != "") {
-                if (Utils.wcUrlVal.split('?').last.substring(0, 9) !=
-                    "requestId") {
-                  signClient!.pair(Utils.wcUrlVal);
-                }
-                Utils.wcUrlVal = "";
-              }
-            } else {
-              if (Utils.wcUrlVal != "") {
-                var decodedUriIos =
-                    Uri.decodeFull(Utils.wcUrlVal.split("uri=").last);
-
-                if (decodedUriIos.split('?').last.substring(0, 9) !=
-                    "requestId") {
-                  signClient!.pair(decodedUriIos.toString());
-                }
-              }
-              Utils.wcUrlVal = "";
-            }
-          }
-        }
-      }
     }
   }
 

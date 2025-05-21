@@ -86,77 +86,100 @@ class _TransactionhistoryState extends State<Transactionhistory> {
     log('groupByData: $groupByData');
     final dashProvider = Provider.of<DashboardProvider>(context, listen: true);
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 68, horizontal: 24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            BackBtn(
-              onTap: () {
-                dashProvider.changeBottomIndex(0);
-              },
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            Text(
-              'Transaction History',
-              style: MyStyle.tx20Grey.copyWith(
-                color: themedata.tertiary,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 10,
               ),
-            ),
-            Expanded(
-              child: ListView.separated(
-                  itemCount: groupByData.length,
-                  physics: const AlwaysScrollableScrollPhysics(
-                    parent: BouncingScrollPhysics(),
-                  ),
-                  separatorBuilder: (context, index) {
-                    return DottedBorder(
-                      child: SizedBox(
-                        height: 0,
-                      ),
-                      color: themeProvider.isDarkMode()
-                          ? MyColor.borderDarkColor
-                          : MyColor.borderColor,
-                      strokeWidth: 1,
-                      dashPattern: const [
-                        6,
-                        3
-                      ], // Dash pattern: 6 units line, 3 units space
-                      customPath: (size) => Path()
-                        ..moveTo(0, 0)
-                        ..lineTo(size.width, 0),
-                    );
-                  },
-                  itemBuilder: (context, i) {
-                    String key = groupByData.keys.elementAt(i);
-                    List value = groupByData[key]!;
-                    return Column(children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
+              BackBtn(
+                onTap: () {
+                  dashProvider.changeBottomIndex(0);
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                'Transaction History',
+                style: MyStyle.tx20Grey.copyWith(
+                  color: themedata.tertiary,
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              groupByData.isEmpty
+                  ? Expanded(
+                      child: Center(
                         child: Text(
-                          isToday(DateTime.parse(key)),
-                          style: MyStyle.tx14Black.copyWith(
+                          'Transactions not found',
+                          style: MyStyle.tx20Grey.copyWith(
                             color: themedata.tertiary,
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
-                      ListView.builder(
-                        itemCount: value.length,
-                        padding: const EdgeInsets.all(0),
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          Transaction transaction = value[index];
-                          return HistoryCard(transaction: transaction);
-                        },
-                      ),
-                    ]);
-                  }),
-            )
-          ],
+                    )
+                  :
+              Expanded(
+                      child: ListView.separated(
+                          itemCount: groupByData.length,
+                          physics: const AlwaysScrollableScrollPhysics(
+                            parent: BouncingScrollPhysics(),
+                          ),
+                          separatorBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 10),
+                              child: DottedBorder(
+                                child: SizedBox(
+                                  height: 0,
+                                ),
+                                color: themeProvider.isDarkMode()
+                                    ? MyColor.borderDarkColor
+                                    : MyColor.borderColor,
+                                strokeWidth: 1,
+                                dashPattern: const [
+                                  6,
+                                  3
+                                ], // Dash pattern: 6 units line, 3 units space
+                                customPath: (size) => Path()
+                                  ..moveTo(0, 0)
+                                  ..lineTo(size.width, 0),
+                              ),
+                            );
+                          },
+                          itemBuilder: (context, i) {
+                            String key = groupByData.keys.elementAt(i);
+                            List value = groupByData[key]!;
+                            return Column(children: [
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  isToday(DateTime.parse(key)),
+                                  style: MyStyle.tx14Black.copyWith(
+                                    color: themedata.tertiary,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              ListView.builder(
+                                itemCount: value.length,
+                                padding: const EdgeInsets.all(0),
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  Transaction transaction = value[index];
+                                  return HistoryCard(transaction: transaction);
+                                },
+                              ),
+                            ]);
+                          }),
+                    )
+            ],
+          ),
         ),
       ),
     );

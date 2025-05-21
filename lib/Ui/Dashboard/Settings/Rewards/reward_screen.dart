@@ -5,13 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Settings/Rewards/reward_record_screen.dart';
-import 'package:jost_pay_wallet/Ui/Domain/domain_screen.dart';
-import 'package:jost_pay_wallet/Ui/Paint/Paintform_screen.dart';
-import 'package:jost_pay_wallet/Ui/car/repair_screen.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:provider/provider.dart';
-import 'package:file_picker/file_picker.dart';
 
 class RewardScreen extends StatefulWidget {
   const RewardScreen({super.key});

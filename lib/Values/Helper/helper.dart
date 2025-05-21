@@ -92,6 +92,10 @@ String formatDate(DateTime dateTime) {
   return DateFormat('MMMM dd').format(dateTime);
 }
 
+String formatDateYear(DateTime dateTime) {
+  return DateFormat('MMMM dd yyyy').format(dateTime);
+}
+
 // is today date
 String isToday(DateTime date) {
   var diff = DateTime.now().difference(date);

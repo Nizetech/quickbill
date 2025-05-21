@@ -97,9 +97,6 @@ class _OtpScreenState extends State<OtpScreen> {
                   numberOfFields: 6,
                   borderColor: Colors.white,
                   fillColor: NewColor.inputFillColor,
-                  // fieldWidth: 50,
-                  // fieldHeight: 50,
-
                   focusedBorderColor: MyColor.greenColor,
                   textStyle: const TextStyle(
                       fontSize: 16,

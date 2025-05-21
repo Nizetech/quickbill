@@ -109,7 +109,6 @@ class AuthRepo {
           .post(ApiRoute.updateProfile, body: data, requestHeaders: {
         'Authorization': token,
       });
-      // log('Register: $response');
       if (response['token'] != null) {
         box.put(kAccessToken, response['token']);
       }

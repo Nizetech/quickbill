@@ -60,6 +60,7 @@ class BackBtn extends StatelessWidget {
           Navigator.pop(context);
         },
         child: Container(
+          margin: const EdgeInsets.only(left: 15, top: 10),
           padding: EdgeInsets.all(5),
           decoration: BoxDecoration(
             color: Colors.transparent,

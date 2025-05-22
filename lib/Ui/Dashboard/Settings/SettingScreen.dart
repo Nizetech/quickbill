@@ -205,7 +205,9 @@ class _SettingScreenState extends State<SettingScreen> {
                     Container(
                       padding: const EdgeInsets.only(top: 8, bottom: 8),
                       child: InkWell(
-                        onTap: () => Get.to(TermsScreen()),
+                        onTap: () {
+                          dashProvider.changeBottomIndex(5);
+                        },
                         child: Row(
                           children: [
                             Container(
@@ -242,7 +244,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     Container(
                       padding: const EdgeInsets.only(top: 8, bottom: 8),
                       child: InkWell(
-                        onTap: () => Get.to(PrivacyScreen()),
+                        onTap: () => dashProvider.changeBottomIndex(6),
                         child: Row(
                           children: [
                             Container(
@@ -325,9 +327,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     Container(
                       padding: const EdgeInsets.only(top: 8, bottom: 8),
                       child: InkWell(
-                        onTap: () {
-                          Get.to(AboutUsScreen());
-                        },
+                        onTap: () => dashProvider.changeBottomIndex(7),
                         child: Row(
                           children: [
                             Container(

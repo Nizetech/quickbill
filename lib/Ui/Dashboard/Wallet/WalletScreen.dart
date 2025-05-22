@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -42,7 +44,6 @@ class _WalletScreenState extends State<WalletScreen> {
   double totalBalance = 0.0;
   Map<String, dynamic> profile = {};
 
-
   late String deviceId;
   String selectedAccountId = "",
       selectedAccountName = "",
@@ -69,9 +70,13 @@ class _WalletScreenState extends State<WalletScreen> {
         accountProvider.getUserProfile();
       } else {
         accountProvider.getUserProfile(isLoading: false);
-
       }
     });
+  }
+
+  FutureOr refresh() async {
+    accountProvider.getTrasactions();
+    accountProvider.getUserBalance();
   }
 
   double showTotalValue = 0.0;
@@ -114,7 +119,6 @@ class _WalletScreenState extends State<WalletScreen> {
                           dashProvider.changeBottomIndex(4);
                         },
                         child: Container(
-                           
                           padding: const EdgeInsets.only(
                             right: 12.0,
                           ),
@@ -168,11 +172,12 @@ class _WalletScreenState extends State<WalletScreen> {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const SupportScreen()));
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (context) =>
+                                //             const SupportScreen()));
+                                dashProvider.changeBottomIndex(9);
                               },
                               child: SvgPicture.asset(
                                 'assets/images/svg/customerservice.svg',
@@ -242,7 +247,6 @@ class _WalletScreenState extends State<WalletScreen> {
                                     )
                                 ],
                               ),
-                             
                             ),
                           ],
                         ),
@@ -286,9 +290,8 @@ class _WalletScreenState extends State<WalletScreen> {
                               ),
                             ),
                             InkWell(
-                              onTap: () {
-                                accountProvider.getUserBalance();
-                                accountProvider.getTrasactions();
+                              onTap: () async {
+                                await refresh();
                               },
                               child: Container(
                                 height: 41,
@@ -744,8 +747,6 @@ class _WalletScreenState extends State<WalletScreen> {
                               ],
                             ),
                           ),
-                          
-                       
                         ],
                       ),
                       const SizedBox(height: 22),
@@ -933,7 +934,6 @@ class _WalletScreenState extends State<WalletScreen> {
                                 ],
                               ),
                             ),
-                       
                           ]),
 
                       const SizedBox(height: 30),
@@ -952,6 +952,7 @@ class _WalletScreenState extends State<WalletScreen> {
                         ListView.builder(
                           padding: EdgeInsets.only(bottom: 50),
                           physics: const NeverScrollableScrollPhysics(),
+                          reverse: true,
                           itemBuilder: (context, index) => HistoryCard(
                             transaction:
                                 accountProvider.transactionModel!.data![index],
@@ -970,8 +971,7 @@ class _WalletScreenState extends State<WalletScreen> {
             )
           ],
         );
-      }
-      ),
+      }),
     );
   }
 }

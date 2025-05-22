@@ -1,6 +1,7 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jost_pay_wallet/Provider/DashboardProvider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Support/SupportScreen.dart';
 import 'package:jost_pay_wallet/Ui/Support/faq_screen.dart';
@@ -29,6 +30,7 @@ class _HelpsupportState extends State<Helpsupport> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
+    final dashProvider = Provider.of<DashboardProvider>(context, listen: true);
     final themedata = Theme.of(context).colorScheme;
     return Scaffold(
       // backgroundColor: Colors.white,
@@ -41,10 +43,7 @@ class _HelpsupportState extends State<Helpsupport> {
                   Row(
                     children: [
                       InkWell(
-                        onTap: () => Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const BottomNav())),
+                        onTap: () => Get.back(),
                         child: Image.asset(
                           'assets/images/arrow_left.png',
                           color: themeProvider.isDarkMode()
@@ -114,10 +113,11 @@ class _HelpsupportState extends State<Helpsupport> {
                                                   color: themedata.tertiary)),
                                           Text('AVG.Response time: 2mins',
                                               style: MyStyle.tx12Black.copyWith(
-                                                  color:
-                                                      themeProvider.isDarkMode()
-                                                          ? const Color(0XFFCBD2EB)
-                                                          : const Color(0xff30333A))),
+                                                  color: themeProvider
+                                                          .isDarkMode()
+                                                      ? const Color(0XFFCBD2EB)
+                                                      : const Color(
+                                                          0xff30333A))),
                                           const SizedBox(
                                             height: 12,
                                           ),
@@ -166,7 +166,10 @@ class _HelpsupportState extends State<Helpsupport> {
                                 height: 12,
                               ),
                               InkWell(
-                                onTap: () => Get.to(SupportScreen()),
+                                onTap: () {
+                                  Get.back();
+                                  dashProvider.changeBottomIndex(9);
+                                },
                                 child: Row(
                                   children: [
                                     const SizedBox(
@@ -302,7 +305,7 @@ class _HelpsupportState extends State<Helpsupport> {
                               .copyWith(color: themedata.tertiary),
                         ),
                         const SizedBox(
-                          height: 24, 
+                          height: 24,
                         ),
                         Container(
                           padding: const EdgeInsets.all(24),
@@ -468,7 +471,10 @@ class _HelpsupportState extends State<Helpsupport> {
                         SizedBox(
                           width: double.infinity,
                           child: TextButton(
-                            onPressed: () => Get.to(FaqScreen()),
+                            onPressed: () {
+                              Get.back();
+                              dashProvider.changeBottomIndex(8);
+                            },
                             style: TextButton.styleFrom(
                               backgroundColor: MyColor.greenColor,
                               padding: const EdgeInsets.symmetric(vertical: 16),

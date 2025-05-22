@@ -36,6 +36,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  final _referalCode = TextEditingController();
   final _lastName = TextEditingController();
   final _firstName = TextEditingController();
   final _phoneNumberController = TextEditingController();
@@ -59,6 +60,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           "first_name": _firstName.text.trim(),
           "last_name": _lastName.text.trim(),
           'country': selectedCountry,
+          "referral_code": _referalCode.text.trim(),
           "phone":
               // remove the first zero from the phone number if it starts with 0
               selectedCountry == 'NG' &&
@@ -298,11 +300,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           color: themedata.tertiary,
                           fontFamily: 'SF Pro Rounded',
                         ),
-                        // controller: _phoneNumberController,
+                        controller: _referalCode,
                         decoration: NewStyle.authInputDecoration.copyWith(
                           hintText: 'Enter your refer ID',
                         ),
-                        keyboardType: TextInputType.phone,
+                        keyboardType: TextInputType.text,
                       ),
                       const SizedBox(height: 14),
                       Text(

@@ -31,25 +31,49 @@ class _TwoFAScreenState extends State<TwoFAScreen> {
         ),
         centerTitle: true,
       ),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              'Two-Factor Authentication',
-              style: TextStyle(fontSize: 24),
+           
+           
+            Text(
+              'Scan the QR Code with Google Authenticator.',
+              style: NewStyle.tx28White.copyWith(
+                fontSize: 16,
+                color: MyColor.dark02Color,
+                fontWeight: FontWeight.w500,
+              ),
             ),
             const SizedBox(height: 20),
-            const Text(
-              'Enable Two-Factor Authentication for added security.',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 16),
-            ),
             QrImageView(
-              data: 'widget.orderID',
+              data: 'FEQDSMIP7PH65YCB',
               version: QrVersions.auto,
               size: 150,
               gapless: false,
+            ),
+            const SizedBox(height: 10),
+            Text.rich(
+              textAlign: TextAlign.center,
+              TextSpan(
+                text: 'Alternatively, you can manually enter this secret key: ',
+                style: NewStyle.tx28White.copyWith(
+                  fontSize: 16,
+                  color: MyColor.dark02Color,
+                  fontWeight: FontWeight.w500,
+                ),
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'FEQDSMIP7PH65YCB',
+                    style: NewStyle.tx28White.copyWith(
+                      fontSize: 16,
+                      color: MyColor.dark02Color,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 28),
             OtpTextField(
@@ -73,7 +97,11 @@ class _TwoFAScreenState extends State<TwoFAScreen> {
                 code = verificationCode;
               },
             ),
-            const SizedBox(height: 14),
+            const SizedBox(height: 20),
+            CustomButton(
+              onTap: () {},
+              text: 'Verify',
+            ),
           ],
         ),
       ),

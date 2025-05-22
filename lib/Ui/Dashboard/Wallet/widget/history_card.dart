@@ -81,5 +81,6 @@ class HistoryCard extends StatelessWidget {
                 : const Color(0xff30333A)),
       ),
     );
+  
   }
 }

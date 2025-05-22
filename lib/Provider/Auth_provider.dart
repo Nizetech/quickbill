@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/Account_Provider.dart';
+import 'package:jost_pay_wallet/Provider/DashboardProvider.dart';
 import 'package:jost_pay_wallet/Ui/Authentication/OtpScreen.dart';
 import 'package:jost_pay_wallet/bottom_nav.dart';
 import 'package:jost_pay_wallet/service/auth_repo.dart';
@@ -130,11 +131,14 @@ class AuthProvider with ChangeNotifier {
   }
 
   Future<void> confirmOtp(Map<String, dynamic> data,
-      {bool isForgetPass = false, bool is2fa = false}) async {
+      {bool isForgetPass = false,
+      bool is2fa = false,
+      required AccountProvider account,
+      required DashboardProvider dashProvider}) async {
     try {
       // setLoading(true);
       showLoader();
-      AuthRepo().verifyOTP(data, is2fa: is2fa).then((value) {
+      AuthRepo().verifyOTP(data, is2fa: is2fa).then((value) async {
         log('Value: $value');
         // setLoading(false);
         hideLoader();
@@ -145,6 +149,8 @@ class AuthProvider with ChangeNotifier {
           if (isForgetPass) {
             return;
           } else {
+            dashProvider.changeBottomIndex(0);
+            await account.getUserProfile();
             Get.offAll(BottomNav());
             if (value['message'] != null && value['message'] != '') {
               SuccessToast(value['message']);
@@ -185,6 +191,33 @@ class AuthProvider with ChangeNotifier {
           }
         }
         notifyListeners();
+      });
+    } catch (e) {
+      log('Error: $e');
+      // setLoading(false);
+      ErrorToast(e.toString());
+    }
+  }
+
+  Future<void> forgetPassword(String email) async {
+    try {
+      // setLoading(true);
+      showLoader();
+      AuthRepo().forgetPassword(email).then((value) async {
+        log('Value: $value');
+        // setLoading(false);
+        hideLoader();
+        if (value.isEmpty) return;
+        if (value['result'] == false) {
+          ErrorToast(value['message']);
+        } else {
+          Get.back();
+          if (value['message'] != null && value['message'] != '') {
+            SuccessToast(value['message']);
+          } else {
+            SuccessToast('Password reset link sent successfully');
+          }
+        }
       });
     } catch (e) {
       log('Error: $e');

@@ -8,6 +8,9 @@ import 'package:jost_pay_wallet/Ui/Dashboard/HelpSupport.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Settings/ProfileScreen.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Settings/Rewards/reward_screen.dart';
 import 'package:jost_pay_wallet/Ui/Static/AccountSetting.dart';
+import 'package:jost_pay_wallet/Ui/Support/about_scren.dart';
+import 'package:jost_pay_wallet/Ui/Support/privacy_screen.dart';
+import 'package:jost_pay_wallet/Ui/Support/terms_screen.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
@@ -22,7 +25,6 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
-
   @override
   void initState() {
     super.initState();
@@ -116,10 +118,9 @@ class _SettingScreenState extends State<SettingScreen> {
                       child: InkWell(
                         onTap: () {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                   const ProfileScreen(),
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ProfileScreen(),
                             ),
                           );
                         },
@@ -154,7 +155,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                
+
                     Container(
                       padding: const EdgeInsets.only(top: 8, bottom: 8),
                       child: InkWell(
@@ -204,7 +205,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     Container(
                       padding: const EdgeInsets.only(top: 8, bottom: 8),
                       child: InkWell(
-                        onTap: () => launchWeb(Utils.termsUrl),
+                        onTap: () => Get.to(TermsScreen()),
                         child: Row(
                           children: [
                             Container(
@@ -241,7 +242,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     Container(
                       padding: const EdgeInsets.only(top: 8, bottom: 8),
                       child: InkWell(
-                        onTap: () => launchWeb(Utils.privacyUrl),
+                        onTap: () => Get.to(PrivacyScreen()),
                         child: Row(
                           children: [
                             Container(
@@ -325,12 +326,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       padding: const EdgeInsets.only(top: 8, bottom: 8),
                       child: InkWell(
                         onTap: () {
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //       builder: (context) => const AboutUs(),
-                          //     ));
-                          launchWeb(Utils.aboutUs);
+                          Get.to(AboutUsScreen());
                         },
                         child: Row(
                           children: [

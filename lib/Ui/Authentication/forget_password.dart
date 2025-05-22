@@ -16,7 +16,7 @@ class ForgotPassword extends StatelessWidget {
     void _validateForm(AuthProvider model) async {
       if (_formKey.currentState?.validate() ?? false) {
         // loginAccount();
-        model.resendOtp(email.text.trim(), isForgetPass: true);
+        model.forgetPassword(email.text.trim());
       } else {
         // Form is invalid, no action needed here since warnings are shown automatically
       }
@@ -55,7 +55,7 @@ class ForgotPassword extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 40),
+                const SizedBox(height: 20),
                 SizedBox(
                   width: 160,
                   child: Text(
@@ -65,17 +65,19 @@ class ForgotPassword extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 7),
-                const Text(
+                Text(
                   'Enter your email address and we will send you a link to reset your password',
-                  style: MyStyle.tx16Gray,
+                  style: MyStyle.tx16Gray.copyWith(
+                    fontSize: 14,
+                  ),
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
                   controller: email,
-                  obscureText: true,
+                
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter some text';
+                      return 'Please enter your email address';
                     } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
                         .hasMatch(value)) {
                       return 'Please enter a valid email address';
@@ -83,12 +85,15 @@ class ForgotPassword extends StatelessWidget {
                     return null;
                   },
                   cursorColor: MyColor.greenColor,
-                  style: MyStyle.tx18Black,
+                  style: MyStyle.tx16Black.copyWith(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
                   decoration: NewStyle.authInputDecoration.copyWith(
                     hintText: 'Email address',
                   ),
                 ),
-                SizedBox(height: 40),
+                SizedBox(height: 60),
                 CustomButton(
                     text: 'Verify',
                     isLoading: model.isLoading,

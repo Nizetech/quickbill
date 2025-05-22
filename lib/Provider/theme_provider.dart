@@ -1,19 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
+import 'package:jost_pay_wallet/constants/constants.dart';
 
 class ThemeProvider extends ChangeNotifier {
-  ThemeMode _themeMode = ThemeMode.light;
+  final box = Hive.box(kAppName);
+ 
+  // Store ThemeMode as a string and retrieve it safely
+  ThemeMode themeMode = getThemeModeFromBox();
 
-  ThemeMode get themeMode => _themeMode;
+  static ThemeMode getThemeModeFromBox() {
+    final themeModeString =
+        Hive.box(kAppName).get('themeMode', defaultValue: ThemeMode.light.name);
+    return ThemeMode.values.firstWhere(
+      (e) => e.name == themeModeString,
+      orElse: () => ThemeMode.light,
+    );
+  }
 
   void toggleTheme(bool isDarkMode) {
-    _themeMode = isDarkMode ? ThemeMode.dark : ThemeMode.light;
+    themeMode = isDarkMode ? ThemeMode.dark : ThemeMode.light;
+    box.put('themeMode', themeMode.name); // Store as a string
     notifyListeners();
   }
 
   bool isDarkMode() {
-    return _themeMode == ThemeMode.dark;
+    return themeMode == ThemeMode.dark;
   }
 
   MaterialColor kPrimaryColor = const MaterialColor(

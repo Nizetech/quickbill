@@ -217,9 +217,8 @@ class _PromoScreenState extends State<PromoScreen> {
                               //     ),
                               //   )
                                 
-                                
                               // Data rows
-                              if (account.promoModel!.userPromos != null ||
+                              if (account.promoModel != null &&
                                   account.promoModel!.userPromos!.isNotEmpty)
                                 ...account.promoModel!.userPromos!.map((item) =>
                                     Container(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:jost_pay_wallet/Provider/Account_Provider.dart';
 import 'package:jost_pay_wallet/Provider/DashboardProvider.dart';
 import 'package:jost_pay_wallet/Provider/Token_Provider.dart';
@@ -66,6 +67,9 @@ class _WalletScreenState extends State<WalletScreen> {
       }
       if (accountProvider.userModel == null) {
         accountProvider.getUserProfile();
+      } else {
+        accountProvider.getUserProfile(isLoading: false);
+
       }
     });
   }
@@ -203,13 +207,42 @@ class _WalletScreenState extends State<WalletScreen> {
                                         builder: (context) =>
                                             const AlarmScreen()));
                               },
-                              child: Image.asset("assets/images/alarm.png",
-                                  height: 23,
-                                  width: 22,
-                                  color: themeProvider.isDarkMode()
-                                      ? MyColor.mainWhiteColor
-                                      : null //MyColor.dark01Color,
+                              child: Stack(
+                                children: [
+                                  Icon(
+                                    Iconsax.notification,
+                                    color: themeProvider.isDarkMode()
+                                        ? MyColor.mainWhiteColor
+                                        : MyColor.dark01Color,
                                   ),
+                                  if (accountProvider.notificationModel !=
+                                          null &&
+                                      accountProvider.notificationModel!
+                                          .notifications!.isNotEmpty)
+                                    Positioned(
+                                      right: 0,
+                                      top: 0,
+                                      child: Container(
+                                        width: 13,
+                                        height: 13,
+                                        decoration: BoxDecoration(
+                                          color: MyColor.redColor,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            '${accountProvider.notificationModel!.notifications?.length}',
+                                            style: MyStyle.tx12Black.copyWith(
+                                                color: MyColor.mainWhiteColor,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 11),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                ],
+                              ),
+                             
                             ),
                           ],
                         ),

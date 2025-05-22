@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jost_pay_wallet/constants/api_constants.dart';
 import 'package:jost_pay_wallet/constants/constants.dart';
+import 'package:jost_pay_wallet/utils/loader.dart';
 // import 'package:jost_pay_wallet/utils/loader.dart';
 import 'package:jost_pay_wallet/utils/network_clients.dart';
 import 'package:jost_pay_wallet/utils/toast.dart';
@@ -45,7 +47,27 @@ class AuthRepo {
       return response;
     } catch (e) {
       log('Errrrr');
-      // hideLoader();
+      hideLoader();
+      ErrorToast(e.toString());
+      return {};
+    }
+  }
+
+  // login
+  Future<Map<String, dynamic>> forgetPassword(String email) async {
+    try {
+      log('Details: $email');
+      var response = await client.post(
+        ApiRoute.resetPassword,
+        body: {
+          'email': email,
+        },
+      );
+      log('Password reset: $response, ${response.runtimeType}');
+      return jsonDecode(response);
+    } catch (e) {
+      log('Errrrr');
+      hideLoader();
       ErrorToast(e.toString());
       return {};
     }
@@ -114,7 +136,6 @@ class AuthRepo {
       }
       return response;
     } catch (e) {
-      // hideLoader();
       ErrorToast(e.toString());
       return {};
     }

@@ -75,13 +75,31 @@ String truncateEmail(String email) {
 void launchWeb(String url) async {
   await launchUrl(
     Uri.parse(url),
+      mode: LaunchMode.inAppWebView,
+      webViewConfiguration: WebViewConfiguration());
+}
+
+// open whatsapp
+void openWhatsApp(String phoneNumber) async {
+  String url = 'https://wa.me/$phoneNumber';
+  await launchUrl(
+    Uri.parse(url),
+    mode: LaunchMode.externalApplication,
+  );
+}
+
+// open email
+void openEmail(String email) async {
+  String url = 'mailto:$email';
+  await launchUrl(
+    Uri.parse(url),
     mode: LaunchMode.externalApplication,
   );
 }
 
 String formatNumber(num number) {
-  final formatter = NumberFormat('#,###');
-  return formatter.format(int.parse(number.toString()));
+  final formatter = NumberFormat('#,##0.00');
+  return formatter.format(number);
 }
 
 String formatDateTime(DateTime dateTime) {

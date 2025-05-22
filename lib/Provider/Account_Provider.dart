@@ -25,24 +25,21 @@ class AccountProvider with ChangeNotifier {
   }
 
   // get User Profile
-  Future<void> getUserProfile() async {
+  Future<void> getUserProfile({bool isLoading = true}) async {
     try {
-      // setLoading(true);
+      if (isLoading) 
       showLoader();
       AccountRepo().getProfile().then((value) {
         log('Value: $value');
-        setLoading(false);
+        // setLoading(false);
+        if (isLoading) hideLoader();
         if (value['result'] == false) {
-          hideLoader();
           ErrorToast(value['message']);
         } else {
-          hideLoader();
           userModel = UserModel.fromJson(value);
         }
         notifyListeners();
       });
-      // setLoading(false);
-      notifyListeners();
     } catch (e) {
       log('Error: $e');
       // setLoading(false);
@@ -98,7 +95,7 @@ class AccountProvider with ChangeNotifier {
     try {
       if (isLoading) showLoader();
       AccountRepo().getTransactions().then((value) {
-        log('Value: $value');
+        // log('Value: $value');
         if (value['result'] == false) {
           if (isLoading) hideLoader();
           ErrorToast(value['message']);
@@ -111,6 +108,28 @@ class AccountProvider with ChangeNotifier {
     } catch (e) {
       log('Error: $e');
       // setLoading(false);
+      ErrorToast(e.toString());
+    }
+  }
+
+  // get Refferal History
+  Future<void> getReferrals({bool isLoading = true}) async {
+    try {
+      if (isLoading) showLoader();
+      AccountRepo().getReferral().then((value) {
+        log('Value: $value');
+        if (value['result'] == false) {
+          if (isLoading) hideLoader();
+          ErrorToast(value['message']);
+        } else {
+          if (isLoading) hideLoader();
+          //! Change this
+          transactionModel = TransactionModel.fromJson(value);
+        }
+        notifyListeners();
+      });
+    } catch (e) {
+      log('Error: $e');
       ErrorToast(e.toString());
     }
   }

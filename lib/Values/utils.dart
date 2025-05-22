@@ -8,6 +8,7 @@ class Utils {
   static String usdtBsc = "usdtbsc";
   static String pageType = "";
   static String pageType1 = "";
+  static String faqUrl = "https://project.jostpay.com/our/faq";
   static String aboutUs = "https://project.jostpay.com/our/aboutus";
   static String termsUrl = "https://project.jostpay.com/terms";
   static String privacyUrl = "https://project.jostpay.com/privacy";

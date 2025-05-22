@@ -53,6 +53,21 @@ class AccountRepo {
     }
   }
 
+  Future<Map<String, dynamic>> getReferral() async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response =
+          await client.post(ApiRoute.getReferrals, requestHeaders: {
+        'Authorization': token,
+      });
+      log('Response: $response');
+      return response;
+    } catch (e) {
+      ErrorToast(e.toString());
+      return {};
+    }
+  }
+
   Future<Map<String, dynamic>> getBalance() async {
     String token = await box.get(kAccessToken);
     try {

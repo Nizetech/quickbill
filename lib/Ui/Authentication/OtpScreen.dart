@@ -1,7 +1,9 @@
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jost_pay_wallet/Provider/Account_Provider.dart';
 import 'package:jost_pay_wallet/Provider/Auth_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:jost_pay_wallet/Provider/DashboardProvider.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/utils/toast.dart';
 import 'package:provider/provider.dart';
@@ -141,6 +143,9 @@ class _OtpScreenState extends State<OtpScreen> {
                               ErrorToast("Please enter OTP");
                             } else {
                               model.confirmOtp(
+                                  account: context.read<AccountProvider>(),
+                                  dashProvider:
+                                      context.read<DashboardProvider>(),
                                   is2fa: widget.is2Fa,
                                   isForgetPass: widget.isForgetPass,
                                   {

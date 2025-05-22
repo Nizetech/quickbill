@@ -1,6 +1,10 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
+import 'package:jost_pay_wallet/Ui/Support/SupportScreen.dart';
+import 'package:jost_pay_wallet/Ui/Support/faq_screen.dart';
+import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/NewStyle.dart';
 import 'package:provider/provider.dart';
@@ -161,21 +165,24 @@ class _HelpsupportState extends State<Helpsupport> {
                               const SizedBox(
                                 height: 12,
                               ),
-                              Row(
-                                children: [
-                                  const SizedBox(
-                                    width: 106,
-                                  ),
-                                  const Text(
-                                    'Live chat Faster replies',
-                                    style: MyStyle.tx12Green,
-                                  ),
-                                  Image.asset(
-                                    'assets/images/arrow-right-g.png',
-                                    width: 16,
-                                    height: 16,
-                                  )
-                                ],
+                              InkWell(
+                                onTap: () => Get.to(SupportScreen()),
+                                child: Row(
+                                  children: [
+                                    const SizedBox(
+                                      width: 106,
+                                    ),
+                                    const Text(
+                                      'Live chat Faster replies',
+                                      style: MyStyle.tx12Green,
+                                    ),
+                                    Image.asset(
+                                      'assets/images/arrow-right-g.png',
+                                      width: 16,
+                                      height: 16,
+                                    )
+                                  ],
+                                ),
                               )
                             ],
                           ),
@@ -204,76 +211,84 @@ class _HelpsupportState extends State<Helpsupport> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    width: 42,
-                                    height: 42,
-                                    decoration: BoxDecoration(
-                                        color: themedata.secondary
-                                            .withValues(alpha: 0.8),
-                                        borderRadius:
-                                            BorderRadius.circular(12.3)),
-                                    child:
-                                        Image.asset('assets/images/google.png'),
-                                  ),
-                                  const SizedBox(width: 16),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Support Ticket',
-                                        style: MyStyle.tx16Black.copyWith(
-                                            color: themedata.tertiary),
-                                      ),
-                                      const Text(
-                                        'Please provide a concise description\nof the problem you are experiencing\nto Help@Jostpay.com',
-                                        style: MyStyle.tx12Grey,
-                                      )
-                                    ],
-                                  )
-                                ],
+                              InkWell(
+                                onTap: () => openEmail('info@jostpay.com'),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: 42,
+                                      height: 42,
+                                      decoration: BoxDecoration(
+                                          color: themedata.secondary
+                                              .withValues(alpha: 0.8),
+                                          borderRadius:
+                                              BorderRadius.circular(12.3)),
+                                      child: Image.asset(
+                                          'assets/images/google.png'),
+                                    ),
+                                    const SizedBox(width: 16),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Support Ticket',
+                                          style: MyStyle.tx16Black.copyWith(
+                                              color: themedata.tertiary),
+                                        ),
+                                        const Text(
+                                          'Please provide a concise description\nof the problem you are experiencing\nto Help@Jostpay.com',
+                                          style: MyStyle.tx12Grey,
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
                               ),
                               const SizedBox(
                                 height: 20,
                               ),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    width: 42,
-                                    height: 42,
-                                    decoration: BoxDecoration(
-                                        color: themedata.secondary
-                                            .withValues(alpha: 0.8),
-                                        borderRadius:
-                                            BorderRadius.circular(12.3)),
-                                    child: Image.asset(
-                                        'assets/images/whatsapp.png'),
-                                  ),
-                                  const SizedBox(width: 16),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "What'sapp",
-                                        style: MyStyle.tx16Black.copyWith(
-                                            color: themedata.tertiary),
-                                      ),
-                                      const Text(
-                                        'Chat directly with one of our support\nteams, average response within\n5mins.',
-                                        style: MyStyle.tx12Grey,
-                                      )
-                                    ],
-                                  )
-                                ],
+                              InkWell(
+                                onTap: () => openWhatsApp('09035899595'),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: 42,
+                                      height: 42,
+                                      decoration: BoxDecoration(
+                                          color: themedata.secondary
+                                              .withValues(alpha: 0.8),
+                                          borderRadius:
+                                              BorderRadius.circular(12.3)),
+                                      child: Image.asset(
+                                          'assets/images/whatsapp.png'),
+                                    ),
+                                    const SizedBox(width: 16),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Whatsapp",
+                                          style: MyStyle.tx16Black.copyWith(
+                                              color: themedata.tertiary),
+                                        ),
+                                        const Text(
+                                          'Chat directly with one of our support\nteams, average response within\n5mins.',
+                                          style: MyStyle.tx12Grey,
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
                               ),
                             ],
                           ),
@@ -453,7 +468,7 @@ class _HelpsupportState extends State<Helpsupport> {
                         SizedBox(
                           width: double.infinity,
                           child: TextButton(
-                            onPressed: () => {},
+                            onPressed: () => Get.to(FaqScreen()),
                             style: TextButton.styleFrom(
                               backgroundColor: MyColor.greenColor,
                               padding: const EdgeInsets.symmetric(vertical: 16),

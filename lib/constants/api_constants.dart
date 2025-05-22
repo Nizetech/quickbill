@@ -9,6 +9,7 @@ class ApiRoute {
   static String verifyOtp = 'verify-email';
   static String verify2fa = 'verify-2fa';
   static String changePassword = 'change-password';
+  static String resetPassword = 'forget-password';
 
   // Dashboard
   static String userProfile = 'get-user-profile';
@@ -17,4 +18,5 @@ class ApiRoute {
   static String getTransactions = 'get-purchases';
   static String getNotification = 'get-news';
   static String getPromo = 'get-promos';
+  static String getReferrals = 'get-referrals';
 }

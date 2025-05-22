@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,11 +22,12 @@ import 'Provider/InternetProvider.dart';
 import 'Provider/Token_Provider.dart';
 import 'Provider/Transection_Provider.dart';
 
-bool _initialUriIsHandled = false;
+// bool _initialUriIsHandled = false;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await ScreenUtil.ensureScreenSize();
+  // await InAppWebViewController.setWebContentsDebuggingEnabled(true);
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   await Hive.initFlutter();
@@ -43,37 +43,37 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  StreamSubscription? _sub;
-  void _handleIncomingLinks() {
-    if (!kIsWeb) {
-      // It will handle app links while the app is already started - be it in
-      // the foreground or in the background.
-      // _sub = uriLinkStream.listen((Uri? uri) {
-      //   if (!mounted) return;
-      //   // print('got uri: $uri');
-      //   Utils.wcUrlVal = '$uri';
-      // }, onError: (Object err) {
-      //   // print("error----"+err.toString());
-      // });
-    }
-  }
+  // StreamSubscription? _sub;
+  // void _handleIncomingLinks() {
+  //   if (!kIsWeb) {
+  //     // It will handle app links while the app is already started - be it in
+  //     // the foreground or in the background.
+  //     // _sub = uriLinkStream.listen((Uri? uri) {
+  //     //   if (!mounted) return;
+  //     //   // print('got uri: $uri');
+  //     //   Utils.wcUrlVal = '$uri';
+  //     // }, onError: (Object err) {
+  //     //   // print("error----"+err.toString());
+  //     // });
+  //   }
+  // }
 
-  Future<void> _handleInitialUri() async {
-    // In this example app this is an almost useless guard, but it is here to
-    // show we are not going to call getInitialUri multiple times, even if this
-    // was a weidget that will be disposed of (ex. a navigation route change).
-    // print("initial-------------"+_initialUriIsHandled.toString());
-    if (!_initialUriIsHandled) {
-      // _initialUriIsHandled = true;
-      // final uri = await getInitialUri();
-      // if (uri == null) {
-      //   // print('no initial uri');
-      // } else {
-      //   // print('got initial uri: $uri');
-      //   Utils.wcUrlVal = '$uri';
-      // }
-    }
-  }
+  // Future<void> _handleInitialUri() async {
+  //   // In this example app this is an almost useless guard, but it is here to
+  //   // show we are not going to call getInitialUri multiple times, even if this
+  //   // was a weidget that will be disposed of (ex. a navigation route change).
+  //   // print("initial-------------"+_initialUriIsHandled.toString());
+  //   if (!_initialUriIsHandled) {
+  //     // _initialUriIsHandled = true;
+  //     // final uri = await getInitialUri();
+  //     // if (uri == null) {
+  //     //   // print('no initial uri');
+  //     // } else {
+  //     //   // print('got initial uri: $uri');
+  //     //   Utils.wcUrlVal = '$uri';
+  //     // }
+  //   }
+  // }
 
   @override
   void initState() {
@@ -98,7 +98,7 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    log('My token is $token');
+    // log('My token is $token');
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => DashboardProvider()),

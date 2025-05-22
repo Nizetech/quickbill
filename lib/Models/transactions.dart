@@ -12,7 +12,7 @@ String transactionModelToJson(TransactionModel data) =>
 
 class TransactionModel {
   bool? result;
-  int? prevBalance;
+  num? prevBalance;
   List<Transaction>? data;
 
   TransactionModel({
@@ -24,7 +24,9 @@ class TransactionModel {
   factory TransactionModel.fromJson(Map<String, dynamic> json) =>
       TransactionModel(
         result: json["result"],
-        prevBalance: json["prev_balance"],
+        prevBalance: json["prev_balance"] == null
+            ? 0
+            : num.parse(json["prev_balance"].toString()),
         data: json["data"] == null
             ? []
             : List<Transaction>.from(

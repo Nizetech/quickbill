@@ -42,11 +42,16 @@ class _TransactionhistoryState extends State<Transactionhistory> {
         account.transactionModel!.data!,
         (obj) => obj.transDate.toString().substring(0, 10),
       );
+        // Sort by date in descending order
         groupByData = Map.fromEntries(
           groupByData.entries.toList()
             ..sort((a, b) =>
-                b.key.compareTo(a.key)), // Sort by date in descending order
+                b.key.compareTo(a.key)), 
         );
+        // Sort each group's transactions by time (descending)
+        groupByData.forEach((key, value) {
+          value.sort((a, b) => b.transDate.compareTo(a.transDate));
+        });
       setState(() {});
       }
     });
@@ -57,10 +62,12 @@ class _TransactionhistoryState extends State<Transactionhistory> {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     final themedata = Theme.of(context).colorScheme;
     // log('groupByData: $groupByData');
-    // final dashProvider = Provider.of<DashboardProvider>(context, listen: true);
+    final dashProvider = Provider.of<DashboardProvider>(context, listen: true);
     return Scaffold(
       appBar: AppBar(
-        leading: BackBtn(),
+        leading: BackBtn(
+          onTap: () => dashProvider.changeBottomIndex(0),
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -101,8 +108,6 @@ class _TransactionhistoryState extends State<Transactionhistory> {
                         onRefresh: () => account.getTrasactions(),
                         child: ListView.separated(
                             itemCount: groupByData.length,
-                            
-                         
                             separatorBuilder: (context, index) {
                               return Padding(
                                 padding: const EdgeInsets.only(bottom: 10),

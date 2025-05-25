@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
+import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
+import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/NewColor.dart';
 import 'package:jost_pay_wallet/Values/NewStyle.dart';
 import 'package:jost_pay_wallet/common/button.dart';
+import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class TwoFAScreen extends StatefulWidget {
@@ -17,6 +20,8 @@ class _TwoFAScreenState extends State<TwoFAScreen> {
   String code = "";
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
+    final themedata = Theme.of(context).colorScheme;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -24,11 +29,11 @@ class _TwoFAScreenState extends State<TwoFAScreen> {
         backgroundColor: Colors.transparent,
         title: Text(
           "Two-Factor Authentication",
-          style: NewStyle.tx28White.copyWith(
-            fontSize: 20,
-            color: MyColor.dark02Color,
+          style: MyStyle.tx20Grey.copyWith(
+            color: themedata.tertiary,
           ),
         ),
+       
         centerTitle: true,
       ),
       body: Padding(
@@ -42,7 +47,7 @@ class _TwoFAScreenState extends State<TwoFAScreen> {
               'Scan the QR Code with Google Authenticator.',
               style: NewStyle.tx28White.copyWith(
                 fontSize: 16,
-                color: MyColor.dark02Color,
+                color: themedata.tertiary,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -51,7 +56,15 @@ class _TwoFAScreenState extends State<TwoFAScreen> {
               data: 'FEQDSMIP7PH65YCB',
               version: QrVersions.auto,
               size: 150,
-              gapless: false,
+                gapless: true,
+                dataModuleStyle: QrDataModuleStyle(
+                  color: themedata.tertiary,
+                  dataModuleShape: QrDataModuleShape.square,
+                ),
+                eyeStyle: QrEyeStyle(
+                  eyeShape: QrEyeShape.square,
+                  color: themedata.tertiary,
+                )
             ),
             const SizedBox(height: 10),
             Text.rich(
@@ -60,7 +73,7 @@ class _TwoFAScreenState extends State<TwoFAScreen> {
                 text: 'Alternatively, you can manually enter this secret key: ',
                 style: NewStyle.tx28White.copyWith(
                   fontSize: 16,
-                  color: MyColor.dark02Color,
+                  color: themedata.tertiary,
                   fontWeight: FontWeight.w500,
                 ),
                 children: <TextSpan>[
@@ -68,7 +81,7 @@ class _TwoFAScreenState extends State<TwoFAScreen> {
                     text: 'FEQDSMIP7PH65YCB',
                     style: NewStyle.tx28White.copyWith(
                       fontSize: 16,
-                      color: MyColor.dark02Color,
+                      color: themedata.tertiary,
                       fontWeight: FontWeight.w700,
                     ),
                   ),

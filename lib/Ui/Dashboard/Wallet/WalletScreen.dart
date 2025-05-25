@@ -53,6 +53,7 @@ class _WalletScreenState extends State<WalletScreen> {
   bool isCalculating = false;
   bool isLoaded = false;
 
+
   @override
   void initState() {
     tokenProvider = Provider.of<TokenProvider>(context, listen: false);
@@ -947,23 +948,26 @@ class _WalletScreenState extends State<WalletScreen> {
                         ),
                       ),
                       // const SizedBox(height: 10),
-                      if (accountProvider.transactionModel?.data != null &&
-                          accountProvider.transactionModel!.data!.isNotEmpty)
+                      if (accountProvider.dashBoardHistory != null &&
+                          accountProvider.dashBoardHistory!.isNotEmpty)
+                          
                         ListView.builder(
                           padding: EdgeInsets.only(bottom: 50),
                           physics: const NeverScrollableScrollPhysics(),
-                          reverse: true,
-                          itemBuilder: (context, index) => HistoryCard(
+                          // reverse: true,
+                          itemBuilder: (context, index) {
+                            var item = accountProvider.dashBoardHistory![index];
+                            return HistoryCard(
                             transaction:
-                                accountProvider.transactionModel!.data![index],
-                          ),
+                                item,
+                            );
+                          },
                           shrinkWrap: true,
                           itemCount:
-                              accountProvider.transactionModel!.data!.length > 5
-                                  ? 5
-                                  : accountProvider
-                                      .transactionModel!.data!.length,
-                        )
+                              accountProvider.dashBoardHistory!.length > 5
+                                  ? 5 
+                                  : accountProvider.dashBoardHistory!.length,
+                        ) 
                     ],
                   ),
                 ),

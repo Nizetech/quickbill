@@ -24,7 +24,7 @@ class _AlarmScreenState extends State<AlarmScreen> {
   String type = "all";
   TextEditingController searchController = TextEditingController();
 
-
+List<Notification>? notifications = [];
   @override
   void initState() {
     super.initState();
@@ -67,9 +67,13 @@ WidgetsBinding.instance.addPostFrameCallback((_) async {
               : ListView.builder(
                   itemCount: model.notificationModel!.notifications!.length,
                   shrinkWrap: true,
-              padding: const EdgeInsets.all(0),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
               itemBuilder: (context, index) {
-                    var item = model.notificationModel!.notifications![index];
+                    // Sort notifications by most recent (descending order)
+                    var sortedNotifications = model
+                        .notificationModel!.notifications!
+                      ..sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
+                    var item = sortedNotifications[index];
                     return ListTile(
                       minVerticalPadding: 0,
                       contentPadding: EdgeInsets.zero,

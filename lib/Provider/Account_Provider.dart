@@ -17,6 +17,15 @@ class AccountProvider with ChangeNotifier {
   TransactionModel? transactionModel; 
   NotificationModel? notificationModel; 
   PromoModel? promoModel;
+  List<Transaction>? _dashBoardHistory = [];
+
+  List<Transaction>? get dashBoardHistory => _dashBoardHistory;
+
+  void updateDashBoardHistory() {
+    _dashBoardHistory = List<Transaction>.from(transactionModel!.data!)
+      ..sort((a, b) => b.transDate!.compareTo(a.transDate!));
+    notifyListeners();
+  }
 
   
   void setLoading(bool value) {
@@ -102,6 +111,7 @@ class AccountProvider with ChangeNotifier {
         } else {
           if (isLoading) hideLoader();
           transactionModel = TransactionModel.fromJson(value);
+          updateDashBoardHistory();
         }
         notifyListeners();
       });

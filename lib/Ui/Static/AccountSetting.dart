@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jost_pay_wallet/Provider/Account_Provider.dart';
+import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Authentication/change_password.dart';
 import 'package:jost_pay_wallet/Ui/Static/2fa.dart';
@@ -166,7 +166,7 @@ class _AccountsettingState extends State<Accountsetting> {
                     // const SizedBox(
                     //   height: 12,
                     // ),
-                    // Row(
+                    //  Row(
                     //   children: [
                     //     const SizedBox(
                     //       width: 90,
@@ -270,10 +270,14 @@ class _AccountsettingState extends State<Accountsetting> {
                               ? true
                               : false,
                           onChanged: (value) {
-                            model.userModel?.user?.useGoogleAuth =
-                                value ? "1" : "0";
-                            Get.to(TwoFAScreen());
-                            log("Switch value: ");
+                            // model.userModel?.user?.useGoogleAuth =
+                            //     value ? "1" : "0";
+                            model.toogle2Fa(1).then((val) {
+                              if (val != null) {
+                                Get.to(TwoFAScreen());
+                              }
+                            });
+                            // log("Switch value: ");
                           },
                           activeColor: Colors.green,
                           inactiveThumbColor: Colors.white,

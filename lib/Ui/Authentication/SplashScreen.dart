@@ -1,7 +1,6 @@
 import 'package:uuid/uuid.dart';
 import 'package:flutter/material.dart';
-import 'package:jost_pay_wallet/Provider/Account_Provider.dart';
-import 'package:jost_pay_wallet/Provider/Token_Provider.dart';
+import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -15,7 +14,6 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   late AccountProvider accountProvider;
-  late TokenProvider tokenProvider;
   late SharedPreferences sharedPreferences;
   late String deviceId;
   String isLogin = "false";
@@ -33,7 +31,6 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     accountProvider = Provider.of<AccountProvider>(context, listen: false);
-    tokenProvider = Provider.of<TokenProvider>(context, listen: false);
     super.initState();
     getDeviceId();
   }

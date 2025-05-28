@@ -17,6 +17,7 @@ class AccountProvider with ChangeNotifier {
   TransactionModel? transactionModel; 
   NotificationModel? notificationModel; 
   PromoModel? promoModel;
+  dynamic qrcode;
   List<Transaction>? _dashBoardHistory = [];
 
   List<Transaction>? get dashBoardHistory => _dashBoardHistory;
@@ -27,10 +28,24 @@ class AccountProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  
   void setLoading(bool value) {
     isLoading = value;
     notifyListeners();
+  }
+
+  // toggle 2Fa
+  Future<dynamic> toogle2Fa(int useGoogleAuth) async {
+    try {
+      showLoader();
+      qrcode = await AccountRepo().enableDisable2fa(useGoogleAuth);
+      hideLoader();
+      notifyListeners();
+      return qrcode;
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+      return null;
+    }
   }
 
   // get User Profile
@@ -40,7 +55,6 @@ class AccountProvider with ChangeNotifier {
       showLoader();
       AccountRepo().getProfile().then((value) {
         log('Value: $value');
-        // setLoading(false);
         if (isLoading) hideLoader();
         if (value['result'] == false) {
           ErrorToast(value['message']);
@@ -51,7 +65,6 @@ class AccountProvider with ChangeNotifier {
       });
     } catch (e) {
       log('Error: $e');
-      // setLoading(false);
       ErrorToast(e.toString());
     }
   }

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:jost_pay_wallet/Provider/service_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Domain/domain_screen.dart';
 import 'package:jost_pay_wallet/Ui/Paint/paint_invoice_screen.dart';
 import 'package:jost_pay_wallet/Ui/Paint/paint_screen.dart';
-import 'package:jost_pay_wallet/Ui/car/cardetail_screen.dart';
-import 'package:jost_pay_wallet/Ui/car/repairsteps_screen.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:provider/provider.dart';
@@ -20,8 +19,13 @@ class PaintHistory extends StatefulWidget {
 
 class _PaintHistoryState extends State<PaintHistory> {
   @override
+
   void initState() {
     super.initState();
+    final service = Provider.of<ServiceProvider>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      service.getCarTypes();
+    });
   }
 
   @override
@@ -68,33 +72,7 @@ class _PaintHistoryState extends State<PaintHistory> {
                   child: SingleChildScrollView(
                       child: Column(children: [
                 const SizedBox(height: 20),
-                Container(
-                  width: double.infinity,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 14, horizontal: 19),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: isDark
-                            ? const Color(0xff1B1B1B)
-                            : const Color(0xffE9EBF8),
-                        width: 2,
-                      ),
-                    ),
-                    color: isDark
-                        ? const Color(0xff101010)
-                        : const Color(0xffFCFCFC),
-                  ),
-                  alignment: Alignment.center,
-                  child: Text(
-                    "Paint History",
-                    style: MyStyle.tx20Grey.copyWith(
-                      fontWeight: FontWeight.w400,
-                      color: themedata.tertiary,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 17),
+            
                 GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -155,7 +133,34 @@ class _PaintHistoryState extends State<PaintHistory> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 39),
+               
+                Container(
+                  width: double.infinity,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 14, horizontal: 19),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: isDark
+                            ? const Color(0xff1B1B1B)
+                            : const Color(0xffE9EBF8),
+                        width: 2,
+                      ),
+                    ),
+                    color: isDark
+                        ? const Color(0xff101010)
+                        : const Color(0xffFCFCFC),
+                  ),
+                  alignment: Alignment.center,
+                  child: Text(
+                    "Paint History",
+                    style: MyStyle.tx20Grey.copyWith(
+                      fontWeight: FontWeight.w400,
+                      color: themedata.tertiary,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
                 Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 14,

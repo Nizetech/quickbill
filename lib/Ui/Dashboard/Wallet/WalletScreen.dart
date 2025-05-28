@@ -5,9 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:jost_pay_wallet/Provider/Account_Provider.dart';
+import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/DashboardProvider.dart';
-import 'package:jost_pay_wallet/Provider/Token_Provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/AddFunds.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/AlarmScreen.dart';
@@ -38,7 +37,6 @@ class WalletScreen extends StatefulWidget {
 
 class _WalletScreenState extends State<WalletScreen> {
   late AccountProvider accountProvider;
-  late TokenProvider tokenProvider;
   List<Map<String, dynamic>> data = [];
   List<Map<String, dynamic>> recentData = [];
   double totalBalance = 0.0;
@@ -56,7 +54,6 @@ class _WalletScreenState extends State<WalletScreen> {
 
   @override
   void initState() {
-    tokenProvider = Provider.of<TokenProvider>(context, listen: false);
     accountProvider = Provider.of<AccountProvider>(context, listen: false);
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -87,7 +84,6 @@ class _WalletScreenState extends State<WalletScreen> {
   Widget build(BuildContext context) {
     accountProvider = Provider.of<AccountProvider>(context, listen: true);
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
-    tokenProvider = Provider.of<TokenProvider>(context, listen: true);
     final dashProvider = Provider.of<DashboardProvider>(context, listen: true);
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -845,11 +841,7 @@ class _WalletScreenState extends State<WalletScreen> {
                               ),
                             ),
                             GestureDetector(
-                              onTap: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const PaintHistory())),
+                              onTap: () => Get.to(PaintHistory()),
                               child: Container(
                                 child: Column(
                                   children: [

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jost_pay_wallet/Provider/Auth_provider.dart';
+import 'package:jost_pay_wallet/Provider/auth_provider.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/NewStyle.dart';

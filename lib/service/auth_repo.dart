@@ -27,7 +27,7 @@ class AuthRepo {
       }
       return response;
     } catch (e) {
-      ErrorToast(e.toString());
+      print('Error: $e');
       return {};
     }
   }
@@ -48,7 +48,7 @@ class AuthRepo {
     } catch (e) {
       log('Errrrr');
       hideLoader();
-      ErrorToast(e.toString());
+      print('Error: $e');
       return {};
     }
   }
@@ -68,7 +68,7 @@ class AuthRepo {
     } catch (e) {
       log('Errrrr');
       hideLoader();
-      ErrorToast(e.toString());
+      print('Error: $e');
       return {};
     }
   }
@@ -92,7 +92,7 @@ class AuthRepo {
       return response;
     } catch (e) {
       // hideLoader();
-      ErrorToast(e.toString());
+      print('Error: $e');
       return {};
     }
   }
@@ -117,7 +117,8 @@ class AuthRepo {
       return response;
     } catch (e) {
       // hideLoader();
-      ErrorToast(e.toString());
+      //  print('Error: $e');
+      print(e);
       return {};
     }
   }
@@ -136,7 +137,7 @@ class AuthRepo {
       }
       return response;
     } catch (e) {
-      ErrorToast(e.toString());
+      print('Error: $e');
       return {};
     }
   }
@@ -154,7 +155,7 @@ class AuthRepo {
       return response;
     } catch (e) {
       // hideLoader();
-      ErrorToast(e.toString());
+      print('Error: $e');
       return {};
     }
   }

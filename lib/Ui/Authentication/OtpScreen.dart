@@ -1,7 +1,7 @@
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:jost_pay_wallet/Provider/Account_Provider.dart';
-import 'package:jost_pay_wallet/Provider/Auth_provider.dart';
+import 'package:jost_pay_wallet/Provider/account_provider.dart';
+import 'package:jost_pay_wallet/Provider/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:jost_pay_wallet/Provider/DashboardProvider.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';

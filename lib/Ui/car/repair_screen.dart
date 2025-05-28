@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
@@ -242,8 +244,17 @@ class CustomTextField extends StatelessWidget {
   final String text;
   final IconData? suffixIcon;
   final String? asset;
+  final VoidCallback? onTap;
+  final TextEditingController? controller;
   const CustomTextField(
-      {super.key, required this.text, this.suffixIcon, this.asset});
+      {
+    super.key,
+    required this.text,
+    this.suffixIcon,
+    this.asset,
+    this.onTap,
+    this.controller,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -252,11 +263,18 @@ class CustomTextField extends StatelessWidget {
     final isDark = themeProvider.isDarkMode();
 
     return TextField(
-      controller: TextEditingController(text: text),
+      controller: controller,
       enabled: false,
+      onTap: onTap,
       decoration: InputDecoration(
+        hintText: text,
         filled: true,
         fillColor: isDark ? MyColor.dark02Color : Colors.white,
+        hintStyle: MyStyle.tx14Black.copyWith(
+          color: Colors.grey,
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+        ),
         enabled: false,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),

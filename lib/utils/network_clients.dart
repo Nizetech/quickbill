@@ -46,7 +46,7 @@ static Dio createDio() {
     //  LocalCacheImpl().getToken();
     // if (token.isNotEmpty) {
       return {
-      // "Authorization": "Bearer $token",
+      "Accept": "application/json",
       "Content-Type": "application/x-www-form-urlencoded",
       };
     // }
@@ -102,6 +102,12 @@ static Dio createDio() {
     // CancelToken? cancelToken,
     ProgressCallback? onReceiveProgress,
   }) async {
+    log("""
+Url : $uri
+BODY : $body
+Params : $queryParameters,
+Headers : $requestHeaders
+""");
     try {
       final response = await _dio.post(
         uri,

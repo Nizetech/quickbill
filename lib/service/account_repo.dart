@@ -18,7 +18,7 @@ class AccountRepo {
       });
       return response;
     } catch (e) {
-      ErrorToast(e.toString());
+      print('Error: $e');
       return {};
     }
   }
@@ -33,7 +33,25 @@ class AccountRepo {
       log('Reponse: $response');
       return response;
     } catch (e) {
-      ErrorToast(e.toString());
+      print('Error: $e');
+      return {};
+    }
+  }
+
+  Future<dynamic> enableDisable2fa(int useGoogleAuth) async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response = await client.post(
+        ApiRoute.enable2fa,
+        requestHeaders: {
+          'Authorization': token,
+        },
+        body: {"use_google_auth": useGoogleAuth},
+      );
+      log('Reponse: $response');
+      return response;
+    } catch (e) {
+      print('Error: $e');
       return {};
     }
   }
@@ -45,10 +63,10 @@ class AccountRepo {
       final response = await client.post(ApiRoute.getPromo, requestHeaders: {
         'Authorization': token,
       });
-      log('Reponse: $response');
+      // log('Reponse: $response');
       return response;
     } catch (e) {
-      ErrorToast(e.toString());
+      print('Error: $e');
       return {};
     }
   }
@@ -63,7 +81,7 @@ class AccountRepo {
       log('Response: $response');
       return response;
     } catch (e) {
-      ErrorToast(e.toString());
+      print('Error: $e');
       return {};
     }
   }
@@ -76,7 +94,7 @@ class AccountRepo {
       });
       return response;
     } catch (e) {
-      ErrorToast(e.toString());
+      print('Error: $e');
       return {};
     }
   }
@@ -91,7 +109,7 @@ class AccountRepo {
       });
       return response;
     } catch (e) {
-      ErrorToast(e.toString());
+      print('Error: $e');
       return {};
     }
   }

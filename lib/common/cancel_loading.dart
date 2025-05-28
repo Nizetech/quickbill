@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:jost_pay_wallet/Provider/Account_Provider.dart';
-import 'package:jost_pay_wallet/Provider/Auth_provider.dart';
+import 'package:jost_pay_wallet/Provider/account_provider.dart';
+import 'package:jost_pay_wallet/Provider/auth_provider.dart';
 import 'package:jost_pay_wallet/utils/loader.dart';
 import 'package:provider/provider.dart';
 

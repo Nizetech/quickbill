@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 
-import 'BuyHistory.dart';
+// import 'BuyHistory.dart';
 
 class BuySuccessful extends StatefulWidget {
   final String invoice;
@@ -54,12 +54,12 @@ class _BuySuccessfulState extends State<BuySuccessful> {
 
             InkWell(
               onTap: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const BuyHistory(),
-                  )
-                );
+                // Navigator.pushReplacement(
+                //   context,
+                //   MaterialPageRoute(
+                //         // builder: (context) => const BuyHistory(),
+                //   )
+                // );
               },
               child: Container(
                 margin: const EdgeInsets.fromLTRB(15,0,15,15),

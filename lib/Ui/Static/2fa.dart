@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
-import 'package:jost_pay_wallet/Provider/theme_provider.dart';
+import 'package:jost_pay_wallet/Provider/account_provider.dart';
+import 'package:jost_pay_wallet/Provider/auth_provider.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/NewColor.dart';
@@ -20,7 +22,8 @@ class _TwoFAScreenState extends State<TwoFAScreen> {
   String code = "";
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
+    final model = context.read<AccountProvider>();
+    final auth = context.read<AuthProvider>();
     final themedata = Theme.of(context).colorScheme;
     return Scaffold(
       appBar: AppBar(
@@ -33,7 +36,6 @@ class _TwoFAScreenState extends State<TwoFAScreen> {
             color: themedata.tertiary,
           ),
         ),
-       
         centerTitle: true,
       ),
       body: Padding(
@@ -52,8 +54,9 @@ class _TwoFAScreenState extends State<TwoFAScreen> {
               ),
             ),
             const SizedBox(height: 20),
+            if (model.qrcode != null)
             QrImageView(
-              data: 'FEQDSMIP7PH65YCB',
+                  data: model.qrcode['qrcode_url'],
               version: QrVersions.auto,
               size: 150,
                 gapless: true,
@@ -76,13 +79,34 @@ class _TwoFAScreenState extends State<TwoFAScreen> {
                   color: themedata.tertiary,
                   fontWeight: FontWeight.w500,
                 ),
-                children: <TextSpan>[
+                children: [
                   TextSpan(
-                    text: 'FEQDSMIP7PH65YCB',
+                    text: model.qrcode['secret'],
                     style: NewStyle.tx28White.copyWith(
                       fontSize: 16,
                       color: themedata.tertiary,
                       fontWeight: FontWeight.w700,
+                    ),
+                  ),
+              
+                  WidgetSpan(
+                    alignment: PlaceholderAlignment.middle,
+                    child: GestureDetector(
+                      onTap: () {
+                        Clipboard.setData(
+                            ClipboardData(text: model.qrcode['secret']));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Secret key copied!')),
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 5),
+                        child: Icon(
+                          Icons.copy,
+                          size: 16,
+                          color: themedata.primary,
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -112,7 +136,19 @@ class _TwoFAScreenState extends State<TwoFAScreen> {
             ),
             const SizedBox(height: 20),
             CustomButton(
-              onTap: () {},
+              onTap: () {
+                auth.confirmOtp(
+                  {
+                    'code': code,
+                  },
+                  is2fa: true,
+                  isForgetPass: true,
+                ).then((val) {
+                  if (val) {
+                    model.getUserProfile();
+                  }
+                });
+              },
               text: 'Verify',
             ),
           ],

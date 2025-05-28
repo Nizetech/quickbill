@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jost_pay_wallet/Provider/Account_Provider.dart';
+import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/DashboardProvider.dart';
 import 'package:jost_pay_wallet/Ui/Authentication/OtpScreen.dart';
 import 'package:jost_pay_wallet/bottom_nav.dart';
@@ -108,33 +108,12 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  Future<void> verifyOtp(String email) async {
-    try {
-      // setLoading(true);
-      showLoader();
-      AuthRepo().resendOTP(email).then((value) {
-        log('Value: $value');
-        hideLoader();
-        // setLoading(false);
-        if (value.isEmpty) return;
-        if (value['result'] == false) {
-          ErrorToast(value['message']);
-        } else {
-          SuccessToast('An OTP has been sent to your email');
-        }
-        notifyListeners();
-      });
-    } catch (e) {
-      log('Error: $e');
-      // setLoading(false);
-    }
-  }
 
-  Future<void> confirmOtp(Map<String, dynamic> data,
+  Future<bool> confirmOtp(Map<String, dynamic> data,
       {bool isForgetPass = false,
       bool is2fa = false,
-      required AccountProvider account,
-      required DashboardProvider dashProvider}) async {
+      AccountProvider? account,
+      DashboardProvider? dashProvider}) async {
     try {
       // setLoading(true);
       showLoader();
@@ -142,15 +121,18 @@ class AuthProvider with ChangeNotifier {
         log('Value: $value');
         // setLoading(false);
         hideLoader();
-        if (value.isEmpty) return;
+        if (value.isEmpty) return false;
         if (value['result'] == false) {
           ErrorToast(value['message']);
         } else {
           if (isForgetPass) {
-            return;
+            return true;
           } else {
+            if (dashProvider != null && account != null) {
             dashProvider.changeBottomIndex(0);
             await account.getUserProfile();
+            }
+            notifyListeners();
             Get.offAll(BottomNav());
             if (value['message'] != null && value['message'] != '') {
               SuccessToast(value['message']);
@@ -159,13 +141,14 @@ class AuthProvider with ChangeNotifier {
             }
           }
         }
-        notifyListeners();
       });
     } catch (e) {
       log('Error: $e');
       // setLoading(false);
       ErrorToast(e.toString());
+      return false;
     }
+    return false;
   }
 
   Future<void> updateProfile(Map<String, dynamic> data,

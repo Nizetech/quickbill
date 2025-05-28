@@ -1,6 +1,6 @@
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
-import 'package:jost_pay_wallet/Provider/BuySellProvider.dart';
+// import 'package:jost_pay_wallet/Provider/BuySellProvider.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuySuccessful.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
@@ -24,7 +24,7 @@ class BuyPaymentInstructions extends StatefulWidget {
 
 class _BuyPaymentInstructionsState extends State<BuyPaymentInstructions> {
 
-  late BuySellProvider buySellProvider;
+  // late BuySellProvider buySellProvider;
 
   notifyOrder(invoice)async{
 
@@ -39,40 +39,40 @@ class _BuyPaymentInstructionsState extends State<BuyPaymentInstructions> {
     };
 
     // ignore: use_build_context_synchronously
-    await buySellProvider.notifyOrder(
-        params,
-        context,
-        "sell"
-    );
+    // await buySellProvider.notifyOrder(
+    //     params,
+    //     context,
+    //     "sell"
+    // );
 
-    if(buySellProvider.placeNotifyOrder) {
+    //   if(buySellProvider.placeNotifyOrder) {
 
-      // ignore: use_build_context_synchronously
-      Navigator.pop(context,"refresh");
-      // ignore: use_build_context_synchronously
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>
-                BuySuccessful(
-                  invoice: invoice,
-                ),
-          )
-      );
+    //     // ignore: use_build_context_synchronously
+    //     Navigator.pop(context,"refresh");
+    //     // ignore: use_build_context_synchronously
+    //     Navigator.push(
+    //         context,
+    //         MaterialPageRoute(
+    //           builder: (context) =>
+    //               BuySuccessful(
+    //                 invoice: invoice,
+    //               ),
+    //         )
+    //     );
 
-    }
+    //   }
   }
 
   @override
   void initState() {
     super.initState();
-    buySellProvider = Provider.of<BuySellProvider>(context,listen: false);
+    // buySellProvider = Provider.of<BuySellProvider>(context,listen: false);
 
   }
 
   @override
   Widget build(BuildContext context) {
-    buySellProvider = Provider.of<BuySellProvider>(context,listen: true);
+    // buySellProvider = Provider.of<BuySellProvider>(context,listen: true);
 
     return Scaffold(
       appBar: AppBar(
@@ -303,13 +303,13 @@ class _BuyPaymentInstructionsState extends State<BuyPaymentInstructions> {
             ),
             const SizedBox(height: 30),
 
-            buySellProvider.notifyLoading
-                ?
-            Padding(
-              padding: const EdgeInsets.only(bottom: 10),
-              child: Helper.dialogCall.showLoader(),
-            )
-                :
+              // buySellProvider.notifyLoading
+              //     ?
+              // Padding(
+              //   padding: const EdgeInsets.only(bottom: 10),
+              //   child: Helper.dialogCall.showLoader(),
+              // )
+              //     :
             InkWell(
               onTap: () {
                 var value = widget.buyResponse.toString().substring(1,widget.buyResponse.toString().length-1).split("Invoice no :").last.trim();

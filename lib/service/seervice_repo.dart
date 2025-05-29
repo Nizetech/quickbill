@@ -4,7 +4,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jost_pay_wallet/constants/api_constants.dart';
 import 'package:jost_pay_wallet/constants/constants.dart';
 import 'package:jost_pay_wallet/utils/network_clients.dart';
-import 'package:jost_pay_wallet/utils/toast.dart';
 
 class ServiceRepo {
   final client = NetworkClient();
@@ -19,10 +18,39 @@ class ServiceRepo {
       final response = await client.get(ApiRoute.getCarTypes, requestHeaders: {
         'Authorization': token,
       });
+      // log('Reponse: $response');
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
+  Future<Map<String, dynamic>> getColorPaint() async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response =
+          await client.get(ApiRoute.getColorPaint, requestHeaders: {
+        'Authorization': token,
+      });
       log('Reponse: $response');
       return response;
     } catch (e) {
-      // ErrorToast(e.toString());
+      print('Error: $e');
+      return {};
+    }
+  }
+
+  Future<Map<String, dynamic>> rentSpray(Map<String, dynamic> data) async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response =
+          await client.post(ApiRoute.rentSpray, body: data, requestHeaders: {
+        'Authorization': token,
+      });
+      log('Reponse: $response');
+      return response;
+    } catch (e) {
       print('Error: $e');
       return {};
     }

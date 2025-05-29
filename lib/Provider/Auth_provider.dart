@@ -112,20 +112,27 @@ class AuthProvider with ChangeNotifier {
   Future<bool> confirmOtp(Map<String, dynamic> data,
       {bool isForgetPass = false,
       bool is2fa = false,
+      bool isEnable2fa = false,
       AccountProvider? account,
       DashboardProvider? dashProvider}) async {
     try {
       // setLoading(true);
       showLoader();
-      AuthRepo().verifyOTP(data, is2fa: is2fa).then((value) async {
+      AuthRepo()
+          .verifyOTP(data, is2fa: is2fa, isEnable2fa: isEnable2fa)
+          .then((value) async {
         log('Value: $value');
         // setLoading(false);
         hideLoader();
         if (value.isEmpty) return false;
         if (value['result'] == false) {
-          ErrorToast(value['message']);
         } else {
-          if (isForgetPass) {
+          if (isForgetPass || isEnable2fa) {
+            if (isEnable2fa) {
+              await account!.getUserProfile();
+              Get.back();
+              SuccessToast(value['message']);
+            }
             return true;
           } else {
             if (dashProvider != null && account != null) {

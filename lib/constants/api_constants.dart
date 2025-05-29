@@ -8,6 +8,7 @@ class ApiRoute {
   static String resendOtp = 'get-email-code';
   static String verifyOtp = 'verify-email';
   static String verify2fa = 'verify-2fa';
+  static String verifyAuth = 'verify-auth';
   static String enable2fa = 'enable-2fa';
   static String changePassword = 'change-password';
   static String resetPassword = 'forget-password';
@@ -23,4 +24,6 @@ class ApiRoute {
 
   // Services
   static String getCarTypes = 'services/spray-land';
+  static String getColorPaint = 'services/spray-main';
+  static String rentSpray = 'services/rent-spray';
 }

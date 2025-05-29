@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -6,8 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:jost_pay_wallet/Provider/service_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
-import 'package:jost_pay_wallet/Ui/Domain/domain_screen.dart';
-import 'package:jost_pay_wallet/Ui/Paint/Paintform_screen.dart';
+import 'package:jost_pay_wallet/Ui/Paint/widget/option_summary.dart';
 import 'package:jost_pay_wallet/Ui/Paint/widget/rent_option.dart';
 import 'package:jost_pay_wallet/Ui/car/repair_screen.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
@@ -31,16 +32,23 @@ class _PaintScreenState extends State<PaintScreen> {
   @override
   void initState() {
     super.initState();
-    // final service = Provider.of<ServiceProvider>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      //   service.getCarTypes();
       date.text = dateFormat.format(now);
       time.text = nowTime.format(context);
     });
   }
   final now = DateTime.now();
   final nowTime = TimeOfDay.now();
-  final dateFormat = DateFormat("EEEE, MMMM d yyyy");
+ 
+  File? selectedFile;
+  String total = '';
+  int rentType = -1;
+  DateTime? selectedDate;
+  String base64Image = '';
+  Future<String> fileToBase64(File file) async {
+    final bytes = await file.readAsBytes();
+    return base64Encode(bytes);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -155,6 +163,9 @@ class _PaintScreenState extends State<PaintScreen> {
                                           setState(() {
                                             option.text =
                                                 "Spray Booth ${formatNumber(num.parse(model.carTypeModel!.booth!))} /hr";
+                                            total = formatNumber(num.parse(
+                                                model.carTypeModel!.booth!));
+                                            rentType = 1;
                                           });
                                         },
                                       ),
@@ -167,6 +178,9 @@ class _PaintScreenState extends State<PaintScreen> {
                                           setState(() {
                                             option.text =
                                                 "Air Compressor ${formatNumber(num.parse(model.carTypeModel!.compressor!))} /75CL";
+                                            total = formatNumber(num.parse(model
+                                                .carTypeModel!.compressor!));
+                                            rentType = 2;
                                           });
                                         },
                                       ),
@@ -180,6 +194,11 @@ class _PaintScreenState extends State<PaintScreen> {
                                           setState(() {
                                             option.text =
                                                 "Booth & Compressor ${formatNumber(num.parse(model.carTypeModel!.booth!) + num.parse(model.carTypeModel!.compressor!))}";
+                                            total = formatNumber(num.parse(model
+                                                    .carTypeModel!.booth!) +
+                                                num.parse(model.carTypeModel!
+                                                    .compressor!));
+                                            rentType = 3;
                                           });
                                         },
                                       ),
@@ -308,6 +327,7 @@ class _PaintScreenState extends State<PaintScreen> {
                               }).then((value) {
                             setState(() {
                               date.text = dateFormat.format(value!);
+                              selectedDate = value;
                             });
                           });
                         },
@@ -365,7 +385,7 @@ class _PaintScreenState extends State<PaintScreen> {
                       ),
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: Text("Capture",
+                        child: Text("Upload",
                             style: MyStyle.tx14Black.copyWith(
                               fontSize: 17,
                               color: themedata.tertiary,
@@ -383,7 +403,14 @@ class _PaintScreenState extends State<PaintScreen> {
                             : MyColor.greenColor,
                         strokeWidth: 1,
                         dashPattern: const [6, 3],
-                        child: Container(
+                        child: selectedFile != null
+                            ? Image.file(
+                                selectedFile!,
+                                height: 150,
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                              )
+                            : Container(
                           height: 150,
                           width: double.infinity,
                           alignment: Alignment.center,
@@ -411,7 +438,24 @@ class _PaintScreenState extends State<PaintScreen> {
                                   elevation: 0,
                                 ),
                                 onPressed: () async {
-                                  await FilePicker.platform.pickFiles();
+                                        await FilePicker.platform.pickFiles(
+                                          type: FileType.custom,
+                                          allowedExtensions: [
+                                            'jpg',
+                                            'png',
+                                            'jpeg',
+                                          ],
+                                        ).then((value) async {
+                                          if (value != null) {
+                                            setState(() {
+                                              selectedFile =
+                                                  File(value.files.first.path!);
+                                            });
+                                            base64Image = await fileToBase64(
+                                                selectedFile!);
+                                            log('base64Image: $base64Image');
+                                          }
+                                        });
                                 },
                                 child: Text(
                                   'Browse files',
@@ -443,40 +487,19 @@ class _PaintScreenState extends State<PaintScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Uploading...',
+                                    selectedFile == null
+                                        ? "Only support jpg & png"
+                                        : 'Uploaded',
                                     style: MyStyle.tx12Black.copyWith(
                                         fontWeight: FontWeight.w600,
                                         color: themedata.tertiary),
                                   ),
-                                  const SizedBox(height: 4),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        '65%',
-                                        style: MyStyle.tx12Black.copyWith(
-                                            fontSize: 12,
-                                            color: const Color(0xff6B7280)),
-                                      ),
-                                      const SizedBox(width: 3),
-                                      Text(
-                                        '•',
-                                        style: MyStyle.tx12Black.copyWith(
-                                            fontSize: 12,
-                                            color: const Color(0xff6B7280)),
-                                      ),
-                                      const SizedBox(width: 2),
-                                      Text(
-                                        '30 seconds remaining',
-                                        style: MyStyle.tx12Black.copyWith(
-                                            color: const Color(0xff6B7280)),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 8),
+                            
+                                  const SizedBox(height: 10),
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(94),
                                     child: LinearProgressIndicator(
-                                      value: 0.65,
+                                      value: selectedFile == null ? 0 : 1,
                                       backgroundColor: isDark
                                           ? const Color(0xff121212)
                                           : const Color(0xffFAFAFA),
@@ -489,9 +512,14 @@ class _PaintScreenState extends State<PaintScreen> {
                                 ],
                               ),
                             ),
-                            const SizedBox(width: 10),
+                            if (selectedFile != null) ...[
+                              const SizedBox(width: 10),
                             GestureDetector(
-                              onTap: () {},
+                                onTap: () {
+                                  setState(() {
+                                    selectedFile = null;
+                                  });
+                                },
                               child: SvgPicture.asset(
                                 isDark
                                     ? "assets/images/svg/close-dark.svg"
@@ -499,190 +527,21 @@ class _PaintScreenState extends State<PaintScreen> {
                                 height: 24,
                                 width: 24,
                               ),
-                            ),
+                              ),
+                            ]
                           ],
                         ),
                       ),
                       const SizedBox(
                         height: 36,
                       ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 19,
-                          vertical: 23,
-                        ).copyWith(right: 18),
-                        decoration: BoxDecoration(
-                            color: isDark
-                                ? const Color(0xff101010)
-                                : const Color(0xffFCFCFC),
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                              color: isDark
-                                  ? const Color(0xff1B1B1B)
-                                  : const Color(0xffE9EBF8),
-                            )),
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 14.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    DotLabel(
-                                      text: "Rental Option",
-                                      value: "Rent spray booth",
-                                      dotColor: MyColor.dark01Color,
-                                      labelColor: const Color(0xff6E6D7A),
-                                      textColor: isDark
-                                          ? MyColor.mainWhiteColor
-                                          : MyColor.blackColor,
-                                    ),
-                                    DotLabel(
-                                      text: "Car Type",
-                                      dotColor: MyColor.dark01Color,
-                                      value: "Saloon Car",
-                                      labelColor: const Color(0xff6E6D7A),
-                                      textColor: isDark
-                                          ? MyColor.mainWhiteColor
-                                          : MyColor.blackColor,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 22),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 25),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    DotLabel(
-                                      text: "Date",
-                                      value: "Wed, 28 2025",
-                                      dotColor: MyColor.dark01Color,
-                                      labelColor: const Color(0xff6E6D7A),
-                                      textColor: isDark
-                                          ? MyColor.mainWhiteColor
-                                          : MyColor.blackColor,
-                                    ),
-                                    DotLabel(
-                                      text: "Time",
-                                      value: "12:30 PM",
-                                      dotColor: MyColor.dark01Color,
-                                      labelColor: const Color(0xff6E6D7A),
-                                      textColor: isDark
-                                          ? MyColor.mainWhiteColor
-                                          : MyColor.blackColor,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 12),
-                              Divider(
-                                color: isDark
-                                    ? const Color(0xff1B1B1B)
-                                    : const Color(0xffE9EBF8),
-                                thickness: 1,
-                              ),
-                              const SizedBox(height: 8),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Total",
-                                    style: MyStyle.tx16LightBlack.copyWith(
-                                      color: themedata.tertiary,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  Text(
-                                    "N25,000",
-                                    style: MyStyle.tx16Black.copyWith(
-                                      color: themedata.tertiary,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 15),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 3.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 38, vertical: 10),
-                                        decoration: BoxDecoration(
-                                          color: isDark
-                                              ? const Color(0xff0D0D0D)
-                                              : MyColor.mainWhiteColor,
-                                          border: Border.all(
-                                              color: isDark
-                                                  ? const Color(0xffFFFFFF)
-                                                      .withOpacity(0.1)
-                                                  : const Color(0xff121212)
-                                                      .withOpacity(0.1)),
-                                          borderRadius:
-                                              BorderRadius.circular(999),
-                                        ),
-                                        child: Text(
-                                          "Cancel",
-                                          style: MyStyle.tx14White.copyWith(
-                                              color: isDark
-                                                  ? const Color(0xffDD4848)
-                                                  : const Color(0xffD93333),
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const PaintformScreen(),
-                                          ),
-                                        );
-                                      },
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 38, vertical: 10),
-                                        decoration: BoxDecoration(
-                                          color: isDark
-                                              ? const Color(0xff0D0D0D)
-                                              : MyColor.mainWhiteColor,
-                                          border: Border.all(
-                                              color: isDark
-                                                  ? const Color(0xffFFFFFF)
-                                                      .withOpacity(0.1)
-                                                  : const Color(0xff121212)
-                                                      .withOpacity(0.1)),
-                                          borderRadius:
-                                              BorderRadius.circular(999),
-                                        ),
-                                        child: Text(
-                                          "Proceed",
-                                          style: MyStyle.tx14White.copyWith(
-                                              color: themedata.tertiary,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ]),
+                      OptionSummary(
+                        date: selectedDate ?? now,
+                        time: time.text,
+                        total: total,
+                        image: base64Image,
+                        rentType: rentType,
+                        carType: carType.text,
                       ),
                       const SizedBox(
                         height: 60,
@@ -699,3 +558,5 @@ class _PaintScreenState extends State<PaintScreen> {
     );
   }
 }
+
+final dateFormat = DateFormat("EEE, MMMM d yyyy");

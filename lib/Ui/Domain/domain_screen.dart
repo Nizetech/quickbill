@@ -815,11 +815,13 @@ class DotLabel extends StatelessWidget {
   final Color? dotColor;
   final TextStyle? textStyle;
   final TextStyle? labelStyle;
+  final int flex;
 
   const DotLabel({
     super.key,
     required this.text,
     required this.value,
+    this.flex = 1,
     this.dotColor,
     this.labelColor,
     this.textColor,
@@ -831,41 +833,51 @@ class DotLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     final themedata = Theme.of(context).colorScheme;
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Row(
+    return Expanded(
+      flex: flex,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Dot(
-              color: dotColor ??
-                  (themeProvider.isDarkMode()
-                      ? MyColor.whiteColor
-                      : MyColor.dark01Color)),
+          Transform.translate(
+            offset: const Offset(0, 5),
+            child: Dot(
+                color: dotColor ??
+                    (themeProvider.isDarkMode()
+                        ? MyColor.whiteColor
+                        : MyColor.dark01Color)),
+          ),
           const SizedBox(width: 6),
-          Text(
-            text,
-            style: labelStyle ??
-                (MyStyle.tx14Black.copyWith(
-                  fontWeight: FontWeight.w500,
-                  color: labelColor ??
-                      (themeProvider.isDarkMode()
-                          ? MyColor.whiteColor
-                          : const Color(0xff6E6D7A)),
-                )),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                text,
+                style: labelStyle ??
+                    (MyStyle.tx14Black.copyWith(
+                      fontWeight: FontWeight.w500,
+                      color: labelColor ??
+                          (themeProvider.isDarkMode()
+                              ? MyColor.whiteColor
+                              : const Color(0xff6E6D7A)),
+                    )),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                value,
+                style: textStyle ??
+                    MyStyle.tx16Black.copyWith(
+                      fontWeight: FontWeight.w400,
+                      color: textColor ??
+                          (themeProvider.isDarkMode()
+                              ? const Color(0xffCBD2EB)
+                              : const Color(0xff141B34)),
+                    ),
+              ),
+            ],
           ),
         ],
       ),
-      const SizedBox(height: 8),
-      Text(
-        value,
-        style: textStyle ??
-            MyStyle.tx16Black.copyWith(
-              fontWeight: FontWeight.w400,
-              color: textColor ??
-                  (themeProvider.isDarkMode()
-                      ? const Color(0xffCBD2EB)
-                      : const Color(0xff141B34)),
-            ),
-      ),
-    ]);
+    );
   }
 }
 

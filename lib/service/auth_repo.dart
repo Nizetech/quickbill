@@ -7,7 +7,6 @@ import 'package:jost_pay_wallet/constants/constants.dart';
 import 'package:jost_pay_wallet/utils/loader.dart';
 // import 'package:jost_pay_wallet/utils/loader.dart';
 import 'package:jost_pay_wallet/utils/network_clients.dart';
-import 'package:jost_pay_wallet/utils/toast.dart';
 
 class AuthRepo {
   final client = NetworkClient();
@@ -99,13 +98,17 @@ class AuthRepo {
 
   // verify otp
   Future<Map<String, dynamic>> verifyOTP(Map<String, dynamic> data,
-      {bool is2fa = false}) async {
+      {bool is2fa = false, bool isEnable2fa = false}) async {
     String token = await box.get(kAccessToken);
     try {
       // log('Login Details: $email');
       final response =
           await client.post(
-          is2fa ? ApiRoute.verify2fa : ApiRoute.verifyOtp,
+          is2fa
+              ? ApiRoute.verifyAuth
+              : isEnable2fa
+                  ? ApiRoute.verify2fa
+                  : ApiRoute.verifyOtp,
           body: is2fa ? {'code': data['code']} : data,
           requestHeaders: {
         'Authorization': token,
@@ -117,13 +120,12 @@ class AuthRepo {
       return response;
     } catch (e) {
       // hideLoader();
-      //  print('Error: $e');
       print(e);
       return {};
     }
   }
 
-  // verify otp
+  // update profile
   Future<Map<String, dynamic>> updateProfile(Map<String, dynamic> data,
       {bool is2fa = false}) async {
     String token = await box.get(kAccessToken);

@@ -141,13 +141,9 @@ class _TwoFAScreenState extends State<TwoFAScreen> {
                   {
                     'code': code,
                   },
-                  is2fa: true,
-                  isForgetPass: true,
-                ).then((val) {
-                  if (val) {
-                    model.getUserProfile();
-                  }
-                });
+                  account: model,
+                  isEnable2fa: true,
+                );
               },
               text: 'Verify',
             ),

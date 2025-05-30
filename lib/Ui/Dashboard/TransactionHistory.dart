@@ -1,6 +1,4 @@
-import 'dart:developer';
 
-import 'package:collection/collection.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:jost_pay_wallet/Models/transactions.dart';
@@ -23,7 +21,7 @@ class Transactionhistory extends StatefulWidget {
 
 class _TransactionhistoryState extends State<Transactionhistory> {
 
-  Map<dynamic, List> groupByData = {};
+  // Map<dynamic, List> groupByData = {};
   @override
   void initState() {
     super.initState();
@@ -34,26 +32,6 @@ class _TransactionhistoryState extends State<Transactionhistory> {
       } else {
         await account.getTrasactions(isLoading: false);
       }
-      if (account.transactionModel == null) {
-        return;
-      } else {
-        log('transactionModel: ${account.transactionModel!.data!.length}');
-      groupByData = groupBy(
-        account.transactionModel!.data!,
-        (obj) => obj.transDate.toString().substring(0, 10),
-      );
-        // Sort by date in descending order
-        groupByData = Map.fromEntries(
-          groupByData.entries.toList()
-            ..sort((a, b) =>
-                b.key.compareTo(a.key)), 
-        );
-        // Sort each group's transactions by time (descending)
-        groupByData.forEach((key, value) {
-          value.sort((a, b) => b.transDate.compareTo(a.transDate));
-        });
-      setState(() {});
-      }
     });
   }
 
@@ -61,7 +39,7 @@ class _TransactionhistoryState extends State<Transactionhistory> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     final themedata = Theme.of(context).colorScheme;
-    // log('groupByData: $groupByData');
+    final account = context.watch<AccountProvider>();
     final dashProvider = Provider.of<DashboardProvider>(context, listen: true);
     return Scaffold(
       appBar: AppBar(
@@ -71,98 +49,95 @@ class _TransactionhistoryState extends State<Transactionhistory> {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      body: Consumer<AccountProvider>(builder: (context, account, _) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: 10,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(
+              height: 10,
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              'Transaction History',
+              style: MyStyle.tx20Grey.copyWith(
+                color: themedata.tertiary,
               ),
-              const SizedBox(
-                height: 10,
-              ),
-              Text(
-                'Transaction History',
-                style: MyStyle.tx20Grey.copyWith(
-                  color: themedata.tertiary,
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              groupByData.isEmpty
-                  ? Expanded(
-                      child: Center(
-                        child: Text(
-                          'Transactions not found',
-                          style: MyStyle.tx20Grey.copyWith(
-                            color: themedata.tertiary,
-                          ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            account.transGroupByData.isEmpty
+                ? Expanded(
+                    child: Center(
+                      child: Text(
+                        'Transactions not found',
+                        style: MyStyle.tx20Grey.copyWith(
+                          color: themedata.tertiary,
                         ),
                       ),
-                    )
-                  : Expanded(
-                      child: RefreshIndicator(
-                        onRefresh: () => account.getTrasactions(),
-                        child: ListView.separated(
-                            itemCount: groupByData.length,
-                            separatorBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.only(bottom: 10),
-                                child: DottedBorder(
-                                  child: SizedBox(
-                                    height: 0,
+                    ),
+                  )
+                : Expanded(
+                    child: RefreshIndicator(
+                      onRefresh: () => account.getTrasactions(),
+                      child: ListView.separated(
+                          itemCount: account.transGroupByData.length,
+                          separatorBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 10),
+                              child: DottedBorder(
+                                child: SizedBox(
+                                  height: 0,
+                                ),
+                                color: themeProvider.isDarkMode()
+                                    ? MyColor.borderDarkColor
+                                    : MyColor.borderColor,
+                                strokeWidth: 1,
+                                dashPattern: const [
+                                  6,
+                                  3
+                                ], // Dash pattern: 6 units line, 3 units space
+                                customPath: (size) => Path()
+                                  ..moveTo(0, 0)
+                                  ..lineTo(size.width, 0),
+                              ),
+                            );
+                          },
+                          itemBuilder: (context, i) {
+                            String key =
+                                account.transGroupByData.keys.elementAt(i);
+                            List value = account.transGroupByData[key]!;
+                            return Column(children: [
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  isToday(DateTime.parse(key)),
+                                  style: MyStyle.tx14Black.copyWith(
+                                    color: themedata.tertiary,
                                   ),
-                                  color: themeProvider.isDarkMode()
-                                      ? MyColor.borderDarkColor
-                                      : MyColor.borderColor,
-                                  strokeWidth: 1,
-                                  dashPattern: const [
-                                    6,
-                                    3
-                                  ], // Dash pattern: 6 units line, 3 units space
-                                  customPath: (size) => Path()
-                                    ..moveTo(0, 0)
-                                    ..lineTo(size.width, 0),
                                 ),
-                              );
-                            },
-                            itemBuilder: (context, i) {
-                              String key = groupByData.keys.elementAt(i);
-                              List value = groupByData[key]!;
-                              return Column(children: [
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    isToday(DateTime.parse(key)),
-                                    style: MyStyle.tx14Black.copyWith(
-                                      color: themedata.tertiary,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                                ListView.builder(
-                                  itemCount: value.length,
-                                  padding: const EdgeInsets.all(0),
-                                  shrinkWrap: true,
-                                  // reverse: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemBuilder: (context, index) {
-                                    Transaction transaction = value[index];
-                                    return HistoryCard(
-                                        transaction: transaction);
-                                  },
-                                ),
-                              ]);
-                            }),
-                      ),
-                    )
-            ],
-          ),
-        );
-      }
+                              ),
+                              const SizedBox(height: 10),
+                              ListView.builder(
+                                itemCount: value.length,
+                                padding: const EdgeInsets.all(0),
+                                shrinkWrap: true,
+                                // reverse: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  Transaction transaction = value[index];
+                                  return HistoryCard(transaction: transaction);
+                                },
+                              ),
+                            ]);
+                          }),
+                    ),
+                  )
+          ],
+        ),
       ),
     );
   }

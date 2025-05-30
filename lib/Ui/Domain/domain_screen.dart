@@ -847,33 +847,35 @@ class DotLabel extends StatelessWidget {
                         : MyColor.dark01Color)),
           ),
           const SizedBox(width: 6),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                text,
-                style: labelStyle ??
-                    (MyStyle.tx14Black.copyWith(
-                      fontWeight: FontWeight.w500,
-                      color: labelColor ??
-                          (themeProvider.isDarkMode()
-                              ? MyColor.whiteColor
-                              : const Color(0xff6E6D7A)),
-                    )),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                value,
-                style: textStyle ??
-                    MyStyle.tx16Black.copyWith(
-                      fontWeight: FontWeight.w400,
-                      color: textColor ??
-                          (themeProvider.isDarkMode()
-                              ? const Color(0xffCBD2EB)
-                              : const Color(0xff141B34)),
-                    ),
-              ),
-            ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  text,
+                  style: labelStyle ??
+                      (MyStyle.tx14Black.copyWith(
+                        fontWeight: FontWeight.w500,
+                        color: labelColor ??
+                            (themeProvider.isDarkMode()
+                                ? MyColor.whiteColor
+                                : const Color(0xff6E6D7A)),
+                      )),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  value,
+                  style: textStyle ??
+                      MyStyle.tx16Black.copyWith(
+                        fontWeight: FontWeight.w400,
+                        color: textColor ??
+                            (themeProvider.isDarkMode()
+                                ? const Color(0xffCBD2EB)
+                                : const Color(0xff141B34)),
+                      ),
+                ),
+              ],
+            ),
           ),
         ],
       ),

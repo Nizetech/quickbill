@@ -33,7 +33,7 @@ class ServiceRepo {
           await client.get(ApiRoute.getColorPaint, requestHeaders: {
         'Authorization': token,
       });
-      log('Reponse: $response');
+      // log('Reponse: $response');
       return response;
     } catch (e) {
       print('Error: $e');
@@ -46,6 +46,21 @@ class ServiceRepo {
     try {
       final response =
           await client.post(ApiRoute.rentSpray, body: data, requestHeaders: {
+        'Authorization': token,
+      });
+      log('Reponse: $response');
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
+  Future<Map<String, dynamic>> getSprayHistory() async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response =
+          await client.get(ApiRoute.getSprayHistory, requestHeaders: {
         'Authorization': token,
       });
       log('Reponse: $response');

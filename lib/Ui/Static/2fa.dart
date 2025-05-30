@@ -129,9 +129,26 @@ class _TwoFAScreenState extends State<TwoFAScreen> {
               showFieldAsBox: true,
               // clearText: clearText,
               autoFocus: true,
-              onCodeChanged: (String code) {},
+              onCodeChanged: (String code) {
+                setState(() {});
+                if (code.length == 6) {
+                  auth.confirmOtp(
+                    {'code': code},
+                    account: model,
+                    isEnable2fa: true,
+                  );
+                }
+              },
               onSubmit: (String verificationCode) {
                 code = verificationCode;
+                setState(() {});
+                if (code.length == 6) {
+                  auth.confirmOtp(
+                    {'code': code},
+                    account: model,
+                    isEnable2fa: true,
+                  );
+                }
               },
             ),
             const SizedBox(height: 20),
@@ -139,7 +156,7 @@ class _TwoFAScreenState extends State<TwoFAScreen> {
               onTap: () {
                 auth.confirmOtp(
                   {
-                    'code': code,
+                    'code': code
                   },
                   account: model,
                   isEnable2fa: true,

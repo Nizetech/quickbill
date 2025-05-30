@@ -54,13 +54,13 @@ class AppInterceptors extends Interceptor {
       functionName: "onResponse",
     );
     if (response.data != null &&
-        response.data is String &&
-        (response.data as String).toLowerCase().contains("doctype")) {
+            response.data is String &&
+            (response.data as String).toLowerCase().contains("doctype") ||
+        response.statusCode == 500) {
       CancelLoading().cancelLoading();
       ErrorToast(
           "Invalid response recieved, logging out and redirecting to login page");
-      // await navigatorKey.currentState!
-      //     .pushNamedAndRemoveUntil(SigninScreen.login, (route) => false);
+
       Get.offAll(SignInScreen());
     }
     _log.custom(
@@ -79,14 +79,14 @@ class AppInterceptors extends Interceptor {
     _log.e(err.requestOptions.headers, functionName: "onError[1]");
     _log.e(err.requestOptions.data, functionName: "onError[2]");
     _log.e(err.response?.data, functionName: "onError[3]");
-    // if (authRepo.isDialogShowing == true) {
-    //   // log(err.response!.data.toString());
-    //   // log(err.response?.data['message'].toString() ?? "");
-    //   hideLoader();
-    // }
-    // log('Data: Not String ==> ${err.response?.data}');
+    if (err.response?.statusCode == 500) {
+      CancelLoading().cancelLoading();
+      ErrorToast(
+          "Invalid response recieved, logging out and redirecting to login page");
+      Get.offAll(SignInScreen());
+      return;
+    }
 
-    // log(err.response!.data.toString());
     if (err.response?.data['data']?['error'] != null
         // ignore: unnecessary_null_comparison
         ) {

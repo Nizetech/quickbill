@@ -1,6 +1,8 @@
 import 'dart:developer';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Models/notification_model.dart';
 import 'package:jost_pay_wallet/Models/promotion_model.dart';
 import 'package:jost_pay_wallet/Models/transactions.dart';
@@ -14,17 +16,38 @@ class AccountProvider with ChangeNotifier {
   bool isLoading = false;
   UserModel? userModel;
   num? balance;
-  TransactionModel? transactionModel; 
-  NotificationModel? notificationModel; 
+  TransactionModel? transactionModel;
+  NotificationModel? notificationModel;
   PromoModel? promoModel;
   dynamic qrcode;
   List<Transaction>? _dashBoardHistory = [];
+  Map<dynamic, List> _transGroupByData = {};
 
+  Map<dynamic, List> get transGroupByData => _transGroupByData;
   List<Transaction>? get dashBoardHistory => _dashBoardHistory;
 
   void updateDashBoardHistory() {
     _dashBoardHistory = List<Transaction>.from(transactionModel!.data!)
       ..sort((a, b) => b.transDate!.compareTo(a.transDate!));
+    notifyListeners();
+  }
+
+  void updateTransactionGroupData() {
+    List<Transaction>? _dashBoardHistory =
+        List<Transaction>.from(transactionModel!.data!);
+    _transGroupByData = groupBy(
+      _dashBoardHistory,
+      (obj) => obj.transDate.toString().substring(0, 10),
+    );
+    // Sort by date in descending order
+    _transGroupByData = Map.fromEntries(
+      _transGroupByData.entries.toList()
+        ..sort((a, b) => b.key.compareTo(a.key)),
+    );
+    // Sort each group's transactions by time (descending)
+    _transGroupByData.forEach((key, value) {
+      value.sort((a, b) => b.transDate.compareTo(a.transDate));
+    });
     notifyListeners();
   }
 
@@ -34,12 +57,20 @@ class AccountProvider with ChangeNotifier {
   }
 
   // toggle 2Fa
-  Future<dynamic> toogle2Fa(int useGoogleAuth) async {
+  Future<dynamic> toogle2Fa(int useGoogleAuth,
+      {bool showMessage = false, AccountProvider? account}) async {
     try {
       showLoader();
       qrcode = await AccountRepo().enableDisable2fa(useGoogleAuth);
-      hideLoader();
+      if (useGoogleAuth == 0) {
+        await account!.getUserProfile();
+      }
+      // hideLoader();
+      Navigator.pop(Get.context!);
       notifyListeners();
+      if (showMessage) {
+        SuccessToast('Google Authenticator Disabled Successfully');
+      }
       return qrcode;
     } catch (e) {
       log('Error: $e');
@@ -51,8 +82,7 @@ class AccountProvider with ChangeNotifier {
   // get User Profile
   Future<void> getUserProfile({bool isLoading = true}) async {
     try {
-      if (isLoading) 
-      showLoader();
+      if (isLoading) showLoader();
       AccountRepo().getProfile().then((value) {
         log('Value: $value');
         if (isLoading) hideLoader();
@@ -60,6 +90,7 @@ class AccountProvider with ChangeNotifier {
           ErrorToast(value['message']);
         } else {
           userModel = UserModel.fromJson(value);
+          if (isLoading) hideLoader();
         }
         notifyListeners();
       });
@@ -125,6 +156,7 @@ class AccountProvider with ChangeNotifier {
           if (isLoading) hideLoader();
           transactionModel = TransactionModel.fromJson(value);
           updateDashBoardHistory();
+          updateTransactionGroupData();
         }
         notifyListeners();
       });
@@ -177,5 +209,4 @@ class AccountProvider with ChangeNotifier {
       ErrorToast(e.toString());
     }
   }
-
 }

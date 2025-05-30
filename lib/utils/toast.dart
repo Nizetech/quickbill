@@ -1,6 +1,5 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
@@ -42,8 +41,11 @@ class SuccessToast {
       icon: IconButton(
           onPressed: () => Get.back(),
           icon:
-              //  Icon(Icons.close, color: Colors.white)
-              SvgPicture.asset('assets/images/success_check.svg')),
+               Icon(
+          Icons.check_circle,
+          color: Colors.white,
+        ),
+      ),
       backgroundColor: MyColor.greenColor,
       duration: const Duration(seconds: 3),
     ).show(Get.context!);

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:jost_pay_wallet/Models/car_type_model.dart';
 import 'package:jost_pay_wallet/Models/color_paint_mode.dart';
+import 'package:jost_pay_wallet/Models/spray_history_model.dart';
 import 'package:jost_pay_wallet/service/seervice_repo.dart';
 import 'package:jost_pay_wallet/utils/loader.dart';
 import 'package:jost_pay_wallet/utils/toast.dart';
@@ -12,6 +13,7 @@ class ServiceProvider with ChangeNotifier {
 
   CarTypeModel? carTypeModel;
   ColorPaintModel? colorPaintModel;
+  SprayHistoryModel? sprayHistoryModel;
 
   Future<void> getCarTypes() async {
     try {
@@ -31,6 +33,19 @@ class ServiceProvider with ChangeNotifier {
       showLoader();
       var res = await ServiceRepo().rentSpray(data);
       log('Response: $res');
+      hideLoader();
+      notifyListeners();
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
+  Future<void> getSprayHistory() async {
+    try {
+      showLoader();
+      var res = await ServiceRepo().getSprayHistory();
+      sprayHistoryModel = SprayHistoryModel.fromJson(res);
       hideLoader();
       notifyListeners();
     } catch (e) {

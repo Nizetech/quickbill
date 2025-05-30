@@ -270,13 +270,19 @@ class _AccountsettingState extends State<Accountsetting> {
                               ? true
                               : false,
                           onChanged: (value) {
-                            // model.userModel?.user?.useGoogleAuth =
-                            //     value ? "1" : "0";
+                            if (model.userModel?.user?.useGoogleAuth == "1") {
+                              model.toogle2Fa(
+                                0,
+                                showMessage: true,
+                                account: context.read<AccountProvider>(),
+                              );
+                            } else {
                             model.toogle2Fa(1).then((val) {
                               if (val != null) {
                                 Get.to(TwoFAScreen());
                               }
                             });
+                            }
                             // log("Switch value: ");
                           },
                           activeColor: Colors.green,

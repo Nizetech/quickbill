@@ -26,5 +26,7 @@ class ApiRoute {
   static String getCarTypes = 'services/spray-land';
   static String getColorPaint = 'services/spray-main';
   static String getSprayHistory = 'services/spray-history';
+  static String getSpraydetails = 'services/spray-history/details';
+  static String sharePdf = 'services/spray-history/share';
   static String rentSpray = 'services/rent-spray';
 }

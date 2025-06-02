@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
@@ -453,7 +452,7 @@ class _PaintScreenState extends State<PaintScreen> {
                                             });
                                             base64Image = await fileToBase64(
                                                 selectedFile!);
-                                            log('base64Image: $base64Image');
+                                            model.updateImage(base64Image);
                                           }
                                         });
                                 },
@@ -539,7 +538,7 @@ class _PaintScreenState extends State<PaintScreen> {
                         date: selectedDate ?? now,
                         time: time.text,
                         total: total,
-                        image: base64Image,
+                        image: model.base64Image,
                         rentType: rentType,
                         carType: carType.text,
                       ),

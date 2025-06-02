@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -38,6 +37,7 @@ class _PaintformScreenState extends State<PaintformScreen> {
   int packageIndex = 0;
   List<paint.PaintColor> selectedTouch = [];
   int touchIndex = 0;
+  String packageId = '34';
   num total = 0;
 
   @override
@@ -297,9 +297,12 @@ class _PaintformScreenState extends State<PaintformScreen> {
                                   onTap: () {
                                     setState(() {
                                       touchIndex = i;
+                                      packageId =
+                                          model.colorPaintModel!.paints![i].id!;
                                       total =
                                           num.parse(widget.rentalData.total) +
                                               price;
+                                      log('packageId: $packageId');
                                     });
                                   },
                                   isSelected: i == touchIndex,
@@ -520,18 +523,6 @@ class _PaintformScreenState extends State<PaintformScreen> {
                           onPressed: () {
                             List tourchId =
                                 selectedTouch.map((e) => e.id).toList();
-                            // num price = packageIndex == 1
-                            //     ? selectedTouch.fold(
-                            //         0,
-                            //         (previousValue, element) =>
-                            //             previousValue +
-                            //             num.parse(element.price!))
-                            //     : num.parse(touchPrice(
-                            //         parkageIndex: packageIndex,
-                            //         color: model.colorPaintModel!.color!,
-                            //         careIndex: careDuration,
-                            //         paint: model
-                            //             .colorPaintModel!.paints![touchIndex]));
                             Map<String, dynamic> sprayData = {
                               "rentType": widget.rentalData.rentType,
                               "carType": widget.rentalData.carType,
@@ -551,10 +542,14 @@ class _PaintformScreenState extends State<PaintformScreen> {
                                               ? 3
                                               : 1,
                               "colorChange": packageIndex == 2 ? 1 : 0,
-                              "packages": jsonEncode(tourchId),
-                              "careDay": careDurationList[careDuration],
+                              "packages":
+                                  packageIndex != 1 ? [packageId] : tourchId,
+                              "careDay": careDurationList[careDuration]
+                                  .toString()
+                                  .split(" ")
+                                  .first,
                             };
-                            log("sprayData => $sprayData");
+                            // log("sprayData => $sprayData");
                             model.rentSpray(sprayData);
                           },
                           style: OutlinedButton.styleFrom(
@@ -588,14 +583,16 @@ class _PaintformScreenState extends State<PaintformScreen> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 24, vertical: 12),
                           ),
-                          child: Text("Cancel",
-                              style: MyStyle.tx14Black.copyWith(
-                                color: isDark
-                                    ? const Color(0xffDD4848)
-                                    : const Color(0xffD93333),
-                                fontFamily: 'SF Pro Rounded',
-                                fontWeight: FontWeight.w500,
-                              )),
+                          child: Text(
+                            "Cancel",
+                            style: MyStyle.tx14Black.copyWith(
+                              color: isDark
+                                  ? const Color(0xffDD4848)
+                                  : const Color(0xffD93333),
+                              fontFamily: 'SF Pro Rounded',
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
                         ),
                       ),
                       const SizedBox(
@@ -620,19 +617,22 @@ class _PaintformScreenState extends State<PaintformScreen> {
   }) {
     if (careIndex == 0) {
       if (parkageIndex == 2) {
-        return color.price15!;
+        return (num.parse(color.price15!) + num.parse(paint.price15!))
+            .toString();
       } else {
         return paint.price15!;
       }
     } else if (careIndex == 1) {
       if (parkageIndex == 2) {
-        return color.price30!;
+        return (num.parse(color.price30!) + num.parse(paint.price30!))
+            .toString();
       } else {
         return paint.price30!;
       }
     } else {
       if (parkageIndex == 2) {
-        return color.price60!;
+        return (num.parse(paint.price60!) + num.parse(color.price60!))
+            .toString();
       } else {
         return paint.price60!;
       }

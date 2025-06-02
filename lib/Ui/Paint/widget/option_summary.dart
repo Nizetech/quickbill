@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
@@ -9,7 +11,7 @@ import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/utils/toast.dart';
 import 'package:provider/provider.dart';
 
-class OptionSummary extends StatelessWidget {
+class OptionSummary extends StatefulWidget {
   final String? total;
   final String time;
   final DateTime date;
@@ -27,6 +29,11 @@ class OptionSummary extends StatelessWidget {
     this.image,
   });
 
+  @override
+  State<OptionSummary> createState() => _OptionSummaryState();
+}
+
+class _OptionSummaryState extends State<OptionSummary> {
   @override
   Widget build(BuildContext context) {
     final dateFormat = DateFormat("EEE, MMMM d yyyy");
@@ -53,9 +60,9 @@ class OptionSummary extends StatelessWidget {
               DotLabel(
                 flex: 4,
                 text: "Rental Option",
-                value: rentType == 1
+                value: widget.rentType == 1
                     ? "Spray Booth"
-                    : rentType == 2
+                    : widget.rentType == 2
                         ? "Air Compressor"
                         : "Booth & Compressor",
                 dotColor: MyColor.dark01Color,
@@ -66,7 +73,7 @@ class OptionSummary extends StatelessWidget {
                 flex: 3,
                 text: "Car Type",
                 dotColor: MyColor.dark01Color,
-                value: carType ?? "",
+                value: widget.carType ?? "",
                 labelColor: const Color(0xff6E6D7A),
                 textColor: isDark ? MyColor.mainWhiteColor : MyColor.blackColor,
               ),
@@ -82,7 +89,7 @@ class OptionSummary extends StatelessWidget {
               DotLabel(
                 flex: 3,
                 text: "Date",
-                value: dateFormat.format(date),
+                value: dateFormat.format(widget.date),
                 dotColor: MyColor.dark01Color,
                 labelColor: const Color(0xff6E6D7A),
                 textColor: isDark ? MyColor.mainWhiteColor : MyColor.blackColor,
@@ -90,7 +97,7 @@ class OptionSummary extends StatelessWidget {
               DotLabel(
                 flex: 2,
                 text: "Time",
-                value: time,
+                value: widget.time,
                 dotColor: MyColor.dark01Color,
                 labelColor: const Color(0xff6E6D7A),
                 textColor: isDark ? MyColor.mainWhiteColor : MyColor.blackColor,
@@ -116,7 +123,7 @@ class OptionSummary extends StatelessWidget {
               ),
             ),
             Text(
-              total ?? "",
+              widget.total ?? "",
               style: MyStyle.tx16Black.copyWith(
                 color: themedata.tertiary,
               ),
@@ -158,28 +165,31 @@ class OptionSummary extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  if ((rentType ?? -1) >= 0 &&
-                      (carType ?? "").isNotEmpty &&
-                      (total ?? "").isNotEmpty &&
-                      (image ?? "").isNotEmpty) {
+                  setState(() {});
+                  if ((widget.rentType ?? -1) >= 0 &&
+                      (widget.carType ?? "").isNotEmpty &&
+                      (widget.total ?? "").isNotEmpty &&
+                      (widget.image ?? "").isNotEmpty) {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => PaintformScreen(
                           rentalData: RentalData(
-                            time: time,
-                            date: date,
-                            image: image!,
-                            rentType: rentType!,
-                            carType: carType!,
-                            total: total!.replaceAll(',', ''),
+                            time: widget.time,
+                            date: widget.date,
+                            image: widget.image!,
+                            rentType: widget.rentType!,
+                            carType: widget.carType!,
+                            total: widget.total!.replaceAll(',', ''),
                           ),
                         ),
                       ),
                     );
-                  } else if ((rentType ?? -1) > 0) {
+                  } else if ((widget.rentType ?? -1) < 0) {
+                    log('rnt type ${widget.rentType}');
                     ErrorToast("Please select rental type");
                   } else {
+                    log(" car type ${widget.carType}, total ${widget.total}, image ${widget.image}, rent type ${widget.rentType}, date ${widget.date}, time ${widget.time}, ");
                     ErrorToast("Please select all fields");
                   }
                 },

@@ -94,8 +94,8 @@ class AuthProvider with ChangeNotifier {
         if (value['result'] == false) {
           ErrorToast(value['message']);
         } else {
-          hideLoader();
           if (isForgetPass) {
+            hideLoader();
             Get.to(OtpScreen(email: email));
           }
           SuccessToast('An OTP has been sent to your email');

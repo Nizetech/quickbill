@@ -40,7 +40,7 @@ static Dio createDio() {
   }
 
   Map<String, String> get _getAuthHeader {
-    const token = '';
+    // const token = '';
     //TODO uncomment this line when you want to use auth header
     //! LocalCacheImpl().getToken();
     //  LocalCacheImpl().getToken();
@@ -103,11 +103,11 @@ static Dio createDio() {
     ProgressCallback? onReceiveProgress,
   }) async {
     log("""
-Url : $uri
-BODY : $body
-Params : $queryParameters,
-Headers : $requestHeaders
-""");
+      Url : $uri
+    BODY : $body  
+      Params : $queryParameters,
+      Headers : $requestHeaders
+      """);
     try {
       final response = await _dio.post(
         uri,
@@ -119,9 +119,7 @@ Headers : $requestHeaders
           headers: {..._getAuthHeader, ...requestHeaders},
         ),
       );
-
       print(response.headers.value('token').toString());
-
       log(response.statusCode.toString());
       return response.data;
     } on PlatformException {

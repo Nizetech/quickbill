@@ -4,7 +4,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jost_pay_wallet/constants/api_constants.dart';
 import 'package:jost_pay_wallet/constants/constants.dart';
 import 'package:jost_pay_wallet/utils/network_clients.dart';
-import 'package:jost_pay_wallet/utils/toast.dart';
 
 class AccountRepo {
   final client = NetworkClient();
@@ -47,6 +46,24 @@ class AccountRepo {
           'Authorization': token,
         },
         body: {"use_google_auth": useGoogleAuth},
+      );
+      log('Reponse: $response');
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
+  Future<dynamic> readNotification() async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response = await client.post(
+        ApiRoute.readNotification,
+        requestHeaders: {
+          'Authorization': token,
+        },
+        body: {"id": 0},
       );
       log('Reponse: $response');
       return response;

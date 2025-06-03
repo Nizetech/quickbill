@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/DashboardProvider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
@@ -15,6 +16,7 @@ import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/utils.dart';
+import 'package:jost_pay_wallet/constants/constants.dart';
 import 'package:provider/provider.dart';
 
 class SettingScreen extends StatefulWidget {
@@ -36,6 +38,7 @@ class _SettingScreenState extends State<SettingScreen> {
       }
     });
   }
+  final box = Hive.box(kAppName);
 
   @override
   Widget build(BuildContext context) {
@@ -407,7 +410,8 @@ class _SettingScreenState extends State<SettingScreen> {
                     Container(
                       padding: const EdgeInsets.only(top: 8, bottom: 8),
                       child: InkWell(
-                        onTap: () {
+                        onTap: () async {
+                          await box.delete(kAccessToken);
                           Navigator.push(
                               context,
                               MaterialPageRoute(

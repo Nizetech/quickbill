@@ -76,6 +76,22 @@ class ServiceRepo {
     }
   }
 
+  Future<Map<String, dynamic>> payPending(int id) async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response = await client.post(ApiRoute.payPending,
+          body: jsonEncode({"history_id": id}),
+          requestHeaders: {
+            'Authorization': token,
+          });
+      log('Reponse: $response');
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
   //? Get Pdf Transaction Receipt
   Future<String> getPdfReceipt(String id) async {
     Dio dio = Dio();

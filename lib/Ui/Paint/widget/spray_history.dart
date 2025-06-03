@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -89,7 +88,11 @@ class SprayHistory extends StatelessWidget {
               ),
               width: double.infinity,
               child: OutlinedButton(
-                onPressed: history.status! == '2' ? null : () {},
+                onPressed: history.status! == '2'
+                    ? null
+                    : () {
+                        model.payPending(int.parse(history.id!));
+                      },
                 style: OutlinedButton.styleFrom(
                   side: BorderSide.none,
                   backgroundColor: history.status! != '2'
@@ -208,7 +211,7 @@ class SprayHistory extends StatelessWidget {
                 children: [
                   DotLabel(
                     flex: 3,
-                    text: "Time",  
+                    text: "Time",
                     value: history.time!,
                     dotColor: MyColor.dark01Color,
                     labelColor: const Color(0xff6E6D7A),
@@ -313,7 +316,6 @@ class SprayHistory extends StatelessWidget {
           ],
         ),
       );
-    }
-    );
+    });
   }
 }

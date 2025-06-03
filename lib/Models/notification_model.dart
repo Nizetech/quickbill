@@ -11,7 +11,7 @@ String notificationModelToJson(NotificationModel data) =>
     json.encode(data.toJson());
 
 class NotificationModel {
-  List<Notification>? notifications;
+  List<Notifications>? notifications;
 
   NotificationModel({
     this.notifications,
@@ -21,8 +21,8 @@ class NotificationModel {
       NotificationModel(
         notifications: json["notifications"] == null
             ? []
-            : List<Notification>.from(
-                json["notifications"]!.map((x) => Notification.fromJson(x))),
+            : List<Notifications>.from(
+                json["notifications"]!.map((x) => Notifications.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -32,7 +32,7 @@ class NotificationModel {
       };
 }
 
-class Notification {
+class Notifications {
   String? id;
   String? userId;
   String? type;
@@ -44,7 +44,7 @@ class Notification {
   DateTime? createdAt;
   DateTime? updatedAt;
 
-  Notification({
+  Notifications({
     this.id,
     this.userId,
     this.type,
@@ -57,7 +57,7 @@ class Notification {
     this.updatedAt,
   });
 
-  factory Notification.fromJson(Map<String, dynamic> json) => Notification(
+  factory Notifications.fromJson(Map<String, dynamic> json) => Notifications(
         id: json["id"],
         userId: json["user_id"],
         type: json["type"],

@@ -43,8 +43,7 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().rentSpray(data);
-      log('Response: $res');
-
+      await getSprayHistory(isLoading: false);
       hideLoader();
       Get.close(2);
       SuccessToast(res['message']);
@@ -59,7 +58,6 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().sprayDetails(id);
-      log('Response: $res');
       sprayDetailsModel = SprayDetailsModel.fromJson(res);
       hideLoader();
       Get.to(const PaintInvoiceScreen());
@@ -74,10 +72,22 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().rentSpray(data);
-      log('Response: $res');
-
       hideLoader();
       Get.close(2);
+      SuccessToast(res['message']);
+      notifyListeners();
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
+  Future<void> payPending(int id) async {
+    try {
+      showLoader();
+      var res = await ServiceRepo().payPending(id);
+      await getSprayHistory(isLoading: false);
+      hideLoader();
       SuccessToast(res['message']);
       notifyListeners();
     } catch (e) {
@@ -102,11 +112,13 @@ class ServiceProvider with ChangeNotifier {
     }
   }
 
-  Future<void> getSprayHistory() async {
+  Future<void> getSprayHistory({bool isLoading = true}) async {
     try {
+      if (isLoading)
       showLoader();
       var res = await ServiceRepo().getSprayHistory();
       sprayHistoryModel = SprayHistoryModel.fromJson(res);
+      if (isLoading)
       hideLoader();
       notifyListeners();
     } catch (e) {

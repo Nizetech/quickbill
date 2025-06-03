@@ -119,6 +119,22 @@ class AccountProvider with ChangeNotifier {
     }
   }
 
+  // get Notification
+  Future<void> readNotification() async {
+    try {
+      AccountRepo().readNotification().then((value) async {
+        if (value['result'] != false) {
+          await getNotification();
+        }
+        notifyListeners();
+      });
+      notifyListeners();
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
   // get User Balance
   Future<void> getUserBalance() async {
     try {

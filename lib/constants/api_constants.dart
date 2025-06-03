@@ -19,6 +19,7 @@ class ApiRoute {
   static String getBalance = 'get-balance';
   static String getTransactions = 'get-purchases';
   static String getNotification = 'get-news';
+  static String readNotification = 'read-news';
   static String getPromo = 'get-promos';
   static String getReferrals = 'get-referrals';
 
@@ -28,5 +29,6 @@ class ApiRoute {
   static String getSprayHistory = 'services/spray-history';
   static String getSpraydetails = 'services/spray-history/details';
   static String sharePdf = 'services/spray-history/share';
+  static String payPending = 'services/spray-history/pay';
   static String rentSpray = 'services/rent-spray';
 }

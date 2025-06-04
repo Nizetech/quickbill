@@ -52,10 +52,10 @@ class _PromoScreenState extends State<PromoScreen> {
   Widget build(BuildContext context) {
     final totalPages = (userPromos!.length / rowsPerPage).ceil();
     log("totalPages: $totalPages");
-    List<UserPromo> currentData = userPromos!
-        .skip((currentPage - 1) * rowsPerPage)
-        .take(rowsPerPage)
-        .toList();
+    // List<UserPromo> currentData = userPromos!
+    //     .skip((currentPage - 1) * rowsPerPage)
+    //     .take(rowsPerPage)
+    //     .toList();
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     final isDark = themeProvider.isDarkMode();
     final themedata = Theme.of(context).colorScheme;

@@ -14,6 +14,7 @@ import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyAirtime.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyData.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/banner.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/history_card.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/profile_image.dart';
 import 'package:jost_pay_wallet/Ui/Domain/domain_screen.dart';
 import 'package:jost_pay_wallet/Ui/Paint/paint_history.dart';
 import 'package:jost_pay_wallet/Ui/car/repairdetail_screen.dart';
@@ -52,18 +53,19 @@ class _WalletScreenState extends State<WalletScreen> {
   void initState() {
     accountProvider = Provider.of<AccountProvider>(context, listen: false);
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      accountProvider.getUserBalance();
-      accountProvider.getNotification();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await accountProvider.getUserBalance();
+      await accountProvider.getNotification();
+      await accountProvider.getProfileImage(isLoading: false);
       if (accountProvider.transactionModel == null) {
-        accountProvider.getTrasactions();
+        await accountProvider.getTrasactions();
       } else {
-        accountProvider.getTrasactions(isLoading: false);
+        await accountProvider.getTrasactions(isLoading: false);
       }
       if (accountProvider.userModel == null) {
-        accountProvider.getUserProfile();
+        await accountProvider.getUserProfile();
       } else {
-        accountProvider.getUserProfile(isLoading: false);
+        await accountProvider.getUserProfile(isLoading: false);
       }
     });
   }
@@ -95,263 +97,259 @@ class _WalletScreenState extends State<WalletScreen> {
           onRefresh: () async {
             await refreshAll();
           },
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding:
-                    const EdgeInsets.only(left: 24.0, right: 24.0, top: 68),
-                decoration: BoxDecoration(
-                  // color: Colors.white,
-                  border: Border.all(
-                      color: themeProvider.isDarkMode()
-                          ? MyColor.borderDarkColor
-                          : MyColor.borderColor,
-                      width: 0.9),
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20),
+          child: SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding:
+                      const EdgeInsets.only(left: 24.0, right: 24.0, top: 10),
+                  decoration: BoxDecoration(
+                    // color: Colors.white,
+                    border: Border.all(
+                        color: themeProvider.isDarkMode()
+                            ? MyColor.borderDarkColor
+                            : MyColor.borderColor,
+                        width: 0.9),
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                    ),
                   ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            dashProvider.changeBottomIndex(4);
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.only(
-                              right: 12.0,
-                            ),
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(20)),
-                                border: Border.all(
-                                    color: themeProvider.isDarkMode()
-                                        ? MyColor.borderDarkColor
-                                        : MyColor.borderColor,
-                                    width: 0.5)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
-                                  child: Image.asset(
-                                    'assets/images/avatar.jpeg',
-                                    width: 40,
-                                    height: 40,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              dashProvider.changeBottomIndex(4);
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.only(
+                                right: 12.0,
+                              ),
+                              decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(20)),
+                                  border: Border.all(
+                                      color: themeProvider.isDarkMode()
+                                          ? MyColor.borderDarkColor
+                                          : MyColor.borderColor,
+                                      width: 0.5)),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  const ProfileImage(size: 40),
+                                  const SizedBox(
+                                    width: 8,
                                   ),
-                                ),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                Text(
-                                  model.userModel?.user?.firstName
-                                          ?.capitalizeFirst ??
-                                      '',
-                                  style: MyStyle.tx12Black.copyWith(
+                                  Text(
+                                    model.userModel?.user?.firstName
+                                            ?.capitalizeFirst ??
+                                        '',
+                                    style: MyStyle.tx12Black.copyWith(
+                                      color: themeProvider.isDarkMode()
+                                          ? MyColor.mainWhiteColor
+                                          : MyColor.dark01Color,
+                                    ),
+                                  ),
+                                  Image.asset(
+                                    'assets/images/arrow-right.png',
                                     color: themeProvider.isDarkMode()
                                         ? MyColor.mainWhiteColor
                                         : MyColor.dark01Color,
-                                  ),
-                                ),
-                                Image.asset(
-                                  'assets/images/arrow-right.png',
-                                  color: themeProvider.isDarkMode()
-                                      ? MyColor.mainWhiteColor
-                                      : MyColor.dark01Color,
-                                )
-                              ],
+                                  )
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          width: 105.w,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  // Navigator.push(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //         builder: (context) =>
-                                  //             const SupportScreen()));
-                                  dashProvider.changeBottomIndex(9);
-                                },
-                                child: SvgPicture.asset(
-                                  'assets/images/svg/customerservice.svg',
-                                  colorFilter: ColorFilter.mode(
-                                      themeProvider.isDarkMode()
-                                          ? MyColor.mainWhiteColor
-                                          : MyColor.dark01Color,
-                                      BlendMode.srcIn),
-                                ),
-                              ),
-                              //!Theme switcbing
-                              GestureDetector(
+                          SizedBox(
+                            width: 105.w,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                GestureDetector(
                                   onTap: () {
-                                    themeProvider.toggleTheme(
-                                        themeProvider.isDarkMode()
-                                            ? false
-                                            : true);
+                                    // Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //         builder: (context) =>
+                                    //             const SupportScreen()));
+                                    dashProvider.changeBottomIndex(9);
                                   },
                                   child: SvgPicture.asset(
-                                    'assets/images/svg/theme.svg',
+                                    'assets/images/svg/customerservice.svg',
                                     colorFilter: ColorFilter.mode(
                                         themeProvider.isDarkMode()
                                             ? MyColor.mainWhiteColor
                                             : MyColor.dark01Color,
                                         BlendMode.srcIn),
-                                  )),
-                              InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const AlarmScreen()));
-                                },
-                                child: Stack(
-                                  children: [
-                                    Icon(
-                                      Iconsax.notification,
-                                      color: themeProvider.isDarkMode()
-                                          ? MyColor.mainWhiteColor
-                                          : MyColor.dark01Color,
-                                    ),
-                                    if (accountProvider.notificationModel !=
-                                            null &&
-                                        accountProvider.notificationModel!
-                                            .notifications!.isNotEmpty)
-                                      Positioned(
-                                        right: 0,
-                                        top: 0,
-                                        child: Container(
-                                          width: 13,
-                                          height: 13,
-                                          decoration: BoxDecoration(
-                                            color: MyColor.redColor,
-                                            shape: BoxShape.circle,
-                                          ),
-                                          child: Center(
-                                            child: Text(
-                                              '${accountProvider.notificationModel!.notifications?.length}',
-                                              style: MyStyle.tx12Black.copyWith(
-                                                  color: MyColor.mainWhiteColor,
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 11),
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Container(
-                      padding: const EdgeInsets.only(left: 24.0, right: 12.0),
-                      decoration: BoxDecoration(
-                          // color: MyColor.lightGreenColor,
-                          color: Theme.of(context).colorScheme.secondary,
-                          border: Border.all(
-                              color: themeProvider.isDarkMode()
-                                  ? MyColor.borderDarkColor
-                                  : MyColor.borderColor,
-                              width: 0.9),
-                          borderRadius: BorderRadius.circular(10.r)),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(
-                                width: 120,
-                                child: Row(
-                                  children: [
-                                    Image.asset(
-                                      'assets/images/ng-flag.png',
-                                      width: 24.8,
-                                      height: 24.8,
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Text('Balance',
-                                        style: MyStyle.tx16Gray.copyWith(
-                                            fontSize: 12,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .tertiary))
-                                  ],
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () async {
-                                  await refresh();
-                                },
-                                child: Container(
-                                  height: 41,
-                                  width: 41,
-                                  // padding: const EdgeInsets.all(13),
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
-                                      shape: BoxShape.circle),
-                                  child: Image.asset(
-                                    "assets/images/refresh.png",
-                                    height: 24,
-                                    width: 24,
-                                    color: MyColor.splashBtn,
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 12,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              accountProvider.isLoading
-                                  ? const SizedBox.square(
-                                      dimension: 26,
-                                      child: CircularProgressIndicator())
-                                  : Text(
-                                      '₦ ${formatNumber(accountProvider.balance ?? 0)}',
-                                      style: MyStyle.tx28Black.copyWith(
-                                          fontSize: 26.sp,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .tertiary),
-                                    ),
-                              SvgPicture.asset(
-                                  'assets/images/svg/moneybag.svg'),
-                            ],
+                                //!Theme switcbing
+                                GestureDetector(
+                                    onTap: () {
+                                      themeProvider.toggleTheme(
+                                          themeProvider.isDarkMode()
+                                              ? false
+                                              : true);
+                                    },
+                                    child: SvgPicture.asset(
+                                      'assets/images/svg/theme.svg',
+                                      colorFilter: ColorFilter.mode(
+                                          themeProvider.isDarkMode()
+                                              ? MyColor.mainWhiteColor
+                                              : MyColor.dark01Color,
+                                          BlendMode.srcIn),
+                                    )),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const AlarmScreen()));
+                                  },
+                                  child: Stack(
+                                    children: [
+                                      Icon(
+                                        Iconsax.notification,
+                                        color: themeProvider.isDarkMode()
+                                            ? MyColor.mainWhiteColor
+                                            : MyColor.dark01Color,
+                                      ),
+                                      if (accountProvider.notificationModel !=
+                                              null &&
+                                          accountProvider.notificationModel!
+                                              .notifications!.isNotEmpty)
+                                        Positioned(
+                                          right: 0,
+                                          top: 0,
+                                          child: Container(
+                                            width: 13,
+                                            height: 13,
+                                            decoration: BoxDecoration(
+                                              color: MyColor.redColor,
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                '${accountProvider.notificationModel!.notifications?.length}',
+                                                style: MyStyle.tx12Black
+                                                    .copyWith(
+                                                        color: MyColor
+                                                            .mainWhiteColor,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 11),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
-                    ),
-                    const SizedBox(
-                      height: 32,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          child: Column(
+                      const SizedBox(height: 20),
+                      Container(
+                        padding: const EdgeInsets.only(left: 24.0, right: 12.0),
+                        decoration: BoxDecoration(
+                            // color: MyColor.lightGreenColor,
+                            color: Theme.of(context).colorScheme.secondary,
+                            border: Border.all(
+                                color: themeProvider.isDarkMode()
+                                    ? MyColor.borderDarkColor
+                                    : MyColor.borderColor,
+                                width: 0.9),
+                            borderRadius: BorderRadius.circular(10.r)),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SizedBox(
+                                  width: 120,
+                                  child: Row(
+                                    children: [
+                                      Image.asset(
+                                        'assets/images/ng-flag.png',
+                                        width: 24.8,
+                                        height: 24.8,
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Text('Balance',
+                                          style: MyStyle.tx16Gray.copyWith(
+                                              fontSize: 12,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .tertiary))
+                                    ],
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () async {
+                                    await refresh();
+                                  },
+                                  child: Container(
+                                    height: 41,
+                                    width: 41,
+                                    // padding: const EdgeInsets.all(13),
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary,
+                                        shape: BoxShape.circle),
+                                    child: Image.asset(
+                                      "assets/images/refresh.png",
+                                      height: 24,
+                                      width: 24,
+                                      color: MyColor.splashBtn,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 12,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                accountProvider.isLoading
+                                    ? const SizedBox.square(
+                                        dimension: 26,
+                                        child: CircularProgressIndicator())
+                                    : Text(
+                                        '₦ ${formatNumber(accountProvider.balance ?? 0)}',
+                                        style: MyStyle.tx28Black.copyWith(
+                                            fontSize: 26.sp,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .tertiary),
+                                      ),
+                                SvgPicture.asset(
+                                    'assets/images/svg/moneybag.svg'),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 32,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
                             children: [
                               Row(
                                 children: [
@@ -397,67 +395,22 @@ class _WalletScreenState extends State<WalletScreen> {
                               )
                             ],
                           ),
-                        ),
-                        Container(
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  InkWell(
-                                    onTap: () {
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const BuyAirtime(),
-                                        ),
-                                      );
-                                    },
-                                    borderRadius: BorderRadius.circular(12.3),
-                                    child: Container(
-                                      width: 54,
-                                      height: 50,
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                          color: MyColor.greenColor,
-                                          width: 0.9,
-                                        ),
-                                        borderRadius:
-                                            BorderRadius.circular(12.3),
-                                      ),
-                                      child: Image.asset(
-                                        'assets/images/dashboard/smart-phone-01.png',
-                                        width: 23,
-                                        height: 23,
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                              const SizedBox(height: 8),
-                              Row(
-                                children: [
-                                  Text('Buy Airtime',
-                                      style: MyStyle.tx12Black.copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .tertiary))
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
-                        Container(
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  GestureDetector(
-                                      onTap: () => Navigator.push(
+                          Container(
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.pushReplacement(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const Pay4meScreen())),
+                                            builder: (context) =>
+                                                const BuyAirtime(),
+                                          ),
+                                        );
+                                      },
+                                      borderRadius: BorderRadius.circular(12.3),
                                       child: Container(
                                         width: 54,
                                         height: 50,
@@ -470,298 +423,150 @@ class _WalletScreenState extends State<WalletScreen> {
                                               BorderRadius.circular(12.3),
                                         ),
                                         child: Image.asset(
-                                          'assets/images/dashboard/bitcoin-03.png',
+                                          'assets/images/dashboard/smart-phone-01.png',
                                           width: 23,
                                           height: 23,
                                         ),
-                                      ))
-                                ],
-                              ),
-                              const SizedBox(height: 8),
-                              Row(
-                                children: [
-                                  Text('Pay4me',
-                                      style: MyStyle.tx12Black.copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .tertiary))
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
-                        Container(
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  GestureDetector(
-                                    onTap: () =>
-                                        dashProvider.changeBottomIndex(1),
-                                    // Navigator.pushReplacement(
-                                    //     context,
-                                    //     MaterialPageRoute(
-                                    //         builder: (context) =>
-                                    //             const Services())),
-                                    child: Container(
-                                      width: 54,
-                                      height: 50,
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                          color: MyColor.greenColor,
-                                          width: 0.9,
-                                        ),
-                                        borderRadius:
-                                            BorderRadius.circular(12.3),
                                       ),
-                                      child: Image.asset(
-                                        'assets/images/dashboard/more-vertical-circle-01.png',
-                                        width: 23,
-                                        height: 23,
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                              const SizedBox(height: 8),
-                              Row(
-                                children: [
-                                  Text('More',
-                                      style: MyStyle.tx12Black.copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .tertiary))
-                                ],
-                              )
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 18,
-              ),
-              Visibility(
-                  visible: dashProvider.promotionBanner,
-                  child: BannerAds(
-                    dashProvider: dashProvider,
-                  )),
-              //?
-              //! Here is the services section
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 24, horizontal: 24),
-                    child: Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text('Services',
-                              style: MyStyle.tx28Black.copyWith(
-                                  color: Theme.of(context).colorScheme.tertiary,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600)),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              child: Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      GestureDetector(
-                                          onTap: () =>
-                                              Navigator.pushReplacement(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          const BuyAirtime())),
-                                          child: Container(
-                                            width: 61,
-                                            height: 56.5,
-                                            decoration: BoxDecoration(
-                                              color: Theme.of(context)
-                                                  .scaffoldBackgroundColor,
-                                              borderRadius:
-                                                  BorderRadius.circular(14),
-                                              boxShadow: const [
-                                                MyStyle.widgetShadow,
-                                              ],
-                                            ),
-                                            child: Image.asset(
-                                              'assets/images/dashboard/smartphone-wifi.png',
-                                              height: 33.r,
-                                              width: 33.r,
-                                            ),
-                                          ))
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 24,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text('Buy Airtime',
-                                          style: MyStyle.tx12Black.copyWith(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .tertiary))
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                            Container(
-                              child: Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      InkWell(
-                                        onTap: () => Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const BuyData())),
-                                        child: Container(
-                                          width: 61,
-                                          height: 56.5,
-                                          decoration: BoxDecoration(
-                                            color: Theme.of(context)
-                                                .scaffoldBackgroundColor,
-                                            borderRadius:
-                                                BorderRadius.circular(14),
-                                            boxShadow: const [
-                                              MyStyle.widgetShadow,
-                                            ],
-                                          ),
-                                          child: Image.asset(
-                                            'assets/images/dashboard/smart-phone-01.png',
-                                            height: 33.r,
-                                            width: 33.r,
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 24,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text('Buy Data',
-                                          style: MyStyle.tx12Black.copyWith(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .tertiary))
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const SocialsScreen())),
-                              child: Container(
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      width: 61,
-                                      height: 56.5,
-                                      padding: EdgeInsets.all(16.r),
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(context)
-                                            .scaffoldBackgroundColor,
-                                        borderRadius: BorderRadius.circular(14),
-                                        boxShadow: const [
-                                          MyStyle.widgetShadow,
-                                        ],
-                                      ),
-                                      child: SvgPicture.asset(
-                                        'assets/images/svg/socialBoost.svg',
-                                        height: 33.r,
-                                        width: 33.r,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 24,
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text('Social Boost',
-                                            style: MyStyle.tx12Black.copyWith(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .tertiary))
-                                      ],
                                     )
                                   ],
                                 ),
-                              ),
+                                const SizedBox(height: 8),
+                                Row(
+                                  children: [
+                                    Text('Buy Airtime',
+                                        style: MyStyle.tx12Black.copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .tertiary))
+                                  ],
+                                )
+                              ],
                             ),
-                            Container(
-                              child: Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      GestureDetector(
+                          ),
+                          Container(
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    GestureDetector(
                                         onTap: () => Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     const Pay4meScreen())),
                                         child: Container(
-                                          width: 61,
-                                          height: 56.5,
-                                          padding: EdgeInsets.all(16.r),
+                                          width: 54,
+                                          height: 50,
                                           decoration: BoxDecoration(
-                                            color: Theme.of(context)
-                                                .scaffoldBackgroundColor,
+                                            border: Border.all(
+                                              color: MyColor.greenColor,
+                                              width: 0.9,
+                                            ),
                                             borderRadius:
-                                                BorderRadius.circular(14),
-                                            boxShadow: const [
-                                              MyStyle.widgetShadow,
-                                            ],
+                                                BorderRadius.circular(12.3),
                                           ),
-                                          child: SvgPicture.asset(
-                                            'assets/images/svg/payment.svg',
-                                            height: 33.r,
-                                            width: 33.r,
+                                          child: Image.asset(
+                                            'assets/images/dashboard/bitcoin-03.png',
+                                            width: 23,
+                                            height: 23,
                                           ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 24,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text('Pay4me',
-                                          style: MyStyle.tx12Black.copyWith(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .tertiary))
-                                    ],
-                                  )
-                                ],
-                              ),
+                                        ))
+                                  ],
+                                ),
+                                const SizedBox(height: 8),
+                                Row(
+                                  children: [
+                                    Text('Pay4me',
+                                        style: MyStyle.tx12Black.copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .tertiary))
+                                  ],
+                                )
+                              ],
                             ),
-                          ],
-                        ),
-                        const SizedBox(height: 22),
-                        Row(
+                          ),
+                          Container(
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () =>
+                                          dashProvider.changeBottomIndex(1),
+                                      // Navigator.pushReplacement(
+                                      //     context,
+                                      //     MaterialPageRoute(
+                                      //         builder: (context) =>
+                                      //             const Services())),
+                                      child: Container(
+                                        width: 54,
+                                        height: 50,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: MyColor.greenColor,
+                                            width: 0.9,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(12.3),
+                                        ),
+                                        child: Image.asset(
+                                          'assets/images/dashboard/more-vertical-circle-01.png',
+                                          width: 23,
+                                          height: 23,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                const SizedBox(height: 8),
+                                Row(
+                                  children: [
+                                    Text('More',
+                                        style: MyStyle.tx12Black.copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .tertiary))
+                                  ],
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                    ],
+                  ),
+                ),
+
+                Visibility(
+                    visible: dashProvider.promotionBanner,
+                    child: BannerAds(
+                      dashProvider: dashProvider,
+                    )),
+                //?
+                //! Here is the services section
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 24, horizontal: 24),
+                      child: Column(
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text('Services',
+                                style: MyStyle.tx28Black.copyWith(
+                                    color:
+                                        Theme.of(context).colorScheme.tertiary,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600)),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Container(
@@ -770,11 +575,12 @@ class _WalletScreenState extends State<WalletScreen> {
                                     Row(
                                       children: [
                                         GestureDetector(
-                                            onTap: () => Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const RepairdetailScreen())),
+                                            onTap: () =>
+                                                Navigator.pushReplacement(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const BuyAirtime())),
                                             child: Container(
                                               width: 61,
                                               height: 56.5,
@@ -788,8 +594,9 @@ class _WalletScreenState extends State<WalletScreen> {
                                                 ],
                                               ),
                                               child: Image.asset(
-                                                'assets/images/dashboard/repair.png',
-                                                scale: 1.4,
+                                                'assets/images/dashboard/smartphone-wifi.png',
+                                                height: 33.r,
+                                                width: 33.r,
                                               ),
                                             ))
                                       ],
@@ -799,7 +606,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                     ),
                                     Row(
                                       children: [
-                                        Text('Repairs',
+                                        Text('Buy Airtime',
                                             style: MyStyle.tx12Black.copyWith(
                                                 color: Theme.of(context)
                                                     .colorScheme
@@ -819,7 +626,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      const DomainScreen())),
+                                                      const BuyData())),
                                           child: Container(
                                             width: 61,
                                             height: 56.5,
@@ -833,7 +640,9 @@ class _WalletScreenState extends State<WalletScreen> {
                                               ],
                                             ),
                                             child: Image.asset(
-                                              'assets/images/dashboard/web-security.png',
+                                              'assets/images/dashboard/smart-phone-01.png',
+                                              height: 33.r,
+                                              width: 33.r,
                                             ),
                                           ),
                                         )
@@ -844,7 +653,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                     ),
                                     Row(
                                       children: [
-                                        Text('Hosting & Domain',
+                                        Text('Buy Data',
                                             style: MyStyle.tx12Black.copyWith(
                                                 color: Theme.of(context)
                                                     .colorScheme
@@ -855,37 +664,39 @@ class _WalletScreenState extends State<WalletScreen> {
                                 ),
                               ),
                               GestureDetector(
-                                onTap: () => Get.to(PaintHistory()),
+                                onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const SocialsScreen())),
                                 child: Container(
                                   child: Column(
                                     children: [
-                                      Row(
-                                        children: [
-                                          Container(
-                                            width: 61,
-                                            height: 56.5,
-                                            padding: EdgeInsets.all(16.r),
-                                            decoration: BoxDecoration(
-                                              color: Theme.of(context)
-                                                  .scaffoldBackgroundColor,
-                                              borderRadius:
-                                                  BorderRadius.circular(14),
-                                              boxShadow: const [
-                                                MyStyle.widgetShadow,
-                                              ],
-                                            ),
-                                            child: Image.asset(
-                                              'assets/images/dashboard/spray.png',
-                                            ),
-                                          )
-                                        ],
+                                      Container(
+                                        width: 61,
+                                        height: 56.5,
+                                        padding: EdgeInsets.all(16.r),
+                                        decoration: BoxDecoration(
+                                          color: Theme.of(context)
+                                              .scaffoldBackgroundColor,
+                                          borderRadius:
+                                              BorderRadius.circular(14),
+                                          boxShadow: const [
+                                            MyStyle.widgetShadow,
+                                          ],
+                                        ),
+                                        child: SvgPicture.asset(
+                                          'assets/images/svg/socialBoost.svg',
+                                          height: 33.r,
+                                          width: 33.r,
+                                        ),
                                       ),
                                       const SizedBox(
                                         height: 24,
                                       ),
                                       Row(
                                         children: [
-                                          Text('Spray',
+                                          Text('Social Boost',
                                               style: MyStyle.tx12Black.copyWith(
                                                   color: Theme.of(context)
                                                       .colorScheme
@@ -902,8 +713,11 @@ class _WalletScreenState extends State<WalletScreen> {
                                     Row(
                                       children: [
                                         GestureDetector(
-                                          onTap: () =>
-                                              dashProvider.changeBottomIndex(1),
+                                          onTap: () => Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const Pay4meScreen())),
                                           child: Container(
                                             width: 61,
                                             height: 56.5,
@@ -918,7 +732,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                               ],
                                             ),
                                             child: SvgPicture.asset(
-                                              'assets/images/svg/viewAll.svg',
+                                              'assets/images/svg/payment.svg',
                                               height: 33.r,
                                               width: 33.r,
                                             ),
@@ -931,7 +745,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                     ),
                                     Row(
                                       children: [
-                                        Text('View all',
+                                        Text('Pay4me',
                                             style: MyStyle.tx12Black.copyWith(
                                                 color: Theme.of(context)
                                                     .colorScheme
@@ -941,44 +755,231 @@ class _WalletScreenState extends State<WalletScreen> {
                                   ],
                                 ),
                               ),
-                            ]),
-
-                        const SizedBox(height: 30),
-                        Align(
-                          alignment: Alignment.bottomLeft,
-                          child: Text(
-                            'History',
-                            style: MyStyle.tx14Grey.copyWith(
-                                fontWeight: FontWeight.w500,
-                                color: Theme.of(context).colorScheme.tertiary),
+                            ],
                           ),
-                        ),
-                        // const SizedBox(height: 10),
-                        if (accountProvider.dashBoardHistory != null &&
-                            accountProvider.dashBoardHistory!.isNotEmpty)
-                          ListView.builder(
-                            padding: EdgeInsets.only(bottom: 50),
-                            physics: const NeverScrollableScrollPhysics(),
-                            // reverse: true,
-                            itemBuilder: (context, index) {
-                              var item =
-                                  accountProvider.dashBoardHistory![index];
-                              return HistoryCard(
-                                transaction: item,
-                              );
-                            },
-                            shrinkWrap: true,
-                            itemCount:
-                                accountProvider.dashBoardHistory!.length > 5
-                                    ? 5
-                                    : accountProvider.dashBoardHistory!.length,
-                          )
-                      ],
+                          const SizedBox(height: 22),
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          GestureDetector(
+                                              onTap: () => Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          const RepairdetailScreen())),
+                                              child: Container(
+                                                width: 61,
+                                                height: 56.5,
+                                                decoration: BoxDecoration(
+                                                  color: Theme.of(context)
+                                                      .scaffoldBackgroundColor,
+                                                  borderRadius:
+                                                      BorderRadius.circular(14),
+                                                  boxShadow: const [
+                                                    MyStyle.widgetShadow,
+                                                  ],
+                                                ),
+                                                child: Image.asset(
+                                                  'assets/images/dashboard/repair.png',
+                                                  scale: 1.4,
+                                                ),
+                                              ))
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 24,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text('Repairs',
+                                              style: MyStyle.tx12Black.copyWith(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .tertiary))
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          InkWell(
+                                            onTap: () => Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const DomainScreen())),
+                                            child: Container(
+                                              width: 61,
+                                              height: 56.5,
+                                              decoration: BoxDecoration(
+                                                color: Theme.of(context)
+                                                    .scaffoldBackgroundColor,
+                                                borderRadius:
+                                                    BorderRadius.circular(14),
+                                                boxShadow: const [
+                                                  MyStyle.widgetShadow,
+                                                ],
+                                              ),
+                                              child: Image.asset(
+                                                'assets/images/dashboard/web-security.png',
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 24,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text('Hosting & Domain',
+                                              style: MyStyle.tx12Black.copyWith(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .tertiary))
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () => Get.to(PaintHistory()),
+                                  child: Container(
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Container(
+                                              width: 61,
+                                              height: 56.5,
+                                              padding: EdgeInsets.all(16.r),
+                                              decoration: BoxDecoration(
+                                                color: Theme.of(context)
+                                                    .scaffoldBackgroundColor,
+                                                borderRadius:
+                                                    BorderRadius.circular(14),
+                                                boxShadow: const [
+                                                  MyStyle.widgetShadow,
+                                                ],
+                                              ),
+                                              child: Image.asset(
+                                                'assets/images/dashboard/spray.png',
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 24,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text('Spray',
+                                                style: MyStyle.tx12Black
+                                                    .copyWith(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .tertiary))
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () => dashProvider
+                                                .changeBottomIndex(1),
+                                            child: Container(
+                                              width: 61,
+                                              height: 56.5,
+                                              padding: EdgeInsets.all(16.r),
+                                              decoration: BoxDecoration(
+                                                color: Theme.of(context)
+                                                    .scaffoldBackgroundColor,
+                                                borderRadius:
+                                                    BorderRadius.circular(14),
+                                                boxShadow: const [
+                                                  MyStyle.widgetShadow,
+                                                ],
+                                              ),
+                                              child: SvgPicture.asset(
+                                                'assets/images/svg/viewAll.svg',
+                                                height: 33.r,
+                                                width: 33.r,
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 24,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text('View all',
+                                              style: MyStyle.tx12Black.copyWith(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .tertiary))
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ]),
+
+                          const SizedBox(height: 30),
+                          Align(
+                            alignment: Alignment.bottomLeft,
+                            child: Text(
+                              'History',
+                              style: MyStyle.tx14Grey.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  color:
+                                      Theme.of(context).colorScheme.tertiary),
+                            ),
+                          ),
+                          // const SizedBox(height: 10),
+                          if (accountProvider.dashBoardHistory != null &&
+                              accountProvider.dashBoardHistory!.isNotEmpty)
+                            ListView.builder(
+                              padding: EdgeInsets.only(bottom: 50),
+                              physics: const NeverScrollableScrollPhysics(),
+                              // reverse: true,
+                              itemBuilder: (context, index) {
+                                var item =
+                                    accountProvider.dashBoardHistory![index];
+                                return HistoryCard(
+                                  transaction: item,
+                                );
+                              },
+                              shrinkWrap: true,
+                              itemCount:
+                                  accountProvider.dashBoardHistory!.length > 5
+                                      ? 5
+                                      : accountProvider
+                                          .dashBoardHistory!.length,
+                            )
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
         );
       }),

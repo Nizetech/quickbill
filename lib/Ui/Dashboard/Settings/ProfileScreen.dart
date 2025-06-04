@@ -1,8 +1,13 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Settings/edit_profile.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/profile_image.dart';
+import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:provider/provider.dart';
@@ -70,27 +75,43 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             width: 2,
                           ),
                           borderRadius: BorderRadius.circular(60)),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(60),
-                        child: Image.asset(
-                          'assets/images/avatar.jpeg',
-                          width: 100,
-                          height: 100,
-                        ),
-                      ),
+                      child: const ProfileImage(size: 100),
                     ),
                     Transform.translate(
                       offset: const Offset(36, -24),
-                      child: Container(
-                        width: 30,
-                        height: 30,
-                        decoration: BoxDecoration(
-                            color: Color(0xFF2777CD),
-                            borderRadius: BorderRadius.circular(60)),
-                        child: const Icon(
-                          Icons.edit,
-                          color: Colors.white,
-                          size: 16,
+                      child: GestureDetector(
+                        onTap: () async {
+                          FilePickerResult? result =
+                              await FilePicker.platform.pickFiles(
+                            type: FileType.custom,
+                            allowedExtensions: [
+                              'png',
+                              'jpg',
+                              'jpeg',
+                            ],
+                          );
+                          if (result != null) {
+                            File file = File(result.files.single.path!);
+                            // Check the file size
+                            bool enoughSpace = await checkUploadSize(
+                              file,
+                            );
+                            if (enoughSpace) {
+                              model.updateProfileImage(file);
+                            }
+                          }
+                        },
+                        child: Container(
+                          width: 30,
+                          height: 30,
+                          decoration: BoxDecoration(
+                              color: Color(0xFF2777CD),
+                              borderRadius: BorderRadius.circular(60)),
+                          child: const Icon(
+                            Icons.edit,
+                            color: Colors.white,
+                            size: 16,
+                          ),
                         ),
                       ),
                     )

@@ -1,7 +1,11 @@
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
+import 'package:jost_pay_wallet/utils/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Helper {
@@ -60,6 +64,8 @@ class Helper {
       },
     );
   }
+
+
 
 }
 
@@ -124,4 +130,17 @@ String isToday(DateTime date) {
   } else {
     return formatDate(date);
   }
+}
+
+Future<bool> checkUploadSize(File selectedFile) async {
+  int fileSizeInBytes = await selectedFile.length();
+  // Check if file size is greater than 100KB
+  if (fileSizeInBytes > 102400) {
+    ErrorToast(
+      'The file size exceeds 100KB. Please select a smaller file.',
+    );
+    log('File size exceeded 100KB ==> ${fileSizeInBytes / 1024} KB');
+    return false;
+  }
+  return true;
 }

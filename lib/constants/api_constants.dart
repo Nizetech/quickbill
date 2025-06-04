@@ -16,6 +16,8 @@ class ApiRoute {
   // Dashboard
   static String userProfile = 'get-user-profile';
   static String updateProfile = 'update-profile';
+  static String getProfileImage = 'get-profile-image';
+  static String updateProfileImage = 'update-image';
   static String getBalance = 'get-balance';
   static String getTransactions = 'get-purchases';
   static String getNotification = 'get-news';

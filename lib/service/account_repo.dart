@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jost_pay_wallet/constants/api_constants.dart';
@@ -15,6 +16,37 @@ class AccountRepo {
       final response = await client.post(ApiRoute.userProfile, requestHeaders: {
         'Authorization': token,
       });
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
+  Future<Map<String, dynamic>> getProfileImage() async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response =
+          await client.post(ApiRoute.getProfileImage, requestHeaders: {
+        'Authorization': token,
+      });
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
+  Future<Map<String, dynamic>> updateProfileImage(File image) async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response = await client.sendFormData(FormDataType.post,
+          imageKey: 'profile_photo',
+          image: image,
+          uri: ApiRoute.updateProfileImage,
+          requestHeaders: {
+            'Authorization': token,
+          });
       return response;
     } catch (e) {
       print('Error: $e');

@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,9 @@ class AccountProvider with ChangeNotifier {
   dynamic qrcode;
   List<Transaction>? _dashBoardHistory = [];
   Map<dynamic, List> _transGroupByData = {};
+  String _profileImage = '';
 
+  String get profileImage => _profileImage;
   Map<dynamic, List> get transGroupByData => _transGroupByData;
   List<Transaction>? get dashBoardHistory => _dashBoardHistory;
 
@@ -91,6 +94,47 @@ class AccountProvider with ChangeNotifier {
         } else {
           userModel = UserModel.fromJson(value);
           if (isLoading) hideLoader();
+        }
+        notifyListeners();
+      });
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
+  // get Profile Image
+  Future<void> getProfileImage({bool isLoading = true}) async {
+    try {
+      if (isLoading) showLoader();
+      AccountRepo().getProfileImage().then((value) {
+        log('Value: $value');
+        if (isLoading) hideLoader();
+        if (value['result'] == false) {
+          ErrorToast(value['message']);
+        } else {
+          _profileImage = value['message'];
+          if (isLoading) hideLoader();
+        }
+        notifyListeners();
+      });
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
+  // update Profile Image
+  Future<void> updateProfileImage(File image) async {
+    try {
+      showLoader();
+      AccountRepo().updateProfileImage(image).then((value) async {
+        if (value['result'] == false) {
+          hideLoader();
+          ErrorToast(value['message']);
+        } else {
+          await getProfileImage(isLoading: false);
+          hideLoader();
         }
         notifyListeners();
       });

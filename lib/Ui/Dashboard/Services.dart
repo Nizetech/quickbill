@@ -2,6 +2,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/DashboardProvider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyAirtime.dart';
@@ -793,9 +794,10 @@ class _ServicesState extends State<Services> {
                           const Spacer(),
                           GestureDetector(
                             onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const PaintHistory(),
-                              ));
+                              // Navigator.of(context).push(MaterialPageRoute(
+                              //   builder: (context) => const PaintHistory(),
+                              // ));
+                              Get.to(PaintHistory());
                             },
                             child: Container(
                               width: 155,

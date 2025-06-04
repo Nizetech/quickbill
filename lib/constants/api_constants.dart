@@ -30,7 +30,7 @@ class ApiRoute {
   static String getColorPaint = 'services/spray-main';
   static String getSprayHistory = 'services/spray-history';
   static String getSpraydetails = 'services/spray-history/details';
-  static String sharePdf = 'services/spray-history/share';
+  static String sharePdf = 'services/spray-history/download';
   static String payPending = 'services/spray-history/pay';
   static String rentSpray = 'services/rent-spray';
 }

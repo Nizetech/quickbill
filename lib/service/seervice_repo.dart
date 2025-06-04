@@ -1,12 +1,10 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:dio/dio.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jost_pay_wallet/constants/api_constants.dart';
 import 'package:jost_pay_wallet/constants/constants.dart';
 import 'package:jost_pay_wallet/utils/network_clients.dart';
-import 'package:path_provider/path_provider.dart';
 
 class ServiceRepo {
   final client = NetworkClient();
@@ -92,31 +90,20 @@ class ServiceRepo {
     }
   }
 
-  //? Get Pdf Transaction Receipt
-  Future<String> getPdfReceipt(String id) async {
-    Dio dio = Dio();
+
+  Future<Map<String, dynamic>> getPdfReceipt(int id) async {
     String token = await box.get(kAccessToken);
-    var dir = await getApplicationDocumentsDirectory();
-    var pdfDownloadPath = '${dir.path}/$id.pdf';
     try {
-      // ignore: unused_local_variable
-      var response = await dio.download(
-        '${ApiRoute.sharePdf}$id',
-        pdfDownloadPath,
-        options: Options(
-          method: "GET",
-          headers: {
-            "Authorization": "Bearer $token",
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-          },
-          responseType: ResponseType.bytes,
-        ),
-      );
-      return pdfDownloadPath;
+      final response = await client.post(ApiRoute.sharePdf,
+          body: jsonEncode({"history_id": id}),
+          requestHeaders: {
+            'Authorization': token,
+          });
+      log('Reponse: $response');
+      return response;
     } catch (e) {
-      log(e.toString());
-      return '';
+      print('Error: $e');
+      return {};
     }
   }
 

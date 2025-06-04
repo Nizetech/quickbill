@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -132,6 +131,7 @@ String isToday(DateTime date) {
   }
 }
 
+
 Future<bool> checkUploadSize(File selectedFile) async {
   int fileSizeInBytes = await selectedFile.length();
   // Check if file size is greater than 100KB
@@ -139,7 +139,6 @@ Future<bool> checkUploadSize(File selectedFile) async {
     ErrorToast(
       'The file size exceeds 100KB. Please select a smaller file.',
     );
-    log('File size exceeded 100KB ==> ${fileSizeInBytes / 1024} KB');
     return false;
   }
   return true;

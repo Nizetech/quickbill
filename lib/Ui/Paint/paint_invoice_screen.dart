@@ -10,7 +10,8 @@ import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:provider/provider.dart';
 
 class PaintInvoiceScreen extends StatefulWidget {
-  const PaintInvoiceScreen({super.key});
+  final int historyId;
+  const PaintInvoiceScreen({super.key, required this.historyId});
 
   @override
   State<PaintInvoiceScreen> createState() => _PaintInvoiceScreenState();
@@ -213,7 +214,9 @@ class _PaintInvoiceScreenState extends State<PaintInvoiceScreen> {
                       ),
                       const SizedBox(height: 137),
                       OutlinedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          model.getPdfReceipt(widget.historyId);
+                        },
                         style: OutlinedButton.styleFrom(
                           side: BorderSide.none,
                           backgroundColor: themeProvider.isDarkMode()

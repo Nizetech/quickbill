@@ -544,6 +544,7 @@ class _PaintformScreenState extends State<PaintformScreen> {
                               "colorChange": packageIndex == 2 ? 1 : 0,
                               "packages":
                                   packageIndex != 1 ? [packageId] : tourchId,
+                              if (packageIndex != 1)
                               "careDay": careDurationList[careDuration]
                                   .toString()
                                   .split(" ")

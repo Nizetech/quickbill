@@ -41,6 +41,10 @@ dependencies:
   dotted_line:
   # hive: ^2.2.3
   hive_flutter:
+  flutter_native_contact_picker: ^0.0.10
+  flutter_contacts: ^1.1.9+2
+
+  permission_handler: ^12.0.0+1
   
 
   # stop screen shared

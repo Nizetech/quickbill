@@ -23,7 +23,10 @@ class ApiRoute {
   static String getNotification = 'get-news';
   static String readNotification = 'read-news';
   static String getPromo = 'get-promos';
+  static String buyAirtime = 'buy-airtime';
+  static String serviceHistory = 'get-purchases';
   static String getReferrals = 'get-referrals';
+  static String getNetworkProviders = 'get-network-providers';
 
   // Services
   static String getCarTypes = 'services/spray-land';

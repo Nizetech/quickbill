@@ -6,6 +6,7 @@ class Utils {
       "0fa429cf994e688e6535aea90ee82ad9c5adaf1d75fecf85f1358eace586c4c3";
   static String usdtTrx = "usdttrc20";
   static String usdtBsc = "usdtbsc";
+  static String naira = "₦";
   static String pageType = "";
   static String pageType1 = "";
   static String faqUrl = "https://project.jostpay.com/our/faq";

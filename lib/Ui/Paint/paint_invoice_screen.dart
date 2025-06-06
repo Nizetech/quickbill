@@ -167,8 +167,8 @@ class _PaintInvoiceScreenState extends State<PaintInvoiceScreen> {
                                       ),
                                       Text(
                                         data.status == '1'
-                                            ? "NGN ${formatNumber(num.parse(data.extraFee!))}"
-                                            : "NGN ${formatNumber(num.parse(data.price!))}",
+                                            ? "NGN ${formatNumber(num.parse(data.extraFee == null ? '0' : data.extraFee!))}"
+                                            : "NGN ${formatNumber(num.parse(data.price == null ? '0' : data.price!))}",
                                         style: MyStyle.tx16Black.copyWith(
                                             fontWeight: FontWeight.w600,
                                             color: themedata.tertiary),

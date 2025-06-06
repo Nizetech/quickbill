@@ -1,13 +1,17 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jost_pay_wallet/Models/airtime_history.dart';
+import 'package:jost_pay_wallet/Models/network_provider.dart';
 import 'package:jost_pay_wallet/Models/notification_model.dart';
 import 'package:jost_pay_wallet/Models/promotion_model.dart';
 import 'package:jost_pay_wallet/Models/transactions.dart';
 import 'package:jost_pay_wallet/Models/user_model.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyDataSuccess.dart';
 import 'package:jost_pay_wallet/service/account_repo.dart';
 import 'package:jost_pay_wallet/utils/loader.dart';
 import 'package:jost_pay_wallet/utils/toast.dart';
@@ -20,6 +24,9 @@ class AccountProvider with ChangeNotifier {
   TransactionModel? transactionModel;
   NotificationModel? notificationModel;
   PromoModel? promoModel;
+  NetworkProviderModel? networkProviderModel;
+  AirtimeHistory? airtimeHistory;
+
   dynamic qrcode;
   List<Transaction>? _dashBoardHistory = [];
   Map<dynamic, List> _transGroupByData = {};
@@ -103,6 +110,48 @@ class AccountProvider with ChangeNotifier {
     }
   }
 
+  // get User Profile
+  Future<void> getAirtimeHistory({bool isLoading = true}) async {
+    try {
+      if (isLoading) showLoader();
+      AccountRepo().getServiceHistory('airtime').then((value) {
+        log('Value: $value');
+        if (isLoading) hideLoader();
+        if (value['result'] == false) {
+          ErrorToast(value['message']);
+        } else {
+          airtimeHistory = AirtimeHistory.fromJson(value);
+        }
+        notifyListeners();
+      });
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
+  // get Network Provider
+  Future<void> getNetworkProviders({bool isLoading = true}) async {
+    try {
+      if (isLoading) showLoader();
+      AccountRepo().getNetworkProviders().then((value) {
+        log('Value: $value');
+        if (isLoading) hideLoader();
+        if (value['result'] == false) {
+          ErrorToast(value['message']);
+        } else {
+          networkProviderModel =
+              NetworkProviderModel.fromJson(value['network_providers']);
+          if (isLoading) hideLoader();
+        }
+        notifyListeners();
+      });
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
   // get Profile Image
   Future<void> getProfileImage({bool isLoading = true}) async {
     try {
@@ -135,6 +184,30 @@ class AccountProvider with ChangeNotifier {
         } else {
           await getProfileImage(isLoading: false);
           hideLoader();
+        }
+        notifyListeners();
+      });
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
+  // buy Airtime
+  Future<void> buyAirtime(Map<String, dynamic> data) async {
+    try {
+      showLoader();
+      AccountRepo().buyAirtime(data).then((value) async {
+        if (value['result'] == false) {
+          hideLoader();
+          ErrorToast(value['message']);
+        } else {
+          hideLoader();
+          Get.to(BuyDataSuccess(
+            isData: false,
+            amount: data['amount'],
+            phone: data['phone'],
+          ));
         }
         notifyListeners();
       });

@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
+import 'package:jost_pay_wallet/Values/utils.dart';
 
 import '../../../bottom_nav.dart';
 
 class BuyDataSuccess extends StatefulWidget {
-  const BuyDataSuccess({super.key});
+  final bool isData;
+  final String amount;
+  final String phone;
+  const BuyDataSuccess(
+      {super.key,
+      this.isData = true,
+      required this.amount,
+      required this.phone});
 
   @override
   State<BuyDataSuccess> createState() => _BuyDataSuccessState();
@@ -34,23 +44,29 @@ class _BuyDataSuccessState extends State<BuyDataSuccess> {
                 height: 40,
               ),
               Text(
-                'You have successfully purchased N350',
+                'You have successfully purchased ${Utils.naira}${widget.amount}',
                 style: MyStyle.tx18Black
                     .copyWith(color: Theme.of(context).colorScheme.tertiary),
               ),
               Text(
-                'data bundle to 09087653678',
+                ' ${widget.isData ? "data bundle" : "airtime"} to ${widget.phone}',
                 style: MyStyle.tx18Black
                     .copyWith(color: Theme.of(context).colorScheme.tertiary),
               ),
               const SizedBox(
                 height: 32,
               ),
-              GestureDetector(
-                onTap: () => Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const BottomNav())),
+              OutlinedButton(
+                onPressed: () => Get.offAll(BottomNav()),
+                style: OutlinedButton.styleFrom(
+                  side: const BorderSide(
+                    color: MyColor.splashBtn,
+                    width: 1.0,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
                 child: Text(
                   'Buy more',
                   style:

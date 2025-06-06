@@ -355,7 +355,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                 children: [
                                   InkWell(
                                     onTap: () {
-                                      Navigator.pushReplacement(
+                                      Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
@@ -402,7 +402,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                   children: [
                                     InkWell(
                                       onTap: () {
-                                        Navigator.pushReplacement(
+                                        Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
@@ -495,7 +495,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                     GestureDetector(
                                       onTap: () =>
                                           dashProvider.changeBottomIndex(1),
-                                      // Navigator.pushReplacement(
+                                      // Navigator.push(
                                       //     context,
                                       //     MaterialPageRoute(
                                       //         builder: (context) =>
@@ -576,7 +576,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                       children: [
                                         GestureDetector(
                                             onTap: () =>
-                                                Navigator.pushReplacement(
+                                                Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (context) =>

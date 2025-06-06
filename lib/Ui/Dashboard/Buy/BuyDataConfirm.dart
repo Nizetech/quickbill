@@ -227,7 +227,11 @@ class _BuyDataConfirmState extends State<BuyDataConfirm> {
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const BuyDataSuccess()));
+                          builder: (context) => const BuyDataSuccess(
+                                amount: '350',
+                                isData: true,
+                                phone: '09078637583',
+                              )));
                 },
                 child: Text(
                   "Confirm",

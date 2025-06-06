@@ -23,6 +23,20 @@ class AccountRepo {
     }
   }
 
+  Future<Map<String, dynamic>> getNetworkProviders() async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response =
+          await client.get(ApiRoute.getNetworkProviders, requestHeaders: {
+        'Authorization': token,
+      });
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
   Future<Map<String, dynamic>> getProfileImage() async {
     String token = await box.get(kAccessToken);
     try {
@@ -80,6 +94,23 @@ class AccountRepo {
         body: {"use_google_auth": useGoogleAuth},
       );
       log('Reponse: $response');
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
+  Future<dynamic> getServiceHistory(String type) async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response = await client.post(
+        ApiRoute.serviceHistory,
+        requestHeaders: {
+          'Authorization': token,
+        },
+        body: {"type": type},
+      );
       return response;
     } catch (e) {
       print('Error: $e');
@@ -156,6 +187,21 @@ class AccountRepo {
       }, requestHeaders: {
         'Authorization': token,
       });
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
+  Future<Map<String, dynamic>> buyAirtime(Map<String, dynamic> data) async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response =
+          await client.post(ApiRoute.buyAirtime, body: data, requestHeaders: {
+        'Authorization': token,
+      });
+      log('Response: $response');
       return response;
     } catch (e) {
       print('Error: $e');

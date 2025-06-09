@@ -2,25 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
-import 'package:jost_pay_wallet/Values/utils.dart';
+import 'package:jost_pay_wallet/common/button.dart';
 
 import '../../../bottom_nav.dart';
 
-class BuyDataSuccess extends StatefulWidget {
+class PendingPurchase extends StatefulWidget {
   final bool isData;
   final String amount;
   final String phone;
-  const BuyDataSuccess(
+  const PendingPurchase(
       {super.key,
       this.isData = true,
       required this.amount,
       required this.phone});
 
   @override
-  State<BuyDataSuccess> createState() => _BuyDataSuccessState();
+  State<PendingPurchase> createState() => _PendingPurchaseState();
 }
 
-class _BuyDataSuccessState extends State<BuyDataSuccess> {
+class _PendingPurchaseState extends State<PendingPurchase> {
   @override
   void initState() {
     super.initState();
@@ -48,8 +48,8 @@ class _BuyDataSuccessState extends State<BuyDataSuccess> {
                       borderRadius: BorderRadius.circular(100),
                       gradient: const LinearGradient(
                         colors: [
-                          MyColor.greenColor,
-                          Color(0xff00c26d),
+                          MyColor.orange01Color,
+                          MyColor.yellowColor,
                         ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
@@ -58,7 +58,7 @@ class _BuyDataSuccessState extends State<BuyDataSuccess> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        widget.isData ? 'Data Purchased' : 'Airtime Purchased',
+                        'Purchase Pending',
                         style: MyStyle.tx16White.copyWith(
                             fontWeight: FontWeight.bold, fontSize: 20),
                       ),
@@ -66,8 +66,8 @@ class _BuyDataSuccessState extends State<BuyDataSuccess> {
                         radius: 20,
                         backgroundColor: Colors.white,
                         child: Icon(
-                          Icons.check,
-                          color: MyColor.greenColor,
+                          Icons.info,
+                          color: MyColor.orange01Color,
                         ),
                       ),
                     ],
@@ -76,33 +76,21 @@ class _BuyDataSuccessState extends State<BuyDataSuccess> {
                 height: 40,
               ),
               Text(
-                'You have successfully purchased ${Utils.naira}${widget.amount}',
-                style: MyStyle.tx18Black
-                    .copyWith(color: Theme.of(context).colorScheme.tertiary),
+                "Purchase pending. Awaiting network confirmation. You’ll be updated once successful or refunded if it fails. Thanks for your patience.",
+                textAlign: TextAlign.center,
+                style: MyStyle.tx18Black.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: Theme.of(context).colorScheme.tertiary),
               ),
-              Text(
-                ' ${widget.isData ? "data bundle" : "airtime"} to ${widget.phone}',
-                style: MyStyle.tx18Black
-                    .copyWith(color: Theme.of(context).colorScheme.tertiary),
-              ),
+
               const SizedBox(
                 height: 32,
               ),
-              OutlinedButton(
-                onPressed: () => Get.offAll(BottomNav()),
-                style: OutlinedButton.styleFrom(
-                  side: const BorderSide(
-                    color: MyColor.splashBtn,
-                    width: 1.0,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                child: Text(
-                  'Buy more',
-                  style:
-                      MyStyle.tx16Green.copyWith(fontWeight: FontWeight.w600),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.3,
+                child: CustomButton(
+                  onTap: () => Get.offAll(BottomNav()),
+                  text: 'Got It',
                 ),
               )
             ],

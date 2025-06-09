@@ -21,7 +21,8 @@ class Buyairtimeconfirmdetail extends StatefulWidget {
       {super.key,
       required this.selectedNetwork,
       required this.amount,
-      required this.number});
+    required this.number,
+  });
 
   @override
   State<Buyairtimeconfirmdetail> createState() =>

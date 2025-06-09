@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -5,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Models/transactions.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
+import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:provider/provider.dart';
 
@@ -17,7 +20,6 @@ class HistoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final theme = Theme.of(context).colorScheme;
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     return ListTile(
       minVerticalPadding: 0,
@@ -56,7 +58,13 @@ class HistoryCard extends StatelessWidget {
                     : const Color(0xff30333A)),
           ),
           Text(
-            transaction.status == 'success' || transaction.status == '1'
+           
+            transaction.type == 'spray' && transaction.status == '2'
+                ? "Successful"
+                : transaction.type == 'spray' && transaction.status == '1'
+                    ? "Pending"
+                    : transaction.status == 'success' ||
+                            transaction.status == '1' 
                 ? 'Successful'
                 : transaction.status == 'pending'
                     ? 'Pending'
@@ -65,9 +73,15 @@ class HistoryCard extends StatelessWidget {
                 fontWeight: FontWeight.w400,
                 fontSize: 11.sp,
                 color:
+                transaction.type == 'spray' && transaction.status == '2'
+                  ? const Color(0XFF027A48)
+                  : transaction.type == 'spray' && transaction.status == '1'
+                      ? MyColor.orange01Color
+                      :
                     transaction.status == 'success' || transaction.status == '1'
                         ? const Color(0XFF027A48)
-                        : const Color(0XFFEA4D2D)),
+                          : const Color(0XFFEA4D2D),
+            ),
           ),
         ],
       ),

@@ -33,10 +33,9 @@ class _BuyAirtimeConfirmState extends State<BuyAirtimeConfirm> {
   final _controller = TextEditingController();
   final _amount = TextEditingController();
 
-
   final FlutterNativeContactPicker _contactPicker =
       FlutterNativeContactPicker();
-  int selectedItem = 0;
+  int selectedItem = -1;
   bool permissionDenied = false;
 
   Network? selectedNetwork;
@@ -46,9 +45,10 @@ class _BuyAirtimeConfirmState extends State<BuyAirtimeConfirm> {
     } else {
       final contact = await _contactPicker.selectContact();
       setState(() {
-        _controller.text = contact!.phoneNumbers!.first.replaceAll(' ', '');
+        var phoneNumber = contact!.phoneNumbers!.first.replaceAll(' ', '');
+        _controller.text = phoneNumber.replaceAll('+234', '0');
       });
-      log('Contacts:===> ${_controller.text}');
+     
     }
   }
 
@@ -62,7 +62,6 @@ class _BuyAirtimeConfirmState extends State<BuyAirtimeConfirm> {
           selectedItem = model.networkProviderModel!.networks!
               .indexWhere((element) => element.network == widget.network);
         }
-        selectedNetwork = model.networkProviderModel!.networks![selectedItem];
         if (widget.phone != null) {
           _controller.text = widget.phone!;
         }
@@ -236,7 +235,7 @@ class _BuyAirtimeConfirmState extends State<BuyAirtimeConfirm> {
                                     ),
                                   );
                                 })),
-                       
+
                         const SizedBox(
                           height: 30,
                         ),
@@ -248,13 +247,15 @@ class _BuyAirtimeConfirmState extends State<BuyAirtimeConfirm> {
                             Container(
                               padding: const EdgeInsets.symmetric(vertical: 9),
                               decoration: BoxDecoration(
-                                  border: Border(
-                                      bottom: BorderSide(
-                                width: 1,
-                                color: themeProvider.isDarkMode()
-                                    ? MyColor.borderDarkColor
-                                    : MyColor.borderColor,
-                              ))),
+                                border: Border(
+                                  bottom: BorderSide(
+                                    width: 1,
+                                    color: themeProvider.isDarkMode()
+                                        ? MyColor.borderDarkColor
+                                        : MyColor.borderColor,
+                                  ),
+                                ),
+                              ),
                               child: Row(
                                 children: [
                                   Container(
@@ -266,12 +267,10 @@ class _BuyAirtimeConfirmState extends State<BuyAirtimeConfirm> {
                                       color: themedata.secondary,
                                       borderRadius: BorderRadius.circular(8),
                                     ),
-                                    child: const Center(
-                                      child: Text(
-                                        '***',
-                                        style: MyStyle.tx16Green,
-                                      ),
-                                    ),
+                                    child: const Icon(
+                                        Icons.phone_android_rounded,
+                                        size: 20,
+                                        color: MyColor.greenColor),
                                   ),
                                   const SizedBox(
                                     width: 20,
@@ -685,8 +684,11 @@ class _BuyAirtimeConfirmState extends State<BuyAirtimeConfirm> {
                             ),
                             onPressed: () {
                               if (_controller.text.isEmpty ||
+
                                   _amount.text.isEmpty) {
                                 ErrorToast('Please fill all fields');
+                              } else if (selectedItem == -1) {
+                                ErrorToast('Please select network');
                               } else {
                                 Get.to(Buyairtimeconfirmdetail(
                                   selectedNetwork: selectedNetwork!,

@@ -13,6 +13,8 @@ import 'package:jost_pay_wallet/Models/promotion_model.dart';
 import 'package:jost_pay_wallet/Models/transactions.dart';
 import 'package:jost_pay_wallet/Models/user_model.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyDataSuccess.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Buy/invalid.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Buy/pending_purchase.dart';
 import 'package:jost_pay_wallet/service/account_repo.dart';
 import 'package:jost_pay_wallet/utils/loader.dart';
 import 'package:jost_pay_wallet/utils/toast.dart';
@@ -37,6 +39,11 @@ class AccountProvider with ChangeNotifier {
   String get profileImage => _profileImage;
   Map<dynamic, List> get transGroupByData => _transGroupByData;
   List<Transaction>? get dashBoardHistory => _dashBoardHistory;
+
+  void setDataPlanModelToNull () {
+    dataPlansModel = null;
+    notifyListeners();
+  }
 
   void updateDashBoardHistory() {
     _dashBoardHistory = List<Transaction>.from(transactionModel!.data!)
@@ -199,9 +206,18 @@ class AccountProvider with ChangeNotifier {
     try {
       showLoader();
       AccountRepo().buyAirtime(data).then((value) async {
+        if(value['result'] == null){
+          hideLoader();
+           Get.to(InvalidPurchase());
+        }
         if (value['result'] == false) {
           hideLoader();
-          ErrorToast(value['message']);
+          // ErrorToast(value['message']);
+          Get.to(PendingPurchase(
+            isData: false,
+            amount: data['amount'],
+            phone: data['phone'],
+          ));
         } else {
           hideLoader();
           Get.to(BuyDataSuccess(
@@ -223,9 +239,18 @@ class AccountProvider with ChangeNotifier {
     try {
       showLoader();
       AccountRepo().buyData(data).then((value) async {
+         if (value['result'] == null) {
+          hideLoader();
+          Get.to(InvalidPurchase());
+        }
         if (value['result'] == false) {
           hideLoader();
-          ErrorToast(value['message']);
+          // ErrorToast(value['message']);
+           Get.to(PendingPurchase(
+            isData: true,
+            amount: data['amount'],
+            phone: data['phone'],
+          ));
         } else {
           hideLoader();
           Get.to(BuyDataSuccess(

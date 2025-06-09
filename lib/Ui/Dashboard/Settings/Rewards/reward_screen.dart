@@ -3,6 +3,8 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Settings/Rewards/reward_record_screen.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
@@ -20,6 +22,10 @@ class _RewardScreenState extends State<RewardScreen> {
   @override
   void initState() {
     super.initState();
+    final model = Provider.of<AccountProvider>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      model.getReferrals();
+    });
   }
 
   @override
@@ -149,17 +155,18 @@ class _RewardScreenState extends State<RewardScreen> {
                           onTap: () {
                             Clipboard.setData(
                                 const ClipboardData(text: "Q45738498"));
+                            Fluttertoast.showToast(msg: "Copied to clipboard");
                           },
                           child: Container(
                             padding: const EdgeInsets.symmetric(
                                     horizontal: 7, vertical: 15)
                                 .copyWith(right: 14),
                             decoration: BoxDecoration(
-                                color: isDark
-                                    ? const Color(0xff0B930B)
-                                    : MyColor.greenColor,
-                                borderRadius: const BorderRadius.only(
-                                    topRight: Radius.circular(999),
+                              color: isDark
+                                  ? const Color(0xff0B930B)
+                                  : MyColor.greenColor,
+                              borderRadius: const BorderRadius.only(
+                                topRight: Radius.circular(999),
                                 bottomRight: Radius.circular(999),
                               ),
                             ),

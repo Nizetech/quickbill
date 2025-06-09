@@ -19,6 +19,7 @@ class PaintInvoiceScreen extends StatefulWidget {
 
 class _PaintInvoiceScreenState extends State<PaintInvoiceScreen> {
   num total = 0;
+  num colorChangePrice = 0;
   @override
   void initState() {
     super.initState();
@@ -26,17 +27,50 @@ class _PaintInvoiceScreenState extends State<PaintInvoiceScreen> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       var totalPrice = model.sprayDetailsModel!.data!.fold<num>(
         0,
-        (prev, item) =>
-            prev +
-            num.parse(
-              (item.extraFee != null && item.extraFee!.isNotEmpty)
-                  ? item.extraFee!
-                  : item.price!,
-            ),
+        (prev, item) {
+          String? priceString;
+          if (item.extraFee != null) {
+            priceString = item.extraFee;
+          } else if (item.careDay != null) {
+            if (item.careDay == '15') {
+              priceString = item.price15;
+            } else if (item.careDay == '30') {
+              priceString = item.price30;
+            } else if (item.careDay == '60') {
+              priceString = item.price60;
+            } else {
+              priceString = item.price;
+            }
+          } else {
+            priceString = item.price;
+          }
+          return prev + num.parse(priceString ?? '0');
+        },
       );
-      setState(() {
-        total = totalPrice + num.parse(model.sprayDetailsModel!.check!.price!);
-      });
+      if (model.sprayDetailsModel!.check!.paintType == '5') {
+        if (model.sprayDetailsModel!.check!.careDay != null) {
+          setState(() {
+            if (model.sprayDetailsModel!.check!.careDay == '15') {
+              colorChangePrice =
+                  num.parse(model.sprayDetailsModel!.color!.price15!);
+            } else if (model.sprayDetailsModel!.check!.careDay == '30') {
+              colorChangePrice =
+                  num.parse(model.sprayDetailsModel!.color!.price30!);
+            } else {
+              colorChangePrice =
+                  num.parse(model.sprayDetailsModel!.color!.price60!);
+            }
+            total = totalPrice +
+                colorChangePrice +
+                num.parse(model.sprayDetailsModel!.check!.price!);
+          });
+        }
+      } else {
+        setState(() {
+          total =
+              totalPrice + num.parse(model.sprayDetailsModel!.check!.price!);
+        });
+      }
     });
   }
 
@@ -103,15 +137,101 @@ class _PaintInvoiceScreenState extends State<PaintInvoiceScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            if (model.sprayDetailsModel!.check!.paintType ==
+                                '5') ...[
+                              Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Color Change',
+                                          style: MyStyle.tx16Black.copyWith(
+                                              fontWeight: FontWeight.w500,
+                                              color: const Color(0xff6E6D7A)),
+                                        ),
+                                        const SizedBox(height: 5),
+                                        Text(
+                                          model.sprayDetailsModel!.check!
+                                                      .status ==
+                                                  '2'
+                                              ? "Paid"
+                                              : "Pending",
+                                          style: MyStyle.tx12Black.copyWith(
+                                            fontWeight: FontWeight.w600,
+                                            color: model.sprayDetailsModel!
+                                                        .check!.status ==
+                                                    '2'
+                                                ? MyColor.greenColor
+                                                : MyColor.redColor,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(width: 10),
+                                  Expanded(
+                                  child: Text(
+                                      model.sprayDetailsModel!.check!.careDay ==
+                                              '15'
+                                          ? "NGN ${formatNumber(num.parse(model.sprayDetailsModel!.color!.price15!))}"
+                                          : model.sprayDetailsModel!.check!
+                                                      .careDay ==
+                                                  '30'
+                                              ? "NGN ${formatNumber(num.parse(model.sprayDetailsModel!.color!.price30!))}"
+                                              : "NGN ${formatNumber(num.parse(model.sprayDetailsModel!.color!.price60!))}",
+                                      textAlign: TextAlign.right,
+                                      style: MyStyle.tx16Black.copyWith(
+                                          fontWeight: FontWeight.w600,
+                                          color: themedata.tertiary),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              Divider(
+                                height: 1,
+                                color: isDark
+                                    ? const Color(0xff1B1B1B)
+                                    : const Color(0xffE9EBF8),
+                              ),
+                              SizedBox(height: 10),
+                            ],
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Expanded(
-                                  child: Text(
-                                    model.sprayDetailsModel!.check!.rentType!,
-                                    style: MyStyle.tx16Black.copyWith(
-                                        fontWeight: FontWeight.w500,
-                                        color: const Color(0xff6E6D7A)),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        model.sprayDetailsModel!.check!
+                                            .rentType!,
+                                        style: MyStyle.tx16Black.copyWith(
+                                            fontWeight: FontWeight.w500,
+                                            color: const Color(0xff6E6D7A)),
+                                      ),
+                                      const SizedBox(height: 5),
+                                      Text(
+                                        model.sprayDetailsModel!.check!
+                                                    .status ==
+                                                '2'
+                                            ? "Paid"
+                                            : "Pending",
+                                        style: MyStyle.tx12Black.copyWith(
+                                          fontWeight: FontWeight.w600,
+                                          color: model.sprayDetailsModel!.check!
+                                                      .status ==
+                                                  '2'
+                                              ? MyColor.greenColor
+                                              : MyColor.redColor,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                                 SizedBox(width: 10),
@@ -157,18 +277,47 @@ class _PaintInvoiceScreenState extends State<PaintInvoiceScreen> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(
-                                        data.status == '1'
-                                            ? data.description
-                                            : data.name ?? "",
-                                        style: MyStyle.tx16Black.copyWith(
-                                            fontWeight: FontWeight.w500,
-                                            color: const Color(0xff6E6D7A)),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            data.status == '1' ||
+                                                    data.description != null
+                                                ? data.description
+                                                : data.name ?? "",
+                                            style: MyStyle.tx16Black.copyWith(
+                                                fontWeight: FontWeight.w500,
+                                                color: const Color(0xff6E6D7A)),
+                                          ),
+                                          const SizedBox(height: 5),
+                                          Text(
+                                            data.status == '2'
+                                                ? "Paid"
+                                                : "Pending",
+                                            style: MyStyle.tx12Black.copyWith(
+                                              fontWeight: FontWeight.w600,
+                                              color: data.status == '2'
+                                                  ? MyColor.greenColor
+                                                  : MyColor.redColor,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                       Text(
-                                        data.status == '1'
+                                        data.status == '1' ||
+                                                data.extraFee != null
                                             ? "NGN ${formatNumber(num.parse(data.extraFee == null ? '0' : data.extraFee!))}"
-                                            : "NGN ${formatNumber(num.parse(data.price == null ? '0' : data.price!))}",
+                                            : data.careDay != null
+                                                ? data.careDay == '15'
+                                                    ? "NGN ${formatNumber(num.parse(data.price == null ? '0' : data.price15!))}"
+                                                    : data.careDay == '30'
+                                                        ? "NGN ${formatNumber(num.parse(data.price == null ? '0' : data.price30!))}"
+                                                            // : data.careDay == '60'
+                                                            //     ?
+                                                            "NGN ${formatNumber(num.parse(data.price == null ? '0' : data.price60!))}"
+                                                        : "NGN ${formatNumber(num.parse(data.price == null ? '0' : data.price!))}"
+                                                : "NGN ${formatNumber(num.parse(data.price == null ? '0' : data.price!))}",
                                         style: MyStyle.tx16Black.copyWith(
                                             fontWeight: FontWeight.w600,
                                             color: themedata.tertiary),
@@ -212,7 +361,7 @@ class _PaintInvoiceScreenState extends State<PaintInvoiceScreen> {
                             ? const Color(0xff1B1B1B)
                             : const Color(0xffE9EBF8),
                       ),
-                      const SizedBox(height: 137),
+                      const SizedBox(height: 100),
                       OutlinedButton(
                         onPressed: () {
                           model.getPdfReceipt(widget.historyId);
@@ -269,6 +418,7 @@ class _PaintInvoiceScreenState extends State<PaintInvoiceScreen> {
                               )),
                         ),
                       ),
+                      const SizedBox(height: 40),
                     ],
                   ),
                 ),

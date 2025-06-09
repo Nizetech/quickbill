@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Domain/domain_screen.dart';
-import 'package:jost_pay_wallet/Ui/car/cardetail_screen.dart';
 import 'package:jost_pay_wallet/Ui/car/repair_screen.dart';
 import 'package:jost_pay_wallet/Ui/car/repairsteps_screen.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
@@ -531,6 +531,8 @@ class _RepairdetailScreenState extends State<RepairdetailScreen> {
                                 // Copy to clipboard
                                 Clipboard.setData(const ClipboardData(
                                     text: "420516-51443-7897-SPR"));
+                                Fluttertoast.showToast(
+                                    msg: "Copied to clipboard");
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(6),

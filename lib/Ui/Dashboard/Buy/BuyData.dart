@@ -40,8 +40,7 @@ class _BuyDataState extends State<BuyData> {
   ];
   int selectedDay = 0;
 
-
-  int selectedItem = 0;
+  int selectedItem = -1;
   String selectedBundle = '';
 
   void _showBottomSheet(BuildContext context, {bool? isDarkMode}) {
@@ -182,7 +181,6 @@ class _BuyDataState extends State<BuyData> {
     );
   }
 
-
   final FlutterNativeContactPicker _contactPicker =
       FlutterNativeContactPicker();
   bool permissionDenied = false;
@@ -194,7 +192,8 @@ class _BuyDataState extends State<BuyData> {
     } else {
       final contact = await _contactPicker.selectContact();
       setState(() {
-        _controller.text = contact!.phoneNumbers!.first.replaceAll(' ', '');
+        var phoneNumber = contact!.phoneNumbers!.first.replaceAll(' ', '');
+        _controller.text = phoneNumber.replaceAll('+234', '0');
       });
     }
   }
@@ -204,6 +203,7 @@ class _BuyDataState extends State<BuyData> {
     super.initState();
     final model = Provider.of<AccountProvider>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      model.setDataPlanModelToNull();
       if (model.networkProviderModel == null) {
         await model.getNetworkProviders();
         model.getDataPlans(
@@ -211,14 +211,10 @@ class _BuyDataState extends State<BuyData> {
                 .toLowerCase());
       } else {
         await model.getNetworkProviders(isLoading: false);
-        await model.getDataPlans(
-            isLoading: false,
-            network: model.networkProviderModel!.networks!.first.network!
-                .toLowerCase());
       }
-      setState(() {
-        selectedNetwork = model.networkProviderModel!.networks![selectedItem];
-      });
+      // setState(() {
+      //   selectedNetwork = model.networkProviderModel!.networks![selectedItem];
+      // });
     });
   }
 
@@ -238,10 +234,7 @@ class _BuyDataState extends State<BuyData> {
                 Row(
                   children: [
                     InkWell(
-                      onTap: () => Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const BottomNav())),
+                      onTap: () => Get.back(),
                       child: Image.asset(
                         'assets/images/arrow_left.png',
                         color: themeProvider.isDarkMode()
@@ -318,8 +311,7 @@ class _BuyDataState extends State<BuyData> {
                                                           .networkProviderModel!
                                                           .networks![index];
                                                       _controller.text = "";
-                                                    })
-                                                   ,
+                                                    }),
                                                     ctrl.getDataPlans(
                                                         network: model
                                                             .networkProviderModel!
@@ -427,16 +419,14 @@ class _BuyDataState extends State<BuyData> {
                                   Container(
                                     width: 30,
                                     height: 30,
-                                    padding: EdgeInsets.only(top: 6.h),
+                                    padding: EdgeInsets.all(6.h),
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(
                                       color: themedata.secondary,
                                       borderRadius: BorderRadius.circular(8),
                                     ),
-                                    child: const Text(
-                                      '***',
-                                      style: MyStyle.tx16Green,
-                                    ),
+                                    child: Icon(Icons.phone_android_rounded,
+                                        size: 20, color: MyColor.greenColor),
                                   ),
                                   const SizedBox(
                                     width: 20,
@@ -523,159 +513,164 @@ class _BuyDataState extends State<BuyData> {
                         // const SizedBox(
                         //   height: 8,
                         // ),
-                        Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: themeProvider.isDarkMode()
-                                      ? MyColor.borderDarkColor
-                                      : MyColor.borderColor,
-                                  width: 0.2),
-                              borderRadius: BorderRadius.circular(5)),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 20, horizontal: 10),
-                            child: Column(
-                              children: [
-                                Wrap(
-                                    spacing: 10,
-                                    runSpacing: 10,
-                                    children: List.generate(
-                                      model.dataPlansModel!.plans!.length,
-                                      (index) {
-                                        var plan =
-                                            model.dataPlansModel!.plans![index];
-                                        String price =
-                                            formatNumber(plan.price!);
-                                        return GestureDetector(
-                                          onTap: () {
-                                            if (_controller.text.isEmpty) {
-                                              ErrorToast(
-                                                  'Please enter mobile number');
-                                            } else {
-                                              Navigator.pushReplacement(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      BuyDataConfirm(
-                                                    plan: plan,
-                                                    phone: _controller.text,
-                                                    network: selectedNetwork!,
+                        if (model.dataPlansModel != null)
+                          Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: themeProvider.isDarkMode()
+                                        ? MyColor.borderDarkColor
+                                        : MyColor.borderColor,
+                                    width: 0.2),
+                                borderRadius: BorderRadius.circular(5)),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 20, horizontal: 10),
+                              child: Column(
+                                children: [
+                                  Wrap(
+                                      spacing: 10,
+                                      runSpacing: 10,
+                                      children: List.generate(
+                                        model.dataPlansModel!.plans!.length,
+                                        (index) {
+                                          var plan = model
+                                              .dataPlansModel!.plans![index];
+                                          String price =
+                                              formatNumber(plan.price!);
+                                          return GestureDetector(
+                                            onTap: () {
+                                              if (_controller.text.isEmpty) {
+                                                ErrorToast(
+                                                    'Please enter mobile number');
+                                              } else if (selectedItem == -1) {
+                                                ErrorToast(
+                                                    'Please select network');
+                                              } else {
+                                                Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        BuyDataConfirm(
+                                                      plan: plan,
+                                                      phone: _controller.text,
+                                                      network: selectedNetwork!,
+                                                    ),
                                                   ),
-                                                ),
-                                              );
-                                            }
-                                          },
-                                          child: Container(
-                                            width: 90,
-                                            padding: EdgeInsets.all(10),
-                                            alignment: Alignment.center,
-                                            decoration: BoxDecoration(
-                                                color: themedata.secondary
-                                                    .withValues(alpha: 0.3),
-                                                borderRadius:
-                                                    BorderRadius.circular(8)),
-                                            child: Column(
-                                              children: [
-                                                Text(
-                                                  plan.name!,
-                                                  textAlign: TextAlign.center,
-                                                  style: MyStyle.tx12Black
-                                                      .copyWith(
-                                                    fontWeight: FontWeight.w600,
-                                                    color: themedata.tertiary,
-                                                  ),
-                                                ),
-                                                const SizedBox(height: 10),
-                                                // Text(
-                                                //   '${Utils.naira}$price',
-                                                //   style: MyStyle.tx12Grey,
-                                                // ),
-                                                // const SizedBox(
-                                                //   height: 4,
-                                                // ),
-                                                Container(
-                                                  width: 72,
-                                                  padding: EdgeInsets.all(10),
-                                                  alignment: Alignment.center,
-                                                  decoration: BoxDecoration(
-                                                      color:
-                                                          themedata.secondary,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              6)),
-                                                  child: Text(
-                                                    '${Utils.naira}$price',
+                                                );
+                                              }
+                                            },
+                                            child: Container(
+                                              width: 140,
+                                              padding: EdgeInsets.all(10),
+                                              alignment: Alignment.center,
+                                              decoration: BoxDecoration(
+                                                  color: themedata.secondary
+                                                      .withValues(alpha: 0.3),
+                                                  borderRadius:
+                                                      BorderRadius.circular(8)),
+                                              child: Column(
+                                                children: [
+                                                  Text(
+                                                    plan.name!,
+                                                    textAlign: TextAlign.center,
                                                     style: MyStyle.tx12Black
                                                         .copyWith(
-                                                            color: MyColor
-                                                                .greenColor),
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: themedata.tertiary,
+                                                    ),
                                                   ),
-                                                ),
-                                              ],
+                                                  const SizedBox(height: 10),
+                                                  // Text(
+                                                  //   '${Utils.naira}$price',
+                                                  //   style: MyStyle.tx12Grey,
+                                                  // ),
+                                                  // const SizedBox(
+                                                  //   height: 4,
+                                                  // ),
+                                                  Container(
+                                                    
+                                                    padding: EdgeInsets.all(10),
+                                                    alignment: Alignment.center,
+                                                    decoration: BoxDecoration(
+                                                        color:
+                                                            themedata.secondary,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(6)),
+                                                    child: Text(
+                                                      '${Utils.naira}$price',
+                                                      style: MyStyle.tx12Black
+                                                          .copyWith(
+                                                              color: MyColor
+                                                                  .greenColor),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                        );
-                                      },
-                                    ))
+                                          );
+                                        },
+                                      ))
 
-                                // InkWell(
-                                //   onTap: () => _showBottomSheet(context,
-                                //       isDarkMode:
-                                //           themeProvider.isDarkMode()),
-                                //   child: Container(
-                                //     padding: EdgeInsets.all(10),
-                                //     // width: 100,
-                                //     height: 78,
-                                //     alignment: Alignment.center,
-                                //     decoration: BoxDecoration(
-                                //         color: MyColor.greenColor,
-                                //         borderRadius:
-                                //             BorderRadius.circular(8)),
-                                //     child: Column(
-                                //       children: [
+                                  // InkWell(
+                                  //   onTap: () => _showBottomSheet(context,
+                                  //       isDarkMode:
+                                  //           themeProvider.isDarkMode()),
+                                  //   child: Container(
+                                  //     padding: EdgeInsets.all(10),
+                                  //     // width: 100,
+                                  //     height: 78,
+                                  //     alignment: Alignment.center,
+                                  //     decoration: BoxDecoration(
+                                  //         color: MyColor.greenColor,
+                                  //         borderRadius:
+                                  //             BorderRadius.circular(8)),
+                                  //     child: Column(
+                                  //       children: [
 
-                                //         const Text(
-                                //           '50% off',
-                                //           style: MyStyle.tx16White,
-                                //         ),
-                                //         const SizedBox(
-                                //           height: 10,
-                                //         ),
-                                //         Row(
-                                //           crossAxisAlignment:
-                                //               CrossAxisAlignment.center,
-                                //           mainAxisAlignment:
-                                //               MainAxisAlignment.center,
-                                //           children: [
-                                //             Text(
-                                //               'See other plans',
-                                //               style: MyStyle.tx12GreenUnder
-                                //                   .copyWith(
-                                //                       color: Colors.white,
-                                //                       fontSize: 9,
-                                //                       decoration:
-                                //                           TextDecoration
-                                //                               .underline,
-                                //                       decorationColor:
-                                //                           Colors.white),
-                                //             ),
-                                //             const SizedBox(
-                                //               width: 2,
-                                //             ),
-                                //             Image.asset(
-                                //                 'assets/images/arrow-tr.png')
-                                //           ],
-                                //         ),
-                                //         const Spacer(),
-                                //       ],
-                                //     ),
-                                //   ),
-                                // ),
-                              ],
+                                  //         const Text(
+                                  //           '50% off',
+                                  //           style: MyStyle.tx16White,
+                                  //         ),
+                                  //         const SizedBox(
+                                  //           height: 10,
+                                  //         ),
+                                  //         Row(
+                                  //           crossAxisAlignment:
+                                  //               CrossAxisAlignment.center,
+                                  //           mainAxisAlignment:
+                                  //               MainAxisAlignment.center,
+                                  //           children: [
+                                  //             Text(
+                                  //               'See other plans',
+                                  //               style: MyStyle.tx12GreenUnder
+                                  //                   .copyWith(
+                                  //                       color: Colors.white,
+                                  //                       fontSize: 9,
+                                  //                       decoration:
+                                  //                           TextDecoration
+                                  //                               .underline,
+                                  //                       decorationColor:
+                                  //                           Colors.white),
+                                  //             ),
+                                  //             const SizedBox(
+                                  //               width: 2,
+                                  //             ),
+                                  //             Image.asset(
+                                  //                 'assets/images/arrow-tr.png')
+                                  //           ],
+                                  //         ),
+                                  //         const Spacer(),
+                                  //       ],
+                                  //     ),
+                                  //   ),
+                                  // ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
                       ],
                     ),
                   ),

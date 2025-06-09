@@ -125,13 +125,11 @@ class AppInterceptors extends Interceptor {
       var message = err.response?.data['message']?.toString();
       log('Message $message');
       CancelLoading().cancelLoading();
-      ErrorToast(message!);
-      // if (message?.toLowerCase() == 'unauthenticated') {
-      //   // await navigatorKey.currentState!
-      //   //     .pushNamedAndRemoveUntil(SigninScreen.login, (route) => false);
-      //   // return;
-      //   log("Unauthenticated");
-      // }
+      if (message == null) {
+        ErrorToast('Something went wrong, please try again');
+      } else {
+        ErrorToast(message);
+      }
     }
     _log.e(err.response?.statusCode, functionName: "onError[4]");
 

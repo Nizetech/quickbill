@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jost_pay_wallet/Provider/service_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Domain/domain_screen.dart';
@@ -58,10 +60,23 @@ class SprayHistory extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SvgPicture.asset(
+                  CachedNetworkImage(
+                    imageUrl:
+                        'https://project.jostpay.com/uploads/${history.image}',
+                    height: 68,
+                    width: 86,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) =>
+                                                           SvgPicture.asset(
                     isDark
                         ? 'assets/images/svg/file-dark.svg'
                         : 'assets/images/svg/file.svg',
+                  ),
+                    errorWidget: (context, url, error) => SvgPicture.asset(
+                      isDark
+                          ? 'assets/images/svg/file-dark.svg'
+                          : 'assets/images/svg/file.svg',
+                    ),
                   ),
                   StatusIndicator(
                     text: history.status! == '2' ? "Paid" : "Pending Payment",
@@ -125,7 +140,7 @@ class SprayHistory extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 6),
-            if (history.paintType != '3') ...[
+            //todo
               Row(
                 children: [
                   Text(history.reference!,
@@ -138,6 +153,7 @@ class SprayHistory extends StatelessWidget {
                       // Copy to clipboard
                       Clipboard.setData(
                           ClipboardData(text: history.reference!));
+                    Fluttertoast.showToast(msg: "Copied to clipboard");
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(6),
@@ -182,11 +198,14 @@ class SprayHistory extends StatelessWidget {
                   DotLabel(
                     flex: 3,
                     text: "Paint type",
-                    value: history.paintType == '1'
+                  value: history.paintType == '3'
+                      ? "No package"
+                      : history.paintType == '1'
                         ? "Full Body Paint"
                         : history.paintType == '2'
                             ? 'Touch Up'
-                            : 'Full body paint color change',
+                              : 'Color change',
+                  // 'Full body paint color change',
                     dotColor: MyColor.dark01Color,
                     labelColor: const Color(0xff6E6D7A),
                     textColor:
@@ -230,15 +249,14 @@ class SprayHistory extends StatelessWidget {
                         isDark ? MyColor.mainWhiteColor : MyColor.blackColor,
                   ),
                 ],
-              ),
-            ],
+            ),
             const SizedBox(height: 22),
             Row(
               children: [
                 DotLabel(
                   text: "Painter type",
                   value: history.paintType == '3'
-                      ? "Personal Painter"
+                      ? "Use My Own Painter"
                       : "Company Painter",
                   dotColor: MyColor.dark01Color,
                   labelColor: const Color(0xff6E6D7A),

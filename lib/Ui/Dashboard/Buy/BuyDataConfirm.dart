@@ -1,13 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_contacts/flutter_contacts.dart';
+import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Models/data_plans_model.dart';
 import 'package:jost_pay_wallet/Models/network_provider.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyData.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyDataSuccess.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/NewColor.dart';
@@ -31,10 +29,7 @@ class BuyDataConfirm extends StatefulWidget {
 }
 
 class _BuyDataConfirmState extends State<BuyDataConfirm> {
-  @override
-  void initState() {
-    super.initState();
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -51,10 +46,7 @@ class _BuyDataConfirmState extends State<BuyDataConfirm> {
                 Row(
                   children: [
                     InkWell(
-                      onTap: () => Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const BuyData())),
+                      onTap: () => Get.back(),
                       child: Image.asset(
                         'assets/images/arrow_left.png',
                         color: themeProvider.isDarkMode()
@@ -136,7 +128,7 @@ class _BuyDataConfirmState extends State<BuyDataConfirm> {
                           Expanded(
                             flex: 2,
                             child: Text(
-                              widget.plan.planId!,
+                              widget.plan.name!,
                               textAlign: TextAlign.end,
                               style: MyStyle.tx12Black.copyWith(
                                   color: themedata.tertiary,

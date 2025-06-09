@@ -34,6 +34,7 @@ class _SettingScreenState extends State<SettingScreen> {
       }
     });
   }
+
   final box = Hive.box(kAppName);
 
   @override
@@ -403,6 +404,12 @@ class _SettingScreenState extends State<SettingScreen> {
                         child: InkWell(
                           onTap: () async {
                             await box.delete(kAccessToken);
+                            if (themeProvider.isDarkMode()) {
+                              themeProvider.toggleTheme(false);
+                            }
+                            await box.delete('themeMode');
+                            await box.clear();
+                            setState(() {});
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(

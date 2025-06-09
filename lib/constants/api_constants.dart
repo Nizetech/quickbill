@@ -19,11 +19,13 @@ class ApiRoute {
   static String getProfileImage = 'get-profile-image';
   static String updateProfileImage = 'update-image';
   static String getBalance = 'get-balance';
+  static String getDataPlans = 'get-data-plans';
   static String getTransactions = 'get-purchases';
   static String getNotification = 'get-news';
   static String readNotification = 'read-news';
   static String getPromo = 'get-promos';
   static String buyAirtime = 'buy-airtime';
+  static String buyData = 'buy-data';
   static String serviceHistory = 'get-purchases';
   static String getReferrals = 'get-referrals';
   static String getNetworkProviders = 'get-network-providers';

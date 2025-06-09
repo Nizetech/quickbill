@@ -1,9 +1,20 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_contacts/flutter_contacts.dart';
+import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:jost_pay_wallet/Models/network_provider.dart';
+import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyDataConfirm.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Buy/widget/balance_action_card.dart';
+import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
+import 'package:jost_pay_wallet/Values/utils.dart';
+import 'package:jost_pay_wallet/utils/data.dart';
+import 'package:jost_pay_wallet/utils/toast.dart';
 import 'package:provider/provider.dart';
 
 import '../AddFunds.dart';
@@ -29,20 +40,6 @@ class _BuyDataState extends State<BuyData> {
   ];
   int selectedDay = 0;
 
-  final List<Map<String, dynamic>> data = [
-    {'img': 'assets/images/operator-1.png', 'title': 'MTN'},
-    {'img': 'assets/images/operator-2.png', 'title': 'Airtel'},
-    {'img': 'assets/images/operator-3.png', 'title': 'Glo'},
-    {'img': 'assets/images/operator-1.png', 'title': 'MTN'},
-    {'img': 'assets/images/operator-2.png', 'title': 'Airtel'},
-    {'img': 'assets/images/operator-3.png', 'title': 'Glo'}
-  ];
-
-  final List<Map<String, dynamic>> bundles = [
-    {'title': '1GB(1 day)', 'price': 'N350', 'reduce': '5% off'},
-    {'title': '1GB(1 day)', 'price': 'N350', 'reduce': '5% off'},
-    {'title': '1GB(1 day)', 'price': 'N350', 'reduce': '5% off'},
-  ];
 
   int selectedItem = 0;
   String selectedBundle = '';
@@ -110,11 +107,13 @@ class _BuyDataState extends State<BuyData> {
                                 })
                               },
                               child: GestureDetector(
-                                onTap: () => Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const BuyDataConfirm())),
+                                onTap: () {},
+                                // =>
+                                //  Navigator.pushReplacement(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (context) =>
+                                //             const BuyDataConfirm())),
                                 child: Container(
                                   width: 100,
                                   height: 78,
@@ -183,643 +182,509 @@ class _BuyDataState extends State<BuyData> {
     );
   }
 
+
+  final FlutterNativeContactPicker _contactPicker =
+      FlutterNativeContactPicker();
+  bool permissionDenied = false;
+
+  Network? selectedNetwork;
+  Future _pickContacts() async {
+    if (!await FlutterContacts.requestPermission(readonly: true)) {
+      setState(() => permissionDenied = true);
+    } else {
+      final contact = await _contactPicker.selectContact();
+      setState(() {
+        _controller.text = contact!.phoneNumbers!.first.replaceAll(' ', '');
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    final model = Provider.of<AccountProvider>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (model.networkProviderModel == null) {
+        await model.getNetworkProviders();
+        model.getDataPlans(
+            network: model.networkProviderModel!.networks!.first.network!
+                .toLowerCase());
+      } else {
+        await model.getNetworkProviders(isLoading: false);
+        await model.getDataPlans(
+            isLoading: false,
+            network: model.networkProviderModel!.networks!.first.network!
+                .toLowerCase());
+      }
+      setState(() {
+        selectedNetwork = model.networkProviderModel!.networks![selectedItem];
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     final themedata = Theme.of(context).colorScheme;
+    final model = context.watch<AccountProvider>();
     return Scaffold(
       // backgroundColor: Colors.white,
-      body: Padding(
-        padding: const EdgeInsets.only(top: 54, left: 24, right: 24),
-        child: Column(
-          children: [
-            Row(
+      body: Consumer<AccountProvider>(builder: (context, ctrl, _) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 10, left: 24, right: 24),
+            child: Column(
               children: [
-                InkWell(
-                  onTap: () => Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const BottomNav())),
-                  child: Image.asset(
-                    'assets/images/arrow_left.png',
-                    color: themeProvider.isDarkMode()
-                        ? MyColor.mainWhiteColor
-                        : MyColor.dark01Color,
-                  ),
-                ),
-                const Spacer(),
-                Transform.translate(
-                  offset: const Offset(-20, 0),
-                  child: Text(
-                    'Buy Data',
-                    style:
-                        MyStyle.tx18Black.copyWith(color: themedata.tertiary),
-                  ),
-                ),
-                const Spacer(), // Adds flexible space after the text
-              ],
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            Container(
-              height: 125,
-              decoration: BoxDecoration(
-                  border: Border.all(
-                    width: 0.8,
-                    color: themeProvider.isDarkMode()
-                        ? MyColor.borderDarkColor
-                        : MyColor.borderColor,
-                  ),
-                  borderRadius: BorderRadius.circular(16)),
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Row(
+                Row(
                   children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Spacer(),
-                        const Text(
-                          'Total balance',
-                          style: MyStyle.tx12Grey,
-                        ),
-                        Row(
-                          children: [
-                            Image.asset('assets/images/currency.png',
-                                width: 15, color: themedata.tertiary),
-                            Text(
-                              '10,000.',
-                              style: MyStyle.tx32Black
-                                  .copyWith(color: themedata.tertiary),
-                            ),
-                            Text(
-                              '20',
-                              style: MyStyle.tx20Grey
-                                  .copyWith(color: themedata.tertiary),
-                            )
-                          ],
-                        ),
-                        const Spacer(),
-                      ],
+                    InkWell(
+                      onTap: () => Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const BottomNav())),
+                      child: Image.asset(
+                        'assets/images/arrow_left.png',
+                        color: themeProvider.isDarkMode()
+                            ? MyColor.mainWhiteColor
+                            : MyColor.dark01Color,
+                      ),
                     ),
                     const Spacer(),
-                    TextButton(
-                      onPressed: () => {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const AddFunds()))
-                      },
-                      style: TextButton.styleFrom(
-                        backgroundColor: MyColor.greenColor,
-                        padding: const EdgeInsets.only(
-                            top: 6, bottom: 6, left: 24, right: 12),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
+                    Transform.translate(
+                      offset: const Offset(-20, 0),
+                      child: Text(
+                        'Buy Data',
+                        style: MyStyle.tx18Black
+                            .copyWith(color: themedata.tertiary),
                       ),
-                      child: Row(
-                        children: [
-                          const Text(
-                            "Add fund",
-                            style: MyStyle.tx12White,
-                          ),
-                          Image.asset('assets/images/arrow-up.png')
-                        ],
-                      ),
-                    )
+                    ),
+                    const Spacer(), // Adds flexible space after the text
                   ],
                 ),
-              ),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Select Mobile Operator',
-                style: MyStyle.tx12Grey.copyWith(color: themedata.tertiary),
-              ),
-            ),
-            const SizedBox(
-              height: 8,
-            ),
-            SizedBox(
-                height: 90,
-                child: ListView.builder(
-                    itemCount: data.length,
-                    padding: const EdgeInsets.all(0),
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      var item = data[index];
-                      return Padding(
-                        padding: EdgeInsets.only(
-                            right: selectedItem == index ? 0 : 15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            InkWell(
-                              onTap: () => {
-                                setState(() {
-                                  selectedItem = index;
-                                })
-                              },
-                              child: selectedItem == index
-                                  ? Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Image.asset(item['img']),
-                                        Transform.translate(
-                                          offset: Offset(-24.w, 2.h),
-                                          child: Icon(
-                                            Icons.check_circle,
-                                            // Image.asset(
-                                            //   'assets/images/checked.png',
-                                            color: Theme.of(context)
-                                                .scaffoldBackgroundColor,
+                const SizedBox(
+                  height: 30,
+                ),
+                BalanceActionCard(
+                    title: 'Add Funds',
+                    onTap: () {
+                      Get.to(const AddFunds());
+                    }),
+                const SizedBox(
+                  height: 20,
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Select Mobile Operator',
+                            style: MyStyle.tx14Grey.copyWith(
+                              color: themedata.tertiary,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        if (model.networkProviderModel != null)
+                          SizedBox(
+                              height: 90,
+                              child: ListView.separated(
+                                  shrinkWrap: true,
+                                  separatorBuilder: (_, i) => SizedBox(
+                                        width: 16.w,
+                                      ),
+                                  itemCount: model
+                                      .networkProviderModel!.networks!.length,
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (context, index) {
+                                    var item = data[index];
+                                    return SizedBox(
+                                      width: 86.w,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          InkWell(
+                                              onTap: () => {
+                                                    setState(() {
+                                                      selectedItem = index;
+                                                      selectedNetwork = model
+                                                          .networkProviderModel!
+                                                          .networks![index];
+                                                      _controller.text = "";
+                                                    })
+                                                   ,
+                                                    ctrl.getDataPlans(
+                                                        network: model
+                                                            .networkProviderModel!
+                                                            .networks![index]
+                                                            .network!
+                                                            .toLowerCase())
+                                                  },
+                                              child: Stack(
+                                                children: [
+                                                  ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    child: CachedNetworkImage(
+                                                        imageUrl: model
+                                                                .networkProviderModel!
+                                                                .networks![
+                                                                    index]
+                                                                .logo ??
+                                                            "",
+                                                        height: 68,
+                                                        width: 86,
+                                                        fit: BoxFit.cover,
+                                                        placeholder: (context,
+                                                                url) =>
+                                                            ClipRRect(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                                child: Image
+                                                                    .asset(item[
+                                                                        'img'])),
+                                                        errorWidget: (context,
+                                                                url, error) =>
+                                                            ClipRRect(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10),
+                                                              child:
+                                                                  Image.asset(
+                                                                item['img'],
+                                                              ),
+                                                            )),
+                                                  ),
+                                                  if (selectedItem == index)
+                                                    Align(
+                                                      alignment:
+                                                          Alignment.topRight,
+                                                      child: Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                top: 2.r,
+                                                                right: 8.r),
+                                                        child: Icon(
+                                                          Icons.check_circle,
+                                                          color: Theme.of(
+                                                                  context)
+                                                              .scaffoldBackgroundColor,
+                                                        ),
+                                                      ),
+                                                    )
+                                                ],
+                                              )),
+                                          const SizedBox(
+                                            height: 4,
                                           ),
-                                        )
-                                      ],
-                                    )
-                                  : Image.asset(item['img']),
+                                          Text(
+                                            model.networkProviderModel!
+                                                    .networks![index].network ??
+                                                "",
+                                            style: MyStyle.tx12Black.copyWith(
+                                                fontFamily: 'SF Pro Rounded',
+                                                fontWeight: FontWeight.w600,
+                                                color: selectedItem == index
+                                                    ? MyColor.greenColor
+                                                    : themedata.tertiary),
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  })),
+
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment
+                              .end, // Aligns vertically centered
+                          children: [
+                            // Container with a placeholder or icon
+                            Container(
+                              padding: const EdgeInsets.symmetric(vertical: 9),
+                              decoration: BoxDecoration(
+                                  border: Border(
+                                      bottom: BorderSide(
+                                width: 1,
+                                color: themeProvider.isDarkMode()
+                                    ? MyColor.borderDarkColor
+                                    : MyColor.borderColor,
+                              ))),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 30,
+                                    height: 30,
+                                    padding: EdgeInsets.only(top: 6.h),
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: themedata.secondary,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: const Text(
+                                      '***',
+                                      style: MyStyle.tx16Green,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 20,
+                                  )
+                                ],
+                              ),
+                            ),
+                            // Expanded TextFormField for mobile number input
+                            Expanded(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: themeProvider.isDarkMode()
+                                          ? MyColor.borderDarkColor
+                                          : MyColor.borderColor,
+                                    ),
+                                  ),
+                                ),
+                                child: TextFormField(
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    color: themedata.tertiary,
+                                    fontFamily: 'SF Pro Rounded',
+                                  ),
+                                  keyboardType: TextInputType.number,
+                                  controller: _controller,
+                                  decoration: const InputDecoration(
+                                    hintText: 'Enter Mobile number',
+                                    hintStyle: TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF999999),
+                                      fontFamily: 'SF Pro Rounded',
+                                    ),
+                                    border: InputBorder
+                                        .none, // No border for the TextFormField
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 10), // Adjust as needed
+                                  ),
+                                ),
+                              ),
                             ),
                             const SizedBox(
-                              height: 4,
-                            ),
-                            Text(
-                              item['title'],
-                              style: MyStyle.tx12Black.copyWith(
-                                  fontFamily: 'SF Pro Rounded',
-                                  color: selectedItem == index
-                                      ? MyColor.greenColor
-                                      : themedata.tertiary),
+                                width:
+                                    16), // Space between the TextFormField and the "Choose Contact" text
+                            // "Choose Contact" text
+                            GestureDetector(
+                              onTap: () async {
+                                await _pickContacts();
+                              },
+                              child: const Text(
+                                'Choose Contact',
+                                style: MyStyle.tx12GreenUnder,
+                              ),
                             )
                           ],
                         ),
-                      );
-                    })),
-            const SizedBox(
-              height: 30,
-            ),
-            Row(
-              crossAxisAlignment:
-                  CrossAxisAlignment.center, // Aligns vertically centered
-              children: [
-                // Container with a placeholder or icon
-                Container(
-                  padding: const EdgeInsets.symmetric(vertical: 9),
-                  decoration: BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(
-                    width: 1,
-                    color: themeProvider.isDarkMode()
-                        ? MyColor.borderDarkColor
-                        : MyColor.borderColor,
-                  ))),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 30,
-                        height: 30,
-                        padding: EdgeInsets.only(top: 6.h),
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: themedata.secondary,
-                          borderRadius: BorderRadius.circular(8),
+                        const SizedBox(height: 48),
+                        // Align(
+                        //   alignment: Alignment.centerLeft,
+                        //   child: Row(
+                        //     children: [
+                        //       for (int i = 0; i < dayItems.length; i++) ...[
+                        //         GestureDetector(
+                        //           onTap: () => {
+                        //             setState(() {
+                        //               selectedDay = i;
+                        //             })
+                        //           },
+                        //           child: Text(
+                        //             dayItems[i],
+                        //             style: MyStyle.tx12Grey.copyWith(
+                        //                 color: i == selectedDay
+                        //                     ? MyColor.greenColor
+                        //                     : MyColor.greyColor,
+                        //                 fontWeight: FontWeight.w500),
+                        //           ),
+                        //         ),
+                        //         if (i != dayItems.length - 1) const Spacer(),
+                        //       ]
+                        //     ],
+                        //   ),
+                        // ),
+                        // const SizedBox(
+                        //   height: 8,
+                        // ),
+                        Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: themeProvider.isDarkMode()
+                                      ? MyColor.borderDarkColor
+                                      : MyColor.borderColor,
+                                  width: 0.2),
+                              borderRadius: BorderRadius.circular(5)),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 20, horizontal: 10),
+                            child: Column(
+                              children: [
+                                Wrap(
+                                    spacing: 10,
+                                    runSpacing: 10,
+                                    children: List.generate(
+                                      model.dataPlansModel!.plans!.length,
+                                      (index) {
+                                        var plan =
+                                            model.dataPlansModel!.plans![index];
+                                        String price =
+                                            formatNumber(plan.price!);
+                                        return GestureDetector(
+                                          onTap: () {
+                                            if (_controller.text.isEmpty) {
+                                              ErrorToast(
+                                                  'Please enter mobile number');
+                                            } else {
+                                              Navigator.pushReplacement(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      BuyDataConfirm(
+                                                    plan: plan,
+                                                    phone: _controller.text,
+                                                    network: selectedNetwork!,
+                                                  ),
+                                                ),
+                                              );
+                                            }
+                                          },
+                                          child: Container(
+                                            width: 90,
+                                            padding: EdgeInsets.all(10),
+                                            alignment: Alignment.center,
+                                            decoration: BoxDecoration(
+                                                color: themedata.secondary
+                                                    .withValues(alpha: 0.3),
+                                                borderRadius:
+                                                    BorderRadius.circular(8)),
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                  plan.name!,
+                                                  textAlign: TextAlign.center,
+                                                  style: MyStyle.tx12Black
+                                                      .copyWith(
+                                                    fontWeight: FontWeight.w600,
+                                                    color: themedata.tertiary,
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 10),
+                                                // Text(
+                                                //   '${Utils.naira}$price',
+                                                //   style: MyStyle.tx12Grey,
+                                                // ),
+                                                // const SizedBox(
+                                                //   height: 4,
+                                                // ),
+                                                Container(
+                                                  width: 72,
+                                                  padding: EdgeInsets.all(10),
+                                                  alignment: Alignment.center,
+                                                  decoration: BoxDecoration(
+                                                      color:
+                                                          themedata.secondary,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              6)),
+                                                  child: Text(
+                                                    '${Utils.naira}$price',
+                                                    style: MyStyle.tx12Black
+                                                        .copyWith(
+                                                            color: MyColor
+                                                                .greenColor),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ))
+
+                                // InkWell(
+                                //   onTap: () => _showBottomSheet(context,
+                                //       isDarkMode:
+                                //           themeProvider.isDarkMode()),
+                                //   child: Container(
+                                //     padding: EdgeInsets.all(10),
+                                //     // width: 100,
+                                //     height: 78,
+                                //     alignment: Alignment.center,
+                                //     decoration: BoxDecoration(
+                                //         color: MyColor.greenColor,
+                                //         borderRadius:
+                                //             BorderRadius.circular(8)),
+                                //     child: Column(
+                                //       children: [
+
+                                //         const Text(
+                                //           '50% off',
+                                //           style: MyStyle.tx16White,
+                                //         ),
+                                //         const SizedBox(
+                                //           height: 10,
+                                //         ),
+                                //         Row(
+                                //           crossAxisAlignment:
+                                //               CrossAxisAlignment.center,
+                                //           mainAxisAlignment:
+                                //               MainAxisAlignment.center,
+                                //           children: [
+                                //             Text(
+                                //               'See other plans',
+                                //               style: MyStyle.tx12GreenUnder
+                                //                   .copyWith(
+                                //                       color: Colors.white,
+                                //                       fontSize: 9,
+                                //                       decoration:
+                                //                           TextDecoration
+                                //                               .underline,
+                                //                       decorationColor:
+                                //                           Colors.white),
+                                //             ),
+                                //             const SizedBox(
+                                //               width: 2,
+                                //             ),
+                                //             Image.asset(
+                                //                 'assets/images/arrow-tr.png')
+                                //           ],
+                                //         ),
+                                //         const Spacer(),
+                                //       ],
+                                //     ),
+                                //   ),
+                                // ),
+                              ],
+                            ),
+                          ),
                         ),
-                        child: const Text(
-                          '***',
-                          style: MyStyle.tx16Green,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      )
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-                // Expanded TextFormField for mobile number input
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: themeProvider.isDarkMode()
-                              ? MyColor.borderDarkColor
-                              : MyColor.borderColor,
-                        ),
-                      ),
-                    ),
-                    child: TextFormField(
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: themedata.tertiary,
-                        fontFamily: 'SF Pro Rounded',
-                      ),
-                      controller: _controller,
-                      decoration: const InputDecoration(
-                        hintText: 'Enter Mobile number',
-                        hintStyle: TextStyle(
-                          fontSize: 12,
-                          color: Color(0xFF999999),
-                          fontFamily: 'SF Pro Rounded',
-                        ),
-                        border:
-                            InputBorder.none, // No border for the TextFormField
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: 10), // Adjust as needed
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                    width:
-                        16), // Space between the TextFormField and the "Choose Contact" text
-                // "Choose Contact" text
-                Transform.translate(
-                  offset: const Offset(0, 18),
-                  child: const Text(
-                    'Choose Contact',
-                    style: MyStyle.tx12GreenUnder,
-                  ),
-                )
               ],
             ),
-            const SizedBox(height: 48),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Row(
-                children: [
-                  for (int i = 0; i < dayItems.length; i++) ...[
-                    GestureDetector(
-                      onTap: () => {
-                        setState(() {
-                          selectedDay = i;
-                        })
-                      },
-                      child: Text(
-                        dayItems[i],
-                        style: MyStyle.tx12Grey.copyWith(
-                            color: i == selectedDay
-                                ? MyColor.greenColor
-                                : MyColor.greyColor,
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                    if (i != dayItems.length - 1) const Spacer(),
-                  ]
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 8,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                  border: Border.all(
-                      color: themeProvider.isDarkMode()
-                          ? MyColor.borderDarkColor
-                          : MyColor.borderColor,
-                      width: 0.2),
-                  borderRadius: BorderRadius.circular(5)),
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () => Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const BuyDataConfirm())),
-                          child: Container(
-                            width: 100,
-                            height: 78,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                color:
-                                    themedata.secondary.withValues(alpha: 0.3),
-                                borderRadius: BorderRadius.circular(8)),
-                            child: Column(
-                              children: [
-                                const Spacer(),
-                                Text(
-                                  '1GB(1 day)',
-                                  style: MyStyle.tx12Black.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    color: themedata.tertiary,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 4,
-                                ),
-                                const Text(
-                                  'N50',
-                                  style: MyStyle.tx12Grey,
-                                ),
-                                const SizedBox(
-                                  height: 4,
-                                ),
-                                Container(
-                                  width: 72,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      color: themedata.secondary,
-                                      borderRadius: BorderRadius.circular(6)),
-                                  child: Text(
-                                    '5% off',
-                                    style: MyStyle.tx12Black
-                                        .copyWith(color: MyColor.greenColor),
-                                  ),
-                                ),
-                                const Spacer(),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const Spacer(),
-                        GestureDetector(
-                          onTap: () => Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const BuyDataConfirm())),
-                          child: Container(
-                            width: 100,
-                            height: 78,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                color:
-                                    themedata.secondary.withValues(alpha: 0.3),
-                                borderRadius: BorderRadius.circular(8)),
-                            child: Column(
-                              children: [
-                                const Spacer(),
-                                Text(
-                                  '1GB(1 day)',
-                                  style: MyStyle.tx12Black.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    color: themedata.tertiary,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 4,
-                                ),
-                                const Text(
-                                  'N50',
-                                  style: MyStyle.tx12Grey,
-                                ),
-                                const SizedBox(
-                                  height: 4,
-                                ),
-                                Container(
-                                  width: 72,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      color: themedata.secondary,
-                                      borderRadius: BorderRadius.circular(6)),
-                                  child: Text(
-                                    '5% off',
-                                    style: MyStyle.tx12Black
-                                        .copyWith(color: MyColor.greenColor),
-                                  ),
-                                ),
-                                const Spacer(),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const Spacer(),
-                        GestureDetector(
-                          onTap: () => Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const BuyDataConfirm())),
-                          child: Container(
-                            width: 100,
-                            height: 78,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                color:
-                                    themedata.secondary.withValues(alpha: 0.3),
-                                borderRadius: BorderRadius.circular(8)),
-                            child: Column(
-                              children: [
-                                const Spacer(),
-                                Text(
-                                  '1GB(1 day)',
-                                  style: MyStyle.tx12Black.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    color: themedata.tertiary,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 4,
-                                ),
-                                const Text(
-                                  'N50',
-                                  style: MyStyle.tx12Grey,
-                                ),
-                                const SizedBox(
-                                  height: 4,
-                                ),
-                                Container(
-                                  width: 72,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      color: themedata.secondary,
-                                      borderRadius: BorderRadius.circular(6)),
-                                  child: Text(
-                                    '5% off',
-                                    style: MyStyle.tx12Black
-                                        .copyWith(color: MyColor.greenColor),
-                                  ),
-                                ),
-                                const Spacer(),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () => Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const BuyDataConfirm())),
-                          child: Container(
-                            width: 100,
-                            height: 78,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                color:
-                                    themedata.secondary.withValues(alpha: 0.3),
-                                borderRadius: BorderRadius.circular(8)),
-                            child: Column(
-                              children: [
-                                const Spacer(),
-                                Text(
-                                  '1GB(1 day)',
-                                  style: MyStyle.tx12Black.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    color: themedata.tertiary,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 4,
-                                ),
-                                const Text(
-                                  'N50',
-                                  style: MyStyle.tx12Grey,
-                                ),
-                                const SizedBox(
-                                  height: 4,
-                                ),
-                                Container(
-                                  width: 72,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      color: themedata.secondary,
-                                      borderRadius: BorderRadius.circular(6)),
-                                  child: Text(
-                                    '5% off',
-                                    style: MyStyle.tx12Black
-                                        .copyWith(color: MyColor.greenColor),
-                                  ),
-                                ),
-                                const Spacer(),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const Spacer(),
-                        GestureDetector(
-                          onTap: () => Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const BuyDataConfirm())),
-                          child: Container(
-                            width: 100,
-                            height: 78,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                color:
-                                    themedata.secondary.withValues(alpha: 0.3),
-                                borderRadius: BorderRadius.circular(8)),
-                            child: Column(
-                              children: [
-                                const Spacer(),
-                                Text(
-                                  '1GB(1 day)',
-                                  style: MyStyle.tx12Black.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    color: themedata.tertiary,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 4,
-                                ),
-                                const Text(
-                                  'N50',
-                                  style: MyStyle.tx12Grey,
-                                ),
-                                const SizedBox(
-                                  height: 4,
-                                ),
-                                Container(
-                                  width: 72,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      color: themedata.secondary,
-                                      borderRadius: BorderRadius.circular(6)),
-                                  child: Text(
-                                    '5% off',
-                                    style: MyStyle.tx12Black
-                                        .copyWith(color: MyColor.greenColor),
-                                  ),
-                                ),
-                                const Spacer(),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const Spacer(),
-                        InkWell(
-                          onTap: () => _showBottomSheet(context,
-                              isDarkMode: themeProvider.isDarkMode()),
-                          child: Container(
-                            width: 100,
-                            height: 78,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                color: MyColor.greenColor,
-                                borderRadius: BorderRadius.circular(8)),
-                            child: Column(
-                              children: [
-                                const Spacer(),
-                                const Text(
-                                  '50% off',
-                                  style: MyStyle.tx16White,
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Center(
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'See other plans',
-                                        style: MyStyle.tx12GreenUnder.copyWith(
-                                            color: Colors.white,
-                                            fontSize: 9,
-                                            decoration:
-                                                TextDecoration.underline,
-                                            decorationColor: Colors.white),
-                                      ),
-                                      const SizedBox(
-                                        width: 2,
-                                      ),
-                                      Image.asset('assets/images/arrow-tr.png')
-                                    ],
-                                  ),
-                                ),
-                                const Spacer(),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      }),
     );
   }
 }

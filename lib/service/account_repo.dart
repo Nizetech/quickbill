@@ -101,6 +101,25 @@ class AccountRepo {
     }
   }
 
+
+  Future<dynamic> getDataPlans(String network) async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response = await client.post(
+        ApiRoute.getDataPlans,
+        requestHeaders: {
+          'Authorization': token,
+        },
+        body: {"network_name": network},
+      );
+      log('Reponse: $response');
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
   Future<dynamic> getServiceHistory(String type) async {
     String token = await box.get(kAccessToken);
     try {
@@ -199,6 +218,20 @@ class AccountRepo {
     try {
       final response =
           await client.post(ApiRoute.buyAirtime, body: data, requestHeaders: {
+        'Authorization': token,
+      });
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
+  Future<Map<String, dynamic>> buyData(Map<String, dynamic> data) async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response =
+          await client.post(ApiRoute.buyData, body: data, requestHeaders: {
         'Authorization': token,
       });
       log('Response: $response');

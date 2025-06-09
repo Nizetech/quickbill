@@ -1,4 +1,4 @@
-import 'dart:convert';
+
 import 'dart:developer';
 import 'dart:io';
 
@@ -6,6 +6,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Models/airtime_history.dart';
+import 'package:jost_pay_wallet/Models/data_plans_model.dart';
 import 'package:jost_pay_wallet/Models/network_provider.dart';
 import 'package:jost_pay_wallet/Models/notification_model.dart';
 import 'package:jost_pay_wallet/Models/promotion_model.dart';
@@ -26,6 +27,7 @@ class AccountProvider with ChangeNotifier {
   PromoModel? promoModel;
   NetworkProviderModel? networkProviderModel;
   AirtimeHistory? airtimeHistory;
+  DataPlansModel? dataPlansModel;
 
   dynamic qrcode;
   List<Transaction>? _dashBoardHistory = [];
@@ -142,7 +144,6 @@ class AccountProvider with ChangeNotifier {
         } else {
           networkProviderModel =
               NetworkProviderModel.fromJson(value['network_providers']);
-          if (isLoading) hideLoader();
         }
         notifyListeners();
       });
@@ -206,6 +207,30 @@ class AccountProvider with ChangeNotifier {
           Get.to(BuyDataSuccess(
             isData: false,
             amount: data['amount'],
+            phone: data['phone'],
+          ));
+        }
+        notifyListeners();
+      });
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
+  // buy Data
+  Future<void> buyData(Map<String, dynamic> data,{required String amount}) async {
+    try {
+      showLoader();
+      AccountRepo().buyData(data).then((value) async {
+        if (value['result'] == false) {
+          hideLoader();
+          ErrorToast(value['message']);
+        } else {
+          hideLoader();
+          Get.to(BuyDataSuccess(
+            isData: true,
+            amount: amount,
             phone: data['phone'],
           ));
         }
@@ -311,8 +336,28 @@ class AccountProvider with ChangeNotifier {
           ErrorToast(value['message']);
         } else {
           if (isLoading) hideLoader();
-          //! Change this
           transactionModel = TransactionModel.fromJson(value);
+        }
+        notifyListeners();
+      });
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
+  // get Data plans
+  Future<void> getDataPlans({bool isLoading = true, required String network}) async {
+    try {
+      if (isLoading) showLoader();
+      AccountRepo().getDataPlans(network).then((value) {
+        log('Value: $value');
+        if (value['result'] == false) {
+          if (isLoading) hideLoader();
+          ErrorToast(value['message']);
+        } else {
+          if (isLoading) hideLoader();
+          dataPlansModel = DataPlansModel.fromJson(value);
         }
         notifyListeners();
       });

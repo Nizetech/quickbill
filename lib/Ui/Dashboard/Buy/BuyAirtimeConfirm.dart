@@ -15,6 +15,7 @@ import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/NewColor.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
+import 'package:jost_pay_wallet/utils/data.dart';
 import 'package:jost_pay_wallet/utils/toast.dart';
 import 'package:provider/provider.dart';
 import 'package:jost_pay_wallet/Values/NewStyle.dart';
@@ -32,14 +33,7 @@ class _BuyAirtimeConfirmState extends State<BuyAirtimeConfirm> {
   final _controller = TextEditingController();
   final _amount = TextEditingController();
 
-  final List<Map<String, dynamic>> data = [
-    {'img': 'assets/images/operator-1.png', 'title': 'MTN'},
-    {'img': 'assets/images/operator-2.png', 'title': 'Airtel'},
-    {'img': 'assets/images/operator-3.png', 'title': 'Glo'},
-    {'img': 'assets/images/operator-1.png', 'title': 'MTN'},
-    {'img': 'assets/images/operator-2.png', 'title': 'Airtel'},
-    {'img': 'assets/images/operator-3.png', 'title': 'Glo'}
-  ];
+
   final FlutterNativeContactPicker _contactPicker =
       FlutterNativeContactPicker();
   int selectedItem = 0;
@@ -242,6 +236,7 @@ class _BuyAirtimeConfirmState extends State<BuyAirtimeConfirm> {
                                     ),
                                   );
                                 })),
+                       
                         const SizedBox(
                           height: 30,
                         ),
@@ -324,7 +319,7 @@ class _BuyAirtimeConfirmState extends State<BuyAirtimeConfirm> {
                             // "Choose Contact" text
                             GestureDetector(
                               onTap: () async {
-                                _pickContacts();
+                                await _pickContacts();
                               },
                               child: const Text(
                                 'Choose Contact',

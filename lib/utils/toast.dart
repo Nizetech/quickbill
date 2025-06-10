@@ -71,3 +71,14 @@ void errorSnackBar(String message) {
     colorText: Colors.white,
   );
 }
+
+void fancyToast(String msg) {
+  Fluttertoast.showToast(msg: msg
+      // toastLength: Toast.LENGTH_SHORT,
+      // gravity: ToastGravity.BOTTOM,
+      // timeInSecForIosWeb: 3,
+      // backgroundColor: MyColor.greenColor,
+      // textColor: const Color(0xFFFF4B4B),
+      // fontSize: 11.0
+      );
+}

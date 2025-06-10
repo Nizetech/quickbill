@@ -24,13 +24,15 @@ class ApiRoute {
   static String getNotification = 'get-news';
   static String readNotification = 'read-news';
   static String getPromo = 'get-promos';
-  static String buyAirtime = 'buy-airtime';
-  static String buyData = 'buy-data';
-  static String serviceHistory = 'get-purchases';
   static String getReferrals = 'get-referrals';
   static String getNetworkProviders = 'get-network-providers';
 
   // Services
+  static String buyAirtime = 'buy-airtime';
+  static String buyData = 'buy-data';
+  static String serviceHistory = 'get-purchases';
+  static String getSocialSections = 'get-social-sections';
+  static String getSocialServices = 'get-social-services';
   static String getCarTypes = 'services/spray-land';
   static String getColorPaint = 'services/spray-main';
   static String getSprayHistory = 'services/spray-history';

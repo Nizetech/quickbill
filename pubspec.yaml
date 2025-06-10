@@ -43,6 +43,7 @@ dependencies:
   hive_flutter:
   flutter_native_contact_picker: ^0.0.10
   flutter_contacts: ^1.1.9+2
+  flutter_widget_from_html: ^0.15.3
 
   permission_handler: ^12.0.0+1
   

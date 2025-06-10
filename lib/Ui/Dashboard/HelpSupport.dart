@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/DashboardProvider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
-import 'package:jost_pay_wallet/Ui/Support/SupportScreen.dart';
-import 'package:jost_pay_wallet/Ui/Support/faq_screen.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/NewStyle.dart';
@@ -12,7 +10,6 @@ import 'package:provider/provider.dart';
 
 import '../../Values/MyColor.dart';
 import '../../Values/NewColor.dart';
-import '../../bottom_nav.dart';
 
 class Helpsupport extends StatefulWidget {
   const Helpsupport({super.key});

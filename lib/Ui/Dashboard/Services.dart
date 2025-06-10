@@ -9,14 +9,13 @@ import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyAirtime.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyData.dart';
 import 'package:jost_pay_wallet/Ui/Domain/domain_screen.dart';
 import 'package:jost_pay_wallet/Ui/Paint/paint_history.dart';
-import 'package:jost_pay_wallet/Ui/Paint/paint_screen.dart';
 import 'package:jost_pay_wallet/Ui/Scripts/script_screen.dart';
 import 'package:jost_pay_wallet/Ui/car/carsell_screen.dart';
-import 'package:jost_pay_wallet/Ui/car/repair_screen.dart';
 import 'package:jost_pay_wallet/Ui/car/repairdetail_screen.dart';
 import 'package:jost_pay_wallet/Ui/giftCard/buy_gift_card_screen.dart';
 import 'package:jost_pay_wallet/Ui/pay4me/pay4me_screen.dart';
 import 'package:jost_pay_wallet/Ui/promotions/social_boost.dart';
+import 'package:jost_pay_wallet/Ui/promotions/socials_screen.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:provider/provider.dart';
@@ -542,7 +541,7 @@ class _ServicesState extends State<Services> {
                           GestureDetector(
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const SocialBoost(),
+                                builder: (context) => const SocialsScreen(),
                               ));
                             },
                             child: Container(

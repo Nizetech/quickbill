@@ -102,8 +102,16 @@ void openEmail(String email) async {
   );
 }
 
-String formatNumber(num number) {
+String formatNumber(
+  num number,
+) {
   final formatter = NumberFormat('#,##0.00');
+  return formatter.format(number);
+}
+
+String formatNumberWithOutDecimal(String amount) {
+  num number = num.parse(amount);
+  final formatter = NumberFormat('#,##0');
   return formatter.format(number);
 }
 

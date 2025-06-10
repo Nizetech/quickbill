@@ -45,7 +45,6 @@ class ServiceRepo {
   Future<Map<String, dynamic>> rentSpray(Map<String, dynamic> data) async {
     String token = await box.get(kAccessToken);
     var body = jsonEncode(data);
-    log("body: ====> ${body.runtimeType}");
     try {
       final response =
           await client
@@ -68,7 +67,35 @@ class ServiceRepo {
           requestHeaders: {
         'Authorization': token,
       });
-      log('Reponse: $response');
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
+  Future<Map<String, dynamic>> getSocialSectionss() async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response =
+          await client.post(ApiRoute.getSocialSections, requestHeaders: {
+        'Authorization': token,
+      });
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
+  Future<Map<String, dynamic>> getSocialServices(int id) async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response = await client.post(ApiRoute.getSocialServices, body: {
+        "section_id": id
+      }, requestHeaders: {
+        'Authorization': token,
+      });
       return response;
     } catch (e) {
       print('Error: $e');
@@ -84,7 +111,6 @@ class ServiceRepo {
           requestHeaders: {
             'Authorization': token,
           });
-      log('Reponse: $response');
       return response;
     } catch (e) {
       print('Error: $e');

@@ -31,7 +31,8 @@ class _PaintInvoiceScreenState extends State<PaintInvoiceScreen> {
           String? priceString;
           if (item.extraFee != null) {
             priceString = item.extraFee;
-          } else if (item.careDay != null) {
+          } else if (item.careDay != null &&
+              model.sprayDetailsModel!.check!.paintType != '2') {
             if (item.careDay == '15') {
               priceString = item.price15;
             } else if (item.careDay == '30') {
@@ -217,18 +218,11 @@ class _PaintInvoiceScreenState extends State<PaintInvoiceScreen> {
                                       ),
                                       const SizedBox(height: 5),
                                       Text(
-                                        model.sprayDetailsModel!.check!
-                                                    .status ==
-                                                '2'
-                                            ? "Paid"
-                                            : "Pending",
+                                        
+                                        "Paid",
                                         style: MyStyle.tx12Black.copyWith(
                                           fontWeight: FontWeight.w600,
-                                          color: model.sprayDetailsModel!.check!
-                                                      .status ==
-                                                  '2'
-                                              ? MyColor.greenColor
-                                              : MyColor.redColor,
+                                            color: MyColor.greenColor
                                         ),
                                       ),
                                     ],
@@ -270,7 +264,7 @@ class _PaintInvoiceScreenState extends State<PaintInvoiceScreen> {
                               ),
                               itemBuilder: (_, i) {
                                 final data = model.sprayDetailsModel!.data![i];
-                                log('Data:===> ${data.extraFee}, status: ${data.status}');
+                                log('Price ==> ${data.price}, ${data.name}. ${data.description}');
                                 return Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Row(
@@ -308,13 +302,16 @@ class _PaintInvoiceScreenState extends State<PaintInvoiceScreen> {
                                         data.status == '1' ||
                                                 data.extraFee != null
                                             ? "NGN ${formatNumber(num.parse(data.extraFee == null ? '0' : data.extraFee!))}"
-                                            : data.careDay != null
+                                            : data.careDay != null &&
+                                                    model.sprayDetailsModel!
+                                                            .check!.paintType !=
+                                                        '2'
                                                 ? data.careDay == '15'
                                                     ? "NGN ${formatNumber(num.parse(data.price == null ? '0' : data.price15!))}"
                                                     : data.careDay == '30'
                                                         ? "NGN ${formatNumber(num.parse(data.price == null ? '0' : data.price30!))}"
-                                                            // : data.careDay == '60'
-                                                            //     ?
+                                                        : data.careDay == '60'
+                                                            ?
                                                             "NGN ${formatNumber(num.parse(data.price == null ? '0' : data.price60!))}"
                                                         : "NGN ${formatNumber(num.parse(data.price == null ? '0' : data.price!))}"
                                                 : "NGN ${formatNumber(num.parse(data.price == null ? '0' : data.price!))}",
@@ -347,7 +344,6 @@ class _PaintInvoiceScreenState extends State<PaintInvoiceScreen> {
                             ),
                             Text(
                               "N ${formatNumber(total)}",
-                              // "N ${formatNumber(num.parse(model.sprayDetailsModel!.check!.total!))}",
                               style: MyStyle.tx16Black.copyWith(
                                 color: themedata.tertiary,
                               ),

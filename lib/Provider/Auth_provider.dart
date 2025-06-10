@@ -30,6 +30,7 @@ class AuthProvider with ChangeNotifier {
         } else {
           hideLoader();
           Get.to(OtpScreen(
+            authToken: value['token'],
             email: data['email'],
           ));
           SuccessToast('An OTP has been sent to your email');
@@ -58,7 +59,9 @@ class AuthProvider with ChangeNotifier {
             ErrorToast(value['message']);
             return;
           } else {
+            log('Login Value===>: $value');
             Get.to(OtpScreen(
+              authToken: value['token'],
                 is2Fa: value['login_method'] != null &&
                     value['login_method'] != 'email',
                 email: data['email']));
@@ -82,11 +85,11 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  Future<void> resendOtp(String email, {bool isForgetPass = false}) async {
+  Future<void> resendOtp(String email, {bool isForgetPass = false, String? authToken}) async {
     try {
       // setLoading(true);
       showLoader();
-      AuthRepo().resendOTP(email).then((value) {
+      AuthRepo().resendOTP(email,authToken: authToken).then((value) {
         log('Value: $value');
         hideLoader();
         // setLoading(false);
@@ -112,14 +115,15 @@ class AuthProvider with ChangeNotifier {
   Future<bool> confirmOtp(Map<String, dynamic> data,
       {bool isForgetPass = false,
       bool is2fa = false,
+      String ? authToken,
       bool isEnable2fa = false,
       AccountProvider? account,
       DashboardProvider? dashProvider}) async {
     try {
-      // setLoading(true);
+   
       showLoader();
       AuthRepo()
-          .verifyOTP(data, is2fa: is2fa, isEnable2fa: isEnable2fa)
+          .verifyOTP(authToken: authToken, data, is2fa: is2fa, isEnable2fa: isEnable2fa)
           .then((value) async {
         log('Value: $value');
         // setLoading(false);

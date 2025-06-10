@@ -44,10 +44,12 @@ class ServiceRepo {
 
   Future<Map<String, dynamic>> rentSpray(Map<String, dynamic> data) async {
     String token = await box.get(kAccessToken);
+    var body = jsonEncode(data);
+    log("body: ====> ${body.runtimeType}");
     try {
       final response =
           await client
-          .post(ApiRoute.rentSpray, body: jsonEncode(data), requestHeaders: {
+          .post(ApiRoute.rentSpray, body: body, requestHeaders: {
         'Authorization': token,
       });
       log('Reponse: $response');

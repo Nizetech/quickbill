@@ -198,9 +198,7 @@ class _OptionSummaryState extends State<OptionSummary> {
                       const EdgeInsets.symmetric(horizontal: 38, vertical: 10),
                   decoration: BoxDecoration(
                     color: MyColor.greenColor,
-                    // isDark
-                    //     ? const Color(0xff0D0D0D)
-                    //     : MyColor.mainWhiteColor,
+                 
                     border: Border.all(
                         color: isDark
                             ? const Color(0xffFFFFFF).withOpacity(0.1)
@@ -209,8 +207,8 @@ class _OptionSummaryState extends State<OptionSummary> {
                   ),
                   child: Text(
                     "Proceed",
-                    style: MyStyle.tx14White.copyWith(
-                        // color: themedata.tertiary, 
+                    style:
+                        MyStyle.tx14White.copyWith(
                         fontWeight: FontWeight.w500),
                   ),
                 ),

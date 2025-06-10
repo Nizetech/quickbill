@@ -240,7 +240,7 @@ class SprayHistory extends StatelessWidget {
                   DotLabel(
                     flex: 2,
                     text: "Care Day",
-                    value: history.paintType == '2'
+                  value: history.paintType == '2' || history.paintType == '3'
                         ? 'NIL'
                         : "${history.careDay} Days AfterCare",
                     dotColor: MyColor.dark01Color,

@@ -1,5 +1,6 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jost_pay_wallet/Provider/auth_provider.dart';
 import 'package:jost_pay_wallet/Ui/Authentication/OtpScreen.dart';
 import 'package:jost_pay_wallet/Ui/Authentication/SignUpScreen.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/common/button.dart';
+import 'package:jost_pay_wallet/constants/constants.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
 
@@ -73,9 +75,11 @@ class _SignInScreenState extends State<SignInScreen> {
     //     MaterialPageRoute(builder: (context) => const DashboardScreen()));
   }
 
+  final box = Hive.box(kAppName);
   @override
   void initState() {
     super.initState();
+    box.put(kExistingUser, true);
   }
 
   @override

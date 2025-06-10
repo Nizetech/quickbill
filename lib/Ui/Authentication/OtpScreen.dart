@@ -1,3 +1,4 @@
+import 'dart:developer';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
@@ -16,10 +17,12 @@ import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 
 class OtpScreen extends StatefulWidget {
   final String email;
+  final String? authToken;
   final bool isForgetPass;
   final bool is2Fa;
   const OtpScreen(
       {super.key,
+      this.authToken,
       required this.email,
       this.isForgetPass = false,
       this.is2Fa = false});
@@ -38,6 +41,7 @@ class _OtpScreenState extends State<OtpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    log('Auth Token: ${widget.authToken}');
     return Scaffold(
       backgroundColor: Colors.white,
       body: Consumer<AuthProvider>(builder: (context, model, _) {
@@ -120,7 +124,10 @@ class _OtpScreenState extends State<OtpScreen> {
                 if (!widget.is2Fa)
                 TextButton(
                   onPressed: () {
-                    model.resendOtp(widget.email);
+                      model.resendOtp(
+                        widget.email,
+                        authToken: widget.authToken,
+                      );
                     setState(() {
                       clearText = true;
                     });
@@ -143,6 +150,7 @@ class _OtpScreenState extends State<OtpScreen> {
                               ErrorToast("Please enter OTP");
                             } else {
                               model.confirmOtp(
+                                  authToken: widget.authToken,
                                   account: context.read<AccountProvider>(),
                                   dashProvider:
                                       context.read<DashboardProvider>(),

@@ -59,15 +59,15 @@ class PaintSummary extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               DotLabel(
-                text: "Parkage",
+                text: "Package",
                 value: parkage,
                 dotColor: MyColor.dark01Color,
                 labelColor: const Color(0xff6E6D7A),
                 textColor: isDark ? MyColor.mainWhiteColor : MyColor.blackColor,
               ),
               DotLabel(
-                text: "Car Type",
-                value: "NIL",
+                text: "Time",
+                value: time,
                 dotColor: MyColor.dark01Color,
                 labelColor: const Color(0xff6E6D7A),
                 textColor: isDark ? MyColor.mainWhiteColor : MyColor.blackColor,
@@ -87,14 +87,7 @@ class PaintSummary extends StatelessWidget {
               labelColor: const Color(0xff6E6D7A),
               textColor: isDark ? MyColor.mainWhiteColor : MyColor.blackColor,
             ),
-            DotLabel(
-              flex: 2,
-              text: "Time",
-              value: time,
-              dotColor: MyColor.dark01Color,
-              labelColor: const Color(0xff6E6D7A),
-              textColor: isDark ? MyColor.mainWhiteColor : MyColor.blackColor,
-            ),
+          
           ],
         ),
       ]),

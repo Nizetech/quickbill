@@ -21,9 +21,9 @@ class AuthRepo {
         body: data,
       );
       log('Register: $response');
-      if (response['token'] != null) {
-        box.put(kAccessToken, response['token']);
-      }
+      // if (response['token'] != null) {
+      //   box.put(kAccessToken, response['token']);
+      // }
       return response;
     } catch (e) {
       print('Error: $e');
@@ -40,9 +40,9 @@ class AuthRepo {
         body: data,
       );
       log('Register: $response, ${response.runtimeType}');
-      if (response['token'] != null) {
-        box.put(kAccessToken, response['token']);
-      }
+      // if (response['token'] != null) {
+      //   box.put(kAccessToken, response['token']);
+      // }
       return response;
     } catch (e) {
       log('Errrrr');
@@ -73,14 +73,15 @@ class AuthRepo {
   }
 
   // resend otp
-  Future<Map<String, dynamic>> resendOTP(String email) async {
-    String token = await box.get(kAccessToken);
+  Future<Map<String, dynamic>> resendOTP(String email,
+      {String? authToken}) async {
+    String token = await box.get(kAccessToken, defaultValue: '');
     try {
       // log('Login Details: $email');
       final response = await client.post(ApiRoute.resendOtp, body: {
         'email': email
       }, requestHeaders: {
-        'Authorization': token,
+        'Authorization': authToken ?? token,
       });
       log('Register: $response');
 
@@ -99,12 +100,14 @@ class AuthRepo {
   // verify otp
   Future<Map<String, dynamic>> verifyOTP(Map<String, dynamic> data,
       {
+    String? authToken,
     bool is2fa = false,
     bool isEnable2fa = false,
   }) async {
-    String token = await box.get(kAccessToken);
+    String token = await box.get(kAccessToken, defaultValue: '');
     try {
-      // log('Login Details: $email');
+      log('Login Details: $authToken');
+
       final response =
           await client.post(
           is2fa
@@ -118,7 +121,7 @@ class AuthRepo {
                 }
               : data,
           requestHeaders: {
-        'Authorization': token,
+            'Authorization': authToken ?? token,
       });
       log('Register: $response');
       if (response['token'] != null) {

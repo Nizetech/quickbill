@@ -523,7 +523,20 @@ class _PaintformScreenState extends State<PaintformScreen> {
                           onPressed: () {
                             List tourchId =
                                 selectedTouch.map((e) => e.id).toList();
-                            Map<String, dynamic> sprayData = {
+                            Map<String, dynamic> sprayData = {};
+                            // if (painterindex == 1) {
+                            //   sprayData = {
+                            //     "rentType": widget.rentalData.rentType,
+                            //     "carType": widget.rentalData.carType,
+                            //     "image": widget.rentalData.image,
+                            //     "date": DateFormat("yyyy-MM-dd")
+                            //         .format(widget.rentalData.date),
+                            //     "time": widget.rentalData.time,
+                            //     "paintType": 3,
+                            //     "total": total,
+                            //   };
+                            // } else {
+                            sprayData = {
                               "rentType": widget.rentalData.rentType,
                               "carType": widget.rentalData.carType,
                               "date": DateFormat("yyyy-MM-dd")
@@ -532,25 +545,37 @@ class _PaintformScreenState extends State<PaintformScreen> {
                               "total": total,
                               "image": widget.rentalData.image,
                               "price": num.parse(widget.rentalData.total),
-                              "paintType": packageIndex == 1
-                                  ? 1
-                                  : packageIndex == 2
-                                      ? 5
+                              "paintType": painterindex == 1
+                                  ? 3
+                                  : packageIndex == 1
+                                      ? 2
                                       : packageIndex == 2
-                                          ? 2
-                                          : painterindex == 2
-                                              ? 3
-                                              : 1,
-                              "colorChange": packageIndex == 2 ? 1 : 0,
-                              "packages":
-                                  packageIndex != 1 ? [packageId] : tourchId,
-                              if (packageIndex != 1)
-                              "careDay": careDurationList[careDuration]
-                                  .toString()
-                                  .split(" ")
-                                  .first,
+                                          ? 5
+                                          :
+                                          //  packageIndex == 2
+                                          //     ? 2
+                                          //     :
+                                          // painterindex == 2
+                                          //     ? 3
+                                          //     :
+                                          1,
+                              "colorChange": painterindex == 1
+                                  ? 0
+                                  : packageIndex == 2
+                                      ? 1
+                                      : 0,
+                              if (painterindex != 1)
+                                "packages":
+                                    packageIndex != 1 ? [packageId] : tourchId,
+                              if (packageIndex != 1 || painterindex != 1)
+                                "careDay": careDurationList[careDuration]
+                                    .toString()
+                                    .split(" ")
+                                    .first,
                             };
-                            // log("sprayData => $sprayData");
+                            // }
+                            log("sprayData => ${sprayData.runtimeType}");
+                            // return;
                             model.rentSpray(sprayData);
                           },
                           style: OutlinedButton.styleFrom(

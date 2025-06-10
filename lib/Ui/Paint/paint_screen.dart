@@ -5,6 +5,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:jost_pay_wallet/Models/car_type_model.dart';
 import 'package:jost_pay_wallet/Provider/service_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Paint/widget/option_summary.dart';
@@ -28,6 +29,7 @@ class _PaintScreenState extends State<PaintScreen> {
   final option = TextEditingController();
   final date = TextEditingController();
   final time = TextEditingController();
+  Car? selectedCar;
   @override
   void initState() {
     super.initState();
@@ -41,6 +43,7 @@ class _PaintScreenState extends State<PaintScreen> {
  
   File? selectedFile;
   String total = '';
+  String boothPrice = '';
   int rentType = -1;
   DateTime? selectedDate;
   String base64Image = '';
@@ -156,14 +159,37 @@ class _PaintScreenState extends State<PaintScreen> {
                                       RentOption(
                                         title: 'Rent Spray Booth',
                                         amount:
+                                        selectedCar != null
+                                            ? "N ${formatNumber((num.parse(model.carTypeModel!.booth!) + num.parse(selectedCar!.price15!) + num.parse(selectedCar!.price!)))} /hr"
+                                            :
                                             "N ${formatNumber(num.parse(model.carTypeModel!.booth!))} /hr",
                                         onTap: () {
                                           Navigator.pop(context);
                                           setState(() {
+                                            if (selectedCar != null) {
+                                              total = formatNumber(num.parse(
+                                                      model.carTypeModel!
+                                                          .booth!) +
+                                                  num.parse(
+                                                      selectedCar!.price15!) +
+                                                  num.parse(
+                                                      selectedCar!.price!));
+                                              option.text =
+                                                  "Spray Booth ${formatNumber(
+                                                num.parse(model
+                                                        .carTypeModel!.booth!) +
+                                                    num.parse(
+                                                        selectedCar!.price15!) +
+                                                    num.parse(
+                                                        selectedCar!.price!),
+                                              )} /hr";
+                                            } else {
                                             option.text =
                                                 "Spray Booth ${formatNumber(num.parse(model.carTypeModel!.booth!))} /hr";
+
                                             total = formatNumber(num.parse(
                                                 model.carTypeModel!.booth!));
+                                            }
                                             rentType = 1;
                                           });
                                         },
@@ -186,17 +212,53 @@ class _PaintScreenState extends State<PaintScreen> {
                                       RentOption(
                                         title:
                                             'Rent both Spray Booth & Compressor',
-                                        amount:
+                                        amount: selectedCar != null
+                                            ? "N ${formatNumber(
+                                                num.parse(model
+                                                        .carTypeModel!.booth!) +
+                                                    num.parse(
+                                                        selectedCar!.price15!) +
+                                                    num.parse(
+                                                        selectedCar!.price!) +
+                                                    num.parse(model
+                                                        .carTypeModel!
+                                                        .compressor!),
+                                              )} /hr"
+                                            :
                                             "N ${formatNumber(num.parse(model.carTypeModel!.booth!) + num.parse(model.carTypeModel!.compressor!))} /hr",
                                         onTap: () {
                                           Navigator.pop(context);
                                           setState(() {
+                                            if (selectedCar != null) {
+                                              total = formatNumber(num.parse(
+                                                      model.carTypeModel!
+                                                          .booth!) +
+                                                  num.parse(
+                                                      selectedCar!.price15!) +
+                                                  num.parse(
+                                                      selectedCar!.price!) +
+                                                  num.parse(model.carTypeModel!
+                                                      .compressor!));
+                                              option.text =
+                                                  "Booth & Compressor ${formatNumber(
+                                                num.parse(model
+                                                        .carTypeModel!.booth!) +
+                                                    num.parse(
+                                                        selectedCar!.price15!) +
+                                                    num.parse(
+                                                        selectedCar!.price!) +
+                                                    num.parse(model
+                                                        .carTypeModel!
+                                                        .compressor!),
+                                              )}";
+                                            } else {
                                             option.text =
                                                 "Booth & Compressor ${formatNumber(num.parse(model.carTypeModel!.booth!) + num.parse(model.carTypeModel!.compressor!))}";
                                             total = formatNumber(num.parse(model
                                                     .carTypeModel!.booth!) +
                                                 num.parse(model.carTypeModel!
                                                     .compressor!));
+                                            }
                                             rentType = 3;
                                           });
                                         },
@@ -264,10 +326,55 @@ class _PaintScreenState extends State<PaintScreen> {
                                             onTap: () {
                                               Navigator.pop(context);
                                               setState(() {
-                                                carType.text = model
-                                                    .carTypeModel!
-                                                    .cars![i]
-                                                    .name!;
+                                                selectedCar = model
+                                                    .carTypeModel!.cars![i];
+                                                carType.text =
+                                                    selectedCar!.name!;
+                                                if (rentType == 1) {
+                                                  total = formatNumber(
+                                                      num.parse(selectedCar!
+                                                              .price!) +
+                                                          num.parse(selectedCar!
+                                                              .price15!) +
+                                                          num.parse(model
+                                                              .carTypeModel!
+                                                              .booth!));
+                                                  option.text =
+                                                      "Spray Booth ${formatNumber(
+                                                    num.parse(selectedCar!
+                                                            .price!) +
+                                                        num.parse(selectedCar!
+                                                            .price15!) +
+                                                        num.parse(model
+                                                            .carTypeModel!
+                                                            .booth!),
+                                                  )}";
+                                                } else if (rentType == 3) {
+                                                  total = formatNumber(
+                                                      num.parse(selectedCar!
+                                                              .price!) +
+                                                          num.parse(selectedCar!
+                                                              .price15!) +
+                                                          num.parse(model
+                                                              .carTypeModel!
+                                                              .booth!) +
+                                                          num.parse(model
+                                                              .carTypeModel!
+                                                              .compressor!));
+                                                  option.text =
+                                                      "Booth & Compressor ${formatNumber(
+                                                    num.parse(model
+                                                            .carTypeModel!
+                                                            .booth!) +
+                                                        num.parse(selectedCar!
+                                                            .price15!) +
+                                                        num.parse(selectedCar!
+                                                            .price!) +
+                                                        num.parse(model
+                                                            .carTypeModel!
+                                                            .compressor!),
+                                                  )}";
+                                                }
                                               });
                                             },
                                             title: Text(

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
@@ -9,7 +10,6 @@ import 'package:jost_pay_wallet/Values/NewColor.dart';
 import 'package:jost_pay_wallet/Values/NewStyle.dart';
 import 'package:jost_pay_wallet/common/button.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 
 class TwoFAScreen extends StatefulWidget {
   const TwoFAScreen({super.key});
@@ -55,20 +55,30 @@ class _TwoFAScreenState extends State<TwoFAScreen> {
             ),
             const SizedBox(height: 20),
             if (model.qrcode != null)
-            QrImageView(
-                  data: model.qrcode['qrcode_url'],
-              version: QrVersions.auto,
-              size: 150,
-                gapless: true,
-                dataModuleStyle: QrDataModuleStyle(
-                  color: themedata.tertiary,
-                  dataModuleShape: QrDataModuleShape.square,
-                ),
-                eyeStyle: QrEyeStyle(
-                  eyeShape: QrEyeShape.square,
-                  color: themedata.tertiary,
-                )
-            ),
+              // QrImageView(
+              //       data: model.qrcode['qrcode_url'],
+              //   version: QrVersions.auto,
+              //   size: 150,
+              //     gapless: true,
+              //     dataModuleStyle: QrDataModuleStyle(
+              //       color: themedata.tertiary,
+              //       dataModuleShape: QrDataModuleShape.square,
+              //     ),
+              //     eyeStyle: QrEyeStyle(
+              //       eyeShape: QrEyeShape.square,
+              //       color: themedata.tertiary,
+              //     )
+              // ),
+              CachedNetworkImage(
+                imageUrl: model.qrcode['qrcode_url'],
+                height: 110,
+                width: 110,
+                fit: BoxFit.cover,
+                placeholder: (context, url) =>
+                    Icon(Icons.qr_code, size: 68, color: themedata.tertiary),
+                errorWidget: (context, url, error) =>
+                    Icon(Icons.qr_code, size: 68, color: themedata.tertiary),
+              ),
             const SizedBox(height: 10),
             Text.rich(
               textAlign: TextAlign.center,

@@ -18,7 +18,6 @@ import 'package:jost_pay_wallet/utils/toast.dart';
 import 'package:provider/provider.dart';
 
 import '../AddFunds.dart';
-import '../../../bottom_nav.dart';
 
 class BuyData extends StatefulWidget {
   const BuyData({super.key});
@@ -547,17 +546,25 @@ class _BuyDataState extends State<BuyData> {
                                                 ErrorToast(
                                                     'Please select network');
                                               } else {
-                                                Navigator.pushReplacement(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        BuyDataConfirm(
-                                                      plan: plan,
-                                                      phone: _controller.text,
-                                                      network: selectedNetwork!,
+                                                if (num.parse(
+                                                        plan.price.toString()) >
+                                                    model.balance!) {
+                                                  ErrorToast(
+                                                      'Insufficient balance');
+                                                } else {
+                                                  Navigator.pushReplacement(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          BuyDataConfirm(
+                                                        plan: plan,
+                                                        phone: _controller.text,
+                                                        network:
+                                                            selectedNetwork!,
+                                                      ),
                                                     ),
-                                                  ),
-                                                );
+                                                  );
+                                                }
                                               }
                                             },
                                             child: Container(
@@ -590,7 +597,6 @@ class _BuyDataState extends State<BuyData> {
                                                   //   height: 4,
                                                   // ),
                                                   Container(
-                                                    
                                                     padding: EdgeInsets.all(10),
                                                     alignment: Alignment.center,
                                                     decoration: BoxDecoration(

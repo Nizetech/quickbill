@@ -88,12 +88,85 @@ class ServiceRepo {
     }
   }
 
+  Future<Map<String, dynamic>> getGiftCard(String code) async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response = await client.post(ApiRoute.getGiftCard, body: {
+        "country_code": code,
+      }, requestHeaders: {
+        'Authorization': token,
+      });
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
+  Future<Map<String, dynamic>> getCard(String cardId) async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response = await client.post(ApiRoute.getCard, body: {
+        "gift_id": cardId,
+      }, requestHeaders: {
+        'Authorization': token,
+      });
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
   Future<Map<String, dynamic>> getSocialServices(int id) async {
     String token = await box.get(kAccessToken);
     try {
       final response = await client.post(ApiRoute.getSocialServices, body: {
         "section_id": id
       }, requestHeaders: {
+        'Authorization': token,
+      });
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
+
+  Future<Map<String, dynamic>> buySocialBoost(Map<String, dynamic> data) async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response = await client
+          .post(ApiRoute.buySocialBoost, body: data, requestHeaders: {
+        'Authorization': token,
+      });
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
+  Future<Map<String, dynamic>> buyGiftCard(Map<String, dynamic> data) async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response =
+          await client.post(ApiRoute.buyGiftCard, body: data, requestHeaders: {
+        'Authorization': token,
+      });
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
+  Future<Map<String, dynamic>> getCardCountries() async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response =
+          await client.post(ApiRoute.getCountries, requestHeaders: {
         'Authorization': token,
       });
       return response;

@@ -5,13 +5,19 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Models/car_type_model.dart';
+import 'package:jost_pay_wallet/Models/card_model.dart';
 import 'package:jost_pay_wallet/Models/color_paint_mode.dart';
+import 'package:jost_pay_wallet/Models/country_model.dart';
+import 'package:jost_pay_wallet/Models/gift_card_model.dart';
 import 'package:jost_pay_wallet/Models/social_section_model.dart';
 import 'package:jost_pay_wallet/Models/social_services.dart';
 import 'package:jost_pay_wallet/Models/spray_details.dart';
 import 'package:jost_pay_wallet/Models/spray_history_model.dart';
+import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Ui/Paint/paint_invoice_screen.dart';
+import 'package:jost_pay_wallet/Ui/giftCard/cards_option_screen.dart';
 import 'package:jost_pay_wallet/Ui/promotions/social_boost.dart';
+import 'package:jost_pay_wallet/Ui/promotions/social_success_screen.dart';
 import 'package:jost_pay_wallet/service/seervice_repo.dart';
 import 'package:jost_pay_wallet/utils/loader.dart';
 import 'package:jost_pay_wallet/utils/toast.dart';
@@ -27,11 +33,19 @@ class ServiceProvider with ChangeNotifier {
   SprayDetailsModel? sprayDetailsModel;
   SocialSectionsModel? socialSectionsModel;
   SocialServicceModel? socialServiceModel;
+  CountryModel? countryModel;
+  GiftCardsModel? giftCardsModel;
+  CardModel? cardModel;
 
   String base64Image = '';
 
   void updateImage(String image) {
     base64Image = image;
+    notifyListeners();
+  }
+
+  void clearCardModel() {
+    giftCardsModel = null;
     notifyListeners();
   }
 
@@ -71,6 +85,81 @@ class ServiceProvider with ChangeNotifier {
     }
   }
 
+  Future<void> getGiftCard(String code) async {
+    try {
+      showLoader();
+      var res = await ServiceRepo().getGiftCard(code);
+      if (res['status'] == false) {
+        ErrorToast(res['message']);
+        hideLoader();
+        return;
+      }
+      giftCardsModel = GiftCardsModel.fromJson(res);
+      hideLoader();
+      notifyListeners();
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
+  Future<void> buyGiftCard(Map<String, dynamic> data) async {
+    try {
+      showLoader();
+      var res = await ServiceRepo().buyGiftCard(data);
+      if (res['status'] == false) {
+        ErrorToast(res['message']);
+        hideLoader();
+        return;
+      }
+      hideLoader();
+      Get.to(SocialSuccessScreen(
+        isGiftCard: true,
+      ));
+      notifyListeners();
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
+  Future<void> getCard(String cardId) async {
+    try {
+      showLoader();
+      var res = await ServiceRepo().getCard(cardId);
+      if (res['status'] == false) {
+        ErrorToast(res['message']);
+        hideLoader();
+        return;
+      }
+      cardModel = CardModel.fromJson(res);
+      hideLoader();
+      Get.to(CardsOptionScreen());
+      notifyListeners();
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
+  Future<void> getCardCountries({bool isLoading = true}) async {
+    try {
+      if (isLoading) showLoader();
+      var res = await ServiceRepo().getCardCountries();
+      if (res['status'] == false) {
+        ErrorToast(res['message']);
+        if (isLoading) hideLoader();
+        return;
+      }
+      countryModel = CountryModel.fromJson(res);
+      if (isLoading) hideLoader();
+      notifyListeners();
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
   Future<void> getSocialServices(int id) async {
     try {
       showLoader();
@@ -83,6 +172,26 @@ class ServiceProvider with ChangeNotifier {
       socialServiceModel = SocialServicceModel.fromJson(res);
       hideLoader();
       Get.to(SocialBoost());
+      notifyListeners();
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
+  Future<void> buySocialBoost(Map<String, dynamic> data,
+      {required AccountProvider ctrl}) async {
+    try {
+      showLoader();
+      var res = await ServiceRepo().buySocialBoost(data);
+      if (res['status'] == false) {
+        ErrorToast(res['message']);
+        hideLoader();
+        return;
+      }
+      await ctrl.getTrasactions(isLoading: false);
+      hideLoader();
+      Get.to(SocialSuccessScreen());
       notifyListeners();
     } catch (e) {
       log('Error: $e');

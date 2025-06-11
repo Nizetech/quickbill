@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:jost_pay_wallet/Models/color_paint_mode.dart' as paint;
+import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/service_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Paint/paint_screen.dart';
@@ -14,6 +15,7 @@ import 'package:jost_pay_wallet/Ui/Paint/widget/rental.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
+import 'package:jost_pay_wallet/utils/toast.dart';
 import 'package:provider/provider.dart';
 
 class PaintformScreen extends StatefulWidget {
@@ -116,7 +118,7 @@ class _PaintformScreenState extends State<PaintformScreen> {
                           color: isDark
                               ? const Color(0xff101010)
                               : const Color(0xffFCFCFC),
-                        ),
+                        ), 
                         alignment: Alignment.center,
                         child: Text(
                           "Choose Your Painting Package",
@@ -148,7 +150,9 @@ class _PaintformScreenState extends State<PaintformScreen> {
                                         color: model.colorPaintModel!.color!,
                                         careIndex: careDuration,
                                         paint: model.colorPaintModel!
-                                            .paints![touchIndex]));
+                                            .paints![touchIndex],
+                                      ),
+                                    );
                               }
                             }
                           });
@@ -524,18 +528,6 @@ class _PaintformScreenState extends State<PaintformScreen> {
                             List tourchId =
                                 selectedTouch.map((e) => e.id).toList();
                             Map<String, dynamic> sprayData = {};
-                            // if (painterindex == 1) {
-                            //   sprayData = {
-                            //     "rentType": widget.rentalData.rentType,
-                            //     "carType": widget.rentalData.carType,
-                            //     "image": widget.rentalData.image,
-                            //     "date": DateFormat("yyyy-MM-dd")
-                            //         .format(widget.rentalData.date),
-                            //     "time": widget.rentalData.time,
-                            //     "paintType": 3,
-                            //     "total": total,
-                            //   };
-                            // } else {
                             sprayData = {
                               "rentType": widget.rentalData.rentType,
                               "carType": widget.rentalData.carType,
@@ -551,14 +543,7 @@ class _PaintformScreenState extends State<PaintformScreen> {
                                       ? 2
                                       : packageIndex == 2
                                           ? 5
-                                          :
-                                          //  packageIndex == 2
-                                          //     ? 2
-                                          //     :
-                                          // painterindex == 2
-                                          //     ? 3
-                                          //     :
-                                          1,
+                                          : 1,
                               "colorChange": painterindex == 1
                                   ? 0
                                   : packageIndex == 2
@@ -573,10 +558,12 @@ class _PaintformScreenState extends State<PaintformScreen> {
                                     .split(" ")
                                     .first,
                             };
-                            // }
-                            log("sprayData => ${sprayData.runtimeType}");
-                            // return;
+                            if (num.parse(total.toString()) >
+                                context.read<AccountProvider>().balance!) {
+                              ErrorToast('Insufficient balance');
+                            } else {
                             model.rentSpray(sprayData);
+                            }
                           },
                           style: OutlinedButton.styleFrom(
                             side: BorderSide.none,

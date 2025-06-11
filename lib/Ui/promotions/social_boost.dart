@@ -1,10 +1,11 @@
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Models/social_services.dart' as ser;
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:jost_pay_wallet/Provider/service_provider.dart';
@@ -29,6 +30,7 @@ class _SocialBoostState extends State<SocialBoost> {
   final service = TextEditingController();
   final qty = TextEditingController();
   final price = TextEditingController();
+  final link = TextEditingController();
   String serviceDescr = '';
   ser.Service? selectedService;
   @override
@@ -116,6 +118,15 @@ class _SocialBoostState extends State<SocialBoost> {
                             ),
                             enabled: false,
                             decoration: NewStyle.authInputDecoration.copyWith(
+                                prefixIcon: CachedNetworkImage(
+                                    imageUrl: model.socialServiceModel!.section!
+                                        .sectionImage!,
+                                    height: 20,
+                                    width: 20,
+                                    fit: BoxFit.cover,
+                                    placeholder: (context, url) => Container(),
+                                    errorWidget: (context, url, error) =>
+                                        Container()),
                                 hintText: 'Select Service',
                                 fillColor: themeProvider.isDarkMode()
                                     ? const Color(0XFF33353C)
@@ -202,6 +213,7 @@ class _SocialBoostState extends State<SocialBoost> {
                           height: 6.h,
                         ),
                         TextFormField(
+                          controller: link,
                           style: TextStyle(
                             fontSize: 14.sp,
                             color: themedata.tertiary,
@@ -309,12 +321,24 @@ class _SocialBoostState extends State<SocialBoost> {
                           width: double.infinity,
                           child: TextButton(
                             onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const SocialSummaryScreen(),
-                                  ));
+                              Map<String, dynamic> data = {
+                                "image": model
+                                    .socialServiceModel!.section!.sectionImage!,
+                                "package": selectedService!.serviceName,
+                                "qty": qty.text,
+                                "price": price.text,
+                                "link": link.text,
+                                "service_id": selectedService!.serviceId,
+                              };
+                              if (selectedService == null ||
+                                  link.text.isEmpty ||
+                                  qty.text.isEmpty) {
+                                ErrorToast('Please enter all fields');
+                              } else {
+                                Get.to(SocialSummaryScreen(
+                                  data: data,
+                                ));
+                              }
                             },
                             style: TextButton.styleFrom(
                               backgroundColor: MyColor.splashBtn,

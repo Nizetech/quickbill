@@ -243,14 +243,19 @@ class _RepairScreenState extends State<RepairScreen> {
 class CustomTextField extends StatelessWidget {
   final String text;
   final IconData? suffixIcon;
+  final IconData? preffixIcon;
   final String? asset;
+  final bool enabled;
   final VoidCallback? onTap;
   final TextEditingController? controller;
-  const CustomTextField(
-      {
+  final Function(String)? onChanged;
+  const CustomTextField({
     super.key,
     required this.text,
+    this.onChanged,
+    this.enabled = false,
     this.suffixIcon,
+    this.preffixIcon,
     this.asset,
     this.onTap,
     this.controller,
@@ -264,9 +269,13 @@ class CustomTextField extends StatelessWidget {
 
     return TextField(
       controller: controller,
-      enabled: false,
+      enabled: enabled,
       onTap: onTap,
+      onChanged: onChanged,
       decoration: InputDecoration(
+        prefixIcon: preffixIcon != null
+            ? Icon(preffixIcon, size: 22, color: Colors.grey)
+            : null,
         hintText: text,
         filled: true,
         fillColor: isDark ? MyColor.dark02Color : Colors.white,
@@ -276,6 +285,13 @@ class CustomTextField extends StatelessWidget {
           fontWeight: FontWeight.w500,
         ),
         enabled: false,
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(
+              width: 1.2,
+              color:
+                  isDark ? const Color(0xff1B1B1B) : const Color(0xffE9EBF8)),
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide(

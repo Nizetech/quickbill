@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/bottom_nav.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 
 class SocialSuccessScreen extends StatefulWidget {
-  const SocialSuccessScreen({super.key});
+  final bool isGiftCard;
+  const SocialSuccessScreen({super.key, this.isGiftCard = false});
 
   @override
   State<SocialSuccessScreen> createState() => _SocialSuccessScreenState();
 }
 
 class _SocialSuccessScreenState extends State<SocialSuccessScreen> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,11 +25,50 @@ class _SocialSuccessScreenState extends State<SocialSuccessScreen> {
               const SizedBox(
                 height: 200,
               ),
-              Image.asset('assets/images/successB.png'),
+              Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.tertiary,
+                      borderRadius: BorderRadius.circular(100),
+                      gradient: const LinearGradient(
+                        colors: [
+                          MyColor.greenColor,
+                          Color(0xff00c26d),
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      )),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Spacer(),
+                      Text(
+                        widget.isGiftCard
+                            ? 'Gift Card Purchased'
+                            : 'Token Purchased',
+                        style: MyStyle.tx16White.copyWith(
+                            fontWeight: FontWeight.bold, fontSize: 20),
+                      ),
+                      Spacer(),
+                      const CircleAvatar(
+                        radius: 20,
+                        backgroundColor: Colors.white,
+                        child: Icon(
+                          Icons.check,
+                          color: MyColor.greenColor,
+                        ),
+                      ),
+                    ],
+                  )),
+              // Image.asset('assets/images/successB.png'),
               const SizedBox(
                 height: 40,
               ),
               Text(
+                widget.isGiftCard
+                    ? "Your gift card has been purchased successfully!\n We will confirm as soon as possible."
+                    :
                 "Your ad has been placed successfully! Our team will review and publish it shortly. You'll soon reach new customers and drive real results for your business. Thank you for choosing us to help grow your brand",
                 textAlign: TextAlign.center,
                 style: MyStyle.tx14Grey.copyWith(
@@ -40,11 +77,13 @@ class _SocialSuccessScreenState extends State<SocialSuccessScreen> {
               const SizedBox(
                 height: 32,
               ),
-              GestureDetector(
-                onTap: () => Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const BottomNav())),
+              TextButton(
+                onPressed: () => Get.offAll(BottomNav()),
+                style: TextButton.styleFrom(
+                  side: BorderSide(color: MyColor.greenColor),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                ),
                 child: Text(
                   'Go Homepage',
                   style:

@@ -61,10 +61,13 @@ class _BuyAirtimeConfirmState extends State<BuyAirtimeConfirm> {
         if (widget.network != null) {
           selectedItem = model.networkProviderModel!.networks!
               .indexWhere((element) => element.network == widget.network);
+          selectedNetwork = model.networkProviderModel!.networks![selectedItem];
         }
+
         if (widget.phone != null) {
           _controller.text = widget.phone!;
         }
+
       });
     });
   }
@@ -690,11 +693,15 @@ class _BuyAirtimeConfirmState extends State<BuyAirtimeConfirm> {
                               } else if (selectedItem == -1) {
                                 ErrorToast('Please select network');
                               } else {
+                                if (num.parse(_amount.text) > model.balance!) {
+                                  ErrorToast('Insufficient balance');
+                                } else {
                                 Get.to(Buyairtimeconfirmdetail(
                                   selectedNetwork: selectedNetwork!,
                                   number: _controller.text,
                                   amount: _amount.text,
                                 ));
+                                }
                               }
                             },
                             child: Text(

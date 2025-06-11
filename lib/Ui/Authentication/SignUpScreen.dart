@@ -286,6 +286,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           return null;
                         },
                       ),
+                      
                       // const SizedBox(height: 14),
                       Text(
                         'Refer ID',

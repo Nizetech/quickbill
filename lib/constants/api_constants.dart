@@ -30,8 +30,13 @@ class ApiRoute {
   // Services
   static String buyAirtime = 'buy-airtime';
   static String buyData = 'buy-data';
+  static String getCountries = 'get-gift-countries';
+  static String buySocialBoost = 'buy-social-boost';
+  static String buyGiftCard = 'buy-gift-card';
   static String serviceHistory = 'get-purchases';
   static String getSocialSections = 'get-social-sections';
+  static String getGiftCard = 'get-gift-cards';
+  static String getCard = 'get-gift-card';
   static String getSocialServices = 'get-social-services';
   static String getCarTypes = 'services/spray-land';
   static String getColorPaint = 'services/spray-main';

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/bottom_nav.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 
@@ -40,11 +42,13 @@ class _Pay4meSuccessScreenState extends State<Pay4meSuccessScreen> {
               const SizedBox(
                 height: 32,
               ),
-              GestureDetector(
-                onTap: () => Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const BottomNav())),
+              TextButton(
+                onPressed: () => Get.offAll(BottomNav()),
+                style: TextButton.styleFrom(
+                  side: BorderSide(color: MyColor.greenColor),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                ),
                 child: Text(
                   'Go Homepage',
                   style:

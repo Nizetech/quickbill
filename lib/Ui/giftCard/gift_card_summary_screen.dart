@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -8,7 +7,6 @@ import 'package:jost_pay_wallet/Models/card_model.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/service_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
-import 'package:jost_pay_wallet/Ui/promotions/social_success_screen.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
@@ -252,7 +250,7 @@ class _GiftCardSummaryScreenState extends State<GiftCardSummaryScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: 47.h,
+                  height: 47.h
                 ),
                 SizedBox(
                   width: double.infinity,

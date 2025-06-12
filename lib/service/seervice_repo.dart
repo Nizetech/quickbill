@@ -162,6 +162,33 @@ class ServiceRepo {
     }
   }
 
+  Future<Map<String, dynamic>> buyPay4Me(Map<String, dynamic> data) async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response =
+          await client.post(ApiRoute.buyPay4Me, body: data, requestHeaders: {
+        'Authorization': token,
+      });
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
+  Future<Map<String, dynamic>> getPayRate() async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response = await client.post(ApiRoute.getPayRate, requestHeaders: {
+        'Authorization': token,
+      });
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
   Future<Map<String, dynamic>> getCardCountries() async {
     String token = await box.get(kAccessToken);
     try {

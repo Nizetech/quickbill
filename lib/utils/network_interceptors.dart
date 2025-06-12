@@ -81,9 +81,9 @@ class AppInterceptors extends Interceptor {
     _log.e(err.response?.data, functionName: "onError[3]");
     if (err.response?.statusCode == 500) {
       CancelLoading().cancelLoading();
+      Get.offAll(SignInScreen());
       ErrorToast(
           "Invalid response recieved, logging out and redirecting to login page");
-      Get.offAll(SignInScreen());
       return;
     }
 

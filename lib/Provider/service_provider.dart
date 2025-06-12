@@ -9,6 +9,7 @@ import 'package:jost_pay_wallet/Models/card_model.dart';
 import 'package:jost_pay_wallet/Models/color_paint_mode.dart';
 import 'package:jost_pay_wallet/Models/country_model.dart';
 import 'package:jost_pay_wallet/Models/gift_card_model.dart';
+import 'package:jost_pay_wallet/Models/paymentOption.dart';
 import 'package:jost_pay_wallet/Models/social_section_model.dart';
 import 'package:jost_pay_wallet/Models/social_services.dart';
 import 'package:jost_pay_wallet/Models/spray_details.dart';
@@ -16,6 +17,7 @@ import 'package:jost_pay_wallet/Models/spray_history_model.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Ui/Paint/paint_invoice_screen.dart';
 import 'package:jost_pay_wallet/Ui/giftCard/cards_option_screen.dart';
+import 'package:jost_pay_wallet/Ui/pay4me/pay4me_success_screen.dart';
 import 'package:jost_pay_wallet/Ui/promotions/social_boost.dart';
 import 'package:jost_pay_wallet/Ui/promotions/social_success_screen.dart';
 import 'package:jost_pay_wallet/service/seervice_repo.dart';
@@ -36,6 +38,7 @@ class ServiceProvider with ChangeNotifier {
   CountryModel? countryModel;
   GiftCardsModel? giftCardsModel;
   CardModel? cardModel;
+  PaymentFeeModel? paymentFeeModel;
 
   String base64Image = '';
 
@@ -122,6 +125,25 @@ class ServiceProvider with ChangeNotifier {
       ErrorToast(e.toString());
     }
   }
+  
+
+  Future<void> buyPay4Me(Map<String, dynamic> data) async {
+    try {
+      showLoader();
+      var res = await ServiceRepo().buyPay4Me(data);
+      if (res['status'] == false) {
+        ErrorToast(res['message']);
+        hideLoader();
+        return;
+      }
+      hideLoader();
+      Get.to(Pay4meSuccessScreen());
+      notifyListeners();
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
 
   Future<void> getCard(String cardId) async {
     try {
@@ -135,6 +157,24 @@ class ServiceProvider with ChangeNotifier {
       cardModel = CardModel.fromJson(res);
       hideLoader();
       Get.to(CardsOptionScreen());
+      notifyListeners();
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
+  Future<void> getPayRate() async {
+    try {
+      showLoader();
+      var res = await ServiceRepo().getPayRate();
+      if (res['status'] == false) {
+        ErrorToast(res['message']);
+        hideLoader();
+        return;
+      }
+      paymentFeeModel = PaymentFeeModel.fromJson(res);
+      hideLoader();
       notifyListeners();
     } catch (e) {
       log('Error: $e');

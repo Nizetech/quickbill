@@ -33,6 +33,8 @@ class ApiRoute {
   static String getCountries = 'get-gift-countries';
   static String buySocialBoost = 'buy-social-boost';
   static String buyGiftCard = 'buy-gift-card';
+  static String buyPay4Me = 'buy-pay4me';
+  static String getPayRate = 'get-rates';
   static String serviceHistory = 'get-purchases';
   static String getSocialSections = 'get-social-sections';
   static String getGiftCard = 'get-gift-cards';

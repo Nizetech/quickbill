@@ -271,7 +271,7 @@ class _SocialSummaryScreenState extends State<SocialSummaryScreen> {
                       Map<String, dynamic> data = {
                         "service_id": widget.data['service_id'],
                         "quantity": widget.data['qty'],
-                        "link": widget.data['link'],
+                        "social_link": widget.data['link'],
                       };
                       model.buySocialBoost(
                         data,

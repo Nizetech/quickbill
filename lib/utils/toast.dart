@@ -17,7 +17,7 @@ class ErrorToast {
           onPressed: () => Get.back(),
           icon: const Icon(Icons.close, color: Colors.white)),
       backgroundColor: Colors.red,
-      duration: const Duration(seconds: 3),
+      duration: const Duration(seconds: 4),
     ).show(Get.context!);
   }
 }

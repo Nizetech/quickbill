@@ -106,11 +106,14 @@ class _WalletScreenState extends State<WalletScreen> {
                       const EdgeInsets.only(left: 24.0, right: 24.0, top: 10),
                   decoration: BoxDecoration(
                     // color: Colors.white,
-                    border: Border.all(
+                    border: Border(
+                      bottom: BorderSide(
+
                         color: themeProvider.isDarkMode()
                             ? MyColor.borderDarkColor
                             : MyColor.borderColor,
-                        width: 0.9),
+                          width: 0.9),
+                    ),
                     borderRadius: const BorderRadius.only(
                       bottomLeft: Radius.circular(20),
                       bottomRight: Radius.circular(20),

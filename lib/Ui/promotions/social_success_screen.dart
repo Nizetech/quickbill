@@ -46,7 +46,7 @@ class _SocialSuccessScreenState extends State<SocialSuccessScreen> {
                       Text(
                         widget.isGiftCard
                             ? 'Gift Card Purchased'
-                            : 'Token Purchased',
+                            : 'Purchased Successful!',
                         style: MyStyle.tx16White.copyWith(
                             fontWeight: FontWeight.bold, fontSize: 20),
                       ),
@@ -69,10 +69,12 @@ class _SocialSuccessScreenState extends State<SocialSuccessScreen> {
                 widget.isGiftCard
                     ? "Your gift card has been purchased successfully!\n We will confirm as soon as possible."
                     :
-                "Your ad has been placed successfully! Our team will review and publish it shortly. You'll soon reach new customers and drive real results for your business. Thank you for choosing us to help grow your brand",
+
+            "Thank your for your purchase. Your Social Boost is now being processed.",
                 textAlign: TextAlign.center,
                 style: MyStyle.tx14Grey.copyWith(
-                    color: Theme.of(context).colorScheme.tertiary, height: 2.5),
+                  color: Theme.of(context).colorScheme.tertiary,
+                ),
               ),
               const SizedBox(
                 height: 32,
@@ -80,12 +82,13 @@ class _SocialSuccessScreenState extends State<SocialSuccessScreen> {
               TextButton(
                 onPressed: () => Get.offAll(BottomNav()),
                 style: TextButton.styleFrom(
+                  padding: EdgeInsets.symmetric(horizontal: 30),
                   side: BorderSide(color: MyColor.greenColor),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),
                 ),
                 child: Text(
-                  'Go Homepage',
+                  'Got it',
                   style:
                       MyStyle.tx16Green.copyWith(fontWeight: FontWeight.w600),
                 ),

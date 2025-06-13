@@ -1,6 +1,7 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl_phone_field/country_picker_dialog.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/service_provider.dart';
@@ -238,20 +239,71 @@ class _CardsOptionScreenState extends State<CardsOptionScreen> {
                           height: 6.h,
                         ),
                         IntlPhoneField(
-                          flagsButtonMargin: EdgeInsets.zero,
+                          flagsButtonMargin: EdgeInsets.only(left: 3),
                           flagsButtonPadding: EdgeInsets.zero,
-                          dropdownDecoration: BoxDecoration(
-                            color: MyColor.mainWhiteColor,
+                          dropdownTextStyle: NewStyle.tx14SplashWhite.copyWith(
+                            color: themeProvider.isDarkMode()
+                                ? MyColor.mainWhiteColor
+                                : MyColor.lightBlackColor,
+                            fontSize: 14,
                           ),
-                          dropdownIcon: const Icon(
+                          // dropdownDecoration: BoxDecoration(
+                          //   borderRadius: BorderRadius.circular(10.r),
+                          //   color: themeProvider.isDarkMode()
+                          //       ? const Color(0XFF33353C)
+                          //       : MyColor.textFieldFillColor,
+                          // ),
+                          // pickerDialogStyle: PickerDialogStyle(
+                          //   countryCodeStyle: NewStyle.tx14SplashWhite.copyWith(
+                          //     color: themeProvider.isDarkMode()
+                          //         ? MyColor.mainWhiteColor
+                          //         : MyColor.lightBlackColor,
+                          //     fontSize: 14,
+                          //   ),
+                          //   searchFieldInputDecoration: InputDecoration(
+                          //     labelStyle: NewStyle.tx14SplashWhite.copyWith(
+                          //       color: themeProvider.isDarkMode()
+                          //           ? MyColor.mainWhiteColor
+                          //           : MyColor.lightBlackColor,
+                          //       fontSize: 14,
+                          //     ),
+                          //     hintStyle: NewStyle.tx14SplashWhite.copyWith(
+                          //       color: themeProvider.isDarkMode()
+                          //           ? MyColor.mainWhiteColor
+                          //           : MyColor.lightBlackColor,
+                          //       fontSize: 14,
+                          //     ),
+                          //     filled: true,
+                          //     fillColor: themeProvider.isDarkMode()
+                          //         ? const Color(0XFF33353C)
+                          //         : MyColor.textFieldFillColor,
+                          //   ),
+                          //   countryNameStyle: NewStyle.tx14SplashWhite.copyWith(
+                          //     color: themeProvider.isDarkMode()
+                          //         ? MyColor.mainWhiteColor
+                          //         : MyColor.lightBlackColor,
+                          //     fontSize: 14,
+                          //   ),
+                          //   backgroundColor: themeProvider.isDarkMode()
+                          //       ? const Color(0XFF33353C)
+                          //       : MyColor.textFieldFillColor,
+                          // ),
+                          dropdownIcon: Icon(
                             Icons.keyboard_arrow_down,
-                            color: MyColor.lightBlackColor,
+                            color: themeProvider.isDarkMode()
+                                ? MyColor.mainWhiteColor
+                                : MyColor.lightBlackColor,
                           ),
                           decoration: NewStyle.authInputDecoration.copyWith(
                             hintText: '8061560000',
+                            fillColor: themeProvider.isDarkMode()
+                                ? const Color(0XFF33353C)
+                                : MyColor.textFieldFillColor,
                           ),
                           style: NewStyle.tx14SplashWhite.copyWith(
-                            color: MyColor.lightBlackColor,
+                            color: themeProvider.isDarkMode()
+                                ? MyColor.mainWhiteColor
+                                : MyColor.lightBlackColor,
                             fontSize: 14,
                           ),
                           initialCountryCode: selectedCountry,
@@ -337,7 +389,11 @@ class _CardsOptionScreenState extends State<CardsOptionScreen> {
                                     Text(
                                       'Please note',
                                       style: MyStyle.tx14Black.copyWith(
-                                          fontWeight: FontWeight.w500),
+                                        fontWeight: FontWeight.w500,
+                                        color: themeProvider.isDarkMode()
+                                            ? MyColor.mainWhiteColor
+                                            : MyColor.lightBlackColor,
+                                      ),
                                     ),
                                     SizedBox(
                                       height: 10.h,
@@ -350,8 +406,12 @@ class _CardsOptionScreenState extends State<CardsOptionScreen> {
                                       height: 12.h,
                                     ),
                                     Text(
-                                      '* ${model.cardModel!.product!.redeemInstruction!.verbose}\n\n* Funds applied automatically, remaining balance requires other payment method\n\n* Delivered electronically via email\n\nNote: No returns or refunds on gift cards. Confirm country and type before purchase.',
-                                      style: MyStyle.tx14Grey,
+                                      '* ${model.cardModel!.product!.redeemInstruction!.verbose}\n\n* Returns or refunds are not accepted for issued gift cards.\n\n* Please confirm the country and type of gift card you are purchasing.\n\nGift cards will be delivered electronically via email.',
+                                      style: MyStyle.tx14Grey.copyWith(
+                                        color: themeProvider.isDarkMode()
+                                            ? MyColor.mainWhiteColor
+                                            : MyColor.lightBlackColor,
+                                      ),
                                     ),
                                   ],
                                 ),

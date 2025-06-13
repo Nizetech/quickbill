@@ -24,9 +24,17 @@ class AuthProvider with ChangeNotifier {
       AuthRepo().register(data).then((value) {
         log('Value: $value');
         setLoading(false);
-        if (value['result'] == false) {
+          if (value['status'] == false || value['result'] == false) {
           hideLoader();
-          ErrorToast(value['message']);
+         if (value['message'].runtimeType == String) {
+            ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';
+            });
+            ErrorToast(message);
+          }
         } else {
           hideLoader();
           Get.to(OtpScreen(
@@ -55,8 +63,16 @@ class AuthProvider with ChangeNotifier {
         // setLoading(false);
         hideLoader();
         if (value.isNotEmpty) {
-          if (value['result'] == false) {
+            if (value['status'] == false || value['result'] == false) {
+           if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';
+            });
+            ErrorToast(message);
+          }
             return;
           } else {
             log('Login Value===>: $value');
@@ -94,8 +110,16 @@ class AuthProvider with ChangeNotifier {
         hideLoader();
         // setLoading(false);
         if (value.isEmpty) return;
-        if (value['result'] == false) {
-          ErrorToast(value['message']);
+          if (value['status'] == false || value['result'] == false) {
+         if (value['message'].runtimeType == String) {
+            ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';
+            });
+            ErrorToast(message);
+          }
         } else {
           if (isForgetPass) {
             hideLoader();
@@ -129,7 +153,7 @@ class AuthProvider with ChangeNotifier {
         // setLoading(false);
         hideLoader();
         if (value.isEmpty) return false;
-        if (value['result'] == false) {
+          if (value['status'] == false || value['result'] == false) {
         } else {
           if (isForgetPass || isEnable2fa) {
             if (isEnable2fa) {
@@ -172,8 +196,16 @@ class AuthProvider with ChangeNotifier {
         // setLoading(false);
         hideLoader();
         if (value.isEmpty) return;
-        if (value['result'] == false) {
-          ErrorToast(value['message']);
+          if (value['status'] == false || value['result'] == false) {
+         if (value['message'].runtimeType == String) {
+            ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';
+            });
+            ErrorToast(message);
+          }
         } else {
           await account.getUserProfile();
           hideLoader();
@@ -202,8 +234,16 @@ class AuthProvider with ChangeNotifier {
         // setLoading(false);
         hideLoader();
         if (value.isEmpty) return;
-        if (value['result'] == false) {
-          ErrorToast(value['message']);
+          if (value['status'] == false || value['result'] == false) {
+         if (value['message'].runtimeType == String) {
+            ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';
+            });
+            ErrorToast(message);
+          }
         } else {
           Get.back();
           if (value['message'] != null && value['message'] != '') {
@@ -229,8 +269,16 @@ class AuthProvider with ChangeNotifier {
         // setLoading(false);
         hideLoader();
         if (value.isEmpty) return;
-        if (value['result'] == false) {
-          ErrorToast(value['message']);
+          if (value['status'] == false || value['result'] == false) {
+         if (value['message'].runtimeType == String) {
+            ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';
+            });
+            ErrorToast(message);
+          }
         } else {
           hideLoader();
           if (value['message'] != null && value['message'] != '') {

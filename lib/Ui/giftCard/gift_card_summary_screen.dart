@@ -272,7 +272,10 @@ class _GiftCardSummaryScreenState extends State<GiftCardSummaryScreen> {
                           "gift_id": widget.cardModel.product!.productId,
                           "usd_amount": widget.amount,
                           "qty": widget.qty,
-                          "phone": widget.phoneNumber,
+                          "phone": widget.countryCode == "NG" &&
+                                  !widget.phoneNumber.startsWith("0")
+                              ? "0${widget.phoneNumber}"
+                              : widget.phoneNumber,
                         });
                         // Navigator.pushReplacement(
                         //     context,

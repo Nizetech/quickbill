@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+// import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
+import 'package:jost_pay_wallet/Values/utils.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class SupportScreen extends StatefulWidget {
   const SupportScreen({super.key});
@@ -10,8 +12,32 @@ class SupportScreen extends StatefulWidget {
 }
 
 class _SupportScreenState extends State<SupportScreen> {
-  late InAppWebViewController _webViewController;
   bool isLoading = true;
+  WebViewController? controller;
+  @override
+  void initState() {
+    super.initState();
+    controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onProgress: (int progress) {
+            // Update loading bar.
+          },
+          onPageStarted: (String url) {},
+          onPageFinished: (String url) {
+            setState(() {
+              isLoading = false;
+            });
+          },
+          onHttpError: (HttpResponseError error) {},
+          onWebResourceError: (WebResourceError error) {},
+        ),
+      )
+      ..loadRequest(
+          Uri.parse("https://tawk.to/chat/56f3c326d19f288b7cc160b5/1ink6m1hd"));
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -19,29 +45,9 @@ class _SupportScreenState extends State<SupportScreen> {
         body: SafeArea(
       child: Stack(
         children: [
-          InAppWebView(
-            initialUrlRequest: URLRequest(
-                url: Uri.parse(
-                    "https://tawk.to/chat/56f3c326d19f288b7cc160b5/1ink6m1hd")),
-            initialOptions: InAppWebViewGroupOptions(
-              crossPlatform: InAppWebViewOptions(
-                useShouldOverrideUrlLoading: false,
-                javaScriptEnabled: true,
-                javaScriptCanOpenWindowsAutomatically: true,
-              ),
-            ),
-            onWebViewCreated: (controller) {
-              _webViewController = controller;
-            },
-            onLoadStop: (controller, url) async {
-              bool check = await controller.isLoading();
-              if (!check) {
-                setState(() {
-                  isLoading = false;
-                });
-              }
-            },
-          ),
+
+          
+          WebViewWidget(controller: controller!),
           Visibility(
             visible: isLoading,
             child: const Center(

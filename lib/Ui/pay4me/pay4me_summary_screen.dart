@@ -1,6 +1,7 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/service_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/pay4me/pay4me_screen.dart';
@@ -35,7 +36,7 @@ class _Pay4meSummaryScreenState extends State<Pay4meSummaryScreen> {
               Row(
                 children: [
                   InkWell(
-                    onTap: () => Navigator.pop(context),
+                    onTap: () => Get.back(),
                     child: Image.asset(
                       'assets/images/arrow_left.png',
                       color: themeProvider.isDarkMode()

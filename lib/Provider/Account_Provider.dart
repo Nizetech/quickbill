@@ -103,10 +103,18 @@ class AccountProvider with ChangeNotifier {
     try {
       if (isLoading) showLoader();
       AccountRepo().getProfile().then((value) {
-        log('Value: $value');
+        // log('Value: $value');
         if (isLoading) hideLoader();
-        if (value['result'] == false) {
-          ErrorToast(value['message']);
+       if (value['status'] == false || value['result'] == false) {
+           if (value['message'].runtimeType == String) {
+            ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';
+            });
+            ErrorToast(message);
+          }
         } else {
           userModel = UserModel.fromJson(value);
           if (isLoading) hideLoader();
@@ -126,8 +134,18 @@ class AccountProvider with ChangeNotifier {
       AccountRepo().getServiceHistory('airtime').then((value) {
         log('Value: $value');
         if (isLoading) hideLoader();
-        if (value['result'] == false) {
-          ErrorToast(value['message']);
+          if (value['status'] == false || value['result'] == false) {
+         if (value['status'] == false || value['result'] == false) {
+           if (value['message'].runtimeType == String) {
+            ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';
+            });
+            ErrorToast(message);
+          }
+        }
         } else {
           airtimeHistory = AirtimeHistory.fromJson(value);
         }
@@ -146,9 +164,18 @@ class AccountProvider with ChangeNotifier {
       AccountRepo().getNetworkProviders().then((value) {
         log('Value: $value');
         if (isLoading) hideLoader();
-        if (value['result'] == false) {
-          ErrorToast(value['message']);
-        } else {
+         if (value['status'] == false || value['result'] == false) {
+         if (value['message'].runtimeType == String) {
+            ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';
+            });
+            ErrorToast(message);
+          }
+        }
+         else {
           networkProviderModel =
               NetworkProviderModel.fromJson(value['network_providers']);
         }
@@ -167,8 +194,17 @@ class AccountProvider with ChangeNotifier {
       AccountRepo().getProfileImage().then((value) {
         log('Value: $value');
         if (isLoading) hideLoader();
-        if (value['result'] == false) {
-          ErrorToast(value['message']);
+         if (value['status'] == false || value['result'] == false) {
+         if (value['message'].runtimeType == String) {
+            ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';
+            });
+            ErrorToast(message);
+          }
+        
         } else {
           _profileImage = value['message'];
           if (isLoading) hideLoader();
@@ -186,9 +222,17 @@ class AccountProvider with ChangeNotifier {
     try {
       showLoader();
       AccountRepo().updateProfileImage(image).then((value) async {
-        if (value['result'] == false) {
+         if (value['status'] == false || value['result'] == false) {
           hideLoader();
-          ErrorToast(value['message']);
+          if (value['message'].runtimeType == String) {
+            ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';
+            });
+            ErrorToast(message);
+          }
         } else {
           await getProfileImage(isLoading: false);
           hideLoader();
@@ -210,14 +254,23 @@ class AccountProvider with ChangeNotifier {
           hideLoader();
            Get.to(InvalidPurchase());
         }
-        if (value['result'] == false) {
+         if (value['status'] == false || value['result'] == false) {
           hideLoader();
-          // ErrorToast(value['message']);
+          
           Get.to(PendingPurchase(
             isData: false,
             amount: data['amount'],
             phone: data['phone'],
           ));
+           if (value['message'].runtimeType == String) {
+            ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';
+            });
+            ErrorToast(message);
+          }
         } else {
           hideLoader();
           Get.to(BuyDataSuccess(
@@ -226,6 +279,7 @@ class AccountProvider with ChangeNotifier {
             phone: data['phone'],
           ));
         }
+        
         notifyListeners();
       });
     } catch (e) {
@@ -243,7 +297,7 @@ class AccountProvider with ChangeNotifier {
           hideLoader();
           Get.to(InvalidPurchase());
         }
-        if (value['result'] == false) {
+         if (value['status'] == false || value['result'] == false) {
           hideLoader();
           // ErrorToast(value['message']);
            Get.to(PendingPurchase(
@@ -272,8 +326,16 @@ class AccountProvider with ChangeNotifier {
     try {
       AccountRepo().getNotification().then((value) {
         log('Value: $value');
-        if (value['result'] == false) {
-          ErrorToast(value['message']);
+         if (value['status'] == false || value['result'] == false) {
+          if (value['message'].runtimeType == String) {
+            ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';
+            });
+            ErrorToast(message);
+          }
         } else {
           notificationModel = NotificationModel.fromJson(value);
         }
@@ -309,8 +371,16 @@ class AccountProvider with ChangeNotifier {
       AccountRepo().getBalance().then((value) {
         log('Value: $value');
         setLoading(false);
-        if (value['result'] == false) {
-          ErrorToast(value['message']);
+         if (value['status'] == false || value['result'] == false) {
+        if (value['message'].runtimeType == String) {
+            ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';
+            });
+            ErrorToast(message);
+          }
         } else {
           setLoading(false);
           balance = num.parse(value['balance'].toString());
@@ -332,9 +402,17 @@ class AccountProvider with ChangeNotifier {
       if (isLoading) showLoader();
       AccountRepo().getTransactions().then((value) {
         // log('Value: $value');
-        if (value['result'] == false) {
+         if (value['status'] == false || value['result'] == false) {
           if (isLoading) hideLoader();
-          ErrorToast(value['message']);
+        if (value['message'].runtimeType == String) {
+            ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';
+            });
+            ErrorToast(message);
+          }
         } else {
           if (isLoading) hideLoader();
           transactionModel = TransactionModel.fromJson(value);
@@ -356,9 +434,17 @@ class AccountProvider with ChangeNotifier {
       if (isLoading) showLoader();
       AccountRepo().getReferral().then((value) {
         log('Value: $value');
-        if (value['result'] == false) {
+         if (value['status'] == false || value['result'] == false) {
           if (isLoading) hideLoader();
-          ErrorToast(value['message']);
+         if (value['message'].runtimeType == String) {
+            ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';
+            });
+            ErrorToast(message);
+          }
         } else {
           if (isLoading) hideLoader();
           transactionModel = TransactionModel.fromJson(value);
@@ -377,9 +463,17 @@ class AccountProvider with ChangeNotifier {
       if (isLoading) showLoader();
       AccountRepo().getDataPlans(network).then((value) {
         log('Value: $value');
-        if (value['result'] == false) {
+         if (value['status'] == false || value['result'] == false) {
           if (isLoading) hideLoader();
-          ErrorToast(value['message']);
+         if (value['message'].runtimeType == String) {
+            ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';
+            });
+            ErrorToast(message);
+          }
         } else {
           if (isLoading) hideLoader();
           dataPlansModel = DataPlansModel.fromJson(value);
@@ -398,9 +492,17 @@ class AccountProvider with ChangeNotifier {
       if (isLoading) showLoader();
       AccountRepo().getPromotion().then((value) {
         log('Value: $value');
-        if (value['result'] == false) {
+         if (value['status'] == false || value['result'] == false) {
           if (isLoading) hideLoader();
-          ErrorToast(value['message']);
+         if (value['message'].runtimeType == String) {
+            ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';
+            });
+            ErrorToast(message);
+          }
         } else {
           if (isLoading) hideLoader();
           promoModel = PromoModel.fromJson(value);

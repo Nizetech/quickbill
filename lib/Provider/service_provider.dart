@@ -56,9 +56,17 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().getCarTypes();
-      if (res['status'] == false) {
-        ErrorToast(res['message']);
+      if (res['status'] == false || res['result'] == false) {
         hideLoader();
+        if (res['message'].runtimeType == String) {
+        ErrorToast(res['message']);
+        } else {
+          String message = '';
+          res['message'].forEach((key, value) {
+            message += '$value';
+          });
+          ErrorToast(message);
+        }
         return;
       }
       carTypeModel = CarTypeModel.fromJson(res);
@@ -74,9 +82,17 @@ class ServiceProvider with ChangeNotifier {
     try {
       if (isLoading) showLoader();
       var res = await ServiceRepo().getSocialSectionss();
-      if (res['status'] == false) {
-        ErrorToast(res['message']);
+      if (res['status'] == false || res['result'] == false) {
         if (isLoading) hideLoader();
+        if (res['message'].runtimeType == String) {
+          ErrorToast(res['message']);
+        } else {
+          String message = '';
+          res['message'].forEach((key, value) {
+            message += '$value';
+          });
+          ErrorToast(message);
+        }
         return;
       }
       socialSectionsModel = SocialSectionsModel.fromJson(res);
@@ -92,9 +108,17 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().getGiftCard(code);
-      if (res['status'] == false) {
-        ErrorToast(res['message']);
+      if (res['status'] == false || res['result'] == false) {
         hideLoader();
+        if (res['message'].runtimeType == String) {
+        ErrorToast(res['message']);
+        } else {
+          String message = '';
+          res['message'].forEach((key, value) {
+            message += '$value';
+          });
+          ErrorToast(message);
+        }
         return;
       }
       giftCardsModel = GiftCardsModel.fromJson(res);
@@ -110,9 +134,17 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().buyGiftCard(data);
-      if (res['status'] == false) {
-        ErrorToast(res['message']);
+      if (res['status'] == false || res['result'] == false) {
         hideLoader();
+        if (res['message'].runtimeType == String) {
+        ErrorToast(res['message']);
+        } else {
+          String message = '';
+          res['message'].forEach((key, value) {
+            message += '$value';
+          });
+          ErrorToast(message);
+        }
         return;
       }
       hideLoader();
@@ -131,9 +163,17 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().buyPay4Me(data);
-      if (res['status'] == false) {
-        ErrorToast(res['message']);
+      if (res['status'] == false || res['result'] == false) {
         hideLoader();
+        if (res['message'].runtimeType == String) {
+        ErrorToast(res['message']);
+        } else {
+          String message = '';
+          res['message'].forEach((key, value) {
+            message += '$value';
+          });
+          ErrorToast(message);
+        }
         return;
       }
       hideLoader();
@@ -149,9 +189,17 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().getCard(cardId);
-      if (res['status'] == false) {
-        ErrorToast(res['message']);
+      if (res['status'] == false || res['result'] == false) {
         hideLoader();
+        if (res['message'].runtimeType == String) {
+        ErrorToast(res['message']);
+        } else {
+          String message = '';
+          res['message'].forEach((key, value) {
+            message += '$value';
+          });
+          ErrorToast(message);
+        }
         return;
       }
       cardModel = CardModel.fromJson(res);
@@ -168,9 +216,17 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().getPayRate();
-      if (res['status'] == false) {
-        ErrorToast(res['message']);
+      if (res['status'] == false || res['result'] == false) {
         hideLoader();
+        if (res['message'].runtimeType == String) {
+        ErrorToast(res['message']);
+        } else {
+          String message = '';
+          res['message'].forEach((key, value) {
+            message += '$value';
+          });
+          ErrorToast(message);
+        }
         return;
       }
       paymentFeeModel = PaymentFeeModel.fromJson(res);
@@ -186,9 +242,17 @@ class ServiceProvider with ChangeNotifier {
     try {
       if (isLoading) showLoader();
       var res = await ServiceRepo().getCardCountries();
-      if (res['status'] == false) {
-        ErrorToast(res['message']);
+      if (res['status'] == false || res['result'] == false) {
         if (isLoading) hideLoader();
+        if (res['message'].runtimeType == String) {
+          ErrorToast(res['message']);
+        } else {
+          String message = '';
+          res['message'].forEach((key, value) {
+            message += '$value';
+          });
+          ErrorToast(message);
+        }
         return;
       }
       countryModel = CountryModel.fromJson(res);
@@ -204,9 +268,17 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().getSocialServices(id);
-      if (res['status'] == false) {
-        ErrorToast(res['message']);
+      if (res['status'] == false || res['result'] == false) {
         hideLoader();
+        if (res['message'].runtimeType == String) {
+        ErrorToast(res['message']);
+        } else {
+          String message = '';
+          res['message'].forEach((key, value) {
+            message += '$value';
+          });
+          ErrorToast(message);
+        }
         return;
       }
       socialServiceModel = SocialServicceModel.fromJson(res);
@@ -224,9 +296,17 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().buySocialBoost(data);
-      if (res['status'] == false) {
-        ErrorToast(res['message']);
+      if (res['status'] == false || res['result'] == false) {
         hideLoader();
+        if (res['message'].runtimeType == String) {
+        ErrorToast(res['message']);
+        } else {
+          String message = '';
+          res['message'].forEach((key, value) {
+            message += '$value';
+          });
+          ErrorToast(message);
+        }
         return;
       }
       await ctrl.getTrasactions(isLoading: false);
@@ -243,9 +323,17 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().rentSpray(data);
-      if (res['status'] == false) {
-        ErrorToast(res['message']);
+      if (res['status'] == false || res['result'] == false) {
         hideLoader();
+        if (res['message'].runtimeType == String) {
+        ErrorToast(res['message']);
+        } else {
+          String message = '';
+          res['message'].forEach((key, value) {
+            message += '$value';
+          });
+          ErrorToast(message);
+        }
         return;
       }
       await getSprayHistory(isLoading: false);
@@ -263,9 +351,17 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().sprayDetails(id);
-      if (res['status'] == false) {
-        ErrorToast(res['message']);
+      if (res['status'] == false || res['result'] == false) {
         hideLoader();
+        if (res['message'].runtimeType == String) {
+        ErrorToast(res['message']);
+        } else {
+          String message = '';
+          res['message'].forEach((key, value) {
+            message += '$value';
+          });
+          ErrorToast(message);
+        }
         return;
       }
       sprayDetailsModel = SprayDetailsModel.fromJson(res);
@@ -286,8 +382,16 @@ class ServiceProvider with ChangeNotifier {
       var res = await ServiceRepo().rentSpray(data);
 
       hideLoader();
-      if (res['status'] == false) {
+      if (res['status'] == false || res['result'] == false) {
+        if (res['message'].runtimeType == String) {
         ErrorToast(res['message']);
+        } else {
+          String message = '';
+          res['message'].forEach((key, value) {
+            message += '$value';
+          });
+          ErrorToast(message);
+        }
         return;
       }
       Get.close(2);
@@ -303,8 +407,17 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().payPending(id);
-      if (res['status'] == false) {
+      if (res['status'] == false || res['result'] == false) {
+        hideLoader();
+        if (res['message'].runtimeType == String) {
         ErrorToast(res['message']);
+        } else {
+          String message = '';
+          res['message'].forEach((key, value) {
+            message += '$value';
+          });
+          ErrorToast(message);
+        }
         return;
       }
       await getSprayHistory(isLoading: false);
@@ -324,8 +437,16 @@ class ServiceProvider with ChangeNotifier {
       var res = await ServiceRepo().getPdfReceipt(id);
       log('Response: $res');
       hideLoader();
-      if (res['status'] == false) {
+      if (res['status'] == false || res['result'] == false) {
+        if (res['message'].runtimeType == String) {
         ErrorToast(res['message']);
+        } else {
+          String message = '';
+          res['message'].forEach((key, value) {
+            message += '$value';
+          });
+          ErrorToast(message);
+        }
         return;
       }
       // convert res["content_base64"] to file
@@ -346,7 +467,21 @@ class ServiceProvider with ChangeNotifier {
   Future<void> getSprayHistory({bool isLoading = true}) async {
     try {
       if (isLoading) showLoader();
+      
       var res = await ServiceRepo().getSprayHistory();
+      if (res['status'] == false || res['result'] == false) {
+        if (isLoading) hideLoader();
+        if (res['message'].runtimeType == String) {
+          ErrorToast(res['message']);
+        } else {
+          String message = '';
+          res['message'].forEach((key, value) {
+            message += '$value';
+          });
+          ErrorToast(message);
+        }
+        return;
+      }
       sprayHistoryModel = SprayHistoryModel.fromJson(res);
       if (isLoading) hideLoader();
       notifyListeners();
@@ -360,6 +495,19 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().getColorPaint();
+      if (res['status'] == false || res['result'] == false) {
+        hideLoader();
+        if (res['message'].runtimeType == String) {
+          ErrorToast(res['message']);
+        } else {
+          String message = '';
+          res['message'].forEach((key, value) {
+            message += '$value';
+          });
+          ErrorToast(message);
+        }
+        return;
+      }
       colorPaintModel = ColorPaintModel.fromJson(res);
       hideLoader();
       notifyListeners();

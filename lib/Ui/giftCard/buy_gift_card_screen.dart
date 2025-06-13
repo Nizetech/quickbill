@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Models/gift_card_model.dart';
 import 'package:jost_pay_wallet/Provider/service_provider.dart';
@@ -185,17 +186,28 @@ class _BuyGiftCardScreenState extends State<BuyGiftCardScreen> {
                                 prefixIcon: selectedCountry != null
                                     ? Padding(
                                         padding: const EdgeInsets.all(12.0),
-                                        child: CachedNetworkImage(
-                                          imageUrl:
+                                        child: CircleAvatar(
+                                          radius: 15,
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                            child: SvgPicture.network(
+                                              fit: BoxFit.cover,
                                               selectedCountry!.countryFlag!,
-                                          height: 20,
-                                          width: 20,
-                                          fit: BoxFit.cover,
-                                          placeholder: (context, url) =>
-                                              SizedBox.shrink(),
-                                          errorWidget: (context, url, error) =>
-                                              SizedBox.shrink(),
+                                            ),
+                                          ),
                                         ),
+                                        //  CachedNetworkImage(
+                                        //   imageUrl:
+                                        //       selectedCountry!.countryFlag!,
+                                        //   height: 20,
+                                        //   width: 20,
+                                        //   fit: BoxFit.cover,
+                                        //   placeholder: (context, url) =>
+                                        //       SizedBox.shrink(),
+                                        //   errorWidget: (context, url, error) =>
+                                        //       SizedBox.shrink(),
+                                        // ),
                                       )
                                     : null,
                                 suffixIcon: Icon(
@@ -273,11 +285,7 @@ class CardsWidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Image.asset(
-          //   'assets/images/amazon.png',
-          //   height: 72.h,
-          //   width: 110.w,
-          // ),
+         
           CachedNetworkImage(
               imageUrl: card.image!.first,
               height: 72.h,

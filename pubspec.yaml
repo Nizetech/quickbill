@@ -19,93 +19,58 @@ dependencies:
   provider: ^6.1.1
   clipboard: ^0.1.3
   fluttertoast: ^8.2.4
-  custom_pin_screen: ^0.5.0
   pin_code_fields: ^8.0.1
   intl_phone_field: ^3.2.0
-  flutter_staggered_grid_view: ^0.7.0
   dotted_decoration: ^2.0.0
   flutter_switch: ^0.3.2
   flutter_screenutil: ^5.9.3
   loading_indicator: ^3.1.1
-  mobile_scanner: ^3.5.5
-  flutter_inappwebview: ^5.8.0
+  webview_flutter: 4.10.0 
   collection:
   http: ^1.1.2
   path_provider: ^2.1.1
-  sqflite: ^2.3.0
   dio: ^5.3.2
   get: ^4.6.5
   another_flushbar: ^1.12.30
   iconsax: ^0.0.8
   pretty_dio_logger: ^1.3.1
   dotted_line:
-  # hive: ^2.2.3
   hive_flutter:
   flutter_native_contact_picker: ^0.0.10
   flutter_contacts: ^1.1.9+2
-  flutter_widget_from_html: ^0.15.3
 
   permission_handler: ^12.0.0+1
-  
-
-  # stop screen shared
-  # flutter_windowmanager: ^0.2.0
 
   shared_preferences: ^2.2.2
-
-  connectivity_plus: ^5.0.2
-  #  device_info_plus: ^9.1.0
-
-  grouped_list: ^5.1.2
-
-  #load svg image
+  connectivity_plus: ^6.1.4
   flutter_svg: ^2.0.9
-
-  #Shared plus
-  share_plus: ^7.2.1
-
-  # finger print
-  local_auth: ^2.1.7
+  share_plus: ^11.0.0
   cached_network_image: ^3.3.0
-  socket_io_client: ^2.0.3+1
-  intl: ^0.18.1
+  intl: ^0.20.2
   url_launcher: 
   declarative_refresh_indicator: ^0.1.0
-  qr_flutter: ^4.1.0
-  web3dart: ^2.7.2
 
+
+  flutter_widget_from_html: ^0.16.0
   #web view
-  # flutter_inappwebview: ^5.8.0
-  flutter_slidable: ^3.0.1
+  flutter_slidable: ^4.0.0
 
-  #wallet connect v2
-  wallet_connect_dart_v2: ^0.0.1
-  bip39: ^1.0.6
-  bip32: ^2.0.0
-  eth_sig_util: ^0.0.9
-  # uni_links: ^0.5.1
-
+  video_player: 2.9.5
   flutter_secure_storage: ^9.0.0
   uuid: ^4.2.1
   csc_picker: ^0.2.7
   flutter_otp_text_field: ^1.1.0+2
   dotted_border: ^2.1.0
-  carousel_slider: ^5.0.0
-  gauge_indicator: ^0.4.3
   file_picker: ^10.1.9
-  flutter_animate: ^3.1.0
   animated_custom_dropdown: 3.1.1
-  linear_progress_bar: 1.1.2
 
-dependency_overrides:
-  win32: ^5.5.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^3.0.1
-  flutter_launcher_icons: ^0.13.1
+  flutter_lints: ^5.0.0
+  flutter_launcher_icons: ^0.14.4
   change_app_package_name: ^1.1.0
 
 flutter_icons:

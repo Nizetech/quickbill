@@ -10,7 +10,7 @@ import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/common/button.dart';
 import 'package:jost_pay_wallet/utils/toast.dart';
-import 'package:local_auth/local_auth.dart';
+// import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
 // import 'package:csc_picker/csc_picker.dart';
 
@@ -26,7 +26,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   String countryValue = "";
 
-  final LocalAuthentication auth = LocalAuthentication();
+  // final LocalAuthentication auth = LocalAuthentication();
   late String deviceId;
   bool fingerOn = false;
   String isLogin = "";

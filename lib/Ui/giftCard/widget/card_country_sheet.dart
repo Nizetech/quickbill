@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Models/country_model.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
@@ -77,15 +79,26 @@ void cardCountrySheet({
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Row(
                           children: [
-                            CachedNetworkImage(
-                                imageUrl: filteredCountry[index].countryFlag!,
-                                height: 20,
-                                width: 20,
-                                fit: BoxFit.cover,
-                                placeholder: (context, url) => Container(),
-                                errorWidget: (context, url, error) =>
-                                    Container()),
-                            const SizedBox(width: 10),
+                            CircleAvatar(
+                              radius: 15,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(50),
+                                child: SvgPicture.network(
+                                  fit: BoxFit.cover,
+                                  filteredCountry[index].countryFlag!,
+                                ),
+                              ),
+                            ),
+
+                            // CachedNetworkImage(
+                            //     imageUrl: filteredCountry[index].countryFlag!,
+                            //     height: 20,
+                            //     width: 20,
+                            //     fit: BoxFit.cover,
+                            //     placeholder: (context, url) => Container(),
+                            //     errorWidget: (context, url, error) =>
+                            //         Container()),
+                            const SizedBox(width: 15),
                             Text(
                               filteredCountry[index].countryName!,
                               style: MyStyle.tx16Black.copyWith(

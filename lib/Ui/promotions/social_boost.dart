@@ -165,14 +165,6 @@ class _SocialBoostState extends State<SocialBoost> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    HtmlWidget(
-                                      serviceDescr,
-                                      textStyle: MyStyle.tx14Black.copyWith(
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                    SizedBox(
-                                      height: 10.h,
-                                    ),
                                     Row(
                                       children: [
                                         SvgPicture.asset(
@@ -190,12 +182,29 @@ class _SocialBoostState extends State<SocialBoost> {
                                       ],
                                     ),
                                     SizedBox(
-                                      height: 12.h,
+                                      height: 10.h,
                                     ),
-                                    const Text(
-                                      'Some content limitations apply (e.g, drugs, political, religious content) \n\nIf these limitations are violated , the order will be canceled. Video must be public throughout the order\n\nNo refunds for orders if the video is removed or made private while in progress.',
-                                      style: MyStyle.tx14Grey,
+                                    HtmlWidget(
+                                      serviceDescr,
+                                      textStyle: MyStyle.tx14Black.copyWith(
+                                        fontWeight: FontWeight.w500,
+                                        color: themeProvider.isDarkMode()
+                                            ? MyColor.whiteColor
+                                            : MyColor.blackColor,
+                                      ),
                                     ),
+                                    if (selectedService != null &&
+                                        selectedService!.cancelable == '0')
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 10),
+                                        child: Text(
+                                          "Note: This purchase can't cancel.",
+                                          style: TextStyle(
+                                            color: MyColor.redColor,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      )
                                   ],
                                 ),
                               ),

@@ -17,10 +17,10 @@ import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/NewStyle.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:wallet_connect_dart_v2/sign/sign-client/client/sign_client.dart';
+// import 'package:wallet_connect_dart_v2/sign/sign-client/client/sign_client.dart';
 
 
-SignClient? signClient;
+// SignClient? signClient;
 
 class BottomNav extends StatefulWidget {
   const BottomNav({super.key});

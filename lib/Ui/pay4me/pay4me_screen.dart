@@ -202,14 +202,14 @@ class _Pay4meScreenState extends State<Pay4meScreen> {
                             color: themedata.tertiary,
                             fontWeight: FontWeight.w400,
                           ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter amount';
-                            } else if (num.parse(value) < 30) {
-                              return 'Minimum amount should be \$30';
-                            }
-                            return null;
-                          },
+                          // validator: (value) {
+                          //   if (value == null || value.isEmpty) {
+                          //     return 'Please enter amount';
+                          //   } else if (num.parse(value) < 30) {
+                          //     return 'Minimum amount should be \$30';
+                          //   }
+                          //   return null;
+                          // },
                           onChanged: (val) {
                             setState(() {
                               if (amountCtrl.text.isNotEmpty) {
@@ -243,9 +243,12 @@ class _Pay4meScreenState extends State<Pay4meScreen> {
                           ),
                         ),
                         if (amountCtrl.text.isNotEmpty)
-                          Text(
-                            'NGN amount: ${formatNumber(amount)}',
-                            style: MyStyle.tx14Grey,
+                          Padding(
+                            padding: const EdgeInsets.only(top: 5),
+                            child: Text(
+                              'NGN amount: ${formatNumber(amount)}',
+                              style: MyStyle.tx14Grey,
+                            ),
                           ),
                         SizedBox(height: 25),
                         Text.rich(
@@ -359,12 +362,12 @@ class _Pay4meScreenState extends State<Pay4meScreen> {
                                   link.text.isEmpty ||
                                   pwd.text.isEmpty) {
                                 ErrorToast("Please fill all fields");
-                              } else if (num.parse(amountCtrl.text) < 30) {
-                                ErrorToast("Minimum amount is \$30");
+                                // } else if (num.parse(amountCtrl.text) < 30) {
+                                //   ErrorToast("Minimum amount is \$30");
                               } else if (amount > ctrl.balance!) {
                                 ErrorToast('Insufficient balance');
                               } else {
-                                Navigator.pushReplacement(
+                                Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>

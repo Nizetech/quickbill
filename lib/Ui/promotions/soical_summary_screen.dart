@@ -180,24 +180,24 @@ class _SocialSummaryScreenState extends State<SocialSummaryScreen> {
                       //     ),
                       //   ],
                       // ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      Row(
-                        children: [
-                          const Text(
-                            'Changes',
-                            style: MyStyle.tx12Grey,
-                          ),
-                          const Spacer(),
-                          Text(
-                            'No Charges',
-                            style: MyStyle.tx12Black.copyWith(
-                                color: themedata.tertiary,
-                                fontFamily: 'SF Pro Rounded'),
-                          ),
-                        ],
-                      ),
+                      // const SizedBox(
+                      //   height: 12,
+                      // ),
+                      // Row(
+                      //   children: [
+                      //     const Text(
+                      //       'Changes',
+                      //       style: MyStyle.tx12Grey,
+                      //     ),
+                      //     const Spacer(),
+                      //     Text(
+                      //       'No Charges',
+                      //       style: MyStyle.tx12Black.copyWith(
+                      //           color: themedata.tertiary,
+                      //           fontFamily: 'SF Pro Rounded'),
+                      //     ),
+                      //   ],
+                      // ),
                       const SizedBox(
                         height: 12,
                       ),

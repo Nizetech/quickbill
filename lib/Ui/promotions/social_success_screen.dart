@@ -46,7 +46,7 @@ class _SocialSuccessScreenState extends State<SocialSuccessScreen> {
                       Text(
                         widget.isGiftCard
                             ? 'Gift Card Purchased'
-                            : 'Purchased Successful!',
+                            : 'Purchase Successful!',
                         style: MyStyle.tx16White.copyWith(
                             fontWeight: FontWeight.bold, fontSize: 20),
                       ),

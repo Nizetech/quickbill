@@ -11,9 +11,9 @@ String transactionModelToJson(TransactionModel data) =>
     json.encode(data.toJson());
 
 class TransactionModel {
-  bool? result;
-  num? prevBalance;
-  List<Transaction>? data;
+  final bool? result;
+  final String? prevBalance;
+  final List<Datum>? data;
 
   TransactionModel({
     this.result,
@@ -24,13 +24,10 @@ class TransactionModel {
   factory TransactionModel.fromJson(Map<String, dynamic> json) =>
       TransactionModel(
         result: json["result"],
-        prevBalance: json["prev_balance"] == null
-            ? 0
-            : num.parse(json["prev_balance"].toString()),
+        prevBalance: json["prev_balance"],
         data: json["data"] == null
             ? []
-            : List<Transaction>.from(
-                json["data"]!.map((x) => Transaction.fromJson(x))),
+            : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -42,17 +39,17 @@ class TransactionModel {
       };
 }
 
-class Transaction {
-  String? type;
-  String? inOut;
-  DateTime? transDate;
-  String? amount;
-  String? isPromoRewarded;
-  String? details;
-  String? reference;
-  String? status;
+class Datum {
+  final Type? type;
+  final InOut? inOut;
+  final DateTime? transDate;
+  final String? amount;
+  final String? isPromoRewarded;
+  final String? details;
+  final String? reference;
+  final String? status;
 
-  Transaction({
+  Datum({
     this.type,
     this.inOut,
     this.transDate,
@@ -63,9 +60,9 @@ class Transaction {
     this.status,
   });
 
-  factory Transaction.fromJson(Map<String, dynamic> json) => Transaction(
-        type: json["type"],
-        inOut: json["in_out"],
+  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+        type: typeValues.map[json["type"]]!,
+        inOut: inOutValues.map[json["in_out"]]!,
         transDate: json["trans_date"] == null
             ? null
             : DateTime.parse(json["trans_date"]),
@@ -77,8 +74,8 @@ class Transaction {
       );
 
   Map<String, dynamic> toJson() => {
-        "type": type,
-        "in_out": inOut,
+        "type": typeValues.reverse[type],
+        "in_out": inOutValues.reverse[inOut],
         "trans_date": transDate?.toIso8601String(),
         "amount": amount,
         "is_promo_rewarded": isPromoRewarded,
@@ -86,4 +83,42 @@ class Transaction {
         "reference": reference,
         "status": status,
       };
+}
+
+enum InOut { IN, OUT }
+
+final inOutValues = EnumValues({"in": InOut.IN, "out": InOut.OUT});
+
+enum Type {
+  AIRTIME,
+  DATA,
+  DEPOSIT,
+  GIFTCARD,
+  PAY4_ME,
+  SCRIPT,
+  SOCIALBOOST,
+  SPRAY
+}
+
+final typeValues = EnumValues({
+  "airtime": Type.AIRTIME,
+  "data": Type.DATA,
+  "deposit": Type.DEPOSIT,
+  "giftcard": Type.GIFTCARD,
+  "pay4me": Type.PAY4_ME,
+  "script": Type.SCRIPT,
+  "socialboost": Type.SOCIALBOOST,
+  "spray": Type.SPRAY
+});
+
+class EnumValues<T> {
+  Map<String, T> map;
+  late Map<T, String> reverseMap;
+
+  EnumValues(this.map);
+
+  Map<T, String> get reverse {
+    reverseMap = map.map((k, v) => MapEntry(v, k));
+    return reverseMap;
+  }
 }

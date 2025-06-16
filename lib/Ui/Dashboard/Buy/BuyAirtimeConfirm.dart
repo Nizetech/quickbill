@@ -22,7 +22,8 @@ import 'package:jost_pay_wallet/Values/NewStyle.dart';
 class BuyAirtimeConfirm extends StatefulWidget {
   final String? phone;
   final String? network;
-  const BuyAirtimeConfirm({super.key, this.phone, this.network});
+  final String? amount;
+  const BuyAirtimeConfirm({super.key, this.phone, this.network, this.amount});
 
   @override
   State<BuyAirtimeConfirm> createState() => _BuyAirtimeConfirmState();
@@ -56,18 +57,32 @@ class _BuyAirtimeConfirmState extends State<BuyAirtimeConfirm> {
     super.initState();
     var model = Provider.of<AccountProvider>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        if (widget.network != null) {
-          selectedItem = model.networkProviderModel!.networks!
-              .indexWhere((element) => element.network == widget.network);
-          selectedNetwork = model.networkProviderModel!.networks![selectedItem];
-        }
+      if (model.networkProviderModel == null) {
+        model.getNetworkProviders(callback: () {
+          loadInitData();
+        });
+      } else {
+        loadInitData();
+      }
+    });
+  }
 
-        if (widget.phone != null) {
-          _controller.text = widget.phone!;
-        }
+  void loadInitData() {
+    var model = Provider.of<AccountProvider>(context, listen: false);
 
-      });
+    model.setDataPlanModelToNull();
+    setState(() {
+      if (widget.network != null) {
+        selectedItem = model.networkProviderModel!.networks!.indexWhere(
+            (element) =>
+                element.network!.toLowerCase() ==
+                widget.network!.toLowerCase());
+        selectedNetwork = model.networkProviderModel!.networks![selectedItem];
+      }
+      if (widget.phone != null && widget.amount != null) {
+        _controller.text = widget.phone!;
+        _amount.text = widget.amount!;
+      }
     });
   }
 

@@ -20,7 +20,9 @@ import 'package:provider/provider.dart';
 import '../AddFunds.dart';
 
 class BuyData extends StatefulWidget {
-  const BuyData({super.key});
+  final String? phone;
+  final String? network;
+  const BuyData({super.key, this.phone, this.network});
 
   @override
   State<BuyData> createState() => _BuyDataState();
@@ -184,6 +186,42 @@ class _BuyDataState extends State<BuyData> {
       FlutterNativeContactPicker();
   bool permissionDenied = false;
 
+  @override
+  void initState() {
+    var model = Provider.of<AccountProvider>(context, listen: false);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (model.networkProviderModel == null) {
+        await model.getNetworkProviders(callback: () {
+          loadInitData();
+        });
+      } else {
+        loadInitData();
+      }
+    });
+    super.initState();
+  }
+
+  void loadInitData() {
+    var model = Provider.of<AccountProvider>(context, listen: false);
+    model.setDataPlanModelToNull();
+    setState(() {
+      if (widget.network != null) {
+        selectedItem = model.networkProviderModel!.networks!.indexWhere(
+            (element) =>
+                element.network!.toLowerCase() ==
+                widget.network!.toLowerCase());
+        selectedNetwork = model.networkProviderModel!.networks![selectedItem];
+      }
+      if (widget.network != null && widget.network != null) {
+        model.getDataPlans(network: widget.network!.toLowerCase());
+      }
+      if (widget.phone != null) {
+        _controller.text = widget.phone!;
+      }
+    });
+  }
+
   Network? selectedNetwork;
   Future _pickContacts() async {
     if (!await FlutterContacts.requestPermission(readonly: true)) {
@@ -197,25 +235,25 @@ class _BuyDataState extends State<BuyData> {
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-    final model = Provider.of<AccountProvider>(context, listen: false);
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      model.setDataPlanModelToNull();
-      if (model.networkProviderModel == null) {
-        await model.getNetworkProviders();
-        model.getDataPlans(
-            network: model.networkProviderModel!.networks!.first.network!
-                .toLowerCase());
-      } else {
-        await model.getNetworkProviders(isLoading: false);
-      }
-      // setState(() {
-      //   selectedNetwork = model.networkProviderModel!.networks![selectedItem];
-      // });
-    });
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   final model = Provider.of<AccountProvider>(context, listen: false);
+  //   WidgetsBinding.instance.addPostFrameCallback((_) async {
+  //     model.setDataPlanModelToNull();
+  //     if (model.networkProviderModel == null) {
+  //       await model.getNetworkProviders();
+  //       model.getDataPlans(
+  //           network: model.networkProviderModel!.networks!.first.network!
+  //               .toLowerCase());
+  //     } else {
+  //       await model.getNetworkProviders(isLoading: false);
+  //     }
+  //     // setState(() {
+  //     //   selectedNetwork = model.networkProviderModel!.networks![selectedItem];
+  //     // });
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {

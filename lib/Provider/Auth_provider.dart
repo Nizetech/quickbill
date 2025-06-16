@@ -91,7 +91,10 @@ class AuthProvider with ChangeNotifier {
             }
           }
           notifyListeners();
-        } else {}
+        } else {
+          ErrorToast('Something went wrong');
+          return;
+        }
       });
       log('Value: $res');
     } catch (e) {

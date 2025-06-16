@@ -1,38 +1,34 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyAirtimeConfirm.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/widget/balance_action_card.dart';
+import 'package:jost_pay_wallet/Ui/pay4me/pay4me_screen.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/utils.dart';
 import 'package:provider/provider.dart';
 
-class BuyAirtime extends StatefulWidget {
-  const BuyAirtime({super.key});
+class PayForMeHistory extends StatefulWidget {
+  const PayForMeHistory({super.key});
 
   @override
-  State<BuyAirtime> createState() => _BuyAirtimeState();
+  State<PayForMeHistory> createState() => _PayForMeHistoryState();
 }
 
-class _BuyAirtimeState extends State<BuyAirtime> {
+class _PayForMeHistoryState extends State<PayForMeHistory> {
   @override
   void initState() {
     super.initState();
     var model = Provider.of<AccountProvider>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (model.airtimeHistory == null) {
-        model.getAirtimeHistory();
+      if (model.pay4meHistory.isEmpty) {
+        model.getPay4MeHistory();
       } else {
         model.getAirtimeHistory(isLoading: false);
-      }
-      if (model.networkProviderModel == null) {
-        model.getNetworkProviders();
       }
     });
   }
@@ -66,7 +62,7 @@ class _BuyAirtimeState extends State<BuyAirtime> {
                     Transform.translate(
                       offset: const Offset(-20, 0),
                       child: Text(
-                        'Buy Airtime',
+                        'Pay4me',
                         style: MyStyle.tx18Black
                             .copyWith(color: themedata.tertiary),
                       ),
@@ -78,9 +74,9 @@ class _BuyAirtimeState extends State<BuyAirtime> {
                   height: 30,
                 ),
                 BalanceActionCard(
-                    title: 'Buy Airtime',
+                    title: 'Try Pay4me',
                     onTap: () {
-                      Get.to(const BuyAirtimeConfirm());
+                      Get.to(const Pay4meScreen());
                     }),
                 const SizedBox(
                   height: 36,
@@ -92,7 +88,7 @@ class _BuyAirtimeState extends State<BuyAirtime> {
                       Row(
                         children: [
                           Text(
-                            'Airtime History',
+                            'Pay4me History',
                             style: MyStyle.tx14Black
                                 .copyWith(color: themedata.tertiary),
                           ),
@@ -113,16 +109,16 @@ class _BuyAirtimeState extends State<BuyAirtime> {
                   ),
                 ),
                 const SizedBox(
-                  height: 20,
+                  height: 36,
                 ),
-                if (model.airtimeHistory != null)
+                if (model.pay4meHistory.isNotEmpty)
                   Expanded(
                     // child: SingleChildScrollView(
                     child: ListView.builder(
-                        itemCount: model.airtimeHistory!.data!.length,
+                        itemCount: model.pay4meHistory.length,
                         padding: const EdgeInsets.all(0),
                         itemBuilder: (context, index) {
-                          var item = model.airtimeHistory!.data![index];
+                          var item = model.pay4meHistory[index];
                           return Container(
                             decoration: BoxDecoration(
                                 border: Border(
@@ -149,7 +145,7 @@ class _BuyAirtimeState extends State<BuyAirtime> {
                                               : const Color(0XFFF4F5F6),
                                           shape: BoxShape.circle),
                                       child: SvgPicture.asset(
-                                          'assets/images/phone.svg'),
+                                          'assets/images/svg/money.svg'),
                                     ),
                                     const SizedBox(
                                       width: 6,
@@ -161,7 +157,7 @@ class _BuyAirtimeState extends State<BuyAirtime> {
                                           MainAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "${item.phone!} - ${item.networkName!}",
+                                          item.invoiceLink!,
                                           style: MyStyle.tx12Black.copyWith(
                                               color: themedata.tertiary),
                                         ),
@@ -170,7 +166,7 @@ class _BuyAirtimeState extends State<BuyAirtime> {
                                         ),
                                         Text(
                                           formatDateTime(
-                                            item.createdAt!,
+                                            DateTime.parse(item.createdAt!),
                                           ),
                                           //  dateFormat.format(item.createdAt!),
                                           style: MyStyle.tx12Black.copyWith(
@@ -188,93 +184,35 @@ class _BuyAirtimeState extends State<BuyAirtime> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.end,
                                         children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                Utils.naira +
-                                                    formatNumber(num.parse(
-                                                        item.amount!)),
-                                                style: MyStyle.tx12Black
-                                                    .copyWith(
-                                                        color:
-                                                            themedata.tertiary),
-                                              ),
-                                              SizedBox(width: 5),
-                                              GestureDetector(
-                                                onTap: () {
-                                                  Get.to(BuyAirtimeConfirm(
-                                                    phone: item.phone,
-                                                    network: item.networkName,
-                                                    amount: item.amount,
-                                                  ));
-                                                },
-                                                child: SvgPicture.asset(
-                                                    'assets/images/refresh.svg'),
-                                              ),
-                                            ],
+                                          Text(
+                                            Utils.naira +
+                                                formatNumber(
+                                                    num.parse(item.amount!)),
+                                            style: MyStyle.tx12Black.copyWith(
+                                                color: themedata.tertiary),
                                           ),
                                           SizedBox(
                                             height: 8.h,
                                           ),
                                           Row(
                                             children: [
-                                              CircleAvatar(
-                                                radius: 7,
-                                                backgroundColor: item.status ==
-                                                        '1'
-                                                    ? MyColor.dark01GreenColor
-                                                    : Colors.red,
-                                                child: Icon(
-                                                  item.status == '1'
-                                                      ? Icons.done
-                                                      : Icons.close,
-                                                  size: 10,
-                                                  color: Colors.white,
-                                                ),
+                                              Text(
+                                                item.status == '1'
+                                                    ? 'Successful'
+                                                    : 'Failed',
+                                                style: MyStyle.tx11Grey.copyWith(
+                                                    color: item.status! == '1'
+                                                        ? MyColor
+                                                            .dark01GreenColor
+                                                        : Colors.red,
+                                                    fontWeight:
+                                                        FontWeight.w500),
                                               ),
                                               const SizedBox(
                                                 width: 8,
                                               ),
-                                              GestureDetector(
-                                                onTap: () {
-                                                
-                                                },
-                                                child: Container(
-                                                  
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 5,
-                                                            vertical: 2),
-                                                    decoration: BoxDecoration(
-                                                        color:
-                                                            themedata.secondary,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(15)),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Text(
-                                                          'View Receipt',
-                                                          style: MyStyle
-                                                              .tx11Grey
-                                                              .copyWith(
-                                                                  // fontSize: 10,
-                                                                  color: MyColor
-                                                                      .dark01GreenColor,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500),
-                                                        ),
-                                                       
-                                                      ],
-                                                    )),
-                                              )
                                             ],
                                           )
-                                        
                                         ])
                                   ],
                                 ),

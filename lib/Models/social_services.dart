@@ -133,8 +133,8 @@ class Service {
 
 class UserPurchaseInfo {
   dynamic purchaseLimited;
-  String? purchasedAmount;
-  String? purchaseLimitAmount;
+  dynamic purchasedAmount;
+  dynamic purchaseLimitAmount;
 
   UserPurchaseInfo({
     this.purchaseLimited,
@@ -145,9 +145,9 @@ class UserPurchaseInfo {
   factory UserPurchaseInfo.fromJson(Map<String, dynamic> json) =>
       UserPurchaseInfo(
         purchaseLimited: json["purchase_limited"],
-        purchasedAmount: json["purchased_amount"].toString(),
-        purchaseLimitAmount: json["purchase_limit_amount"] ??
-            json["purchase_limit_amount"].toString(),
+          purchasedAmount: json["purchased_amount"],
+          purchaseLimitAmount: json["purchase_limit_amount"]
+          
       );
 
   Map<String, dynamic> toJson() => {

@@ -323,7 +323,6 @@ class _Pay4meScreenState extends State<Pay4meScreen> {
                                     style: MyStyle.tx14Grey),
                               ],
                               style: MyStyle.tx14Black.copyWith(
-                                
                                 fontWeight: FontWeight.w500,
                                 color: themedata.tertiary,
                               )),
@@ -344,7 +343,6 @@ class _Pay4meScreenState extends State<Pay4meScreen> {
                                 : MyColor.textFieldFillColor,
                           ),
                         ),
-                   
                         SizedBox(height: 50.h),
                         SizedBox(
                           width: double.infinity,

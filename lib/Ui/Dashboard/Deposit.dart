@@ -14,7 +14,7 @@ class Deposit extends StatefulWidget {
 }
 
 class _DepositState extends State<Deposit> {
-  final bool _isSwitched = false;
+  // final bool _isSwitched = false;
   final List<Map<String, dynamic>> banks = [
     {
       'image': 'assets/images/bank-1.png',

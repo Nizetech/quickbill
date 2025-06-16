@@ -6,21 +6,21 @@ import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/DashboardProvider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyAirtime.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyData.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Buy/data_history.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/service_tile.dart';
 import 'package:jost_pay_wallet/Ui/Domain/domain_screen.dart';
 import 'package:jost_pay_wallet/Ui/Paint/paint_history.dart';
 import 'package:jost_pay_wallet/Ui/Scripts/script_screen.dart';
 import 'package:jost_pay_wallet/Ui/car/carsell_screen.dart';
 import 'package:jost_pay_wallet/Ui/car/repairdetail_screen.dart';
-import 'package:jost_pay_wallet/Ui/giftCard/buy_gift_card_screen.dart';
-import 'package:jost_pay_wallet/Ui/pay4me/pay4me_screen.dart';
+import 'package:jost_pay_wallet/Ui/giftCard/gift_card_history.dart';
+import 'package:jost_pay_wallet/Ui/pay4me/pay4me_history.dart';
+// ignore: unused_import
 import 'package:jost_pay_wallet/Ui/promotions/social_boost.dart';
-import 'package:jost_pay_wallet/Ui/promotions/socials_screen.dart';
+import 'package:jost_pay_wallet/Ui/promotions/social_boost_history.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:provider/provider.dart';
-
-import '../../bottom_nav.dart';
 
 class Services extends StatefulWidget {
   const Services({super.key});
@@ -57,10 +57,6 @@ class _ServicesState extends State<Services> {
                     InkWell(
                       onTap: () {
                         dashProvider.changeBottomIndex(0);
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const BottomNav()));
                       },
                       child: Image.asset(
                         'assets/images/arrow_left.png',
@@ -102,7 +98,7 @@ class _ServicesState extends State<Services> {
                       Row(
                         children: [
                           InkWell(
-                            onTap: () => Navigator.pushReplacement(
+                            onTap: () => Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => const BuyAirtime())),
@@ -167,72 +163,11 @@ class _ServicesState extends State<Services> {
                             ),
                           ),
                           const Spacer(),
-                          InkWell(
-                            onTap: () => Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const BuyData())),
-                            child: Container(
-                              width: 155,
-                              height: 110,
-                              decoration: BoxDecoration(
-                                  color: themedata.secondaryContainer,
-                                  borderRadius: BorderRadius.circular(13.5)),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const SizedBox(
-                                    height: 12,
-                                  ),
-                                  Container(
-                                    height: 41,
-                                    width: 41,
-                                    // padding: const EdgeInsets.all(13),
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        color: themedata.surfaceContainer,
-                                        shape: BoxShape.circle),
-                                    child: Transform.translate(
-                                      offset: const Offset(0, 10),
-                                      child: Image.asset(
-                                        "assets/images/smartphone-wifi.png",
-                                        height: 24,
-                                        width: 24,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 4,
-                                  ),
-                                  Text(
-                                    'Data',
-                                    style: MyStyle.tx9Green.copyWith(),
-                                  ),
-                                  const SizedBox(
-                                    height: 4,
-                                  ),
-                                  Center(
-                                    child: Container(
-                                      width: 52,
-                                      height: 20,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                          color: themedata.surfaceContainer,
-                                          borderRadius:
-                                              BorderRadius.circular(8)),
-                                      child: Text(
-                                        'Buy Now',
-                                        style: MyStyle.tx11Grey.copyWith(
-                                            color: MyColor.greenColor,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 9),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
+                          ServiceTile(
+                            onTap: () {},
+                            icon: 'assets/images/svg/airtime.svg',
+                            title: 'Buy Data',
+                            page: const DataHistory(),
                           ),
                         ],
                       ),
@@ -287,7 +222,8 @@ class _ServicesState extends State<Services> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const Pay4meScreen(),
+                                    builder: (context) =>
+                                        const PayForMeHistory(),
                                   ));
                             },
                             child: Container(
@@ -357,8 +293,7 @@ class _ServicesState extends State<Services> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        const BuyGiftCardScreen(),
+                                    builder: (context) => GiftCardHistory(),
                                   ));
                             },
                             child: Container(
@@ -541,7 +476,8 @@ class _ServicesState extends State<Services> {
                           GestureDetector(
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const SocialsScreen(),
+                                builder: (context) =>
+                                    const SocialBoostHistory(),
                               ));
                             },
                             child: Container(

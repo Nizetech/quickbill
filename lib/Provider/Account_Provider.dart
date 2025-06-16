@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 import 'dart:io';
 
@@ -6,10 +5,14 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Models/airtime_history.dart';
+import 'package:jost_pay_wallet/Models/data_history_model.dart';
 import 'package:jost_pay_wallet/Models/data_plans_model.dart';
+import 'package:jost_pay_wallet/Models/giftcard_history.dart';
 import 'package:jost_pay_wallet/Models/network_provider.dart';
 import 'package:jost_pay_wallet/Models/notification_model.dart';
+import 'package:jost_pay_wallet/Models/pay_for_me_history.dart';
 import 'package:jost_pay_wallet/Models/promotion_model.dart';
+import 'package:jost_pay_wallet/Models/social_boost_history_model.dart';
 import 'package:jost_pay_wallet/Models/transactions.dart';
 import 'package:jost_pay_wallet/Models/user_model.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyDataSuccess.dart';
@@ -29,33 +32,40 @@ class AccountProvider with ChangeNotifier {
   PromoModel? promoModel;
   NetworkProviderModel? networkProviderModel;
   AirtimeHistory? airtimeHistory;
+  GiftCardHistoryModel? giftCardHistoryModel;
   DataPlansModel? dataPlansModel;
+  DataHistoryModel? dataHistoryModel;
+  SocialBoostHistoryModel? socialBoostHistoryModel;
 
   dynamic qrcode;
-  List<Transaction>? _dashBoardHistory = [];
+  TransactionModel? _dashBoardHistory;
+  List<PayForMeHistoryModel> pay4meHistory = [];
   Map<dynamic, List> _transGroupByData = {};
   String _profileImage = '';
 
+TransactionModel? get dashBoardHistory => _dashBoardHistory;
   String get profileImage => _profileImage;
   Map<dynamic, List> get transGroupByData => _transGroupByData;
-  List<Transaction>? get dashBoardHistory => _dashBoardHistory;
 
-  void setDataPlanModelToNull () {
+  void setDataPlanModelToNull() {
     dataPlansModel = null;
     notifyListeners();
   }
 
   void updateDashBoardHistory() {
-    _dashBoardHistory = List<Transaction>.from(transactionModel!.data!)
-      ..sort((a, b) => b.transDate!.compareTo(a.transDate!));
+    _dashBoardHistory = TransactionModel.fromJson(transactionModel!.toJson());
+    // ..sort((a, b) => b.transDate!.compareTo(a.transDate!));
+     // Sort the transactions by latest time
+    _dashBoardHistory?.data
+        ?.sort((a, b) => b.transDate!.compareTo(a.transDate!));
     notifyListeners();
   }
 
   void updateTransactionGroupData() {
-    List<Transaction>? _dashBoardHistory =
-        List<Transaction>.from(transactionModel!.data!);
+    TransactionModel transactionHistory =
+        TransactionModel.fromJson(transactionModel!.toJson());
     _transGroupByData = groupBy(
-      _dashBoardHistory,
+      transactionHistory.data!,
       (obj) => obj.transDate.toString().substring(0, 10),
     );
     // Sort by date in descending order
@@ -105,8 +115,8 @@ class AccountProvider with ChangeNotifier {
       AccountRepo().getProfile().then((value) {
         // log('Value: $value');
         if (isLoading) hideLoader();
-       if (value['status'] == false || value['result'] == false) {
-           if (value['message'].runtimeType == String) {
+        if (value['status'] == false || value['result'] == false) {
+          if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
           } else {
             String message = '';
@@ -134,9 +144,8 @@ class AccountProvider with ChangeNotifier {
       AccountRepo().getServiceHistory('airtime').then((value) {
         log('Value: $value');
         if (isLoading) hideLoader();
-          if (value['status'] == false || value['result'] == false) {
-         if (value['status'] == false || value['result'] == false) {
-           if (value['message'].runtimeType == String) {
+        if (value['status'] == false || value['result'] == false) {
+          if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
           } else {
             String message = '';
@@ -145,7 +154,6 @@ class AccountProvider with ChangeNotifier {
             });
             ErrorToast(message);
           }
-        }
         } else {
           airtimeHistory = AirtimeHistory.fromJson(value);
         }
@@ -157,15 +165,15 @@ class AccountProvider with ChangeNotifier {
     }
   }
 
-  // get Network Provider
-  Future<void> getNetworkProviders({bool isLoading = true}) async {
+  // get data History
+  Future<void> getDataHistory({bool isLoading = true}) async {
     try {
       if (isLoading) showLoader();
-      AccountRepo().getNetworkProviders().then((value) {
+      AccountRepo().getServiceHistory('data').then((value) {
         log('Value: $value');
         if (isLoading) hideLoader();
-         if (value['status'] == false || value['result'] == false) {
-         if (value['message'].runtimeType == String) {
+        if (value['status'] == false || value['result'] == false) {
+          if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
           } else {
             String message = '';
@@ -174,10 +182,126 @@ class AccountProvider with ChangeNotifier {
             });
             ErrorToast(message);
           }
+        } else {
+          dataHistoryModel = DataHistoryModel.fromJson(value);
         }
-         else {
+        notifyListeners();
+      });
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
+  // get Airtime History
+  Future<void> getPay4MeHistory({bool isLoading = true}) async {
+    try {
+      if (isLoading) showLoader();
+      AccountRepo().getServiceHistory('pay4me').then((value) {
+        log('Value: $value');
+        if (isLoading) hideLoader();
+        if (value['status'] == false || value['result'] == false) {
+          if (value['message'].runtimeType == String) {
+            ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';
+            });
+            ErrorToast(message);
+          }
+        } else {
+          for (var element in value['data']) {
+            pay4meHistory.add(PayForMeHistoryModel.fromJson(element));
+          }
+          // var    data = value['data'].map((e) => PayForMeHistoryModel.fromJson(e)).toList();
+        }
+        notifyListeners();
+      });
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
+  // get User Profile
+  Future<void> getGiftCradHistory({bool isLoading = true}) async {
+    try {
+      if (isLoading) showLoader();
+      AccountRepo().getServiceHistory('giftcard').then((value) {
+        log('Value: $value');
+        if (isLoading) hideLoader();
+        if (value['status'] == false || value['result'] == false) {
+          if (value['message'].runtimeType == String) {
+            ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';
+            });
+            ErrorToast(message);
+          }
+        } else {
+          giftCardHistoryModel = GiftCardHistoryModel.fromJson(value);
+        }
+        notifyListeners();
+      });
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
+  Future<void> getSociaBoostHistory({bool isLoading = true}) async {
+    try {
+      if (isLoading) showLoader();
+      AccountRepo().getServiceHistory('social').then((value) {
+        log('Value: $value');
+        if (isLoading) hideLoader();
+        if (value['status'] == false || value['result'] == false) {
+          if (value['message'].runtimeType == String) {
+            ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';
+            });
+            ErrorToast(message);
+          }
+        } else {
+          socialBoostHistoryModel = SocialBoostHistoryModel.fromJson(value);
+        }
+        notifyListeners();
+      });
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
+  // get Network Provider
+  Future<void> getNetworkProviders({bool isLoading = true, VoidCallback? callback}) async {
+    try {
+      if (isLoading) showLoader();
+      AccountRepo().getNetworkProviders().then((value) {
+        log('Value: $value');
+        if (isLoading) hideLoader();
+        if (value['status'] == false || value['result'] == false) {
+          if (value['message'].runtimeType == String) {
+            ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';
+            });
+            ErrorToast(message);
+          }
+        } else {
           networkProviderModel =
               NetworkProviderModel.fromJson(value['network_providers']);
+              if(callback != null){
+                callback();
+              }
         }
         notifyListeners();
       });
@@ -194,8 +318,8 @@ class AccountProvider with ChangeNotifier {
       AccountRepo().getProfileImage().then((value) {
         log('Value: $value');
         if (isLoading) hideLoader();
-         if (value['status'] == false || value['result'] == false) {
-         if (value['message'].runtimeType == String) {
+        if (value['status'] == false || value['result'] == false) {
+          if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
           } else {
             String message = '';
@@ -204,7 +328,6 @@ class AccountProvider with ChangeNotifier {
             });
             ErrorToast(message);
           }
-        
         } else {
           _profileImage = value['message'];
           if (isLoading) hideLoader();
@@ -222,7 +345,7 @@ class AccountProvider with ChangeNotifier {
     try {
       showLoader();
       AccountRepo().updateProfileImage(image).then((value) async {
-         if (value['status'] == false || value['result'] == false) {
+        if (value['status'] == false || value['result'] == false) {
           hideLoader();
           if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
@@ -250,19 +373,19 @@ class AccountProvider with ChangeNotifier {
     try {
       showLoader();
       AccountRepo().buyAirtime(data).then((value) async {
-        if(value['result'] == null){
+        if (value['result'] == null) {
           hideLoader();
-           Get.to(InvalidPurchase());
+          Get.to(InvalidPurchase());
         }
-         if (value['status'] == false || value['result'] == false) {
+        if (value['status'] == false || value['result'] == false) {
           hideLoader();
-          
+
           Get.to(PendingPurchase(
             isData: false,
             amount: data['amount'],
             phone: data['phone'],
           ));
-           if (value['message'].runtimeType == String) {
+          if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
           } else {
             String message = '';
@@ -279,7 +402,7 @@ class AccountProvider with ChangeNotifier {
             phone: data['phone'],
           ));
         }
-        
+
         notifyListeners();
       });
     } catch (e) {
@@ -289,18 +412,19 @@ class AccountProvider with ChangeNotifier {
   }
 
   // buy Data
-  Future<void> buyData(Map<String, dynamic> data,{required String amount}) async {
+  Future<void> buyData(Map<String, dynamic> data,
+      {required String amount}) async {
     try {
       showLoader();
       AccountRepo().buyData(data).then((value) async {
-         if (value['result'] == null) {
+        if (value['result'] == null) {
           hideLoader();
           Get.to(InvalidPurchase());
         }
-         if (value['status'] == false || value['result'] == false) {
+        if (value['status'] == false || value['result'] == false) {
           hideLoader();
           // ErrorToast(value['message']);
-           Get.to(PendingPurchase(
+          Get.to(PendingPurchase(
             isData: true,
             amount: data['amount'],
             phone: data['phone'],
@@ -326,7 +450,7 @@ class AccountProvider with ChangeNotifier {
     try {
       AccountRepo().getNotification().then((value) {
         log('Value: $value');
-         if (value['status'] == false || value['result'] == false) {
+        if (value['status'] == false || value['result'] == false) {
           if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
           } else {
@@ -371,8 +495,8 @@ class AccountProvider with ChangeNotifier {
       AccountRepo().getBalance().then((value) {
         log('Value: $value');
         setLoading(false);
-         if (value['status'] == false || value['result'] == false) {
-        if (value['message'].runtimeType == String) {
+        if (value['status'] == false || value['result'] == false) {
+          if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
           } else {
             String message = '';
@@ -401,10 +525,10 @@ class AccountProvider with ChangeNotifier {
     try {
       if (isLoading) showLoader();
       AccountRepo().getTransactions().then((value) {
-        // log('Value: $value');
-         if (value['status'] == false || value['result'] == false) {
+        log('Value: $value');
+        if (value['status'] == false || value['result'] == false) {
           if (isLoading) hideLoader();
-        if (value['message'].runtimeType == String) {
+          if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
           } else {
             String message = '';
@@ -434,9 +558,9 @@ class AccountProvider with ChangeNotifier {
       if (isLoading) showLoader();
       AccountRepo().getReferral().then((value) {
         log('Value: $value');
-         if (value['status'] == false || value['result'] == false) {
+        if (value['status'] == false || value['result'] == false) {
           if (isLoading) hideLoader();
-         if (value['message'].runtimeType == String) {
+          if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
           } else {
             String message = '';
@@ -458,14 +582,15 @@ class AccountProvider with ChangeNotifier {
   }
 
   // get Data plans
-  Future<void> getDataPlans({bool isLoading = true, required String network}) async {
+  Future<void> getDataPlans(
+      {bool isLoading = true, required String network}) async {
     try {
       if (isLoading) showLoader();
       AccountRepo().getDataPlans(network).then((value) {
         log('Value: $value');
-         if (value['status'] == false || value['result'] == false) {
+        if (value['status'] == false || value['result'] == false) {
           if (isLoading) hideLoader();
-         if (value['message'].runtimeType == String) {
+          if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
           } else {
             String message = '';
@@ -492,9 +617,9 @@ class AccountProvider with ChangeNotifier {
       if (isLoading) showLoader();
       AccountRepo().getPromotion().then((value) {
         log('Value: $value');
-         if (value['status'] == false || value['result'] == false) {
+        if (value['status'] == false || value['result'] == false) {
           if (isLoading) hideLoader();
-         if (value['message'].runtimeType == String) {
+          if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
           } else {
             String message = '';

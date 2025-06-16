@@ -87,7 +87,7 @@ class _TransactionhistoryState extends State<Transactionhistory> {
                           itemCount: account.transGroupByData.length,
                           separatorBuilder: (context, index) {
                             return Padding(
-                              padding: const EdgeInsets.only(bottom: 10),
+                              padding: const EdgeInsets.symmetric(vertical: 10),
                               child: DottedBorder(
                                 child: SizedBox(
                                   height: 0,
@@ -121,14 +121,20 @@ class _TransactionhistoryState extends State<Transactionhistory> {
                                 ),
                               ),
                               const SizedBox(height: 10),
-                              ListView.builder(
+                              ListView.separated(
+                                separatorBuilder: (_, i) => SizedBox(
+                                  height: 12,
+                                ),
                                 itemCount: value.length,
                                 padding: const EdgeInsets.all(0),
                                 shrinkWrap: true,
                                 // reverse: true,
                                 physics: const NeverScrollableScrollPhysics(),
                                 itemBuilder: (context, index) {
-                                  Transaction transaction = value[index];
+                                  Datum transaction = value[index];
+                                  // TransactionModel transaction =
+                                  //     TransactionModel.fromJson(data);
+
                                   return HistoryCard(transaction: transaction);
                                 },
                               ),

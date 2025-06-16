@@ -38,7 +38,7 @@ dependencies:
   hive_flutter:
   flutter_native_contact_picker: ^0.0.10
   flutter_contacts: ^1.1.9+2
-
+  iconly: 
   permission_handler: ^12.0.0+1
 
   shared_preferences: ^2.2.2

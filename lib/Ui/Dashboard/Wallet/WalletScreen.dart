@@ -11,15 +11,16 @@ import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/AddFunds.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/AlarmScreen.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyAirtime.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyData.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Buy/data_history.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/banner.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/history_card.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/profile_image.dart';
 import 'package:jost_pay_wallet/Ui/Domain/domain_screen.dart';
 import 'package:jost_pay_wallet/Ui/Paint/paint_history.dart';
 import 'package:jost_pay_wallet/Ui/car/repairdetail_screen.dart';
+import 'package:jost_pay_wallet/Ui/pay4me/pay4me_history.dart';
 import 'package:jost_pay_wallet/Ui/pay4me/pay4me_screen.dart';
-import 'package:jost_pay_wallet/Ui/promotions/socials_screen.dart';
+import 'package:jost_pay_wallet/Ui/promotions/social_boost_history.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
@@ -457,7 +458,8 @@ class _WalletScreenState extends State<WalletScreen> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    const Pay4meScreen())),
+                                                 
+                                                    const PayForMeHistory())),
                                         child: Container(
                                           width: 54,
                                           height: 50,
@@ -629,7 +631,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      const BuyData())),
+                                                      const DataHistory())),
                                           child: Container(
                                             width: 61,
                                             height: 56.5,
@@ -671,7 +673,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            const SocialsScreen())),
+                                            const SocialBoostHistory())),
                                 child: Container(
                                   child: Column(
                                     children: [
@@ -957,24 +959,31 @@ class _WalletScreenState extends State<WalletScreen> {
                           ),
                           // const SizedBox(height: 10),
                           if (accountProvider.dashBoardHistory != null &&
-                              accountProvider.dashBoardHistory!.isNotEmpty)
-                            ListView.builder(
+                              accountProvider
+                                  .dashBoardHistory!.data!.isNotEmpty)
+                            ListView.separated(
+                              separatorBuilder: (_, i) => SizedBox(
+                                height: 12,
+                              ),
                               padding: EdgeInsets.only(bottom: 50),
                               physics: const NeverScrollableScrollPhysics(),
                               // reverse: true,
                               itemBuilder: (context, index) {
                                 var item =
-                                    accountProvider.dashBoardHistory![index];
+                                    accountProvider
+                                    .dashBoardHistory!.data![index];
                                 return HistoryCard(
                                   transaction: item,
                                 );
                               },
                               shrinkWrap: true,
                               itemCount:
-                                  accountProvider.dashBoardHistory!.length > 5
+                                  accountProvider
+                                          .dashBoardHistory!.data!.length >
+                                      5
                                       ? 5
                                       : accountProvider
-                                          .dashBoardHistory!.length,
+                                      .dashBoardHistory!.data!.length,
                             )
                         ],
                       ),

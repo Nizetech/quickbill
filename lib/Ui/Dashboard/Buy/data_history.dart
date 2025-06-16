@@ -1,11 +1,12 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
+// ignore: unused_import
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyAirtimeConfirm.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyData.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/widget/balance_action_card.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
@@ -13,23 +14,23 @@ import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/utils.dart';
 import 'package:provider/provider.dart';
 
-class BuyAirtime extends StatefulWidget {
-  const BuyAirtime({super.key});
+class DataHistory extends StatefulWidget {
+  const DataHistory({super.key});
 
   @override
-  State<BuyAirtime> createState() => _BuyAirtimeState();
+  State<DataHistory> createState() => _DataHistoryState();
 }
 
-class _BuyAirtimeState extends State<BuyAirtime> {
+class _DataHistoryState extends State<DataHistory> {
   @override
   void initState() {
     super.initState();
     var model = Provider.of<AccountProvider>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (model.airtimeHistory == null) {
-        model.getAirtimeHistory();
+      if (model.dataHistoryModel == null) {
+        model.getDataHistory();
       } else {
-        model.getAirtimeHistory(isLoading: false);
+        model.getDataHistory(isLoading: false);
       }
       if (model.networkProviderModel == null) {
         model.getNetworkProviders();
@@ -66,7 +67,7 @@ class _BuyAirtimeState extends State<BuyAirtime> {
                     Transform.translate(
                       offset: const Offset(-20, 0),
                       child: Text(
-                        'Buy Airtime',
+                        'Data Airtime',
                         style: MyStyle.tx18Black
                             .copyWith(color: themedata.tertiary),
                       ),
@@ -78,9 +79,9 @@ class _BuyAirtimeState extends State<BuyAirtime> {
                   height: 30,
                 ),
                 BalanceActionCard(
-                    title: 'Buy Airtime',
+                    title: 'Buy Data',
                     onTap: () {
-                      Get.to(const BuyAirtimeConfirm());
+                      Get.to(const BuyData());
                     }),
                 const SizedBox(
                   height: 36,
@@ -92,7 +93,7 @@ class _BuyAirtimeState extends State<BuyAirtime> {
                       Row(
                         children: [
                           Text(
-                            'Airtime History',
+                            'Data History',
                             style: MyStyle.tx14Black
                                 .copyWith(color: themedata.tertiary),
                           ),
@@ -115,14 +116,13 @@ class _BuyAirtimeState extends State<BuyAirtime> {
                 const SizedBox(
                   height: 20,
                 ),
-                if (model.airtimeHistory != null)
+                if (model.dataHistoryModel != null)
                   Expanded(
-                    // child: SingleChildScrollView(
                     child: ListView.builder(
-                        itemCount: model.airtimeHistory!.data!.length,
+                        itemCount: model.dataHistoryModel!.data!.length,
                         padding: const EdgeInsets.all(0),
                         itemBuilder: (context, index) {
-                          var item = model.airtimeHistory!.data![index];
+                          var item = model.dataHistoryModel!.data![index];
                           return Container(
                             decoration: BoxDecoration(
                                 border: Border(
@@ -202,10 +202,9 @@ class _BuyAirtimeState extends State<BuyAirtime> {
                                               SizedBox(width: 5),
                                               GestureDetector(
                                                 onTap: () {
-                                                  Get.to(BuyAirtimeConfirm(
+                                                  Get.to(BuyData(
                                                     phone: item.phone,
                                                     network: item.networkName,
-                                                    amount: item.amount,
                                                   ));
                                                 },
                                                 child: SvgPicture.asset(
@@ -237,44 +236,48 @@ class _BuyAirtimeState extends State<BuyAirtime> {
                                               ),
                                               GestureDetector(
                                                 onTap: () {
-                                                
+                                                  // Get.to(BuyAirtimeConfirm(
+                                                  //   phone: item.phone,
+                                                  //   network: item.networkName,
+                                                  // ));
                                                 },
                                                 child: Container(
-                                                  
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 5,
-                                                            vertical: 2),
+                                                    width: 68,
                                                     decoration: BoxDecoration(
                                                         color:
                                                             themedata.secondary,
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(15)),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Text(
-                                                          'View Receipt',
-                                                          style: MyStyle
-                                                              .tx11Grey
-                                                              .copyWith(
-                                                                  // fontSize: 10,
-                                                                  color: MyColor
-                                                                      .dark01GreenColor,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500),
-                                                        ),
-                                                       
-                                                      ],
+                                                    child: Padding(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          vertical: 2),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Text(
+                                                            'View Receipt',
+                                                            style: MyStyle
+                                                                .tx11Grey
+                                                                .copyWith(
+                                                                    color: MyColor
+                                                                        .dark01GreenColor,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500),
+                                                          ),
+                                                          const SizedBox(
+                                                            width: 4,
+                                                          ),
+                                                        ],
+                                                      ),
                                                     )),
                                               )
                                             ],
                                           )
-                                        
                                         ])
                                   ],
                                 ),

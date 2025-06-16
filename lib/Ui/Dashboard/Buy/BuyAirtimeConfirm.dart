@@ -701,7 +701,6 @@ class _BuyAirtimeConfirmState extends State<BuyAirtimeConfirm> {
                             ),
                             onPressed: () {
                               if (_controller.text.isEmpty ||
-
                                   _amount.text.isEmpty) {
                                 ErrorToast('Please fill all fields');
                               } else if (selectedItem == -1) {

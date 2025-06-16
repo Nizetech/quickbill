@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:provider/provider.dart';
@@ -57,10 +58,7 @@ class _DepositState extends State<Deposit> {
             Row(
               children: [
                 InkWell(
-                  onTap: () => Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const BottomNav())),
+                  onTap: () => Get.back(),
                   child: Image.asset(
                     'assets/images/arrow_left.png',
                     color: themeProvider.isDarkMode()

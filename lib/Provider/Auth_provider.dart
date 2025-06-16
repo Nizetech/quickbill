@@ -12,6 +12,14 @@ import 'package:jost_pay_wallet/utils/toast.dart';
 
 class AuthProvider with ChangeNotifier {
   bool isLoading = false;
+  String authToken = '';
+
+  void updateAuthToken(String token) {
+    authToken = token;
+    log("State Token===> $token");
+    notifyListeners();
+  }
+
   void setLoading(bool value) {
     isLoading = value;
     notifyListeners();
@@ -24,9 +32,9 @@ class AuthProvider with ChangeNotifier {
       AuthRepo().register(data).then((value) {
         log('Value: $value');
         setLoading(false);
-          if (value['status'] == false || value['result'] == false) {
+        if (value['status'] == false || value['result'] == false) {
           hideLoader();
-         if (value['message'].runtimeType == String) {
+          if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
           } else {
             String message = '';
@@ -36,9 +44,9 @@ class AuthProvider with ChangeNotifier {
             ErrorToast(message);
           }
         } else {
+          updateAuthToken(value['token']);
           hideLoader();
           Get.to(OtpScreen(
-            authToken: value['token'],
             email: data['email'],
           ));
           SuccessToast('An OTP has been sent to your email');
@@ -63,21 +71,21 @@ class AuthProvider with ChangeNotifier {
         // setLoading(false);
         hideLoader();
         if (value.isNotEmpty) {
-            if (value['status'] == false || value['result'] == false) {
-           if (value['message'].runtimeType == String) {
-            ErrorToast(value['message']);
-          } else {
-            String message = '';
-            value['message'].forEach((key, value) {
-              message += '$value';
-            });
-            ErrorToast(message);
-          }
+          if (value['status'] == false || value['result'] == false) {
+            if (value['message'].runtimeType == String) {
+              ErrorToast(value['message']);
+            } else {
+              String message = '';
+              value['message'].forEach((key, value) {
+                message += '$value';
+              });
+              ErrorToast(message);
+            }
             return;
           } else {
             log('Login Value===>: $value');
+            updateAuthToken(value['token']);
             Get.to(OtpScreen(
-              authToken: value['token'],
                 is2Fa: value['login_method'] != null &&
                     value['login_method'] != 'email',
                 email: data['email']));
@@ -104,17 +112,18 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  Future<void> resendOtp(String email, {bool isForgetPass = false, String? authToken}) async {
+  Future<void> resendOtp(String email,
+      {bool isForgetPass = false, String? authToken}) async {
     try {
       // setLoading(true);
       showLoader();
-      AuthRepo().resendOTP(email,authToken: authToken).then((value) {
+      AuthRepo().resendOTP(email, authToken: authToken).then((value) {
         log('Value: $value');
         hideLoader();
         // setLoading(false);
         if (value.isEmpty) return;
-          if (value['status'] == false || value['result'] == false) {
-         if (value['message'].runtimeType == String) {
+        if (value['status'] == false || value['result'] == false) {
+          if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
           } else {
             String message = '';
@@ -128,6 +137,15 @@ class AuthProvider with ChangeNotifier {
             hideLoader();
             Get.to(OtpScreen(email: email));
           }
+          updateAuthToken(value['token']);
+          log("Token===> ${value['token']}");
+          // else{
+          //     Get.to(OtpScreen(
+          //       authToken: value['token'],
+          //       email: email,
+          //       ),
+          //       );
+          // }
           SuccessToast('An OTP has been sent to your email');
         }
         notifyListeners();
@@ -138,25 +156,36 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-
   Future<bool> confirmOtp(Map<String, dynamic> data,
       {bool isForgetPass = false,
       bool is2fa = false,
-      String ? authToken,
+      String? authToken,
       bool isEnable2fa = false,
       AccountProvider? account,
       DashboardProvider? dashProvider}) async {
     try {
-   
       showLoader();
       AuthRepo()
-          .verifyOTP(authToken: authToken, data, is2fa: is2fa, isEnable2fa: isEnable2fa)
+          .verifyOTP(
+              authToken: authToken,
+              data,
+              is2fa: is2fa,
+              isEnable2fa: isEnable2fa)
           .then((value) async {
         log('Value: $value');
         // setLoading(false);
         hideLoader();
         if (value.isEmpty) return false;
-          if (value['status'] == false || value['result'] == false) {
+        if (value['status'] == false || value['result'] == false) {
+          if (value['message'].runtimeType == String) {
+            ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';
+            });
+            ErrorToast(message);
+          }
         } else {
           if (isForgetPass || isEnable2fa) {
             if (isEnable2fa) {
@@ -167,9 +196,10 @@ class AuthProvider with ChangeNotifier {
             return true;
           } else {
             if (dashProvider != null && account != null) {
-            dashProvider.changeBottomIndex(0);
-            await account.getUserProfile();
+              dashProvider.changeBottomIndex(0);
+              await account.getUserProfile();
             }
+            updateAuthToken('');
             notifyListeners();
             Get.offAll(BottomNav());
             if (value['message'] != null && value['message'] != '') {
@@ -199,8 +229,8 @@ class AuthProvider with ChangeNotifier {
         // setLoading(false);
         hideLoader();
         if (value.isEmpty) return;
-          if (value['status'] == false || value['result'] == false) {
-         if (value['message'].runtimeType == String) {
+        if (value['status'] == false || value['result'] == false) {
+          if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
           } else {
             String message = '';
@@ -237,8 +267,8 @@ class AuthProvider with ChangeNotifier {
         // setLoading(false);
         hideLoader();
         if (value.isEmpty) return;
-          if (value['status'] == false || value['result'] == false) {
-         if (value['message'].runtimeType == String) {
+        if (value['status'] == false || value['result'] == false) {
+          if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
           } else {
             String message = '';
@@ -272,8 +302,8 @@ class AuthProvider with ChangeNotifier {
         // setLoading(false);
         hideLoader();
         if (value.isEmpty) return;
-          if (value['status'] == false || value['result'] == false) {
-         if (value['message'].runtimeType == String) {
+        if (value['status'] == false || value['result'] == false) {
+          if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
           } else {
             String message = '';

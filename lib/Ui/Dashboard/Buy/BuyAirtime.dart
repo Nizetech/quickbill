@@ -11,6 +11,7 @@ import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/utils.dart';
+import 'package:jost_pay_wallet/common/status_view_receipt.dart';
 import 'package:provider/provider.dart';
 
 class BuyAirtime extends StatefulWidget {
@@ -216,65 +217,10 @@ class _BuyAirtimeState extends State<BuyAirtime> {
                                           SizedBox(
                                             height: 8.h,
                                           ),
-                                          Row(
-                                            children: [
-                                              CircleAvatar(
-                                                radius: 7,
-                                                backgroundColor: item.status ==
-                                                        '1'
-                                                    ? MyColor.dark01GreenColor
-                                                    : Colors.red,
-                                                child: Icon(
-                                                  item.status == '1'
-                                                      ? Icons.done
-                                                      : Icons.close,
-                                                  size: 10,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                width: 8,
-                                              ),
-                                              GestureDetector(
-                                                onTap: () {
-                                                
-                                                },
-                                                child: Container(
-                                                  
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 5,
-                                                            vertical: 2),
-                                                    decoration: BoxDecoration(
-                                                        color:
-                                                            themedata.secondary,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(15)),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Text(
-                                                          'View Receipt',
-                                                          style: MyStyle
-                                                              .tx11Grey
-                                                              .copyWith(
-                                                                  // fontSize: 10,
-                                                                  color: MyColor
-                                                                      .dark01GreenColor,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500),
-                                                        ),
-                                                       
-                                                      ],
-                                                    )),
-                                              )
-                                            ],
-                                          )
-                                        
+                                          StatusViewReceipt(
+                                            status: item.status!,
+                                            onTap: () {},
+                                          ),
                                         ])
                                   ],
                                 ),

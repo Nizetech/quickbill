@@ -97,76 +97,20 @@ class _ServicesState extends State<Services> {
                       ),
                       Row(
                         children: [
-                          InkWell(
-                            onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const BuyAirtime())),
-                            child: Container(
-                              width: 155,
-                              height: 110,
-                              decoration: BoxDecoration(
-                                  color: themedata.secondaryContainer,
-                                  borderRadius: BorderRadius.circular(13.5)),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const SizedBox(
-                                    height: 12,
-                                  ),
-                                  Container(
-                                    height: 41,
-                                    width: 41,
-                                    // padding: const EdgeInsets.all(13),
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        color: themedata.surfaceContainer,
-                                        shape: BoxShape.circle),
-                                    child: Transform.translate(
-                                      offset: const Offset(0, 10),
-                                      child: Image.asset(
-                                        "assets/images/smart-phone-01.png",
-                                        height: 24,
-                                        width: 24,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 4,
-                                  ),
-                                  Text('Airtime',
-                                      style: MyStyle.tx9Green.copyWith()),
-                                  const SizedBox(
-                                    height: 4,
-                                  ),
-                                  Center(
-                                    child: Container(
-                                      width: 52,
-                                      height: 20,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                          color: themedata.secondary,
-                                          borderRadius:
-                                              BorderRadius.circular(8)),
-                                      child: Text(
-                                        'Buy Now',
-                                        style: MyStyle.tx11Grey.copyWith(
-                                            color: MyColor.greenColor,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 9),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
+                 
+                          ServiceTile(
+                            onTap: () {},
+                            icon: 'assets/images/svg/airtime.svg',
+                            title: 'Buy Airtime',
+                            isTransform: true,
+                            page: const BuyAirtime(),
                           ),
                           const Spacer(),
                           ServiceTile(
                             onTap: () {},
-                            icon: 'assets/images/svg/airtime.svg',
+                            icon: 'assets/images/data.svg',
                             title: 'Buy Data',
+                            isTransform: true,
                             page: const DataHistory(),
                           ),
                         ],
@@ -217,146 +161,21 @@ class _ServicesState extends State<Services> {
                       ),
                       Row(
                         children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const PayForMeHistory(),
-                                  ));
-                            },
-                            child: Container(
-                              width: 155,
-                              height: 110,
-                              decoration: BoxDecoration(
-                                  color: themedata.secondaryContainer,
-                                  borderRadius: BorderRadius.circular(13.5)),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const SizedBox(
-                                    height: 12,
-                                  ),
-                                  Container(
-                                    height: 41,
-                                    width: 41,
-                                    // padding: const EdgeInsets.all(13),
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        color: themedata.surfaceContainer,
-                                        shape: BoxShape.circle),
-                                    child: Transform.translate(
-                                        offset: const Offset(0, 0),
-                                        child: SvgPicture.asset(
-                                          'assets/images/svg/money.svg',
-                                          height: 24.r,
-                                          width: 24.r,
-                                        )),
-                                  ),
-                                  const SizedBox(
-                                    height: 4,
-                                  ),
-                                  Text(
-                                    'Pay4me',
-                                    style: MyStyle.tx9Green.copyWith(),
-                                  ),
-                                  const SizedBox(
-                                    height: 4,
-                                  ),
-                                  Center(
-                                    child: Container(
-                                      width: 52,
-                                      height: 20,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                          color: themedata.secondary,
-                                          borderRadius:
-                                              BorderRadius.circular(8)),
-                                      child: Text(
-                                        'Try Now',
-                                        style: MyStyle.tx11Grey.copyWith(
-                                            color: MyColor.greenColor,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 9),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
+                          ServiceTile(
+                            onTap: () {},
+                            icon: 'assets/images/money.svg',
+                            title: 'Try Pay4me',
+                            page: const PayForMeHistory(),
                           ),
+                     
                           const Spacer(),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => GiftCardHistory(),
-                                  ));
-                            },
-                            child: Container(
-                              width: 155,
-                              height: 110,
-                              decoration: BoxDecoration(
-                                  color: themedata.secondaryContainer,
-                                  borderRadius: BorderRadius.circular(13.5)),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const SizedBox(
-                                    height: 12,
-                                  ),
-                                  Container(
-                                    height: 41,
-                                    width: 41,
-                                    // padding: const EdgeInsets.all(13),
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        color: themedata.surfaceContainer,
-                                        shape: BoxShape.circle),
-                                    child: Transform.translate(
-                                        offset: const Offset(0, 0),
-                                        child: SvgPicture.asset(
-                                          'assets/images/svg/giftCard.svg',
-                                          height: 24.r,
-                                          width: 24.r,
-                                        )),
-                                  ),
-                                  const SizedBox(
-                                    height: 4,
-                                  ),
-                                  Text(
-                                    'Buy Gift Cards',
-                                    style: MyStyle.tx9Green.copyWith(),
-                                  ),
-                                  const SizedBox(
-                                    height: 4,
-                                  ),
-                                  Center(
-                                    child: Container(
-                                      width: 52,
-                                      height: 20,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                          color: themedata.surfaceContainer,
-                                          borderRadius:
-                                              BorderRadius.circular(8)),
-                                      child: Text(
-                                        'Buy Now',
-                                        style: MyStyle.tx11Grey.copyWith(
-                                            color: MyColor.greenColor,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 9),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
+                          ServiceTile(
+                            onTap: () {},
+                            icon: 'assets/images/giftcard.svg',
+                            title: 'Buy Gift Card',
+                            page: const GiftCardHistory(),
                           ),
+                  
                         ],
                       ),
                       const SizedBox(
@@ -403,215 +222,37 @@ class _ServicesState extends State<Services> {
                       const SizedBox(
                         height: 20,
                       ),
+                     
                       Row(
                         children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const DomainScreen(),
-                              ));
-                            },
-                            child: Container(
-                              width: 155,
-                              height: 110,
-                              decoration: BoxDecoration(
-                                  color: themedata.secondaryContainer,
-                                  borderRadius: BorderRadius.circular(13.5)),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const SizedBox(
-                                    height: 12,
-                                  ),
-                                  Container(
-                                    height: 41,
-                                    width: 41,
-                                    // padding: const EdgeInsets.all(13),
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        color: themedata.surfaceContainer,
-                                        shape: BoxShape.circle),
-                                    child: Transform.translate(
-                                        offset: const Offset(0, 0),
-                                        child: SvgPicture.asset(
-                                          'assets/images/svg/web-security.svg',
-                                          height: 24.r,
-                                          width: 24.r,
-                                        )),
-                                  ),
-                                  const SizedBox(
-                                    height: 4,
-                                  ),
-                                  Text(
-                                    'Hosting & Domain',
-                                    style: MyStyle.tx9Green.copyWith(),
-                                  ),
-                                  const SizedBox(
-                                    height: 4,
-                                  ),
-                                  Center(
-                                    child: Container(
-                                      width: 52,
-                                      height: 20,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                          color: themedata.secondary,
-                                          borderRadius:
-                                              BorderRadius.circular(8)),
-                                      child: Text(
-                                        'Buy Now',
-                                        style: MyStyle.tx11Grey.copyWith(
-                                            color: MyColor.greenColor,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 9),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
+                          ServiceTile(
+                            onTap: () {},
+                            icon: 'assets/images/domain.svg',
+                            title: 'Buy Domain',
+                            page: const DomainScreen(),
                           ),
+                     
                           const Spacer(),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                    const SocialBoostHistory(),
-                              ));
-                            },
-                            child: Container(
-                              width: 155,
-                              height: 110,
-                              decoration: BoxDecoration(
-                                  color: themedata.secondaryContainer,
-                                  borderRadius: BorderRadius.circular(13.5)),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const SizedBox(
-                                    height: 12,
-                                  ),
-                                  Container(
-                                    height: 41,
-                                    width: 41,
-                                    // padding: const EdgeInsets.all(13),
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        color: themedata.surfaceContainer,
-                                        shape: BoxShape.circle),
-                                    child: Transform.translate(
-                                        offset: const Offset(0, 0),
-                                        child: SvgPicture.asset(
-                                          'assets/images/svg/socialBoost.svg',
-                                          height: 24.r,
-                                          width: 24.r,
-                                        )),
-                                  ),
-                                  const SizedBox(
-                                    height: 4,
-                                  ),
-                                  Text(
-                                    'Social Boost',
-                                    style: MyStyle.tx9Green.copyWith(),
-                                  ),
-                                  const SizedBox(
-                                    height: 4,
-                                  ),
-                                  Center(
-                                    child: Container(
-                                      width: 60,
-                                      height: 20,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                          color: themedata.secondary,
-                                          borderRadius:
-                                              BorderRadius.circular(8)),
-                                      child: Text(
-                                        'Boost Now',
-                                        style: MyStyle.tx11Grey.copyWith(
-                                            color: MyColor.greenColor,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 9),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
+                          ServiceTile(
+                            onTap: () {},
+                            icon: 'assets/images/boost.svg',
+                            title: 'Try Social Boost',
+                            page: const SocialBoostHistory(),
                           ),
+                 
+                  
                         ],
                       ),
                       const SizedBox(
                         height: 23,
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const ScriptScreen(),
-                          ));
-                        },
-                        child: Container(
-                          width: 155,
-                          height: 110,
-                          decoration: BoxDecoration(
-                              color: themedata.secondaryContainer,
-                              borderRadius: BorderRadius.circular(13.5)),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const SizedBox(
-                                height: 12,
-                              ),
-                              Container(
-                                height: 41,
-                                width: 41,
-                                // padding: const EdgeInsets.all(13),
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                    color: themedata.surfaceContainer,
-                                    shape: BoxShape.circle),
-                                child: Transform.translate(
-                                    offset: const Offset(0, 0),
-                                    child: SvgPicture.asset(
-                                      'assets/images/svg/code.svg',
-                                      height: 24.r,
-                                      width: 24.r,
-                                    )),
-                              ),
-                              const SizedBox(
-                                height: 4,
-                              ),
-                              Text(
-                                'Scripts & Template',
-                                style: MyStyle.tx9Green.copyWith(),
-                              ),
-                              const SizedBox(
-                                height: 4,
-                              ),
-                              Center(
-                                child: Container(
-                                  width: 52,
-                                  height: 20,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      color: themedata.secondary,
-                                      borderRadius: BorderRadius.circular(8)),
-                                  child: Text(
-                                    'Buy Now',
-                                    style: MyStyle.tx11Grey.copyWith(
-                                        color: MyColor.greenColor,
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 9),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
+                      ServiceTile(
+                        onTap: () {},
+                        icon: 'assets/images/script.svg',
+                        title: 'Buy Scripts',
+                        page: const ScriptScreen(),
                       ),
+                 
                       const SizedBox(
                         height: 24,
                       ),
@@ -658,214 +299,33 @@ class _ServicesState extends State<Services> {
                       ),
                       Row(
                         children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                    const RepairdetailScreen(),
-                              ));
-                            },
-                            child: Container(
-                              width: 155,
-                              height: 110,
-                              decoration: BoxDecoration(
-                                  color: themedata.secondaryContainer,
-                                  borderRadius: BorderRadius.circular(13.5)),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const SizedBox(
-                                    height: 12,
-                                  ),
-                                  Container(
-                                    height: 41,
-                                    width: 41,
-                                    // padding: const EdgeInsets.all(13),
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        color: themedata.surfaceContainer,
-                                        shape: BoxShape.circle),
-                                    child: Transform.translate(
-                                        offset: const Offset(0, 0),
-                                        child: SvgPicture.asset(
-                                          'assets/images/svg/repair.svg',
-                                          height: 24.r,
-                                          width: 24.r,
-                                        )),
-                                  ),
-                                  const SizedBox(
-                                    height: 4,
-                                  ),
-                                  Text(
-                                    'Automobile & Repairs',
-                                    style: MyStyle.tx9Green.copyWith(),
-                                  ),
-                                  const SizedBox(
-                                    height: 4,
-                                  ),
-                                  Center(
-                                    child: Container(
-                                      width: 52,
-                                      height: 20,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                          color: themedata.secondary,
-                                          borderRadius:
-                                              BorderRadius.circular(8)),
-                                      child: Text(
-                                        'Buy Now',
-                                        style: MyStyle.tx11Grey.copyWith(
-                                            color: MyColor.greenColor,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 9),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
+                          ServiceTile(
+                            onTap: () {},
+                            icon: 'assets/images/svg/repair.svg',
+                            title: 'Automobile & Repairs',
+                            page: const RepairdetailScreen(),
                           ),
+                    
                           const Spacer(),
-                          GestureDetector(
-                            onTap: () {
-                              // Navigator.of(context).push(MaterialPageRoute(
-                              //   builder: (context) => const PaintHistory(),
-                              // ));
-                              Get.to(PaintHistory());
-                            },
-                            child: Container(
-                              width: 155,
-                              height: 110,
-                              decoration: BoxDecoration(
-                                  color: themedata.secondaryContainer,
-                                  borderRadius: BorderRadius.circular(13.5)),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const SizedBox(
-                                    height: 12,
-                                  ),
-                                  Container(
-                                    height: 41,
-                                    width: 41,
-                                    // padding: const EdgeInsets.all(13),
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        color: themedata.surfaceContainer,
-                                        shape: BoxShape.circle),
-                                    child: Transform.translate(
-                                        offset: const Offset(0, 0),
-                                        child: SvgPicture.asset(
-                                          'assets/images/svg/spray.svg',
-                                          height: 24.r,
-                                          width: 24.r,
-                                        )),
-                                  ),
-                                  const SizedBox(
-                                    height: 4,
-                                  ),
-                                  Text(
-                                    'Paint & Spray booth',
-                                    style: MyStyle.tx9Green.copyWith(),
-                                  ),
-                                  const SizedBox(
-                                    height: 4,
-                                  ),
-                                  Center(
-                                    child: Container(
-                                      width: 66,
-                                      height: 20,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                          color: themedata.secondary,
-                                          borderRadius:
-                                              BorderRadius.circular(8)),
-                                      child: Text(
-                                        'Schedule Now',
-                                        style: MyStyle.tx11Grey.copyWith(
-                                            color: MyColor.greenColor,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 9),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
+                          ServiceTile(
+                            onTap: () {},
+                            icon: 'assets/images/svg/spray.svg',
+                            title: 'Automobile & Repairs',
+                            page: const PaintHistory(),
                           ),
+                 
                         ],
                       ),
                       const SizedBox(
                         height: 23,
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const CarsellScreen(),
-                          ));
-                        },
-                        child: Container(
-                          width: 155,
-                          height: 110,
-                          decoration: BoxDecoration(
-                              color: themedata.secondaryContainer,
-                              borderRadius: BorderRadius.circular(13.5)),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const SizedBox(
-                                height: 12,
-                              ),
-                              Container(
-                                height: 41,
-                                width: 41,
-                                // padding: const EdgeInsets.all(13),
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                    color: themedata.surfaceContainer,
-                                    shape: BoxShape.circle),
-                                child: Transform.translate(
-                                    offset: const Offset(0, 0),
-                                    child: SvgPicture.asset(
-                                      'assets/images/svg/car.svg',
-                                      height: 24.r,
-                                      width: 24.r,
-                                    )),
-                              ),
-                              const SizedBox(
-                                height: 4,
-                              ),
-                              Text(
-                                'Car sales',
-                                style: MyStyle.tx9Green.copyWith(),
-                              ),
-                              const SizedBox(
-                                height: 4,
-                              ),
-                              Center(
-                                child: Container(
-                                  width: 52,
-                                  height: 20,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      color: themedata.secondary,
-                                      borderRadius: BorderRadius.circular(8)),
-                                  child: Text(
-                                    'Buy Now',
-                                    style: MyStyle.tx11Grey.copyWith(
-                                        color: MyColor.greenColor,
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 9),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
+                      ServiceTile(
+                        onTap: () {},
+                        icon: 'assets/images/car.svg',
+                        title: 'Buy Cars',
+                        page: const CarsellScreen(),
                       ),
+                 
                       const SizedBox(
                         height: 27,
                       ),

@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -63,7 +63,13 @@ class HistoryCard extends StatelessWidget {
                   ? const Color(0XFF171717)
                   : const Color(0XFFF4F5F6),
               shape: BoxShape.circle),
-          child: SvgPicture.asset('assets/images/svg/money.svg'),
+          child: SvgPicture.asset(transaction.type != null &&
+                      transaction.type == Type.DATA ||
+                  transaction.type != null && transaction.type == Type.AIRTIME
+              ? 'assets/images/phone.svg'
+              : transaction.type != null && transaction.type == Type.DEPOSIT
+                  ? 'assets/images/svg/deposit.svg'
+                  : 'assets/images/svg/money.svg'),
         ),
         SizedBox(width: 10.w),
         Expanded(
@@ -72,7 +78,8 @@ class HistoryCard extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  if (transaction.type != Type.DATA &&
+                  if (transaction.type != null &&
+                      transaction.type != Type.DATA &&
                       transaction.type != Type.AIRTIME)
                     Text(
                       transaction.type!.name.capitalizeFirst!,
@@ -96,6 +103,30 @@ class HistoryCard extends StatelessWidget {
                     ),
                 ],
               ),
+              const SizedBox(height: 5),
+              Text(
+                transaction.reference!,
+                style: MyStyle.tx14Grey.copyWith(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 12.sp,
+                    color: themeProvider.isDarkMode()
+                        ? const Color(0XFFCBD2EB)
+                        : const Color(0xff30333A)),
+              ),
+              //  Clipboard.setData(const ClipboardData(
+              //                     text: "420516-51443-7897-SPR"));
+              //                 Fluttertoast.showToast(
+              //                     msg: "Copied to clipboard");
+              //               },
+              //               child: Padding(
+              //                 padding: const EdgeInsets.all(6),
+              //                 child: SvgPicture.asset(
+              //                   isDark
+              //                       ? 'assets/images/svg/copy-dark.svg'
+              //                       : 'assets/images/svg/copy.svg',
+              //                 ),
+              //               ),
+              //             ),
               SizedBox(height: 5.h),
               Text(
                 formatDateTime(transaction.transDate!),
@@ -147,6 +178,7 @@ class HistoryCard extends StatelessWidget {
                   ),
               ],
             ),
+           
             const SizedBox(height: 5),
             Row(
               children: [

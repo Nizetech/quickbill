@@ -17,12 +17,12 @@ import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 
 class OtpScreen extends StatefulWidget {
   final String email;
-  final String? authToken;
+  // final String? authToken;
   final bool isForgetPass;
   final bool is2Fa;
   const OtpScreen(
       {super.key,
-      this.authToken,
+      // this.authToken,
       required this.email,
       this.isForgetPass = false,
       this.is2Fa = false});
@@ -41,7 +41,8 @@ class _OtpScreenState extends State<OtpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    log('Auth Token: ${widget.authToken}');
+    final model = context.read<AuthProvider>();
+    log('Auth Token: => ${model.authToken}');
     return Scaffold(
       backgroundColor: Colors.white,
       body: Consumer<AuthProvider>(builder: (context, model, _) {
@@ -126,7 +127,7 @@ class _OtpScreenState extends State<OtpScreen> {
                   onPressed: () {
                       model.resendOtp(
                         widget.email,
-                        authToken: widget.authToken,
+                        authToken: model.authToken,
                       );
                     setState(() {
                       clearText = true;
@@ -150,7 +151,7 @@ class _OtpScreenState extends State<OtpScreen> {
                               ErrorToast("Please enter OTP");
                             } else {
                               model.confirmOtp(
-                                  authToken: widget.authToken,
+                                  authToken: model.authToken,
                                   account: context.read<AccountProvider>(),
                                   dashProvider:
                                       context.read<DashboardProvider>(),

@@ -370,6 +370,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                     child: Container(
                                       width: 54,
                                       height: 50,
+                                      padding: const EdgeInsets.all(8),
                                       decoration: BoxDecoration(
                                         border: Border.all(
                                           color: MyColor.greenColor,
@@ -378,25 +379,20 @@ class _WalletScreenState extends State<WalletScreen> {
                                         borderRadius:
                                             BorderRadius.circular(12.3),
                                       ),
-                                      child: Image.asset(
-                                        'assets/images/dashboard/money-send-circle.png',
-                                        width: 23,
-                                        height: 23,
+                                      child: SvgPicture.asset(
+                                        'assets/images/svg/deposit.svg',
+                                        
                                       ),
                                     ),
                                   )
                                 ],
                               ),
                               const SizedBox(height: 8),
-                              Row(
-                                children: [
-                                  Text('Add funds',
-                                      style: MyStyle.tx12Black.copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .tertiary))
-                                ],
-                              )
+                              Text('Add funds',
+                                  style: MyStyle.tx12Black.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary))
                             ],
                           ),
                           Container(
@@ -418,6 +414,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                       child: Container(
                                         width: 54,
                                         height: 50,
+                                        padding: const EdgeInsets.all(8),
                                         decoration: BoxDecoration(
                                           border: Border.all(
                                             color: MyColor.greenColor,
@@ -426,8 +423,8 @@ class _WalletScreenState extends State<WalletScreen> {
                                           borderRadius:
                                               BorderRadius.circular(12.3),
                                         ),
-                                        child: Image.asset(
-                                          'assets/images/dashboard/smart-phone-01.png',
+                                        child: SvgPicture.asset(
+                                          "assets/images/phone.svg",
                                           width: 23,
                                           height: 23,
                                         ),

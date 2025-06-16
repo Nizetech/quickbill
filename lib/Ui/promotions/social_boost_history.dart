@@ -10,6 +10,7 @@ import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/utils.dart';
+import 'package:jost_pay_wallet/common/status_view_receipt.dart';
 import 'package:provider/provider.dart';
 
 class SocialBoostHistory extends StatefulWidget {
@@ -74,7 +75,7 @@ class _SocialBoostHistoryState extends State<SocialBoostHistory> {
                   height: 30,
                 ),
                 BalanceActionCard(
-                    title: 'Buy Social Boost',
+                    title: 'Try Social Boost',
                     onTap: () {
                       Get.to(const SocialsScreen());
                     }),
@@ -200,25 +201,11 @@ class _SocialBoostHistoryState extends State<SocialBoostHistory> {
                                           SizedBox(
                                             height: 8.h,
                                           ),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                item.status == '1'
-                                                    ? 'Successful'
-                                                    : 'Failed',
-                                                style: MyStyle.tx11Grey.copyWith(
-                                                    color: item.status! == '1'
-                                                        ? MyColor
-                                                            .dark01GreenColor
-                                                        : Colors.red,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                              const SizedBox(
-                                                width: 8,
-                                              ),
-                                            ],
-                                          )
+                                          StatusViewReceipt(
+                                            status: item.status!,
+                                            onTap: () {},
+                                          ),
+                                        
                                         ])
                                   ],
                                 ),

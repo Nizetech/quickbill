@@ -61,8 +61,8 @@ class Datum {
   });
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
-        type: typeValues.map[json["type"]]!,
-        inOut: inOutValues.map[json["in_out"]]!,
+        type: typeValues.map[json["type"]],
+        inOut: inOutValues.map[json["in_out"]],
         transDate: json["trans_date"] == null
             ? null
             : DateTime.parse(json["trans_date"]),

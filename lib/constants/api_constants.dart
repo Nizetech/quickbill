@@ -40,6 +40,9 @@ class ApiRoute {
   static String getGiftCard = 'get-gift-cards';
   static String getCard = 'get-gift-card';
   static String getSocialServices = 'get-social-services';
+  static String getCarListing = 'marketplace/cars';
+  static String getCarDetails = 'marketplace/get-car';
+  static String buyCar = 'marketplace/buy-car';
   static String getCarTypes = 'services/spray-land';
   static String getColorPaint = 'services/spray-main';
   static String getSprayHistory = 'services/spray-history';

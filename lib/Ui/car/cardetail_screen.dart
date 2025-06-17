@@ -1,6 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:jost_pay_wallet/Provider/service_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
+import 'package:jost_pay_wallet/Ui/car/buy_car_summary.dart';
+import 'package:jost_pay_wallet/Ui/car/schedule_inspection.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:provider/provider.dart';
@@ -14,10 +18,18 @@ class CardetailScreen extends StatefulWidget {
 
 class _CardetailScreenState extends State<CardetailScreen> {
   String mainImg = 'assets/images/main-car.png';
-  int selectedIndex = 0;
+  List images = [];
+  int selectedIndex = -1;
   @override
   void initState() {
     super.initState();
+    final model = Provider.of<ServiceProvider>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      setState(() {
+        mainImg = model.carDetailsModel!.car!.carImage!;
+        images = model.carDetailsModel!.car!.galleries!.split(',');
+      });
+    });
   }
 
   @override
@@ -32,263 +44,286 @@ class _CardetailScreenState extends State<CardetailScreen> {
       backgroundColor: themeProvider.isDarkMode()
           ? MyColor.dark02Color
           : MyColor.mainWhiteColor,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 68)
-            .copyWith(bottom: 0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
+      body: Consumer<ServiceProvider>(builder: (context, model, _) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 18)
+                .copyWith(bottom: 0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Image.asset(
-                    'assets/images/arrow_left.png',
-                    color: themeProvider.isDarkMode()
-                        ? MyColor.mainWhiteColor
-                        : MyColor.dark01Color,
-                  ),
-                ),
-                const Spacer(),
-                Transform.translate(
-                  offset: const Offset(-20, 0),
-                  child: Text(
-                    'Autolot7 Motors',
-                    style:
-                        MyStyle.tx18Black.copyWith(color: themedata.tertiary),
-                  ),
-                ),
-                const Spacer(), // Adds flexible space after the text
-              ],
-            ),
-
-            // Main Car Image
-
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                Row(
                   children: [
-                    const SizedBox(
-                      height: 16,
-                    ),
-
-                    Text(
-                      "2013 Ford Escape Titanium",
-                      style: MyStyle.tx18Grey.copyWith(
-                        fontWeight: FontWeight.w500,
-                        color: themedata.tertiary,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    //
-                    ClipRRect(
+                    InkWell(
+                      onTap: () => Get.back(),
                       child: Image.asset(
-                        mainImg,
-                        height: 243,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
+                        'assets/images/arrow_left.png',
+                        color: themeProvider.isDarkMode()
+                            ? MyColor.mainWhiteColor
+                            : MyColor.dark01Color,
                       ),
                     ),
-                    const SizedBox(height: 2),
-
-                    // Thumbnail Row
-                    SizedBox(
-                      height: 80,
-                      child: ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 3, // Number of thumbnails
-                        separatorBuilder: (_, __) => const SizedBox(width: 2),
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              if (index == 0) {
-                                setState(() {
-                                  selectedIndex = index;
-                                  // Update the main image to the first thumbnail
-                                  mainImg = 'assets/images/main-car.png';
-                                });
-                                // Handle thumbnail tap
-                              } else {
-                                setState(() {
-                                  selectedIndex = index;
-                                  // Update the main image based on the thumbnail tapped
-                                  mainImg = 'assets/images/car${index + 1}.png';
-                                });
-                              }
-                            },
-                            child: Container(
-                              width: width / 3,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: selectedIndex == index
-                                      ? isDark
-                                          ? const Color(0xff0B930B)
-                                          : MyColor.splashBtn
-                                      : Colors.transparent,
-                                  width: 2,
-                                ),
-                                borderRadius: BorderRadius.circular(2.4),
-                              ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(2.19),
-                                child: Image.asset(
-                                  'assets/images/car${index + 1}.png',
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                          );
-                        },
+                    const Spacer(),
+                    Transform.translate(
+                      offset: const Offset(-20, 0),
+                      child: Text(
+                        'Autolot7 Motors',
+                        style: MyStyle.tx18Black
+                            .copyWith(color: themedata.tertiary),
                       ),
                     ),
-
-                    const SizedBox(height: 15),
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            topRight: Radius.circular(10)),
-                        border: Border(
-                          top: BorderSide(
-                            color: isDark
-                                ? const Color(0xff1B1B1B)
-                                : const Color(0xffE9EBF8),
-                            width: 1.0,
-                          ),
-                          left: BorderSide(
-                            color: isDark
-                                ? const Color(0xff1B1B1B)
-                                : const Color(0xffE9EBF8),
-                            width: 1.0,
-                          ),
-                          right: BorderSide(
-                            color: isDark
-                                ? const Color(0xff1B1B1B)
-                                : const Color(0xffE9EBF8),
-                            width: 1.0,
-                          ),
-                          bottom: BorderSide(
-                            color: isDark
-                                ? const Color(0xff1B1B1B)
-                                : const Color(0xffE9EBF8),
-                            width: 1.0,
-                          ),
-                        ),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 14, horizontal: 19),
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: isDark
-                                      ? const Color(0xff1B1B1B)
-                                      : const Color(0xffE9EBF8),
-                                  width: 2,
-                                ),
-                              ),
-                              color: isDark
-                                  ? const Color(0xff101010)
-                                  : const Color(0xffFCFCFC),
-                            ),
-                            child: Text(
-                              "Key Specs",
-                              style: MyStyle.tx18Grey.copyWith(
-                                fontWeight: FontWeight.w500,
-                                color: themedata.tertiary,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-
-                          // Specs List
-                          _buildSpecRow("Exterior color", "Pearl White Multi"),
-                          _buildSpecRow("Accidents or damage", "No Reported"),
-                          _buildSpecRow("Drive train", "All-wheel drive"),
-                          _buildSpecRow("Transmission", "1-Speed automatic"),
-                          _buildSpecRow("Engine", "Electric"),
-                          _buildSpecRow("VIN", "747848648649569"),
-                          _buildSpecRow("Mileage", "65,238 mi"),
-                          _buildSpecRow("Seating", "Leather seat, memory seat"),
-                          _buildSpecRow("1-Owner vehicle", "Yes"),
-                        ],
-                      ),
-                    ),
-
-                    const SizedBox(height: 20),
-
-                    // Buttons
-                    Row(
-                      children: [
-                        OutlinedButton(
-                          onPressed: () {},
-                          style: OutlinedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            backgroundColor: themeProvider.isDarkMode()
-                                ? const Color(0xff131313)
-                                : const Color(0xffF9F9F9),
-                            side: BorderSide(
-                                color: themeProvider.isDarkMode()
-                                    ? const Color(0xff1B1B1B)
-                                    : const Color(0xffE9EBF8),
-                                width: 0.6),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 21, vertical: 12),
-                          ),
-                          child: Text("Schedule Inspection",
-                              style: MyStyle.tx14Black.copyWith(
-                                fontFamily: 'SF Pro Rounded',
-                                color: themeProvider.isDarkMode()
-                                    ? MyColor.mainWhiteColor
-                                    : MyColor.dark01Color,
-                                fontWeight: FontWeight.w600,
-                              )),
-                        ),
-                        const SizedBox(width: 23),
-                        Expanded(
-                          child: OutlinedButton(
-                            onPressed: () {},
-                            style: OutlinedButton.styleFrom(
-                              side: BorderSide.none,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              backgroundColor: themeProvider.isDarkMode()
-                                  ? const Color(0xff0B930B)
-                                  : MyColor.greenColor,
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 38, vertical: 12),
-                            ),
-                            child: Text("Buy Now",
-                                style: MyStyle.tx14Black.copyWith(
-                                  fontFamily: 'SF Pro Rounded',
-                                  color: MyColor.mainWhiteColor,
-                                  fontWeight: FontWeight.w600,
-                                )),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 100),
+                    const Spacer(), // Adds flexible space after the text
                   ],
                 ),
-              ),
-            )
-            // Key Specs Header
-          ],
-        ),
-      ),
+                // Main Car Image
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        Text(
+                          model.carDetailsModel!.car!.title!,
+                          style: MyStyle.tx18Grey.copyWith(
+                            fontWeight: FontWeight.w500,
+                            color: themedata.tertiary,
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: CachedNetworkImage(
+                            imageUrl: mainImg,
+                            height: 245,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => Container(),
+                            errorWidget: (context, url, error) => Container(),
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        // Thumbnail Row
+                        if (model.carDetailsModel!.car!.galleries!.isNotEmpty)
+                          SizedBox(
+                            height: 80,
+                            child: ListView.separated(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: images.length, // Number of thumbnails
+                              separatorBuilder: (_, __) =>
+                                  const SizedBox(width: 2),
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      selectedIndex = index;
+                                      mainImg = images[index];
+                                    });
+                                  },
+                                  child: Container(
+                                    width: width / 3,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: selectedIndex == index
+                                            ? isDark
+                                                ? const Color(0xff0B930B)
+                                                : MyColor.splashBtn
+                                            : Colors.transparent,
+                                        width: 2,
+                                      ),
+                                      borderRadius: BorderRadius.circular(2.4),
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: CachedNetworkImage(
+                                        imageUrl: images[index],
+                                        // height: 245,
+                                        width: double.infinity,
+                                        fit: BoxFit.cover,
+                                        placeholder: (context, url) =>
+                                            Container(),
+                                        errorWidget: (context, url, error) =>
+                                            Container(),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+
+                        const SizedBox(height: 15),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10)),
+                            border: Border(
+                              top: BorderSide(
+                                color: isDark
+                                    ? const Color(0xff1B1B1B)
+                                    : const Color(0xffE9EBF8),
+                                width: 1.0,
+                              ),
+                              left: BorderSide(
+                                color: isDark
+                                    ? const Color(0xff1B1B1B)
+                                    : const Color(0xffE9EBF8),
+                                width: 1.0,
+                              ),
+                              right: BorderSide(
+                                color: isDark
+                                    ? const Color(0xff1B1B1B)
+                                    : const Color(0xffE9EBF8),
+                                width: 1.0,
+                              ),
+                              bottom: BorderSide(
+                                color: isDark
+                                    ? const Color(0xff1B1B1B)
+                                    : const Color(0xffE9EBF8),
+                                width: 1.0,
+                              ),
+                            ),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 14, horizontal: 19),
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: isDark
+                                          ? const Color(0xff1B1B1B)
+                                          : const Color(0xffE9EBF8),
+                                      width: 2,
+                                    ),
+                                  ),
+                                  color: isDark
+                                      ? const Color(0xff101010)
+                                      : const Color(0xffFCFCFC),
+                                ),
+                                child: Text(
+                                  "Key Specs",
+                                  style: MyStyle.tx18Grey.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                    color: themedata.tertiary,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+
+                              // Specs List
+                              _buildSpecRow("Car Make",
+                                  model.carDetailsModel!.car!.maker!),
+                              _buildSpecRow(
+                                  "Model", model.carDetailsModel!.car!.model!),
+                              _buildSpecRow(
+                                  "Year", model.carDetailsModel!.car!.year!),
+                              _buildSpecRow("Exterior color",
+                                  model.carDetailsModel!.car!.color!),
+                              _buildSpecRow("Drive train",
+                                  model.carDetailsModel!.car!.driverTrain!),
+                              _buildSpecRow("Transmission",
+                                  model.carDetailsModel!.car!.transmission!),
+                              _buildSpecRow("Engine",
+                                  model.carDetailsModel!.car!.engine!),
+                              _buildSpecRow(
+                                  "VIN", model.carDetailsModel!.car!.vin!),
+                              _buildSpecRow("Mileage",
+                                  model.carDetailsModel!.car!.mileage!),
+                            ],
+                          ),
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        // Buttons
+                        Row(
+                          children: [
+                            OutlinedButton(
+                              onPressed: () => Get.to(() => ScheduleInspection(
+                                    data: {
+                                      "image":
+                                          model.carDetailsModel!.car!.carImage!,
+                                      "title":
+                                          model.carDetailsModel!.car!.title,
+                                    },
+                                  )),
+                              style: OutlinedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                backgroundColor: themeProvider.isDarkMode()
+                                    ? const Color(0xff131313)
+                                    : const Color(0xffF9F9F9),
+                                side: BorderSide(
+                                    color: themeProvider.isDarkMode()
+                                        ? const Color(0xff1B1B1B)
+                                        : const Color(0xffE9EBF8),
+                                    width: 0.6),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 21, vertical: 12),
+                              ),
+                              child: Text("Schedule Inspection",
+                                  style: MyStyle.tx14Black.copyWith(
+                                    fontFamily: 'SF Pro Rounded',
+                                    color: themeProvider.isDarkMode()
+                                        ? MyColor.mainWhiteColor
+                                        : MyColor.dark01Color,
+                                    fontWeight: FontWeight.w600,
+                                  )),
+                            ),
+                            const SizedBox(width: 23),
+                            Expanded(
+                              child: OutlinedButton(
+                                onPressed: () => Get.to(() => BuyCarSummary(
+                                      data: {
+                                        "id": model.carDetailsModel!.car!.id,
+                                        "image": model
+                                            .carDetailsModel!.car!.carImage!,
+                                        "title":
+                                            model.carDetailsModel!.car!.title!,
+                                        "price":
+                                            model.carDetailsModel!.car!.price,
+                                      },
+                                    )),
+                                style: OutlinedButton.styleFrom(
+                                  side: BorderSide.none,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  backgroundColor: themeProvider.isDarkMode()
+                                      ? const Color(0xff0B930B)
+                                      : MyColor.greenColor,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 38, vertical: 12),
+                                ),
+                                child: Text("Buy Now",
+                                    style: MyStyle.tx14Black.copyWith(
+                                      fontFamily: 'SF Pro Rounded',
+                                      color: MyColor.mainWhiteColor,
+                                      fontWeight: FontWeight.w600,
+                                    )),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 100),
+                      ],
+                    ),
+                  ),
+                )
+                // Key Specs Header
+              ],
+            ),
+          ),
+        );
+      }),
     );
   }
 

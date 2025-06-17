@@ -282,11 +282,9 @@ class _WalletScreenState extends State<WalletScreen> {
                                   width: 120,
                                   child: Row(
                                     children: [
-                                      Image.asset(
-                                        'assets/images/ng-flag.png',
-                                        width: 24.8,
-                                        height: 24.8,
-                                      ),
+                                    
+                                      SvgPicture.asset(
+                                          'assets/images/flag.svg'),
                                       const SizedBox(width: 8),
                                       Text('Balance',
                                           style: MyStyle.tx16Gray.copyWith(
@@ -311,12 +309,9 @@ class _WalletScreenState extends State<WalletScreen> {
                                             .colorScheme
                                             .secondary,
                                         shape: BoxShape.circle),
-                                    child: Image.asset(
-                                      "assets/images/refresh.png",
-                                      height: 24,
-                                      width: 24,
-                                      color: MyColor.splashBtn,
-                                    ),
+                                      child: SvgPicture.asset(
+                                          height: 24,
+                                          'assets/images/refresh.svg')
                                   ),
                                 ),
                               ],

@@ -134,6 +134,50 @@ class ServiceRepo {
   }
 
 
+  Future<Map<String, dynamic>> buyCar(Map<String, dynamic> data) async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response = await client
+          .post(ApiRoute.buyCar, body: jsonEncode(data), requestHeaders: {
+        'Authorization': token,
+      });
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
+  Future<Map<String, dynamic>> getCarDetails(String id) async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response = await client.post(ApiRoute.getCarDetails,
+          body: jsonEncode({"id": int.parse(id)}),
+          requestHeaders: {
+            'Authorization': token,
+          });
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
+  Future<Map<String, dynamic>> getCarListing() async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response =
+          await client.get(ApiRoute.getCarListing, requestHeaders: {
+        'Authorization': token,
+      });
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
+
   Future<Map<String, dynamic>> buySocialBoost(Map<String, dynamic> data) async {
     String token = await box.get(kAccessToken);
     try {

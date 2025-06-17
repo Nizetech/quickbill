@@ -218,6 +218,7 @@ class _BuyAirtimeConfirmState extends State<BuyAirtimeConfirm> {
                                                             ),
                                                           )),
                                                 ),
+                                                
                                                 if (selectedItem == index)
                                                   Align(
                                                     alignment:
@@ -322,7 +323,6 @@ class _BuyAirtimeConfirmState extends State<BuyAirtimeConfirm> {
                                       color: Color(0xFF999999),
                                       fontFamily: 'SF Pro Rounded',
                                     ),
-
                                     border: InputBorder
                                         .none, // No border for the TextFormField
                                     contentPadding: EdgeInsets.symmetric(

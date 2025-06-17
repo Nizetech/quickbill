@@ -4,6 +4,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jost_pay_wallet/Models/car_details.dart';
+import 'package:jost_pay_wallet/Models/car_listing.dart';
 import 'package:jost_pay_wallet/Models/car_type_model.dart';
 import 'package:jost_pay_wallet/Models/card_model.dart';
 import 'package:jost_pay_wallet/Models/color_paint_mode.dart';
@@ -16,6 +18,8 @@ import 'package:jost_pay_wallet/Models/spray_details.dart';
 import 'package:jost_pay_wallet/Models/spray_history_model.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Ui/Paint/paint_invoice_screen.dart';
+import 'package:jost_pay_wallet/Ui/car/buy_car_success.dart';
+import 'package:jost_pay_wallet/Ui/car/cardetail_screen.dart';
 import 'package:jost_pay_wallet/Ui/giftCard/cards_option_screen.dart';
 import 'package:jost_pay_wallet/Ui/pay4me/pay4me_success_screen.dart';
 import 'package:jost_pay_wallet/Ui/promotions/social_boost.dart';
@@ -39,6 +43,8 @@ class ServiceProvider with ChangeNotifier {
   GiftCardsModel? giftCardsModel;
   CardModel? cardModel;
   PaymentFeeModel? paymentFeeModel;
+  CarListingModel? carListingModel;
+  CarDetailsModel? carDetailsModel;
 
   String base64Image = '';
 
@@ -59,7 +65,7 @@ class ServiceProvider with ChangeNotifier {
       if (res['status'] == false || res['result'] == false) {
         hideLoader();
         if (res['message'].runtimeType == String) {
-        ErrorToast(res['message']);
+          ErrorToast(res['message']);
         } else {
           String message = '';
           res['message'].forEach((key, value) {
@@ -104,6 +110,88 @@ class ServiceProvider with ChangeNotifier {
     }
   }
 
+  Future<void> getCarListing({bool isLoading = true}) async {
+    try {
+      if (isLoading) showLoader();
+      var res = await ServiceRepo().getCarListing();
+      if (res['status'] == false || res['result'] == false) {
+        if (isLoading) hideLoader();
+        if (res['message'].runtimeType == String) {
+          ErrorToast(res['message']);
+        } else {
+          String message = '';
+          res['message'].forEach((key, value) {
+            message += '$value';
+          });
+          ErrorToast(message);
+        }
+        return;
+      }
+      carListingModel = CarListingModel.fromJson(res);
+      if (isLoading) hideLoader();
+      notifyListeners();
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
+  Future<void> getCarDetails(String id) async {
+    try {
+      showLoader();
+      var res = await ServiceRepo().getCarDetails(id);
+      log("res: $res");
+      if (res['status'] == false || res['result'] == false) {
+        hideLoader();
+        if (res['message'].runtimeType == String) {
+          ErrorToast(res['message']);
+        } else {
+          String message = '';
+          res['message'].forEach((key, value) {
+            message += '$value';
+          });
+          ErrorToast(message);
+        }
+        return;
+      }
+      carDetailsModel = CarDetailsModel.fromJson(res);
+      hideLoader();
+      Get.to(CardetailScreen());
+      notifyListeners();
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
+  Future<void> buyCar(Map<String, dynamic> data) async {
+    try {
+      showLoader();
+      var res = await ServiceRepo().buyCar(data);
+      log("res: $res");
+      if (res['status'] == false || res['result'] == false) {
+        hideLoader();
+        if (res['message'].runtimeType == String) {
+          ErrorToast(res['message']);
+        } else {
+          String message = '';
+          res['message'].forEach((key, value) {
+            message += '$value';
+          });
+          ErrorToast(message);
+        }
+        return;
+      }
+
+      hideLoader();
+      Get.to(BuyCarSuccess());
+      notifyListeners();
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
   Future<void> getGiftCard(String code) async {
     try {
       showLoader();
@@ -111,7 +199,7 @@ class ServiceProvider with ChangeNotifier {
       if (res['status'] == false || res['result'] == false) {
         hideLoader();
         if (res['message'].runtimeType == String) {
-        ErrorToast(res['message']);
+          ErrorToast(res['message']);
         } else {
           String message = '';
           res['message'].forEach((key, value) {
@@ -137,7 +225,7 @@ class ServiceProvider with ChangeNotifier {
       if (res['status'] == false || res['result'] == false) {
         hideLoader();
         if (res['message'].runtimeType == String) {
-        ErrorToast(res['message']);
+          ErrorToast(res['message']);
         } else {
           String message = '';
           res['message'].forEach((key, value) {
@@ -157,7 +245,6 @@ class ServiceProvider with ChangeNotifier {
       ErrorToast(e.toString());
     }
   }
-  
 
   Future<void> buyPay4Me(Map<String, dynamic> data) async {
     try {
@@ -166,7 +253,7 @@ class ServiceProvider with ChangeNotifier {
       if (res['status'] == false || res['result'] == false) {
         hideLoader();
         if (res['message'].runtimeType == String) {
-        ErrorToast(res['message']);
+          ErrorToast(res['message']);
         } else {
           String message = '';
           res['message'].forEach((key, value) {
@@ -192,7 +279,7 @@ class ServiceProvider with ChangeNotifier {
       if (res['status'] == false || res['result'] == false) {
         hideLoader();
         if (res['message'].runtimeType == String) {
-        ErrorToast(res['message']);
+          ErrorToast(res['message']);
         } else {
           String message = '';
           res['message'].forEach((key, value) {
@@ -219,7 +306,7 @@ class ServiceProvider with ChangeNotifier {
       if (res['status'] == false || res['result'] == false) {
         hideLoader();
         if (res['message'].runtimeType == String) {
-        ErrorToast(res['message']);
+          ErrorToast(res['message']);
         } else {
           String message = '';
           res['message'].forEach((key, value) {
@@ -271,7 +358,7 @@ class ServiceProvider with ChangeNotifier {
       if (res['status'] == false || res['result'] == false) {
         hideLoader();
         if (res['message'].runtimeType == String) {
-        ErrorToast(res['message']);
+          ErrorToast(res['message']);
         } else {
           String message = '';
           res['message'].forEach((key, value) {
@@ -299,7 +386,7 @@ class ServiceProvider with ChangeNotifier {
       if (res['status'] == false || res['result'] == false) {
         hideLoader();
         if (res['message'].runtimeType == String) {
-        ErrorToast(res['message']);
+          ErrorToast(res['message']);
         } else {
           String message = '';
           res['message'].forEach((key, value) {
@@ -326,7 +413,7 @@ class ServiceProvider with ChangeNotifier {
       if (res['status'] == false || res['result'] == false) {
         hideLoader();
         if (res['message'].runtimeType == String) {
-        ErrorToast(res['message']);
+          ErrorToast(res['message']);
         } else {
           String message = '';
           res['message'].forEach((key, value) {
@@ -354,7 +441,7 @@ class ServiceProvider with ChangeNotifier {
       if (res['status'] == false || res['result'] == false) {
         hideLoader();
         if (res['message'].runtimeType == String) {
-        ErrorToast(res['message']);
+          ErrorToast(res['message']);
         } else {
           String message = '';
           res['message'].forEach((key, value) {
@@ -384,7 +471,7 @@ class ServiceProvider with ChangeNotifier {
       hideLoader();
       if (res['status'] == false || res['result'] == false) {
         if (res['message'].runtimeType == String) {
-        ErrorToast(res['message']);
+          ErrorToast(res['message']);
         } else {
           String message = '';
           res['message'].forEach((key, value) {
@@ -410,7 +497,7 @@ class ServiceProvider with ChangeNotifier {
       if (res['status'] == false || res['result'] == false) {
         hideLoader();
         if (res['message'].runtimeType == String) {
-        ErrorToast(res['message']);
+          ErrorToast(res['message']);
         } else {
           String message = '';
           res['message'].forEach((key, value) {
@@ -439,7 +526,7 @@ class ServiceProvider with ChangeNotifier {
       hideLoader();
       if (res['status'] == false || res['result'] == false) {
         if (res['message'].runtimeType == String) {
-        ErrorToast(res['message']);
+          ErrorToast(res['message']);
         } else {
           String message = '';
           res['message'].forEach((key, value) {
@@ -467,7 +554,7 @@ class ServiceProvider with ChangeNotifier {
   Future<void> getSprayHistory({bool isLoading = true}) async {
     try {
       if (isLoading) showLoader();
-      
+
       var res = await ServiceRepo().getSprayHistory();
       if (res['status'] == false || res['result'] == false) {
         if (isLoading) hideLoader();

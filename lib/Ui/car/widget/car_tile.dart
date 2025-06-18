@@ -202,6 +202,7 @@ class CarTile extends StatelessWidget {
                 onPressed: () => Get.to(() => ScheduleInspection(
                       data: {
                         "image": car.carImage!,
+                        "id": car.id,
                         "title": car.title,
                       },
                     )),

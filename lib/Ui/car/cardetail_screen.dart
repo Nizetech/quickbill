@@ -252,6 +252,7 @@ class _CardetailScreenState extends State<CardetailScreen> {
                                           model.carDetailsModel!.car!.carImage!,
                                       "title":
                                           model.carDetailsModel!.car!.title,
+                                      "id": model.carDetailsModel!.car!.id
                                     },
                                   )),
                               style: OutlinedButton.styleFrom(

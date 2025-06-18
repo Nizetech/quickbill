@@ -250,6 +250,34 @@ class ServiceProvider with ChangeNotifier {
     }
   }
 
+  Future<void> bookInspection(Map<String, dynamic> data) async {
+    try {
+      showLoader();
+      var res = await ServiceRepo().bookInspection(data);
+      log("res: $res");
+      if (res['status'] == false || res['result'] == false) {
+        hideLoader();
+        if (res['message'].runtimeType == String) {
+          ErrorToast(res['message']);
+        } else {
+          String message = '';
+          res['message'].forEach((key, value) {
+            message += '$value';
+          });
+          ErrorToast(message);
+        }
+        return;
+      }
+      hideLoader();
+      Get.back();
+      SuccessToast(res['message']);
+      notifyListeners();
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
   Future<void> buyScript(String id) async {
     try {
       showLoader();

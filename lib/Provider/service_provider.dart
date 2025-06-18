@@ -12,12 +12,15 @@ import 'package:jost_pay_wallet/Models/color_paint_mode.dart';
 import 'package:jost_pay_wallet/Models/country_model.dart';
 import 'package:jost_pay_wallet/Models/gift_card_model.dart';
 import 'package:jost_pay_wallet/Models/paymentOption.dart';
+import 'package:jost_pay_wallet/Models/script_details.dart';
+import 'package:jost_pay_wallet/Models/script_model.dart';
 import 'package:jost_pay_wallet/Models/social_section_model.dart';
 import 'package:jost_pay_wallet/Models/social_services.dart';
 import 'package:jost_pay_wallet/Models/spray_details.dart';
 import 'package:jost_pay_wallet/Models/spray_history_model.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Ui/Paint/paint_invoice_screen.dart';
+import 'package:jost_pay_wallet/Ui/Scripts/script_detail_screen.dart';
 import 'package:jost_pay_wallet/Ui/car/buy_car_success.dart';
 import 'package:jost_pay_wallet/Ui/car/cardetail_screen.dart';
 import 'package:jost_pay_wallet/Ui/giftCard/cards_option_screen.dart';
@@ -45,6 +48,8 @@ class ServiceProvider with ChangeNotifier {
   PaymentFeeModel? paymentFeeModel;
   CarListingModel? carListingModel;
   CarDetailsModel? carDetailsModel;
+  ScriptModel? scriptModel;
+  ScriptDetailModel? scriptDetailModel;
 
   String base64Image = '';
 
@@ -136,6 +141,32 @@ class ServiceProvider with ChangeNotifier {
     }
   }
 
+  Future<void> getScripts({bool isLoading = true}) async {
+    try {
+      if (isLoading) showLoader();
+      var res = await ServiceRepo().getScript();
+      if (res['status'] == false || res['result'] == false) {
+        if (isLoading) hideLoader();
+        if (res['message'].runtimeType == String) {
+          ErrorToast(res['message']);
+        } else {
+          String message = '';
+          res['message'].forEach((key, value) {
+            message += '$value';
+          });
+          ErrorToast(message);
+        }
+        return;
+      }
+      scriptModel = ScriptModel.fromJson(res);
+      if (isLoading) hideLoader();
+      notifyListeners();
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
   Future<void> getCarDetails(String id) async {
     try {
       showLoader();
@@ -164,6 +195,34 @@ class ServiceProvider with ChangeNotifier {
     }
   }
 
+  Future<void> getScriptDetails(String id, VoidCallback callback) async {
+    try {
+      showLoader();
+      var res = await ServiceRepo().getScriptDetails(id);
+      log("res: $res");
+      if (res['status'] == false || res['result'] == false) {
+        hideLoader();
+        if (res['message'].runtimeType == String) {
+          ErrorToast(res['message']);
+        } else {
+          String message = '';
+          res['message'].forEach((key, value) {
+            message += '$value';
+          });
+          ErrorToast(message);
+        }
+        return;
+      }
+      scriptDetailModel = ScriptDetailModel.fromJson(res);
+      hideLoader();
+      callback();
+      notifyListeners();
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
   Future<void> buyCar(Map<String, dynamic> data) async {
     try {
       showLoader();
@@ -182,7 +241,33 @@ class ServiceProvider with ChangeNotifier {
         }
         return;
       }
+      hideLoader();
+      Get.to(BuyCarSuccess());
+      notifyListeners();
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
 
+  Future<void> buyScript(String id) async {
+    try {
+      showLoader();
+      var res = await ServiceRepo().buyScript(id);
+      log("res: $res");
+      if (res['status'] == false || res['result'] == false) {
+        hideLoader();
+        if (res['message'].runtimeType == String) {
+          ErrorToast(res['message']);
+        } else {
+          String message = '';
+          res['message'].forEach((key, value) {
+            message += '$value';
+          });
+          ErrorToast(message);
+        }
+        return;
+      }
       hideLoader();
       Get.to(BuyCarSuccess());
       notifyListeners();

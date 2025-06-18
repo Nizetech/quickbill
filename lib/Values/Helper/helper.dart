@@ -124,7 +124,7 @@ String formatDate(DateTime dateTime) {
 }
 
 String formatDateYear(DateTime dateTime) {
-  return DateFormat('MMMM dd yyyy').format(dateTime);
+  return DateFormat('MMM dd, yyyy').format(dateTime);
 }
 
 // is today date

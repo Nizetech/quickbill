@@ -163,11 +163,54 @@ class ServiceRepo {
     }
   }
 
+  Future<Map<String, dynamic>> getScriptDetails(String id) async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response = await client.post(ApiRoute.getScriptDetails,
+          body: jsonEncode({"id": int.parse(id)}),
+          requestHeaders: {
+            'Authorization': token,
+          });
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
+  Future<Map<String, dynamic>> buyScript(String id) async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response = await client.post(ApiRoute.buyScript,
+          body: jsonEncode({"script_id": int.parse(id)}),
+          requestHeaders: {
+            'Authorization': token,
+          });
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
   Future<Map<String, dynamic>> getCarListing() async {
     String token = await box.get(kAccessToken);
     try {
       final response =
           await client.get(ApiRoute.getCarListing, requestHeaders: {
+        'Authorization': token,
+      });
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
+  Future<Map<String, dynamic>> getScript() async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response = await client.get(ApiRoute.getScript, requestHeaders: {
         'Authorization': token,
       });
       return response;

@@ -42,6 +42,9 @@ class ApiRoute {
   static String getSocialServices = 'get-social-services';
   static String getCarListing = 'marketplace/cars';
   static String getCarDetails = 'marketplace/get-car';
+  static String getScriptDetails = 'marketplace/get-script';
+  static String buyScript = 'marketplace/buy-script';
+  static String getScript = 'marketplace/scripts';
   static String buyCar = 'marketplace/buy-car';
   static String getCarTypes = 'services/spray-land';
   static String getColorPaint = 'services/spray-main';

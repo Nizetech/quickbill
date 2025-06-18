@@ -714,7 +714,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      const Pay4meScreen())),
+                                                      const PayForMeHistory())),
                                           child: Container(
                                             width: 61,
                                             height: 56.5,

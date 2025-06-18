@@ -11,6 +11,7 @@ class CustomTextField extends StatelessWidget {
   final IconData? preffixIcon;
   final String? asset;
   final bool enabled;
+  final FocusNode? focusNode;
   final VoidCallback? onTap;
   final TextEditingController? controller;
   final Function(String)? onChanged;
@@ -18,6 +19,7 @@ class CustomTextField extends StatelessWidget {
     super.key,
     required this.text,
     this.onChanged,
+    this.focusNode,
     this.enabled = false,
     this.suffixIcon,
     this.preffixIcon,
@@ -33,6 +35,7 @@ class CustomTextField extends StatelessWidget {
     final isDark = themeProvider.isDarkMode();
 
     return TextField(
+      focusNode: focusNode,
       controller: controller,
       enabled: enabled,
       onTap: onTap,

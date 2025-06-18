@@ -12,6 +12,7 @@ import 'package:jost_pay_wallet/Models/network_provider.dart';
 import 'package:jost_pay_wallet/Models/notification_model.dart';
 import 'package:jost_pay_wallet/Models/pay_for_me_history.dart';
 import 'package:jost_pay_wallet/Models/promotion_model.dart';
+import 'package:jost_pay_wallet/Models/referral_count.dart';
 import 'package:jost_pay_wallet/Models/social_boost_history_model.dart';
 import 'package:jost_pay_wallet/Models/transactions.dart';
 import 'package:jost_pay_wallet/Models/user_model.dart';
@@ -36,6 +37,7 @@ class AccountProvider with ChangeNotifier {
   DataPlansModel? dataPlansModel;
   DataHistoryModel? dataHistoryModel;
   SocialBoostHistoryModel? socialBoostHistoryModel;
+  ReferralCountModel? referralCountModel;
 
   dynamic qrcode;
   TransactionModel? _dashBoardHistory;
@@ -571,7 +573,7 @@ TransactionModel? get dashBoardHistory => _dashBoardHistory;
           }
         } else {
           if (isLoading) hideLoader();
-          transactionModel = TransactionModel.fromJson(value);
+          referralCountModel = ReferralCountModel.fromJson(value);
         }
         notifyListeners();
       });

@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -8,6 +6,7 @@ import 'package:jost_pay_wallet/Models/transactions.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyAirtimeConfirm.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyData.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/receipt_script.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
@@ -178,7 +177,6 @@ class HistoryCard extends StatelessWidget {
                   ),
               ],
             ),
-           
             const SizedBox(height: 5),
             Row(
               children: [
@@ -196,10 +194,7 @@ class HistoryCard extends StatelessWidget {
                 SizedBox(width: 5.w),
                 GestureDetector(
                   onTap: () {
-                    // Get.to(BuyAirtimeConfirm(
-                    //   phone: item.phone,
-                    //   network: item.networkName,
-                    // ));
+                    Get.to(ReceiptScreen());
                   },
                   child: Container(
                       width: 68,

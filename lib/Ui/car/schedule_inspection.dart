@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -161,7 +160,6 @@ class _ScheduleInspectionState extends State<ScheduleInspection> {
                       "schedule_at":
                           "${date.text.split("/")[2]}-${date.text.split("/")[0]}-${date.text.split("/")[1]}"
                     };
-                    log("data: $data");
                     model.bookInspection(data);
                   }
                 },

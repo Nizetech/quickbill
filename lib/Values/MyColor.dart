@@ -7,6 +7,7 @@ class MyColor {
   static const Color textGreyColor = Color(0xFFb5babe);
   static const Color darkGrey01Color = Color(0xFF2b2d35);
   static const Color boarderColor = Color(0xFF434953);
+  static const Color grey = Color(0xFF505660);
   static const Color dotBoarderColor = Color(0xFF828f99);
   static const Color greyColor = Color(0xFFaaaeb1);
   // ignore: deprecated_member_use

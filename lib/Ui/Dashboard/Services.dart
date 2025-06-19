@@ -12,6 +12,7 @@ import 'package:jost_pay_wallet/Ui/Domain/domain_screen.dart';
 import 'package:jost_pay_wallet/Ui/Paint/paint_history.dart';
 import 'package:jost_pay_wallet/Ui/Scripts/script_history.dart';
 import 'package:jost_pay_wallet/Ui/Scripts/script_screen.dart';
+import 'package:jost_pay_wallet/Ui/car/car_history.dart';
 import 'package:jost_pay_wallet/Ui/car/carsell_screen.dart';
 import 'package:jost_pay_wallet/Ui/car/repairdetail_screen.dart';
 import 'package:jost_pay_wallet/Ui/giftCard/gift_card_history.dart';
@@ -325,7 +326,8 @@ class _ServicesState extends State<Services> {
                     
                         icon: 'assets/images/car.svg',
                         title: 'Buy Cars',
-                        page: const CarsellScreen(),
+                        page: CarHistory(),
+                        // const CarsellScreen(),
                       ),
                  
                       const SizedBox(

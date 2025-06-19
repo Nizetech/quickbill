@@ -334,6 +334,20 @@ class ServiceRepo {
     }
   }
 
+  Future<Map<String, dynamic>> getCarsTransactions() async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response =
+          await client.get(ApiRoute.carsTransactions, requestHeaders: {
+        'Authorization': token,
+      });
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
 
   Future<Map<String, dynamic>> getPdfReceipt(int id) async {
     String token = await box.get(kAccessToken);

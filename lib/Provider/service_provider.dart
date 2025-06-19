@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Models/car_details.dart';
 import 'package:jost_pay_wallet/Models/car_listing.dart';
+import 'package:jost_pay_wallet/Models/car_transactions.dart';
 import 'package:jost_pay_wallet/Models/car_type_model.dart';
 import 'package:jost_pay_wallet/Models/card_model.dart';
 import 'package:jost_pay_wallet/Models/color_paint_mode.dart';
@@ -52,6 +53,7 @@ class ServiceProvider with ChangeNotifier {
   ScriptModel? scriptModel;
   ScriptDetailModel? scriptDetailModel;
   ScripTransactions? scriptTransactionsModel;
+  CarTransactions? carTransactions;
 
   String base64Image = '';
 
@@ -712,6 +714,32 @@ class ServiceProvider with ChangeNotifier {
         return;
       }
       scriptTransactionsModel = ScripTransactions.fromJson(res);
+      if (isLoading) hideLoader();
+      notifyListeners();
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+  Future<void> getCarsTransactions({bool isLoading = true}) async {
+    try {
+      if (isLoading) showLoader();
+
+      var res = await ServiceRepo().getCarsTransactions();
+      if (res['status'] == false || res['result'] == false) {
+        if (isLoading) hideLoader();
+        if (res['message'].runtimeType == String) {
+          ErrorToast(res['message']);
+        } else {
+          String message = '';
+          res['message'].forEach((key, value) {
+            message += '$value';
+          });
+          ErrorToast(message);
+        }
+        return;
+      }
+      carTransactions = CarTransactions.fromJson(res);
       if (isLoading) hideLoader();
       notifyListeners();
     } catch (e) {

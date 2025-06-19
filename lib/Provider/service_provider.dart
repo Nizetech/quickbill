@@ -14,6 +14,7 @@ import 'package:jost_pay_wallet/Models/gift_card_model.dart';
 import 'package:jost_pay_wallet/Models/paymentOption.dart';
 import 'package:jost_pay_wallet/Models/script_details.dart';
 import 'package:jost_pay_wallet/Models/script_model.dart';
+import 'package:jost_pay_wallet/Models/script_transactions.dart';
 import 'package:jost_pay_wallet/Models/social_section_model.dart';
 import 'package:jost_pay_wallet/Models/social_services.dart';
 import 'package:jost_pay_wallet/Models/spray_details.dart';
@@ -50,6 +51,7 @@ class ServiceProvider with ChangeNotifier {
   CarDetailsModel? carDetailsModel;
   ScriptModel? scriptModel;
   ScriptDetailModel? scriptDetailModel;
+  ScripTransactions? scriptTransactionsModel;
 
   String base64Image = '';
 
@@ -683,6 +685,33 @@ class ServiceProvider with ChangeNotifier {
         return;
       }
       sprayHistoryModel = SprayHistoryModel.fromJson(res);
+      if (isLoading) hideLoader();
+      notifyListeners();
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
+  Future<void> getScriptTransactions({bool isLoading = true}) async {
+    try {
+      if (isLoading) showLoader();
+
+      var res = await ServiceRepo().getScriptTransactions();
+      if (res['status'] == false || res['result'] == false) {
+        if (isLoading) hideLoader();
+        if (res['message'].runtimeType == String) {
+          ErrorToast(res['message']);
+        } else {
+          String message = '';
+          res['message'].forEach((key, value) {
+            message += '$value';
+          });
+          ErrorToast(message);
+        }
+        return;
+      }
+      scriptTransactionsModel = ScripTransactions.fromJson(res);
       if (isLoading) hideLoader();
       notifyListeners();
     } catch (e) {

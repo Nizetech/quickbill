@@ -7,13 +7,11 @@ import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:provider/provider.dart';
 
 class ServiceTile extends StatelessWidget {
-  final VoidCallback onTap;
   final Widget page;
   final String icon, title;
   final bool isTransform;
   const ServiceTile({
     super.key,
-    required this.onTap,
     required this.page,
     required this.icon,
     this.isTransform = false,

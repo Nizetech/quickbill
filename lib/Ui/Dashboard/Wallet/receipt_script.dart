@@ -1,23 +1,39 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:jost_pay_wallet/Provider/account_provider.dart';
+import 'package:intl/intl.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
+import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/common/button.dart';
 import 'package:provider/provider.dart';
 
 class ReceiptScreen extends StatefulWidget {
-  const ReceiptScreen({super.key});
+  final String referenceNo, date, serviceDetails, amount, id, status;
+
+  final String? description;
+  const ReceiptScreen({
+    super.key,
+    this.description,
+    required this.status,
+    required this.referenceNo,
+    required this.date,
+    required this.serviceDetails,
+    required this.amount,
+    required this.id,
+  });
 
   @override
   State<ReceiptScreen> createState() => _ReceiptScreenState();
 }
 
 class _ReceiptScreenState extends State<ReceiptScreen> {
+
+
   @override
   Widget build(BuildContext context) {
+    log("Receipt Screen: ${widget.referenceNo.runtimeType}");
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     final theme = Theme.of(context).colorScheme;
     return Scaffold(
@@ -66,13 +82,19 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                           color: theme.tertiary,
                         )),
                     SizedBox(width: 5),
+
                     Icon(
-                      Icons.check_circle,
-                      color: MyColor.greenColor,
+                      widget.status == "1" ? Icons.check_circle : Icons.error,
+                      color: widget.status == "1"
+                          ? MyColor.greenColor
+                          : MyColor.redColor,
                     )
                   ],
                 ),
-                Text("Your payment was successful",
+                Text(
+                    widget.status == "1"
+                        ? "Your payment was successful"
+                        : "Your payment was not successful",
                     style: MyStyle.tx14Grey.copyWith(
                       fontWeight: FontWeight.w300,
                       color: MyColor.grey,
@@ -99,7 +121,7 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                         )),
                     SizedBox(width: 20),
                     Expanded(
-                      child: Text("iohhohiohp",
+                      child: Text(widget.referenceNo,
                           textAlign: TextAlign.end,
                           style: MyStyle.tx18Black.copyWith(
                             fontWeight: FontWeight.w600,
@@ -130,7 +152,9 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                         )),
                     SizedBox(width: 20),
                     Expanded(
-                      child: Text("03/06/2025-12:00AM",
+                      child: Text(
+                          DateFormat('dd/MM/yyyy - hh:mm a')
+                              .format(DateTime.parse(widget.date)),
                           textAlign: TextAlign.end,
                           style: MyStyle.tx18Black.copyWith(
                             fontWeight: FontWeight.w600,
@@ -168,7 +192,7 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 10),
                     child: Text(
-                      "1 Web Hosting",
+                      widget.serviceDetails,
                       style: MyStyle.tx14Grey.copyWith(
                         fontSize: 16,
                         color: MyColor.grey,
@@ -176,7 +200,8 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                       ),
                     ),
                   ),
-                  _divider(),
+                  if (widget.description != null) ...[
+                    _divider(),
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 10),
@@ -191,7 +216,7 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                             )),
                         SizedBox(width: 20),
                         Expanded(
-                          child: Text("1 year of web hosting",
+                            child: Text(widget.description!,
                               textAlign: TextAlign.end,
                               style: MyStyle.tx18Black.copyWith(
                                 fontWeight: FontWeight.w600,
@@ -201,7 +226,8 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                         ),
                       ],
                     ),
-                  ),
+                    ),
+                  ],
                   _divider(),
                   Padding(
                     padding: const EdgeInsets.symmetric(
@@ -217,7 +243,7 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                             )),
                         SizedBox(width: 20),
                         Expanded(
-                          child: Text("50,000",
+                          child: Text(formatNumber(num.parse(widget.amount)),
                               textAlign: TextAlign.end,
                               style: MyStyle.tx18Black.copyWith(
                                 fontWeight: FontWeight.w600,
@@ -255,7 +281,7 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                         )),
                     SizedBox(width: 20),
                     Expanded(
-                      child: Text("50,000",
+                      child: Text(formatNumber(num.parse(widget.amount)),
                           textAlign: TextAlign.end,
                           style: MyStyle.tx18Black.copyWith(
                             fontWeight: FontWeight.w600,

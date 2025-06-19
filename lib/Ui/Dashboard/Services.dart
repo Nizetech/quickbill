@@ -10,6 +10,7 @@ import 'package:jost_pay_wallet/Ui/Dashboard/Buy/data_history.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/service_tile.dart';
 import 'package:jost_pay_wallet/Ui/Domain/domain_screen.dart';
 import 'package:jost_pay_wallet/Ui/Paint/paint_history.dart';
+import 'package:jost_pay_wallet/Ui/Scripts/script_history.dart';
 import 'package:jost_pay_wallet/Ui/Scripts/script_screen.dart';
 import 'package:jost_pay_wallet/Ui/car/carsell_screen.dart';
 import 'package:jost_pay_wallet/Ui/car/repairdetail_screen.dart';
@@ -99,7 +100,7 @@ class _ServicesState extends State<Services> {
                         children: [
                  
                           ServiceTile(
-                            onTap: () {},
+                        
                             icon: 'assets/images/svg/airtime.svg',
                             title: 'Buy Airtime',
                             isTransform: true,
@@ -107,7 +108,7 @@ class _ServicesState extends State<Services> {
                           ),
                           const Spacer(),
                           ServiceTile(
-                            onTap: () {},
+                        
                             icon: 'assets/images/data.svg',
                             title: 'Buy Data',
                             isTransform: true,
@@ -162,7 +163,7 @@ class _ServicesState extends State<Services> {
                       Row(
                         children: [
                           ServiceTile(
-                            onTap: () {},
+                        
                             icon: 'assets/images/money.svg',
                             title: 'Try Pay4me',
                             page: const PayForMeHistory(),
@@ -170,7 +171,7 @@ class _ServicesState extends State<Services> {
                      
                           const Spacer(),
                           ServiceTile(
-                            onTap: () {},
+                        
                             icon: 'assets/images/giftcard.svg',
                             title: 'Buy Gift Card',
                             page: const GiftCardHistory(),
@@ -226,7 +227,7 @@ class _ServicesState extends State<Services> {
                       Row(
                         children: [
                           ServiceTile(
-                            onTap: () {},
+                        
                             icon: 'assets/images/domain.svg',
                             title: 'Buy Domain',
                             page: const DomainScreen(),
@@ -234,7 +235,7 @@ class _ServicesState extends State<Services> {
                      
                           const Spacer(),
                           ServiceTile(
-                            onTap: () {},
+                        
                             icon: 'assets/images/boost.svg',
                             title: 'Try Social Boost',
                             page: const SocialBoostHistory(),
@@ -247,10 +248,11 @@ class _ServicesState extends State<Services> {
                         height: 23,
                       ),
                       ServiceTile(
-                        onTap: () {},
+                    
                         icon: 'assets/images/script.svg',
                         title: 'Buy Scripts',
-                        page: const ScriptScreen(),
+                        page: ScriptHistory(),
+                        // const ScriptScreen(),
                       ),
                  
                       const SizedBox(
@@ -300,7 +302,7 @@ class _ServicesState extends State<Services> {
                       Row(
                         children: [
                           ServiceTile(
-                            onTap: () {},
+                        
                             icon: 'assets/images/svg/repair.svg',
                             title: 'Automobile & Repairs',
                             page: const RepairdetailScreen(),
@@ -308,7 +310,7 @@ class _ServicesState extends State<Services> {
                     
                           const Spacer(),
                           ServiceTile(
-                            onTap: () {},
+                        
                             icon: 'assets/images/svg/spray.svg',
                             title: 'Automobile & Repairs',
                             page: const PaintHistory(),
@@ -320,7 +322,7 @@ class _ServicesState extends State<Services> {
                         height: 23,
                       ),
                       ServiceTile(
-                        onTap: () {},
+                    
                         icon: 'assets/images/car.svg',
                         title: 'Buy Cars',
                         page: const CarsellScreen(),

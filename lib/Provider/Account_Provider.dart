@@ -419,11 +419,11 @@ TransactionModel? get dashBoardHistory => _dashBoardHistory;
     try {
       showLoader();
       AccountRepo().buyData(data).then((value) async {
-        if (value['result'] == null) {
+        if (value['result'] == null|| value['result'] == false) {
           hideLoader();
           Get.to(InvalidPurchase());
         }
-        if (value['status'] == false || value['result'] == false) {
+        if ( value['result'] =='pending') {
           hideLoader();
           // ErrorToast(value['message']);
           Get.to(PendingPurchase(

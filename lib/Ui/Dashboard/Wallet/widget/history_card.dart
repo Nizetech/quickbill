@@ -75,34 +75,35 @@ class HistoryCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  if (transaction.type != null &&
-                      transaction.type != Type.DATA &&
-                      transaction.type != Type.AIRTIME)
-                    Text(
-                      transaction.type!.name.capitalizeFirst!,
-                      style: MyStyle.tx14Grey.copyWith(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 12.sp,
-                          color: themeProvider.isDarkMode()
-                              ? const Color(0XFFCBD2EB)
-                              : const Color(0xff30333A)),
-                    ),
-                  if (transaction.type == Type.DATA ||
-                      transaction.type == Type.AIRTIME)
-                    Text(
-                      '${getOperator(transaction).toUpperCase()} - ${transaction.type!.name.capitalizeFirst!}',
-                      style: MyStyle.tx14Grey.copyWith(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 12.sp,
-                          color: themeProvider.isDarkMode()
-                              ? const Color(0XFFCBD2EB)
-                              : const Color(0xff30333A)),
-                    ),
-                ],
-              ),
-              const SizedBox(height: 5),
+              if (transaction.type != Type.DATA &&
+                  transaction.type != Type.AIRTIME)
+                Text(
+                  transaction.type != null
+                      ? transaction.type!.name.capitalizeFirst!
+                      : transaction.details!,
+                  // transaction.type!.name.capitalizeFirst!,
+                  style: MyStyle.tx14Grey.copyWith(
+                      fontWeight: FontWeight.w400,
+                      overflow: TextOverflow.ellipsis,
+                      fontSize: 12.sp,
+                      color: themeProvider.isDarkMode()
+                          ? const Color(0XFFCBD2EB)
+                          : const Color(0xff30333A)),
+                ),
+              if (transaction.type == Type.DATA ||
+                  transaction.type == Type.AIRTIME)
+                Text(
+                  '${getOperator(transaction).toUpperCase()} - ${transaction.type!.name.capitalizeFirst!}',
+                  style: MyStyle.tx14Grey.copyWith(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 12.sp,
+                      color: themeProvider.isDarkMode()
+                          ? const Color(0XFFCBD2EB)
+                          : const Color(0xff30333A)),
+                ),
+              if (transaction.reference != null &&
+                  transaction.reference!.isNotEmpty) ...[
+                const SizedBox(height: 5),
               Text(
                 transaction.reference!,
                 style: MyStyle.tx14Grey.copyWith(
@@ -111,7 +112,8 @@ class HistoryCard extends StatelessWidget {
                     color: themeProvider.isDarkMode()
                         ? const Color(0XFFCBD2EB)
                         : const Color(0xff30333A)),
-              ),
+                ),
+              ],
               //  Clipboard.setData(const ClipboardData(
               //                     text: "420516-51443-7897-SPR"));
               //                 Fluttertoast.showToast(
@@ -139,6 +141,7 @@ class HistoryCard extends StatelessWidget {
             ],
           ),
         ),
+        SizedBox(width: 20.w),
         Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           mainAxisSize: MainAxisSize.min,
@@ -194,7 +197,20 @@ class HistoryCard extends StatelessWidget {
                 SizedBox(width: 5.w),
                 GestureDetector(
                   onTap: () {
-                    Get.to(ReceiptScreen());
+                    Get.to(ReceiptScreen(
+                      status: transaction.status!,
+                      id: '',
+                      serviceDetails: transaction.type == Type.DATA ||
+                              transaction.type == Type.AIRTIME
+                          ? '${getOperator(transaction).toUpperCase()} - ${transaction.type!.name.capitalizeFirst!}'
+                          : transaction.type != null
+                              ? transaction.type!.name.capitalizeFirst!
+                              : transaction.details!,
+                      referenceNo: transaction.reference!,
+                      amount: transaction.amount!,
+                      description: transaction.details!,
+                      date: transaction.transDate!.toString(),
+                    ));
                   },
                   child: Container(
                       width: 68,

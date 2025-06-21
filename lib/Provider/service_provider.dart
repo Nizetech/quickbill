@@ -22,7 +22,6 @@ import 'package:jost_pay_wallet/Models/spray_details.dart';
 import 'package:jost_pay_wallet/Models/spray_history_model.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Ui/Paint/paint_invoice_screen.dart';
-import 'package:jost_pay_wallet/Ui/Scripts/script_detail_screen.dart';
 import 'package:jost_pay_wallet/Ui/car/buy_car_success.dart';
 import 'package:jost_pay_wallet/Ui/car/cardetail_screen.dart';
 import 'package:jost_pay_wallet/Ui/giftCard/cards_option_screen.dart';

@@ -7,6 +7,13 @@ import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyAirtimeConfirm.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyData.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/receipt_script.dart';
+import 'package:jost_pay_wallet/Ui/Paint/paint_history.dart';
+import 'package:jost_pay_wallet/Ui/Paint/widget/spray_history.dart';
+import 'package:jost_pay_wallet/Ui/Scripts/script_history.dart';
+import 'package:jost_pay_wallet/Ui/car/repairdetail_screen.dart';
+import 'package:jost_pay_wallet/Ui/giftCard/gift_card_history.dart';
+import 'package:jost_pay_wallet/Ui/pay4me/pay4me_history.dart';
+import 'package:jost_pay_wallet/Ui/promotions/social_boost_history.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
@@ -105,14 +112,14 @@ class HistoryCard extends StatelessWidget {
               if (transaction.reference != null &&
                   transaction.reference!.isNotEmpty) ...[
                 const SizedBox(height: 5),
-              Text(
-                transaction.reference!,
-                style: MyStyle.tx14Grey.copyWith(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12.sp,
-                    color: themeProvider.isDarkMode()
-                        ? const Color(0XFFCBD2EB)
-                        : const Color(0xff30333A)),
+                Text(
+                  transaction.reference!,
+                  style: MyStyle.tx14Grey.copyWith(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 12.sp,
+                      color: themeProvider.isDarkMode()
+                          ? const Color(0XFFCBD2EB)
+                          : const Color(0xff30333A)),
                 ),
               ],
               //  Clipboard.setData(const ClipboardData(
@@ -158,8 +165,10 @@ class HistoryCard extends StatelessWidget {
                           ? const Color(0XFFCBD2EB)
                           : const Color(0xff30333A)),
                 ),
-                if (transaction.type == Type.DATA ||
-                    transaction.type == Type.AIRTIME)
+                if (transaction.type != Type.DEPOSIT
+                    // ||
+                    //     transaction.type == Type.AIRTIME
+                    )
                   GestureDetector(
                     onTap: () {
                       if (transaction.type == Type.DATA) {
@@ -167,12 +176,25 @@ class HistoryCard extends StatelessWidget {
                           phone: getPhone(transaction),
                           network: getOperator(transaction),
                         ));
-                      } else {
+                      } else if (transaction.type == Type.AIRTIME) {
                         Get.to(BuyAirtimeConfirm(
                           phone: getPhone(transaction),
                           network: getOperator(transaction),
                           amount: transaction.amount,
                         ));
+                      }
+                     else if (transaction.type == Type.SCRIPT) {
+                        Get.to(ScriptHistory());
+                      } else if (transaction.type == Type.GIFTCARD) {
+                        Get.to(GiftCardHistory());
+                      } else if (transaction.type == Type.PAY4_ME) {
+                        Get.to(PayForMeHistory());
+                      } else if (transaction.type == Type.SOCIALBOOST) {
+                        Get.to(SocialBoostHistory());
+                      } else if (transaction.type == Type.SPRAY) {
+                        Get.to(PaintHistory());
+                      } else {
+                        Get.to(RepairdetailScreen());
                       }
                     },
                     child: Padding(
@@ -202,20 +224,20 @@ class HistoryCard extends StatelessWidget {
                       ErrorToast(
                           'No receipt available yet. Your order has not been completed.');
                     } else {
-                    Get.to(ReceiptScreen(
-                      status: transaction.status!,
-                      id: '',
-                      serviceDetails: transaction.type == Type.DATA ||
-                              transaction.type == Type.AIRTIME
-                          ? '${getOperator(transaction).toUpperCase()} - ${transaction.type!.name.capitalizeFirst!}'
-                          : transaction.type != null
-                              ? transaction.type!.name.capitalizeFirst!
-                              : transaction.details!,
-                      referenceNo: transaction.reference!,
-                      amount: transaction.amount!,
-                      description: transaction.details!,
-                      date: transaction.transDate!.toString(),
-                    ));
+                      Get.to(ReceiptScreen(
+                        status: transaction.status!,
+                        id: '',
+                        serviceDetails: transaction.type == Type.DATA ||
+                                transaction.type == Type.AIRTIME
+                            ? '${getOperator(transaction).toUpperCase()} - ${transaction.type!.name.capitalizeFirst!}'
+                            : transaction.type != null
+                                ? transaction.type!.name.capitalizeFirst!
+                                : transaction.details!,
+                        referenceNo: transaction.reference!,
+                        amount: transaction.amount!,
+                        description: transaction.details!,
+                        date: transaction.transDate!.toString(),
+                      ));
                     }
                   },
                   child: Container(

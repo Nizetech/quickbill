@@ -174,16 +174,21 @@ class _ScriptHistoryState extends State<ScriptHistory> {
                                                       TextOverflow.ellipsis,
                                                   color: themedata.tertiary),
                                             ),
-                                            const SizedBox(
-                                              height: 4,
-                                            ),
-                                            Text(
-                                              item.activeCode ?? "",
-                                              maxLines: 1,
-                                              style: MyStyle.tx12Black.copyWith(
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  color: themedata.tertiary),
+                                            if (item.activeCode != null &&
+                                                item.activeCode!.isNotEmpty)
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 4),
+                                                child: Text(
+                                                  item.activeCode ?? "",
+                                                  maxLines: 1,
+                                                  style: MyStyle.tx12Black
+                                                      .copyWith(
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          color: themedata
+                                                              .tertiary),
+                                                ),
                                             ),
                                             const SizedBox(
                                               height: 4,

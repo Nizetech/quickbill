@@ -8,11 +8,13 @@ import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyAirtimeConfirm.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyData.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/widget/balance_action_card.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/receipt_script.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/utils.dart';
 import 'package:jost_pay_wallet/common/status_view_receipt.dart';
+import 'package:jost_pay_wallet/utils/toast.dart';
 import 'package:provider/provider.dart';
 
 class DataHistory extends StatefulWidget {
@@ -170,6 +172,16 @@ class _DataHistoryState extends State<DataHistory> {
                                           height: 4,
                                         ),
                                         Text(
+                                          item.reference!,
+                                          maxLines: 1,
+                                          style: MyStyle.tx12Black.copyWith(
+                                              overflow: TextOverflow.ellipsis,
+                                              color: themedata.tertiary),
+                                        ),
+                                        const SizedBox(
+                                          height: 4,
+                                        ),
+                                        Text(
                                           formatDateTime(
                                             item.createdAt!,
                                           ),
@@ -218,7 +230,23 @@ class _DataHistoryState extends State<DataHistory> {
                                           ),
                                           StatusViewReceipt(
                                             status: item.status!,
-                                            onTap: () {},
+                                            onTap: () {
+                                              if (item.status != '1') {
+                                                ErrorToast(
+                                                    'No receipt available yet. Your order has not been completed.');
+                                              } else {
+                                                Get.to(ReceiptScreen(
+                                                  status: item.status!,
+                                                  id: '',
+                                                  serviceDetails:
+                                                      "${item.phone!} - ${item.networkName!}",
+                                                  referenceNo: item.reference!,
+                                                  amount: item.amount!,
+                                                  date: item.updatedAt!
+                                                      .toString(),
+                                                ));
+                                              }
+                                            },
                                           ),
                                         ])
                                   ],

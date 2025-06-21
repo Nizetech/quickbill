@@ -58,14 +58,18 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
           ),
           SizedBox(height: 10),
           Text("JostPay Limited (RC: 1152230, Tax-ID: 18912605-0001)",
+              textAlign: TextAlign.center,
               style: MyStyle.tx14Black.copyWith(
                 color: theme.tertiary,
+                fontSize: 12,
                 fontStyle: FontStyle.italic,
               )),
           // SizedBox(height: 5),
           Text("Okun-Ajah Community Rd, Eti-Osa 106104, Lagos, Nigeria.",
+              textAlign: TextAlign.center,
               style: MyStyle.tx14Grey.copyWith(
                 fontWeight: FontWeight.w300,
+                fontSize: 12,
                 color: MyColor.grey,
               )),
           SizedBox(height: 10),
@@ -169,93 +173,106 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
           ),
 
           SizedBox(height: 7),
-          _wrap(
-              hasPadding: false,
-              themeProvider: themeProvider,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
-                    child: Text(
-                      "# Service Details",
-                      style: MyStyle.tx14Grey.copyWith(
-                        fontSize: 16,
-                        color: MyColor.grey,
-                        fontWeight: FontWeight.w400,
+          Stack(
+            children: [
+              _wrap(
+                  hasPadding: false,
+                  themeProvider: themeProvider,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 10),
+                        child: Text(
+                          "# Service Details",
+                          style: MyStyle.tx14Grey.copyWith(
+                            fontSize: 16,
+                            color: MyColor.grey,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  _divider(),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
-                    child: Text(
-                      widget.serviceDetails,
-                      style: MyStyle.tx14Grey.copyWith(
-                        fontSize: 16,
-                        color: MyColor.grey,
-                        fontWeight: FontWeight.w400,
+                      _divider(),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 10),
+                        child: Text(
+                          widget.serviceDetails,
+                          style: MyStyle.tx14Grey.copyWith(
+                            fontSize: 16,
+                            color: MyColor.grey,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  if (widget.description != null) ...[
-                    _divider(),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("Description",
-                            style: MyStyle.tx14Grey.copyWith(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              color: MyColor.grey,
-                            )),
-                        SizedBox(width: 20),
-                        Expanded(
-                            child: Text(widget.description!,
-                              textAlign: TextAlign.end,
-                              style: MyStyle.tx18Black.copyWith(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 15,
-                                color: theme.tertiary,
-                              )),
+                      if (widget.description != null) ...[
+                        _divider(),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text("Description",
+                                  style: MyStyle.tx14Grey.copyWith(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                    color: MyColor.grey,
+                                  )),
+                              SizedBox(width: 20),
+                              Expanded(
+                                child: Text(widget.description!,
+                                    textAlign: TextAlign.end,
+                                    style: MyStyle.tx18Black.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 15,
+                                      color: theme.tertiary,
+                                    )),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
-                    ),
-                    ),
-                  ],
-                  _divider(),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("Amount",
-                            style: MyStyle.tx14Grey.copyWith(
-                              fontSize: 16,
-                              color: MyColor.grey,
-                              fontWeight: FontWeight.w400,
-                            )),
-                        SizedBox(width: 20),
-                        Expanded(
-                          child: Text(formatNumber(num.parse(widget.amount)),
-                              textAlign: TextAlign.end,
-                              style: MyStyle.tx18Black.copyWith(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 15,
-                                color: theme.tertiary,
-                              )),
+                      _divider(),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("Amount",
+                                style: MyStyle.tx14Grey.copyWith(
+                                  fontSize: 16,
+                                  color: MyColor.grey,
+                                  fontWeight: FontWeight.w400,
+                                )),
+                            SizedBox(width: 20),
+                            Expanded(
+                              child:
+                                  Text(formatNumber(num.parse(widget.amount)),
+                                      textAlign: TextAlign.end,
+                                      style: MyStyle.tx18Black.copyWith(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 15,
+                                        color: theme.tertiary,
+                                      )),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
-                ],
-              )),
+                      ),
+                    ],
+                  )),
+              Positioned(
+                right: 10,
+                child: Image.asset(
+                  'assets/images/stamp.png',
+                  height: 80,
+                  width: 80,
+                ),
+              )
+            ],
+          ),
           SizedBox(height: 7),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -319,8 +336,10 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
           SizedBox(height: 10),
           CustomButton(
             radius: 50,
-            text: 'Share Receipt',
-            onTap: () {},
+            text: 'Go back',
+            onTap: () {
+              Navigator.pop(context);
+            },
           )
         ]),
       ),
@@ -335,7 +354,7 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
         ),
       );
 
-  _wrap({
+Widget _wrap({
     required ThemeProvider themeProvider,
     required Widget child,
     bool hasPadding = true,

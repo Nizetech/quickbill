@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/widget/balance_action_card.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/receipt_script.dart';
 import 'package:jost_pay_wallet/Ui/pay4me/pay4me_screen.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
@@ -170,6 +171,16 @@ class _PayForMeHistoryState extends State<PayForMeHistory> {
                                             height: 4,
                                           ),
                                           Text(
+                                            item.reference ?? "",
+                                            maxLines: 1,
+                                            style: MyStyle.tx12Black.copyWith(
+                                                overflow: TextOverflow.ellipsis,
+                                                color: themedata.tertiary),
+                                          ),
+                                          const SizedBox(
+                                            height: 4,
+                                          ),
+                                          Text(
                                             formatDateTime(
                                               DateTime.parse(item.createdAt!),
                                             ),
@@ -201,7 +212,20 @@ class _PayForMeHistoryState extends State<PayForMeHistory> {
                                             ),
                                             StatusViewReceipt(
                                               status: item.status!,
-                                              onTap: () {},
+                                              onTap: () {
+                                                Get.to(ReceiptScreen(
+                                                  status: item.status!,
+                                                  id: '',
+                                                  serviceDetails:
+                                                      item.invoiceLink!,
+                                                  referenceNo: item.reference!,
+                                                  amount: item.amount!,
+                                                  description:
+                                                      item.paymentOption!,
+                                                  date: item.updatedAt!
+                                                      .toString(),
+                                                ));
+                                              },
                                             ),
                                           ])
                                     ],

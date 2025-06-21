@@ -176,6 +176,17 @@ class _SocialBoostHistoryState extends State<SocialBoostHistory> {
                                               height: 4,
                                             ),
                                             Text(
+                                              item.reference ?? "",
+                                              maxLines: 1,
+                                              style: MyStyle.tx12Black.copyWith(
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  color: themedata.tertiary),
+                                            ),
+                                            const SizedBox(
+                                              height: 4,
+                                            ),
+                                            Text(
                                               formatDateTime(
                                                 item.createdAt!,
                                               ),

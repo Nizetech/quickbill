@@ -375,34 +375,62 @@ TransactionModel? get dashBoardHistory => _dashBoardHistory;
     try {
       showLoader();
       AccountRepo().buyAirtime(data).then((value) async {
-        if (value['result'] == null) {
           hideLoader();
-          Get.to(InvalidPurchase());
-        }
-        if (value['status'] == false || value['result'] == false) {
-          hideLoader();
-
-          Get.to(PendingPurchase(
-            isData: false,
-            amount: data['amount'],
-            phone: data['phone'],
-          ));
-          if (value['message'].runtimeType == String) {
-            ErrorToast(value['message']);
+        if (value['result'] == null || value['result'] == false) {
+          if (value['message'].toString().toLowerCase().contains('fail')) {
+            Get.to(PendingPurchase(
+              isData: true,
+              isFailed: true,
+              amount: data['amount'],
+              phone: data['phone'],
+            ));
           } else {
-            String message = '';
-            value['message'].forEach((key, value) {
-              message += '$value';
-            });
-            ErrorToast(message);
+            Get.to(InvalidPurchase());
           }
-        } else {
-          hideLoader();
+        }else{
+
+        // }
+        // if (value['status'] == false || value['result'] == false) {
+        //   hideLoader();
+
+        //   Get.to(PendingPurchase(
+        //     isData: false,
+        //     amount: data['amount'],
+        //     phone: data['phone'],
+        //   ));
+        //   if (value['message'].runtimeType == String) {
+        //     ErrorToast(value['message']);
+        //   } else {
+        //     String message = '';
+        //     value['message'].forEach((key, value) {
+        //       message += '$value';
+        //     });
+        //     ErrorToast(message);
+        //   }
+        // }
+         if(value['message'].toString().toLowerCase().contains('pending')){
+            Get.to(PendingPurchase(
+              isData: true,
+              amount: data['amount'],
+              phone: data['phone'],
+            ));
+             } else if (value['message']
+              .toString()
+              .toLowerCase()
+              .contains('failed')) {
+            Get.to(PendingPurchase(
+              isData: true,
+              isFailed: true,
+              amount: data['amount'],
+              phone: data['phone'],
+            ));
+          }else{
           Get.to(BuyDataSuccess(
             isData: false,
             amount: data['amount'],
             phone: data['phone'],
           ));
+          }
         }
 
         notifyListeners();
@@ -419,25 +447,43 @@ TransactionModel? get dashBoardHistory => _dashBoardHistory;
     try {
       showLoader();
       AccountRepo().buyData(data).then((value) async {
+          hideLoader();
+          log('Value:==> $value');
         if (value['result'] == null|| value['result'] == false) {
-          hideLoader();
-          Get.to(InvalidPurchase());
-        }
-        if ( value['result'] =='pending') {
-          hideLoader();
-          // ErrorToast(value['message']);
-          Get.to(PendingPurchase(
-            isData: true,
-            amount: data['amount'],
-            phone: data['phone'],
-          ));
-        } else {
-          hideLoader();
+           if(value['message'].toString().toLowerCase().contains('failed')){
+            Get.to(PendingPurchase(
+              isData: true,
+              isFailed: true,
+              amount:'',
+              phone: '',
+            ));
+          }else{
+            Get.to(InvalidPurchase());
+          }
+        }else{
+          if(value['message'].toString().toLowerCase().contains('pending')){
+            Get.to(PendingPurchase(
+              isData: true,
+              amount: data['amount'],
+              phone: data['phone'],
+            ));
+          } else if (value['message']
+              .toString()
+              .toLowerCase()
+              .contains('fail')) {
+            Get.to(PendingPurchase(
+              isData: true,
+              isFailed: true,
+              amount: '',
+              phone: '',
+            ));
+
+          }else{
           Get.to(BuyDataSuccess(
             isData: true,
             amount: amount,
             phone: data['phone'],
-          ));
+          ));        }
         }
         notifyListeners();
       });

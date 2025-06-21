@@ -228,9 +228,8 @@ class _ServicesState extends State<Services> {
                       Row(
                         children: [
                           ServiceTile(
-                        
                             icon: 'assets/images/domain.svg',
-                            title: 'Buy Domain',
+                            title: 'Web Hosting',
                             page: const DomainScreen(),
                           ),
                      
@@ -305,7 +304,7 @@ class _ServicesState extends State<Services> {
                           ServiceTile(
                         
                             icon: 'assets/images/svg/repair.svg',
-                            title: 'Automobile & Repairs',
+                            title: 'Vehicle Repairs',
                             page: const RepairdetailScreen(),
                           ),
                     
@@ -313,7 +312,7 @@ class _ServicesState extends State<Services> {
                           ServiceTile(
                         
                             icon: 'assets/images/svg/spray.svg',
-                            title: 'Automobile & Repairs',
+                            title: 'Paint & Spray',
                             page: const PaintHistory(),
                           ),
                  

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
-import 'package:jost_pay_wallet/common/button.dart';
 
 import '../../../bottom_nav.dart';
 
@@ -10,9 +9,11 @@ class PendingPurchase extends StatefulWidget {
   final bool isData;
   final String amount;
   final String phone;
+  final bool isFailed;
   const PendingPurchase(
       {super.key,
       this.isData = true,
+      this.isFailed = false,
       required this.amount,
       required this.phone});
 
@@ -46,8 +47,14 @@ class _PendingPurchaseState extends State<PendingPurchase> {
                   decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.tertiary,
                       borderRadius: BorderRadius.circular(100),
-                      gradient: const LinearGradient(
-                        colors: [
+                      gradient: LinearGradient(
+                        colors: widget.isFailed
+                            ? [
+                                MyColor.redColor,
+                                const Color(0xFFF7786F),
+                              ]
+                            : [
+
                           MyColor.orange01Color,
                           MyColor.yellowColor,
                         ],
@@ -58,16 +65,21 @@ class _PendingPurchaseState extends State<PendingPurchase> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
+                        widget.isFailed
+                            ? 'Transaction Failed'
+                            :
                         'Purchase Pending',
                         style: MyStyle.tx16White.copyWith(
                             fontWeight: FontWeight.bold, fontSize: 20),
                       ),
-                      const CircleAvatar(
+                      CircleAvatar(
                         radius: 20,
                         backgroundColor: Colors.white,
                         child: Icon(
                           Icons.info,
-                          color: MyColor.orange01Color,
+                          color: widget.isFailed
+                              ? MyColor.redColor
+                              : MyColor.orange01Color,
                         ),
                       ),
                     ],
@@ -76,6 +88,9 @@ class _PendingPurchaseState extends State<PendingPurchase> {
                 height: 40,
               ),
               Text(
+                widget.isFailed
+                    ? "Please check your phone number and network selection, then try again."
+                    :
                 "Purchase pending. Awaiting network confirmation. You’ll be updated once successful or refunded if it fails. Thanks for your patience.",
                 textAlign: TextAlign.center,
                 style: MyStyle.tx18Black.copyWith(
@@ -86,12 +101,23 @@ class _PendingPurchaseState extends State<PendingPurchase> {
               const SizedBox(
                 height: 32,
               ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.3,
-                child: CustomButton(
-                  onTap: () => Get.offAll(BottomNav()),
-                  text: 'Got It',
+              OutlinedButton(
+                onPressed: () => Get.offAll(BottomNav()),
+                style: OutlinedButton.styleFrom(
+                  side: const BorderSide(
+                    color: MyColor.splashBtn,
+                    width: 1.0,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                 ),
+                child: Text(
+                  'Got It',
+                  style:
+                      MyStyle.tx16Green.copyWith(fontWeight: FontWeight.w600),
+                ),
+              
               )
             ],
           ),

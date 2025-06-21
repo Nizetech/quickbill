@@ -120,6 +120,7 @@ class _CarHistoryState extends State<CarHistory> {
                         await model.getCarsTransactions();
                       },
                       child: ListView.builder(
+                       
                           itemCount:
                               model.carTransactions!.transactions!.length,
                           shrinkWrap: true,
@@ -174,6 +175,22 @@ class _CarHistoryState extends State<CarHistory> {
                                                       TextOverflow.ellipsis,
                                                   color: themedata.tertiary),
                                             ),
+                                            if (item.reference != null &&
+                                                item.reference!.isNotEmpty)
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 4),
+                                                child: Text(
+                                                  item.reference ?? "",
+                                                  maxLines: 1,
+                                                  style: MyStyle.tx12Black
+                                                      .copyWith(
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          color: themedata
+                                                              .tertiary),
+                                                ),
+                                              ),
                                             const SizedBox(
                                               height: 4,
                                             ),

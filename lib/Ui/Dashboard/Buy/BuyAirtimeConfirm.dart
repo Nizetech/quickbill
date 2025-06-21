@@ -152,6 +152,7 @@ class _BuyAirtimeConfirmState extends State<BuyAirtimeConfirm> {
                         const SizedBox(
                           height: 8,
                         ),
+                        if (model.networkProviderModel != null)
                         SizedBox(
                             height: 90,
                             child: ListView.separated(

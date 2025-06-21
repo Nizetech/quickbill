@@ -58,10 +58,10 @@ class AppInterceptors extends Interceptor {
             (response.data as String).toLowerCase().contains("doctype") ||
         response.statusCode == 500) {
       CancelLoading().cancelLoading();
+      Get.offAll(SignInScreen());
       ErrorToast(
           "Invalid response recieved, logging out and redirecting to login page");
 
-      Get.offAll(SignInScreen());
     }
     _log.custom(
       response.requestOptions.uri,

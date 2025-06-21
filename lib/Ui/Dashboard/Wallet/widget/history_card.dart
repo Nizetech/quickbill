@@ -10,6 +10,7 @@ import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/receipt_script.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
+import 'package:jost_pay_wallet/utils/toast.dart';
 import 'package:provider/provider.dart';
 
 class HistoryCard extends StatelessWidget {
@@ -197,6 +198,10 @@ class HistoryCard extends StatelessWidget {
                 SizedBox(width: 5.w),
                 GestureDetector(
                   onTap: () {
+                    if (transaction.status != '1') {
+                      ErrorToast(
+                          'No receipt available yet. Your order has not been completed.');
+                    } else {
                     Get.to(ReceiptScreen(
                       status: transaction.status!,
                       id: '',
@@ -211,6 +216,7 @@ class HistoryCard extends StatelessWidget {
                       description: transaction.details!,
                       date: transaction.transDate!.toString(),
                     ));
+                    }
                   },
                   child: Container(
                       width: 68,

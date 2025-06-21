@@ -80,7 +80,7 @@ String truncateEmail(String email) {
 void launchWeb(String url) async {
   await launchUrl(
     Uri.parse(url),
-      mode: LaunchMode.inAppWebView,
+      mode: LaunchMode.externalApplication,
       webViewConfiguration: WebViewConfiguration());
 }
 

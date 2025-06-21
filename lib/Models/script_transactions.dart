@@ -53,6 +53,17 @@ class Transaction {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final dynamic profit;
+  final String? title;
+  final String? image;
+  final String? demoUrl;
+  final String? attachName;
+  final String? attachPath;
+  final String? categories;
+  final String? price;
+  final String? description;
+  final String? views;
+  final String? published;
+  final DateTime? publishedAt;
 
   Transaction({
     this.id,
@@ -64,6 +75,17 @@ class Transaction {
     this.createdAt,
     this.updatedAt,
     this.profit,
+    this.title,
+    this.image,
+    this.demoUrl,
+    this.attachName,
+    this.attachPath,
+    this.categories,
+    this.price,
+    this.description,
+    this.views,
+    this.published,
+    this.publishedAt,
   });
 
   factory Transaction.fromJson(Map<String, dynamic> json) => Transaction(
@@ -80,6 +102,19 @@ class Transaction {
             ? null
             : DateTime.parse(json["updated_at"]),
         profit: json["profit"],
+        title: json["title"],
+        image: json["image"],
+        demoUrl: json["demo_url"],
+        attachName: json["attach_name"],
+        attachPath: json["attach_path"],
+        categories: json["categories"],
+        price: json["price"],
+        description: json["description"],
+        views: json["views"],
+        published: json["published"],
+        publishedAt: json["published_at"] == null
+            ? null
+            : DateTime.parse(json["published_at"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -92,5 +127,16 @@ class Transaction {
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
         "profit": profit,
+        "title": title,
+        "image": image,
+        "demo_url": demoUrl,
+        "attach_name": attachName,
+        "attach_path": attachPath,
+        "categories": categories,
+        "price": price,
+        "description": description,
+        "views": views,
+        "published": published,
+        "published_at": publishedAt?.toIso8601String(),
       };
 }

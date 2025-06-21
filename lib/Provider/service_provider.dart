@@ -712,7 +712,9 @@ class ServiceProvider with ChangeNotifier {
           ErrorToast(message);
         }
         return;
+
       }
+      log('Response: $res');
       scriptTransactionsModel = ScripTransactions.fromJson(res);
       if (isLoading) hideLoader();
       notifyListeners();

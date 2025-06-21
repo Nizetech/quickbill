@@ -11,7 +11,6 @@ import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:provider/provider.dart';
 
-import 'preview_page.dart';
 
 class ScriptDetailScreen extends StatefulWidget {
   final Map<String, dynamic> data;
@@ -180,9 +179,11 @@ class _ScriptDetailScreenState extends State<ScriptDetailScreen> {
                         width: double.infinity,
                         child: OutlinedButton(
                           onPressed: () {
-                            Get.to(PreviewScreen(
-                              link: model.scriptDetailModel!.script!.demoUrl!,
-                            ));
+                            // Get.to(PreviewScreen(
+                            //   link: model.scriptDetailModel!.script!.demoUrl!,
+                            // ));
+                            launchWeb(
+                                model.scriptDetailModel!.script!.demoUrl!);
                           },
                           style: OutlinedButton.styleFrom(
                             backgroundColor: Colors.transparent,

@@ -115,101 +115,105 @@ class _PayForMeHistoryState extends State<PayForMeHistory> {
                 if (model.pay4meHistory.isNotEmpty)
                   Expanded(
                     // child: SingleChildScrollView(
-                    child: ListView.builder(
-                        itemCount: model.pay4meHistory.length,
-                        padding: const EdgeInsets.all(0),
-                        itemBuilder: (context, index) {
-                          var item = model.pay4meHistory[index];
-                          return Container(
-                            decoration: BoxDecoration(
-                                border: Border(
-                                    bottom: BorderSide(
-                              width: 0.4,
-                              color: themeProvider.isDarkMode()
-                                  ? MyColor.borderDarkColor
-                                  : MyColor.borderColor,
-                            ))),
-                            child: Column(
-                              children: [
-                                const SizedBox(
-                                  height: 16,
-                                ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      height: 41.r,
-                                      width: 41.r,
-                                      padding: EdgeInsets.all(6.r),
-                                      decoration: BoxDecoration(
-                                          color: themeProvider.isDarkMode()
-                                              ? const Color(0XFF171717)
-                                              : const Color(0XFFF4F5F6),
-                                          shape: BoxShape.circle),
-                                      child: SvgPicture.asset(
-                                          'assets/images/svg/money.svg'),
-                                    ),
-                                    const SizedBox(
-                                      width: 6,
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          item.invoiceLink!,
-                                          style: MyStyle.tx12Black.copyWith(
-                                              color: themedata.tertiary),
-                                        ),
-                                        const SizedBox(
-                                          height: 4,
-                                        ),
-                                        Text(
-                                          formatDateTime(
-                                            DateTime.parse(item.createdAt!),
-                                          ),
-                                          //  dateFormat.format(item.createdAt!),
-                                          style: MyStyle.tx12Black.copyWith(
+                    child: RefreshIndicator(
+                      onRefresh: () async {
+                        await model.getPay4MeHistory();
+                      },
+                      child: ListView.builder(
+                          itemCount: model.pay4meHistory.length,
+                          padding: const EdgeInsets.all(0),
+                          itemBuilder: (context, index) {
+                            var item = model.pay4meHistory[index];
+                            return Container(
+                              decoration: BoxDecoration(
+                                  border: Border(
+                                      bottom: BorderSide(
+                                width: 0.4,
+                                color: themeProvider.isDarkMode()
+                                    ? MyColor.borderDarkColor
+                                    : MyColor.borderColor,
+                              ))),
+                              child: Column(
+                                children: [
+                                  const SizedBox(
+                                    height: 16,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        height: 41.r,
+                                        width: 41.r,
+                                        padding: EdgeInsets.all(6.r),
+                                        decoration: BoxDecoration(
                                             color: themeProvider.isDarkMode()
-                                                ? const Color(0XFFCBD2EB)
-                                                : const Color(0xff30333A),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    const Spacer(),
-                                    Column(
+                                                ? const Color(0XFF171717)
+                                                : const Color(0XFFF4F5F6),
+                                            shape: BoxShape.circle),
+                                        child: SvgPicture.asset(
+                                            'assets/images/svg/money.svg'),
+                                      ),
+                                      const SizedBox(
+                                        width: 6,
+                                      ),
+                                      Column(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.end,
+                                            CrossAxisAlignment.start,
                                         mainAxisAlignment:
-                                            MainAxisAlignment.end,
+                                            MainAxisAlignment.start,
                                         children: [
                                           Text(
-                                            Utils.naira +
-                                                formatNumber(
-                                                    num.parse(item.amount!)),
+                                            item.invoiceLink!,
                                             style: MyStyle.tx12Black.copyWith(
                                                 color: themedata.tertiary),
                                           ),
-                                          SizedBox(
-                                            height: 8.h,
+                                          const SizedBox(
+                                            height: 4,
                                           ),
-                                          StatusViewReceipt(
-                                            status: item.status!,
-                                            onTap: () {},
-                                          ),
-                                  
-                                        ])
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 16,
-                                )
-                              ],
-                            ),
-                          );
-                        }),
+                                          Text(
+                                            formatDateTime(
+                                              DateTime.parse(item.createdAt!),
+                                            ),
+                                            //  dateFormat.format(item.createdAt!),
+                                            style: MyStyle.tx12Black.copyWith(
+                                              color: themeProvider.isDarkMode()
+                                                  ? const Color(0XFFCBD2EB)
+                                                  : const Color(0xff30333A),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      const Spacer(),
+                                      Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            Text(
+                                              Utils.naira +
+                                                  formatNumber(
+                                                      num.parse(item.amount!)),
+                                              style: MyStyle.tx12Black.copyWith(
+                                                  color: themedata.tertiary),
+                                            ),
+                                            SizedBox(
+                                              height: 8.h,
+                                            ),
+                                            StatusViewReceipt(
+                                              status: item.status!,
+                                              onTap: () {},
+                                            ),
+                                          ])
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 16,
+                                  )
+                                ],
+                              ),
+                            );
+                          }),
+                    ),
                     // ),
                   )
               ],

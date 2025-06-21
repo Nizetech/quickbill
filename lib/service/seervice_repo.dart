@@ -327,6 +327,7 @@ class ServiceRepo {
           await client.get(ApiRoute.scriptTransactions, requestHeaders: {
         'Authorization': token,
       });
+      // log('Reponse: ==> $response');
       return response;
     } catch (e) {
       print('Error: $e');

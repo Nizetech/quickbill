@@ -50,6 +50,7 @@ class MyColor {
   static const Color orangeColor = Color(0xFFFF7145);
   static const Color redColor = Color(0xFFFF0000);
   static const Color yellowColor = Color(0xFFFFC045);
+  static const Color pending = Color(0xFFFFAE00);
   static const Color lightGreyColor = Color(0xFFF9FAFB);
   static const Color grey02Color = Color(0xFF505660);
   static const Color grey03Color = Color(0xFF53686A);

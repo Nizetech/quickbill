@@ -111,7 +111,7 @@ class _CarHistoryState extends State<CarHistory> {
                   ),
                 ),
                 const SizedBox(
-                  height: 36,
+                  height: 20,
                 ),
                 if (model.carTransactions != null)
                   Expanded(
@@ -120,7 +120,6 @@ class _CarHistoryState extends State<CarHistory> {
                         await model.getCarsTransactions();
                       },
                       child: ListView.builder(
-                       
                           itemCount:
                               model.carTransactions!.transactions!.length,
                           shrinkWrap: true,
@@ -219,8 +218,7 @@ class _CarHistoryState extends State<CarHistory> {
                                             Text(
                                               Utils.naira +
                                                   formatNumber(
-                                                      num.parse(item.amount!) *
-                                                          100),
+                                                      num.parse(item.amount!)),
                                               style: MyStyle.tx12Black.copyWith(
                                                   color: themedata.tertiary),
                                             ),

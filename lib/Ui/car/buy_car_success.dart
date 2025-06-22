@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jost_pay_wallet/Provider/service_provider.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
-import 'package:jost_pay_wallet/bottom_nav.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
+import 'package:provider/provider.dart';
 
 class BuyCarSuccess extends StatefulWidget {
   const BuyCarSuccess({super.key});
@@ -14,6 +15,7 @@ class BuyCarSuccess extends StatefulWidget {
 class _BuyCarSuccessState extends State<BuyCarSuccess> {
   @override
   Widget build(BuildContext context) {
+    final model = context.read<ServiceProvider>();
     return Scaffold(
       // backgroundColor: Colors.white,
       body: Padding(
@@ -72,7 +74,10 @@ class _BuyCarSuccessState extends State<BuyCarSuccess> {
                 height: 32,
               ),
               TextButton(
-                onPressed: () => Get.offAll(BottomNav()),
+                onPressed: () {
+                  model.getCarsTransactions(isLoading: false);
+                  Get.close(3);
+                },
                 style: TextButton.styleFrom(
                   padding: EdgeInsets.symmetric(horizontal: 30),
                   side: BorderSide(color: MyColor.greenColor),

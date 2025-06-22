@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/utils.dart';
-
-import '../../../bottom_nav.dart';
+import 'package:provider/provider.dart';
 
 class BuyDataSuccess extends StatefulWidget {
   final bool isData;
@@ -28,6 +28,7 @@ class _BuyDataSuccessState extends State<BuyDataSuccess> {
 
   @override
   Widget build(BuildContext context) {
+    final model = context.read<AccountProvider>();
     return Scaffold(
       // backgroundColor: Colors.white,
       body: Padding(
@@ -89,7 +90,15 @@ class _BuyDataSuccessState extends State<BuyDataSuccess> {
                 height: 32,
               ),
               OutlinedButton(
-                onPressed: () => Get.offAll(BottomNav()),
+                onPressed: () {
+                  if (widget.isData) {
+                    model.getDataHistory(isLoading: false);
+                    Get.close(2);
+                  } else {
+                    model.getAirtimeHistory(isLoading: false);
+                    Get.close(3);
+                  }
+                },
                 style: OutlinedButton.styleFrom(
                   side: const BorderSide(
                     color: MyColor.splashBtn,

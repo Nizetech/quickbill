@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
-import 'package:jost_pay_wallet/bottom_nav.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
+import 'package:provider/provider.dart';
 
 class Pay4meSuccessScreen extends StatefulWidget {
   const Pay4meSuccessScreen({super.key});
@@ -12,13 +13,11 @@ class Pay4meSuccessScreen extends StatefulWidget {
 }
 
 class _Pay4meSuccessScreenState extends State<Pay4meSuccessScreen> {
-  @override
-  void initState() {
-    super.initState();
-  }
+
 
   @override
   Widget build(BuildContext context) {
+    final model = context.read<AccountProvider>();
     return Scaffold(
       // backgroundColor: Colors.white,
       body: Padding(
@@ -77,7 +76,10 @@ class _Pay4meSuccessScreenState extends State<Pay4meSuccessScreen> {
                 height: 32,
               ),
               TextButton(
-                onPressed: () => Get.offAll(BottomNav()),
+                onPressed: () {
+                  model.getPay4MeHistory(isLoading: false);
+                  Get.close(3);
+                },
                 style: TextButton.styleFrom(
                   padding: EdgeInsets.symmetric(horizontal: 30),
                   side: BorderSide(color: MyColor.greenColor),

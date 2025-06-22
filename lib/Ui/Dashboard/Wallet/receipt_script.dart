@@ -6,6 +6,7 @@ import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
+import 'package:jost_pay_wallet/Values/utils.dart';
 import 'package:jost_pay_wallet/common/button.dart';
 import 'package:provider/provider.dart';
 
@@ -33,7 +34,7 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
 
   @override
   Widget build(BuildContext context) {
-    log("Receipt Screen: ${widget.referenceNo.runtimeType}");
+    log("Receipt Screen: ${widget.amount}");
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     final theme = Theme.of(context).colorScheme;
     return Scaffold(
@@ -250,7 +251,9 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                             SizedBox(width: 20),
                             Expanded(
                               child:
-                                  Text(formatNumber(num.parse(widget.amount)),
+                                  Text(
+                                  Utils.naira +
+                                      formatNumber(num.parse(widget.amount)),
                                       textAlign: TextAlign.end,
                                       style: MyStyle.tx18Black.copyWith(
                                         fontWeight: FontWeight.w600,
@@ -298,7 +301,8 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                         )),
                     SizedBox(width: 20),
                     Expanded(
-                      child: Text(formatNumber(num.parse(widget.amount)),
+                      child: Text(
+                          Utils.naira + formatNumber(num.parse(widget.amount)),
                           textAlign: TextAlign.end,
                           style: MyStyle.tx18Black.copyWith(
                             fontWeight: FontWeight.w600,

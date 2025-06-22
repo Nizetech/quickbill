@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
-import 'package:jost_pay_wallet/bottom_nav.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
+import 'package:provider/provider.dart';
 
 class SocialSuccessScreen extends StatefulWidget {
   final bool isGiftCard;
@@ -15,6 +16,7 @@ class SocialSuccessScreen extends StatefulWidget {
 class _SocialSuccessScreenState extends State<SocialSuccessScreen> {
   @override
   Widget build(BuildContext context) {
+    final model = Provider.of<AccountProvider>(context, listen: false);
     return Scaffold(
       // backgroundColor: Colors.white,
       body: Padding(
@@ -80,7 +82,14 @@ class _SocialSuccessScreenState extends State<SocialSuccessScreen> {
                 height: 32,
               ),
               TextButton(
-                onPressed: () => Get.offAll(BottomNav()),
+                onPressed: () {
+                  if (widget.isGiftCard) {
+                    model.getGiftCradHistory(isLoading: false);
+                  } else {
+                    model.getSociaBoostHistory(isLoading: false);
+                  }
+                  Get.close(4);
+                },
                 style: TextButton.styleFrom(
                   padding: EdgeInsets.symmetric(horizontal: 30),
                   side: BorderSide(color: MyColor.greenColor),

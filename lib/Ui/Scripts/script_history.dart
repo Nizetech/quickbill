@@ -12,6 +12,7 @@ import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/utils.dart';
 import 'package:jost_pay_wallet/common/status_view_receipt.dart';
+import 'package:jost_pay_wallet/utils/toast.dart';
 import 'package:provider/provider.dart';
 
 class ScriptHistory extends StatefulWidget {
@@ -218,8 +219,7 @@ class _ScriptHistoryState extends State<ScriptHistory> {
                                             Text(
                                               Utils.naira +
                                                   formatNumber(
-                                                      num.parse(item.amount!) *
-                                                          100),
+                                                      num.parse(item.amount!)),
                                               style: MyStyle.tx12Black.copyWith(
                                                   color: themedata.tertiary),
                                             ),
@@ -229,6 +229,10 @@ class _ScriptHistoryState extends State<ScriptHistory> {
                                             StatusViewReceipt(
                                               status: '1',
                                               onTap: () {
+                                                  // if (item.status != '1') {
+                                                  //   ErrorToast(
+                                                  //       'No receipt available yet. Your order has not been completed.');
+                                                  // } else {
                                                 Get.to(ReceiptScreen(
                                                   status: '1',
                                                   id: item.id.toString(),
@@ -238,7 +242,8 @@ class _ScriptHistoryState extends State<ScriptHistory> {
                                                   date:
                                                       item.updatedAt.toString(),
                                                 ));
-                                              },
+                                                  // }
+                                                }
                                             ),
                                           ])
                                     ],

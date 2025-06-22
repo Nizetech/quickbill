@@ -727,6 +727,7 @@ class ServiceProvider with ChangeNotifier {
       if (isLoading) showLoader();
 
       var res = await ServiceRepo().getCarsTransactions();
+      log('Response: $res');
       if (res['status'] == false || res['result'] == false) {
         if (isLoading) hideLoader();
         if (res['message'].runtimeType == String) {

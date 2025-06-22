@@ -231,16 +231,20 @@ class _BuyAirtimeState extends State<BuyAirtime> {
                                             height: 8.h,
                                           ),
                                           StatusViewReceipt(
-                                            status: item.status!,
+                                            status: item.apiStatus!,
                                             onTap: () {
-                                              if (item.status != '1') {
+                                              if (item.status != '1' ||
+                                                  item.apiStatus!
+                                                      .toLowerCase()
+                                                      .contains('pending')) {
                                                 ErrorToast(
                                                     'No receipt available yet. Your order has not been completed.');
                                               } else {
                                                 Get.to(ReceiptScreen(
                                                   status: item.status!,
                                                   id: '',
-                                                  serviceDetails:
+                                                  serviceDetails: "Airtime",
+                                                  description:
                                                       "${item.phone!} - ${item.networkName!}",
                                                   referenceNo: item.reference!,
                                                   amount: item.amount!,

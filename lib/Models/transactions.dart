@@ -44,6 +44,7 @@ class Datum {
   final InOut? inOut;
   final DateTime? transDate;
   final String? amount;
+  final String? apiStatus;
   final String? isPromoRewarded;
   final String? details;
   final String? reference;
@@ -52,6 +53,7 @@ class Datum {
   Datum({
     this.type,
     this.inOut,
+    this.apiStatus,
     this.transDate,
     this.amount,
     this.isPromoRewarded,
@@ -67,6 +69,7 @@ class Datum {
             ? null
             : DateTime.parse(json["trans_date"]),
         amount: json["amount"],
+        apiStatus: json["api_status"],
         isPromoRewarded: json["is_promo_rewarded"],
         details: json["details"],
         reference: json["reference"],
@@ -78,6 +81,7 @@ class Datum {
         "in_out": inOutValues.reverse[inOut],
         "trans_date": transDate?.toIso8601String(),
         "amount": amount,
+        "api_status": apiStatus,
         "is_promo_rewarded": isPromoRewarded,
         "details": details,
         "reference": reference,

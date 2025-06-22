@@ -8,7 +8,6 @@ import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyAirtimeConfirm.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyData.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/receipt_script.dart';
 import 'package:jost_pay_wallet/Ui/Paint/paint_history.dart';
-import 'package:jost_pay_wallet/Ui/Paint/widget/spray_history.dart';
 import 'package:jost_pay_wallet/Ui/Scripts/script_history.dart';
 import 'package:jost_pay_wallet/Ui/car/repairdetail_screen.dart';
 import 'package:jost_pay_wallet/Ui/giftCard/gift_card_history.dart';
@@ -206,6 +205,13 @@ class HistoryCard extends StatelessWidget {
             const SizedBox(height: 5),
             Row(
               children: [
+                transaction.apiStatus != null &&
+                        transaction.apiStatus!.contains('pending')
+                    ? CircleAvatar(
+                        radius: 7,
+                        backgroundColor: MyColor.pending,
+                        child: SvgPicture.asset('assets/images/pending.svg'))
+                    :
                 CircleAvatar(
                   radius: 7,
                   backgroundColor: getStatus(transaction),
@@ -217,25 +223,35 @@ class HistoryCard extends StatelessWidget {
                     color: Colors.white,
                   ),
                 ),
+                
                 SizedBox(width: 5.w),
                 GestureDetector(
                   onTap: () {
-                    if (transaction.status != '1') {
+                    if (transaction.status != '1' ||
+                        transaction.apiStatus != null &&
+                            transaction.apiStatus!.contains('pending')) {
                       ErrorToast(
                           'No receipt available yet. Your order has not been completed.');
                     } else {
                       Get.to(ReceiptScreen(
-                        status: transaction.status!,
+                        status: transaction.apiStatus != null
+                            ? transaction.apiStatus!
+                            : transaction.status!,
                         id: '',
-                        serviceDetails: transaction.type == Type.DATA ||
+                        serviceDetails: transaction.type == Type.DATA
+                            ? "Data"
+                            :
                                 transaction.type == Type.AIRTIME
-                            ? '${getOperator(transaction).toUpperCase()} - ${transaction.type!.name.capitalizeFirst!}'
+                                ? "Airtime"
                             : transaction.type != null
                                 ? transaction.type!.name.capitalizeFirst!
                                 : transaction.details!,
                         referenceNo: transaction.reference!,
                         amount: transaction.amount!,
-                        description: transaction.details!,
+                        description: transaction.type == Type.DATA ||
+                                transaction.type == Type.AIRTIME
+                            ? '${getOperator(transaction).toUpperCase()} - ${transaction.type!.name.capitalizeFirst!}'
+                            : transaction.details!,
                         date: transaction.transDate!.toString(),
                       ));
                     }

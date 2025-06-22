@@ -5,12 +5,14 @@ import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/widget/balance_action_card.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/receipt_script.dart';
 import 'package:jost_pay_wallet/Ui/promotions/socials_screen.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/utils.dart';
 import 'package:jost_pay_wallet/common/status_view_receipt.dart';
+import 'package:jost_pay_wallet/utils/toast.dart';
 import 'package:provider/provider.dart';
 
 class SocialBoostHistory extends StatefulWidget {
@@ -212,7 +214,8 @@ class _SocialBoostHistoryState extends State<SocialBoostHistory> {
                                               Utils.naira +
                                                   formatNumber(
                                                       num.parse(item.price!) *
-                                                          100),
+                                                          num.parse(
+                                                              item.quantity!)),
                                               style: MyStyle.tx12Black.copyWith(
                                                   color: themedata.tertiary),
                                             ),
@@ -221,7 +224,30 @@ class _SocialBoostHistoryState extends State<SocialBoostHistory> {
                                             ),
                                             StatusViewReceipt(
                                               status: item.status!,
-                                              onTap: () {},
+                                                onTap: () {
+                                                  if (item.status != '1') {
+                                                    ErrorToast(
+                                                        'No receipt available yet. Your order has not been completed.');
+                                                  } else {
+                                                    Get.to(ReceiptScreen(
+                                                      status: item.status!,
+                                                      id: '',
+                                                      serviceDetails:
+                                                          "Social Boost",
+                                                      description:
+                                                          item.serviceName!,
+                                                      referenceNo:
+                                                          item.reference!,
+                                                      amount: (num.parse(
+                                                                  item.price!) *
+                                                              num.parse(item
+                                                                  .quantity!))
+                                                          .toString(),
+                                                      date: item.updatedAt!
+                                                          .toString(),
+                                                    ));
+                                                  }
+                                                }
                                             ),
                                           ])
                                     ],

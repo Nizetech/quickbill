@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/common/button.dart';
+import 'package:provider/provider.dart';
 
 import '../../../bottom_nav.dart';
 
 class InvalidPurchase extends StatefulWidget {
+  final bool isData;
   const InvalidPurchase({
     super.key,
+    required this.isData,
   });
 
   @override
@@ -18,6 +22,7 @@ class InvalidPurchase extends StatefulWidget {
 class _InvalidPurchaseState extends State<InvalidPurchase> {
   @override
   Widget build(BuildContext context) {
+    final model = context.read<AccountProvider>();
     return Scaffold(
       // backgroundColor: Colors.white,
       body: Padding(
@@ -61,7 +66,15 @@ class _InvalidPurchaseState extends State<InvalidPurchase> {
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.3,
                 child: CustomButton(
-                  onTap: () => Get.offAll(BottomNav()),
+                  onTap: () {
+                    if (widget.isData) {
+                      model.getDataHistory(isLoading: false);
+                      Get.close(2);
+                    } else {
+                      model.getAirtimeHistory(isLoading: false);
+                      Get.close(3);
+                    }
+                  },
                   text: 'Got It',
                 ),
               )

@@ -164,7 +164,8 @@ class _DataHistoryState extends State<DataHistory> {
                                           MainAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "${item.phone!} - ${item.networkName!}",
+                                          item.planName!,
+                                          // "${item.phone!} - ${item.networkName!}",
                                           style: MyStyle.tx12Black.copyWith(
                                               color: themedata.tertiary),
                                         ),
@@ -229,17 +230,21 @@ class _DataHistoryState extends State<DataHistory> {
                                             height: 8.h,
                                           ),
                                           StatusViewReceipt(
-                                            status: item.status!,
+                                            status: item.apiStatus!,
                                             onTap: () {
-                                              if (item.status != '1') {
+                                              if (item.status != '1' ||
+                                                  item.apiStatus!
+                                                      .toLowerCase()
+                                                      .contains('pending')) {
                                                 ErrorToast(
                                                     'No receipt available yet. Your order has not been completed.');
                                               } else {
                                                 Get.to(ReceiptScreen(
                                                   status: item.status!,
                                                   id: '',
-                                                  serviceDetails:
-                                                      "${item.phone!} - ${item.networkName!}",
+                                                  serviceDetails: 'Data',
+                                                  description: item.planName!,
+                                                  // "${item.phone!} - ${item.networkName!}",
                                                   referenceNo: item.reference!,
                                                   amount: item.amount!,
                                                   date: item.updatedAt!

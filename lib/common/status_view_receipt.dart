@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 
@@ -13,12 +14,23 @@ class StatusViewReceipt extends StatelessWidget {
     final themedata = Theme.of(context).colorScheme;
     return Row(
       children: [
+        
         CircleAvatar(
           radius: 7,
           backgroundColor:
-              status == '1' ? MyColor.dark01GreenColor : Colors.red,
-          child: Icon(
-            status == '1' ? Icons.done : Icons.close,
+          
+         
+            status.contains('pending')
+              ? MyColor.pending
+              : status.contains('fail')
+                  ? Colors.red
+                  : MyColor.dark01GreenColor,
+          child: status.contains('pending')
+              ? SvgPicture.asset('assets/images/pending.svg')
+              : Icon(
+                  !status.contains('pending') || !status.contains('fail')
+                      ? Icons.done
+                      : Icons.close,
             size: 10,
             color: Colors.white,
           ),

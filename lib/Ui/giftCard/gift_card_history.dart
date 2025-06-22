@@ -12,6 +12,7 @@ import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/utils.dart';
 import 'package:jost_pay_wallet/common/status_view_receipt.dart';
+import 'package:jost_pay_wallet/utils/toast.dart';
 import 'package:provider/provider.dart';
 
 class GiftCardHistory extends StatefulWidget {
@@ -212,18 +213,24 @@ class _GiftCardHistoryState extends State<GiftCardHistory> {
                                             StatusViewReceipt(
                                               status: item.status!,
                                               onTap: () {
-                                                Get.to(ReceiptScreen(
-                                                  status: item.status!,
-                                                  id: '',
-                                                  serviceDetails:
-                                                      item.giftName ?? "",
-                                                  description:
-                                                      "${item.giftCountryName}, ${item.giftQty} cards, \$${item.giftFee} fee, ",
-                                                  referenceNo: item.reference!,
-                                                  amount: item.giftPrice!,
-                                                  date: item.updatedAt!
-                                                      .toString(),
-                                                ));
+                                                if (item.status != '1') {
+                                                  ErrorToast(
+                                                      'No receipt available yet. Your order has not been completed.');
+                                                } else {
+                                                  Get.to(ReceiptScreen(
+                                                    status: item.status!,
+                                                    id: '',
+                                                    serviceDetails:
+                                                        item.giftName ?? "",
+                                                    description:
+                                                        "${item.giftCountryName}, ${item.giftQty} cards ",
+                                                    referenceNo:
+                                                        item.reference!,
+                                                    amount: item.giftAmount!,
+                                                    date: item.updatedAt!
+                                                        .toString(),
+                                                  ));
+                                                }
                                               },
                                             ),
                                           ])

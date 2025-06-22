@@ -385,7 +385,9 @@ TransactionModel? get dashBoardHistory => _dashBoardHistory;
               phone: data['phone'],
             ));
           } else {
-            Get.to(InvalidPurchase());
+            Get.to(InvalidPurchase(
+              isData: false,
+            ));
           }
         }else{
 
@@ -458,16 +460,20 @@ TransactionModel? get dashBoardHistory => _dashBoardHistory;
               phone: '',
             ));
           }else{
-            Get.to(InvalidPurchase());
+            Get.to(InvalidPurchase(
+              isData: true,
+            ));
           }
         }else{
-          if(value['message'].toString().toLowerCase().contains('pending')){
+          if(value['result'] ==
+              true &&value['message'].toString().toLowerCase().contains('pending')){
             Get.to(PendingPurchase(
               isData: true,
-              amount: data['amount'],
-              phone: data['phone'],
+              amount: '',
+              phone: '',
             ));
-          } else if (value['message']
+          } else if (value['result'] == true &&
+              value['message']
               .toString()
               .toLowerCase()
               .contains('fail')) {

@@ -190,7 +190,7 @@ class _SocialBoostHistoryState extends State<SocialBoostHistory> {
                                             ),
                                             Text(
                                               formatDateTime(
-                                                item.createdAt!,
+                                                item.updatedAt!,
                                               ),
                                               //  dateFormat.format(item.createdAt!),
                                               style: MyStyle.tx12Black.copyWith(
@@ -231,7 +231,6 @@ class _SocialBoostHistoryState extends State<SocialBoostHistory> {
                                                   } else {
                                                     Get.to(ReceiptScreen(
                                                       status: item.status!,
-                                                      id: '',
                                                       serviceDetails:
                                                           "Social Boost",
                                                       description:

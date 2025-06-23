@@ -83,7 +83,7 @@ class _BuyScriptSummaryState extends State<BuyScriptSummary> {
                           imageUrl: widget.data['image'],
                           height: 68,
                           width: 86,
-                          fit: BoxFit.cover,
+                          fit: BoxFit.fill,
                         ),
                       ),
                       const SizedBox(

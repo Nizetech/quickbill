@@ -190,13 +190,13 @@ class _ScriptHistoryState extends State<ScriptHistory> {
                                                           color: themedata
                                                               .tertiary),
                                                 ),
-                                            ),
+                                              ),
                                             const SizedBox(
                                               height: 4,
                                             ),
                                             Text(
                                               formatDateTime(
-                                                item.createdAt!,
+                                                item.updatedAt!,
                                               ),
                                               //  dateFormat.format(item.createdAt!),
                                               style: MyStyle.tx12Black.copyWith(
@@ -234,8 +234,7 @@ class _ScriptHistoryState extends State<ScriptHistory> {
                                                   //       'No receipt available yet. Your order has not been completed.');
                                                   // } else {
                                                 Get.to(ReceiptScreen(
-                                                  status: '1',
-                                                  id: item.id.toString(),
+                                                    status: '1',
                                                   serviceDetails: item.title!,
                                                   referenceNo: item.activeCode!,
                                                   amount: item.amount!,

@@ -24,7 +24,7 @@ class TransactionModel {
   factory TransactionModel.fromJson(Map<String, dynamic> json) =>
       TransactionModel(
         result: json["result"],
-        prevBalance: json["prev_balance"],
+        prevBalance: json["prev_balance"].toString(),
         data: json["data"] == null
             ? []
             : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
@@ -68,9 +68,9 @@ class Datum {
         transDate: json["trans_date"] == null
             ? null
             : DateTime.parse(json["trans_date"]),
-        amount: json["amount"],
-        apiStatus: json["api_status"],
-        isPromoRewarded: json["is_promo_rewarded"],
+        amount: json["amount"].toString(),
+        apiStatus: json["api_status"].toString(),
+        isPromoRewarded: json["is_promo_rewarded"].toString(),
         details: json["details"],
         reference: json["reference"],
         status: json["status"],

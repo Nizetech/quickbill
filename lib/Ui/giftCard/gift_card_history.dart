@@ -182,7 +182,7 @@ class _GiftCardHistoryState extends State<GiftCardHistory> {
                                           ),
                                           Text(
                                             formatDateTime(
-                                              item.createdAt!,
+                                              item.updatedAt!,
                                             ),
                                             //  dateFormat.format(item.createdAt!),
                                             style: MyStyle.tx12Black.copyWith(
@@ -219,7 +219,7 @@ class _GiftCardHistoryState extends State<GiftCardHistory> {
                                                 } else {
                                                   Get.to(ReceiptScreen(
                                                     status: item.status!,
-                                                    id: '',
+                                               
                                                     serviceDetails:
                                                         item.giftName ?? "",
                                                     description:

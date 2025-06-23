@@ -234,10 +234,8 @@ class HistoryCard extends StatelessWidget {
                           'No receipt available yet. Your order has not been completed.');
                     } else {
                       Get.to(ReceiptScreen(
-                        status: transaction.apiStatus != null
-                            ? transaction.apiStatus!
-                            : transaction.status!,
-                        id: '',
+                        status: '1',
+                       
                         serviceDetails: transaction.type == Type.DATA
                             ? "Data"
                             :

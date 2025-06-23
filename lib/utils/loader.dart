@@ -57,5 +57,7 @@ void showLoader(
 void hideLoader() {
   // authRepo.isDialogShowing = false;
   // Navigator.of(context).pop();
+  if (Get.isDialogOpen!) {
   Get.back();
+  }
 }

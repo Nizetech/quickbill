@@ -55,7 +55,7 @@ class _WalletScreenState extends State<WalletScreen> {
     accountProvider = Provider.of<AccountProvider>(context, listen: false);
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await accountProvider.getUserBalance();
+      // await accountProvider.getUserBalance();
       await accountProvider.getNotification();
       await accountProvider.getProfileImage(isLoading: false);
       if (accountProvider.transactionModel == null) {
@@ -78,7 +78,7 @@ class _WalletScreenState extends State<WalletScreen> {
 
   FutureOr refreshAll() async {
     await accountProvider.getTrasactions();
-    await accountProvider.getUserBalance();
+    // await accountProvider.getUserBalance();
     await accountProvider.getNotification();
     await accountProvider.getUserProfile();
   }

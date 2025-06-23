@@ -11,7 +11,7 @@ import 'package:jost_pay_wallet/common/button.dart';
 import 'package:provider/provider.dart';
 
 class ReceiptScreen extends StatefulWidget {
-  final String referenceNo, date, serviceDetails, amount, id, status;
+  final String referenceNo, date, serviceDetails, amount, status;
 
   final String? description;
   const ReceiptScreen({
@@ -22,7 +22,6 @@ class ReceiptScreen extends StatefulWidget {
     required this.date,
     required this.serviceDetails,
     required this.amount,
-    required this.id,
   });
 
   @override
@@ -89,10 +88,7 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                     SizedBox(width: 5),
 
                     Icon(
-                      widget.status == "1" ? Icons.check_circle : Icons.error,
-                      color: widget.status == "1"
-                          ? MyColor.greenColor
-                          : MyColor.redColor,
+                      Icons.check_circle, color: MyColor.greenColor
                     )
                   ],
                 ),

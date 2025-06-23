@@ -230,7 +230,6 @@ class _CarHistoryState extends State<CarHistory> {
                                               onTap: () {
                                                 Get.to(ReceiptScreen(
                                                   status: '1',
-                                                  id: item.id.toString(),
                                                   serviceDetails: item.title!,
                                                   referenceNo:
                                                       item.reference ?? "",

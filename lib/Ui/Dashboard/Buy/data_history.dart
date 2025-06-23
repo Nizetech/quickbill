@@ -184,7 +184,7 @@ class _DataHistoryState extends State<DataHistory> {
                                         ),
                                         Text(
                                           formatDateTime(
-                                            item.createdAt!,
+                                            item.updatedAt!,
                                           ),
                                           //  dateFormat.format(item.createdAt!),
                                           style: MyStyle.tx12Black.copyWith(
@@ -241,7 +241,6 @@ class _DataHistoryState extends State<DataHistory> {
                                               } else {
                                                 Get.to(ReceiptScreen(
                                                   status: item.status!,
-                                                  id: '',
                                                   serviceDetails: 'Data',
                                                   description: item.planName!,
                                                   // "${item.phone!} - ${item.networkName!}",

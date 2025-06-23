@@ -155,7 +155,7 @@ class _AlarmScreenState extends State<AlarmScreen> {
                           ],
                         ),
                         subtitle: Text(
-                          formatDateTime(item.createdAt!),
+                          formatDateTime(item.updatedAt!),
                           style: MyStyle.tx14Grey.copyWith(
                               fontWeight: FontWeight.w400,
                               fontSize: 12.sp,

@@ -184,7 +184,7 @@ class _BuyAirtimeState extends State<BuyAirtime> {
                                         
                                         Text(
                                           formatDateTime(
-                                            item.createdAt!,
+                                            item.updatedAt!,
                                           ),
                                           //  dateFormat.format(item.createdAt!),
                                           style: MyStyle.tx12Black.copyWith(
@@ -242,7 +242,7 @@ class _BuyAirtimeState extends State<BuyAirtime> {
                                               } else {
                                                 Get.to(ReceiptScreen(
                                                   status: item.status!,
-                                                  id: '',
+                                               
                                                   serviceDetails: "Airtime",
                                                   description:
                                                       "${item.phone!} - ${item.networkName!}",

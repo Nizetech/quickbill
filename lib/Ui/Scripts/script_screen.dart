@@ -224,7 +224,7 @@ class _ScriptScreenState extends State<ScriptScreen> {
                                     imageUrl: item.image!,
                                     height: 180,
                                     width: double.infinity,
-                                    fit: BoxFit.cover,
+                                    fit: BoxFit.fill,
                                   ),
                                 ),
                                 const SizedBox(height: 12),

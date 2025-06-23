@@ -183,7 +183,7 @@ class _PayForMeHistoryState extends State<PayForMeHistory> {
                                           ),
                                           Text(
                                             formatDateTime(
-                                              DateTime.parse(item.createdAt!),
+                                              DateTime.parse(item.updatedAt!),
                                             ),
                                             //  dateFormat.format(item.createdAt!),
                                             style: MyStyle.tx12Black.copyWith(
@@ -220,7 +220,6 @@ class _PayForMeHistoryState extends State<PayForMeHistory> {
                                                   } else {
                                                     Get.to(ReceiptScreen(
                                                       status: item.status!,
-                                                      id: '',
                                                       serviceDetails:
                                                           item.invoiceLink!,
                                                       referenceNo:

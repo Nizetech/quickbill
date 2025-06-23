@@ -22,13 +22,15 @@ class StatusViewReceipt extends StatelessWidget {
          
             status.contains('pending')
               ? MyColor.pending
-              : status.contains('fail')
+              : status.contains('fail') || status == '0' 
                   ? Colors.red
                   : MyColor.dark01GreenColor,
           child: status.contains('pending')
               ? SvgPicture.asset('assets/images/pending.svg')
               : Icon(
-                  !status.contains('pending') || !status.contains('fail')
+                                    
+                  status != '0' && !status.contains('pending') ||
+                          status != '0' && !status.contains('fail')
                       ? Icons.done
                       : Icons.close,
             size: 10,

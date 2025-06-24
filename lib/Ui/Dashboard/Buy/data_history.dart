@@ -106,13 +106,6 @@ class _DataHistoryState extends State<DataHistory> {
                           Image.asset('assets/images/down.png')
                         ],
                       ),
-                      // const Spacer(),
-                      // Text('View all',
-                      //     style: MyStyle.tx12Black.copyWith(
-                      //       color: themeProvider.isDarkMode()
-                      //           ? const Color.fromARGB(255, 5, 6, 7)
-                      //           : const Color(0xff30333A),
-                      //     ))
                     ],
                   ),
                 ),
@@ -121,147 +114,158 @@ class _DataHistoryState extends State<DataHistory> {
                 ),
                 if (model.dataHistoryModel != null)
                   Expanded(
-                    child: ListView.builder(
-                        itemCount: model.dataHistoryModel!.data!.length,
-                        padding: const EdgeInsets.all(0),
-                        itemBuilder: (context, index) {
-                          var item = model.dataHistoryModel!.data![index];
-                          return Container(
-                            decoration: BoxDecoration(
-                                border: Border(
-                                    bottom: BorderSide(
-                              width: 0.4,
-                              color: themeProvider.isDarkMode()
-                                  ? MyColor.borderDarkColor
-                                  : MyColor.borderColor,
-                            ))),
-                            child: Column(
-                              children: [
-                                const SizedBox(
-                                  height: 16,
-                                ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      height: 41.r,
-                                      width: 41.r,
-                                      padding: EdgeInsets.all(6.r),
-                                      decoration: BoxDecoration(
-                                          color: themeProvider.isDarkMode()
-                                              ? const Color(0XFF171717)
-                                              : const Color(0XFFF4F5F6),
-                                          shape: BoxShape.circle),
-                                      child: SvgPicture.asset(
-                                          'assets/images/phone.svg'),
-                                    ),
-                                    const SizedBox(
-                                      width: 6,
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          item.planName!,
-                                          // "${item.phone!} - ${item.networkName!}",
-                                          style: MyStyle.tx12Black.copyWith(
-                                              color: themedata.tertiary),
-                                        ),
-                                        const SizedBox(
-                                          height: 4,
-                                        ),
-                                        Text(
-                                          item.reference!,
-                                          maxLines: 1,
-                                          style: MyStyle.tx12Black.copyWith(
-                                              overflow: TextOverflow.ellipsis,
-                                              color: themedata.tertiary),
-                                        ),
-                                        const SizedBox(
-                                          height: 4,
-                                        ),
-                                        Text(
-                                          formatDateTime(
-                                            item.updatedAt!,
-                                          ),
-                                          //  dateFormat.format(item.createdAt!),
-                                          style: MyStyle.tx12Black.copyWith(
+                    child: RefreshIndicator(
+                      onRefresh: () => model.getDataHistory(),
+                      child: ListView.builder(
+                          itemCount: model.dataHistoryModel!.data!.length,
+                          padding: const EdgeInsets.all(0),
+                          itemBuilder: (context, index) {
+                            var item = model.dataHistoryModel!.data![index];
+                            return Container(
+                              decoration: BoxDecoration(
+                                  border: Border(
+                                      bottom: BorderSide(
+                                width: 0.4,
+                                color: themeProvider.isDarkMode()
+                                    ? MyColor.borderDarkColor
+                                    : MyColor.borderColor,
+                              ))),
+                              child: Column(
+                                children: [
+                                  const SizedBox(
+                                    height: 16,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        height: 41.r,
+                                        width: 41.r,
+                                        padding: EdgeInsets.all(6.r),
+                                        decoration: BoxDecoration(
                                             color: themeProvider.isDarkMode()
-                                                ? const Color(0XFFCBD2EB)
-                                                : const Color(0xff30333A),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    const Spacer(),
-                                    Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                Utils.naira +
-                                                    formatNumber(num.parse(
-                                                        item.amount!)),
-                                                style: MyStyle.tx12Black
-                                                    .copyWith(
-                                                        color:
-                                                            themedata.tertiary),
+                                                ? const Color(0XFF171717)
+                                                : const Color(0XFFF4F5F6),
+                                            shape: BoxShape.circle),
+                                        child: SvgPicture.asset(
+                                            'assets/images/phone.svg'),
+                                      ),
+                                      const SizedBox(
+                                        width: 6,
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              item.planName!,
+                                              maxLines: 1,
+                                              // "${item.phone!} - ${item.networkName!}",
+                                              style: MyStyle.tx12Black.copyWith(
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  color: themedata.tertiary),
+                                            ),
+                                            const SizedBox(
+                                              height: 4,
+                                            ),
+                                            Text(
+                                              item.reference!,
+                                              maxLines: 1,
+                                              style: MyStyle.tx12Black.copyWith(
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  color: themedata.tertiary),
+                                            ),
+                                            const SizedBox(
+                                              height: 4,
+                                            ),
+                                            Text(
+                                              formatDateTime(
+                                                item.updatedAt!,
                                               ),
-                                              SizedBox(width: 5),
-                                              GestureDetector(
-                                                onTap: () {
-                                                  Get.to(BuyData(
-                                                    phone: item.phone,
-                                                    network: item.networkName,
+                                              //  dateFormat.format(item.createdAt!),
+                                              style: MyStyle.tx12Black.copyWith(
+                                                color: themeProvider
+                                                        .isDarkMode()
+                                                    ? const Color(0XFFCBD2EB)
+                                                    : const Color(0xff30333A),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(width: 25),
+                                      Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  Utils.naira +
+                                                      formatNumber(num.parse(
+                                                          item.amount!)),
+                                                  style: MyStyle.tx12Black
+                                                      .copyWith(
+                                                          color: themedata
+                                                              .tertiary),
+                                                ),
+                                                SizedBox(width: 5),
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    Get.to(BuyData(
+                                                      phone: item.phone,
+                                                      network: item.networkName,
+                                                    ));
+                                                  },
+                                                  child: SvgPicture.asset(
+                                                      'assets/images/refresh.svg'),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 8.h,
+                                            ),
+                                            StatusViewReceipt(
+                                              status: item.apiStatus!,
+                                              onTap: () {
+                                                if (item.status != '1' ||
+                                                    item.apiStatus!
+                                                        .toLowerCase()
+                                                        .contains('pending')) {
+                                                  ErrorToast(
+                                                      'No receipt available yet. Your order has not been completed.');
+                                                } else {
+                                                  Get.to(ReceiptScreen(
+                                                    status: item.status!,
+                                                    serviceDetails: 'Data',
+                                                    description: item.planName!,
+                                                    // "${item.phone!} - ${item.networkName!}",
+                                                    referenceNo:
+                                                        item.reference!,
+                                                    amount: item.amount!,
+                                                    date: item.updatedAt!
+                                                        .toString(),
                                                   ));
-                                                },
-                                                child: SvgPicture.asset(
-                                                    'assets/images/refresh.svg'),
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: 8.h,
-                                          ),
-                                          StatusViewReceipt(
-                                            status: item.apiStatus!,
-                                            onTap: () {
-                                              if (item.status != '1' ||
-                                                  item.apiStatus!
-                                                      .toLowerCase()
-                                                      .contains('pending')) {
-                                                ErrorToast(
-                                                    'No receipt available yet. Your order has not been completed.');
-                                              } else {
-                                                Get.to(ReceiptScreen(
-                                                  status: item.status!,
-                                                  serviceDetails: 'Data',
-                                                  description: item.planName!,
-                                                  // "${item.phone!} - ${item.networkName!}",
-                                                  referenceNo: item.reference!,
-                                                  amount: item.amount!,
-                                                  date: item.updatedAt!
-                                                      .toString(),
-                                                ));
-                                              }
-                                            },
-                                          ),
-                                        ])
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 16,
-                                )
-                              ],
-                            ),
-                          );
-                        }),
+                                                }
+                                              },
+                                            ),
+                                          ])
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 16,
+                                  )
+                                ],
+                              ),
+                            );
+                          }),
+                    ),
                     // ),
                   )
               ],

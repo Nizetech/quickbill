@@ -9,6 +9,7 @@ import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyData.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/receipt_script.dart';
 import 'package:jost_pay_wallet/Ui/Paint/paint_history.dart';
 import 'package:jost_pay_wallet/Ui/Scripts/script_history.dart';
+import 'package:jost_pay_wallet/Ui/car/car_history.dart';
 import 'package:jost_pay_wallet/Ui/car/repairdetail_screen.dart';
 import 'package:jost_pay_wallet/Ui/giftCard/gift_card_history.dart';
 import 'package:jost_pay_wallet/Ui/pay4me/pay4me_history.dart';
@@ -56,6 +57,10 @@ class HistoryCard extends StatelessWidget {
       return transaction.details!.split(' Phone: ')[1].split(',')[0].toString();
     }
 
+    String getDataPlan(Datum transaction) {
+      return transaction.details!.split(' Plan: ')[1].split(',')[0].toString();
+    }
+
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     final themedata = Theme.of(context).colorScheme;
     return Row(
@@ -86,10 +91,27 @@ class HistoryCard extends StatelessWidget {
                   transaction.type != Type.AIRTIME)
                 Text(
                   transaction.type != null
-                      ? transaction.type!.name.capitalizeFirst!
+                      ? transaction.type == Type.SCRIPT
+                          ? transaction.details!.split(' name: ')[1].toString()
+                          : transaction.type == Type.SOCIALBOOST
+                              ? transaction.details!
+                                  .split(' name: ')[1]
+                                  .toString()
+                              : transaction.type == Type.GIFTCARD
+                                  ? transaction.details!
+                                  : transaction.type == Type.MOTORS
+                                      ? transaction.details!
+                                          .split(' name: ')[1]
+                                          .toString()
+                                      : transaction.type == Type.PAY4_ME
+                                          ? transaction.details!
+                                              .split(' link: ')[1]
+                                              .toString()
+                                          : transaction
+                                              .type!.name.capitalizeFirst!
                       : transaction.details!,
-                  // transaction.type!.name.capitalizeFirst!,
-                  style: MyStyle.tx14Grey.copyWith(
+                  maxLines: 1,
+                  style: MyStyle.tx12Black.copyWith(
                       fontWeight: FontWeight.w400,
                       overflow: TextOverflow.ellipsis,
                       fontSize: 12.sp,
@@ -100,8 +122,12 @@ class HistoryCard extends StatelessWidget {
               if (transaction.type == Type.DATA ||
                   transaction.type == Type.AIRTIME)
                 Text(
-                  '${getOperator(transaction).toUpperCase()} - ${transaction.type!.name.capitalizeFirst!}',
-                  style: MyStyle.tx14Grey.copyWith(
+                  transaction.type == Type.DATA
+                      ? transaction.details!.split(' Plan: ')[1].split(',')[1]
+                      : '${getPhone(transaction)} - ${getOperator(transaction).toUpperCase()}',
+                  maxLines: 1,
+                  style: MyStyle.tx12Black.copyWith(
+                      overflow: TextOverflow.ellipsis,
                       fontWeight: FontWeight.w400,
                       fontSize: 12.sp,
                       color: themeProvider.isDarkMode()
@@ -113,7 +139,9 @@ class HistoryCard extends StatelessWidget {
                 const SizedBox(height: 5),
                 Text(
                   transaction.reference!,
-                  style: MyStyle.tx14Grey.copyWith(
+                  maxLines: 1,
+                  style: MyStyle.tx12Black.copyWith(
+                      overflow: TextOverflow.ellipsis,
                       fontWeight: FontWeight.w400,
                       fontSize: 12.sp,
                       color: themeProvider.isDarkMode()
@@ -138,9 +166,10 @@ class HistoryCard extends StatelessWidget {
               SizedBox(height: 5.h),
               Text(
                 formatDateTime(transaction.transDate!),
-                style: MyStyle.tx14Grey.copyWith(
+                style: MyStyle.tx12Black.copyWith(
                     fontWeight: FontWeight.w400,
                     fontSize: 12.sp,
+                    fontStyle: FontStyle.italic,
                     color: themeProvider.isDarkMode()
                         ? const Color(0XFFCBD2EB)
                         : const Color(0xff30333A)),
@@ -148,7 +177,7 @@ class HistoryCard extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(width: 20.w),
+        SizedBox(width: 25),
         Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           mainAxisSize: MainAxisSize.min,
@@ -157,7 +186,7 @@ class HistoryCard extends StatelessWidget {
               children: [
                 Text(
                   '₦${formatNumber(num.parse(transaction.amount!))}',
-                  style: MyStyle.tx14Grey.copyWith(
+                  style: MyStyle.tx12Black.copyWith(
                       fontWeight: FontWeight.w600,
                       fontSize: 12.sp,
                       color: themeProvider.isDarkMode()
@@ -165,8 +194,7 @@ class HistoryCard extends StatelessWidget {
                           : const Color(0xff30333A)),
                 ),
                 if (transaction.type != Type.DEPOSIT
-                    // ||
-                    //     transaction.type == Type.AIRTIME
+                  
                     )
                   GestureDetector(
                     onTap: () {
@@ -192,6 +220,8 @@ class HistoryCard extends StatelessWidget {
                         Get.to(SocialBoostHistory());
                       } else if (transaction.type == Type.SPRAY) {
                         Get.to(PaintHistory());
+                      } else if (transaction.type == Type.MOTORS) {
+                        Get.to(CarHistory());
                       } else {
                         Get.to(RepairdetailScreen());
                       }
@@ -227,7 +257,9 @@ class HistoryCard extends StatelessWidget {
                 SizedBox(width: 5.w),
                 GestureDetector(
                   onTap: () {
-                    if (transaction.status != '1' ||
+                    if (transaction.type == Type.SPRAY &&
+                            transaction.status != '2' &&
+                            transaction.status != '1' ||
                         transaction.apiStatus != null &&
                             transaction.apiStatus!.contains('pending')) {
                       ErrorToast(

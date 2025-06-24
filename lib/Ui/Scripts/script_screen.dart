@@ -222,7 +222,7 @@ class _ScriptScreenState extends State<ScriptScreen> {
                                   borderRadius: BorderRadius.circular(10),
                                   child: CachedNetworkImage(
                                     imageUrl: item.image!,
-                                    height: 180,
+                                   
                                     width: double.infinity,
                                     fit: BoxFit.fill,
                                   ),

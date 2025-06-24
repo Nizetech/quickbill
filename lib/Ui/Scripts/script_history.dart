@@ -198,7 +198,6 @@ class _ScriptHistoryState extends State<ScriptHistory> {
                                               formatDateTime(
                                                 item.updatedAt!,
                                               ),
-                                              //  dateFormat.format(item.createdAt!),
                                               style: MyStyle.tx12Black.copyWith(
                                                 color: themeProvider
                                                         .isDarkMode()

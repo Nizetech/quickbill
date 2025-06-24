@@ -203,7 +203,7 @@ class _SocialBoostHistoryState extends State<SocialBoostHistory> {
                                           ],
                                         ),
                                       ),
-                                      const Spacer(),
+                                      SizedBox(width: 25),
                                       Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.end,

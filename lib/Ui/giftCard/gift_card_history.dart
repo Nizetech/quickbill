@@ -156,44 +156,51 @@ class _GiftCardHistoryState extends State<GiftCardHistory> {
                                       const SizedBox(
                                         width: 6,
                                       ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            item.giftName!,
-                                            style: MyStyle.tx12Black.copyWith(
-                                                color: themedata.tertiary),
-                                          ),
-                                          const SizedBox(
-                                            height: 4,
-                                          ),
-                                          Text(
-                                            item.reference ?? "",
-                                            maxLines: 1,
-                                            style: MyStyle.tx12Black.copyWith(
-                                                overflow: TextOverflow.ellipsis,
-                                                color: themedata.tertiary),
-                                          ),
-                                          const SizedBox(
-                                            height: 4,
-                                          ),
-                                          Text(
-                                            formatDateTime(
-                                              item.updatedAt!,
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              item.giftName!,
+                                              maxLines: 1,
+                                              style: MyStyle.tx12Black.copyWith(
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  color: themedata.tertiary),
                                             ),
-                                            //  dateFormat.format(item.createdAt!),
-                                            style: MyStyle.tx12Black.copyWith(
-                                              color: themeProvider.isDarkMode()
-                                                  ? const Color(0XFFCBD2EB)
-                                                  : const Color(0xff30333A),
+                                            const SizedBox(
+                                              height: 4,
                                             ),
-                                          )
-                                        ],
+                                            Text(
+                                              item.reference ?? "",
+                                              maxLines: 1,
+                                              style: MyStyle.tx12Black.copyWith(
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  color: themedata.tertiary),
+                                            ),
+                                            const SizedBox(
+                                              height: 4,
+                                            ),
+                                            Text(
+                                              formatDateTime(
+                                                item.updatedAt!,
+                                              ),
+                                              //  dateFormat.format(item.createdAt!),
+                                              style: MyStyle.tx12Black.copyWith(
+                                                color: themeProvider
+                                                        .isDarkMode()
+                                                    ? const Color(0XFFCBD2EB)
+                                                    : const Color(0xff30333A),
+                                              ),
+                                            )
+                                          ],
+                                        ),
                                       ),
-                                      const Spacer(),
+                                      SizedBox(width: 25),
                                       Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.end,

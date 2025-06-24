@@ -6,7 +6,6 @@ import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/common/button.dart';
 import 'package:provider/provider.dart';
 
-import '../../../bottom_nav.dart';
 
 class InvalidPurchase extends StatefulWidget {
   final bool isData;
@@ -69,10 +68,10 @@ class _InvalidPurchaseState extends State<InvalidPurchase> {
                   onTap: () {
                     if (widget.isData) {
                       model.getDataHistory(isLoading: false);
-                      Get.close(2);
+                      Get.close(3);
                     } else {
                       model.getAirtimeHistory(isLoading: false);
-                      Get.close(3);
+                      Get.close(4);
                     }
                   },
                   text: 'Got It',

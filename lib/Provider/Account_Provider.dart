@@ -143,7 +143,7 @@ TransactionModel? get dashBoardHistory => _dashBoardHistory;
   Future<void> getAirtimeHistory({bool isLoading = true}) async {
     try {
       if (isLoading) showLoader();
-      AccountRepo().getServiceHistory('airtime').then((value) {
+      AccountRepo().getServiceHistory('airtime').then((value)async {
         log('Value: $value');
         if (isLoading) hideLoader();
         if (value['status'] == false || value['result'] == false) {
@@ -158,6 +158,7 @@ TransactionModel? get dashBoardHistory => _dashBoardHistory;
           }
         } else {
           airtimeHistory = AirtimeHistory.fromJson(value);
+          await getUserBalance();
         }
         notifyListeners();
       });
@@ -171,7 +172,7 @@ TransactionModel? get dashBoardHistory => _dashBoardHistory;
   Future<void> getDataHistory({bool isLoading = true}) async {
     try {
       if (isLoading) showLoader();
-      AccountRepo().getServiceHistory('data').then((value) {
+      AccountRepo().getServiceHistory('data').then((value) async{
         log('Value: $value');
         if (isLoading) hideLoader();
         if (value['status'] == false || value['result'] == false) {
@@ -186,6 +187,7 @@ TransactionModel? get dashBoardHistory => _dashBoardHistory;
           }
         } else {
           dataHistoryModel = DataHistoryModel.fromJson(value);
+            await getUserBalance();
         }
         notifyListeners();
       });
@@ -199,7 +201,7 @@ TransactionModel? get dashBoardHistory => _dashBoardHistory;
   Future<void> getPay4MeHistory({bool isLoading = true}) async {
     try {
       if (isLoading) showLoader();
-      AccountRepo().getServiceHistory('pay4me').then((value) {
+      AccountRepo().getServiceHistory('pay4me').then((value) async{
         log('Value: $value');
         if (isLoading) hideLoader();
         if (value['status'] == false || value['result'] == false) {
@@ -213,10 +215,9 @@ TransactionModel? get dashBoardHistory => _dashBoardHistory;
             ErrorToast(message);
           }
         } else {
-          for (var element in value['data']) {
-            pay4meHistory.add(PayForMeHistoryModel.fromJson(element));
-          }
-          // var    data = value['data'].map((e) => PayForMeHistoryModel.fromJson(e)).toList();
+           pay4meHistory  = List<PayForMeHistoryModel>.from(value['data'].map((x) => PayForMeHistoryModel.fromJson(x)));
+              await getUserBalance();
+      
         }
         notifyListeners();
       });
@@ -230,7 +231,7 @@ TransactionModel? get dashBoardHistory => _dashBoardHistory;
   Future<void> getGiftCradHistory({bool isLoading = true}) async {
     try {
       if (isLoading) showLoader();
-      AccountRepo().getServiceHistory('giftcard').then((value) {
+      AccountRepo().getServiceHistory('giftcard').then((value)async {
         log('Value: $value');
         if (isLoading) hideLoader();
         if (value['status'] == false || value['result'] == false) {
@@ -245,6 +246,7 @@ TransactionModel? get dashBoardHistory => _dashBoardHistory;
           }
         } else {
           giftCardHistoryModel = GiftCardHistoryModel.fromJson(value);
+            await getUserBalance();
         }
         notifyListeners();
       });
@@ -257,7 +259,7 @@ TransactionModel? get dashBoardHistory => _dashBoardHistory;
   Future<void> getSociaBoostHistory({bool isLoading = true}) async {
     try {
       if (isLoading) showLoader();
-      AccountRepo().getServiceHistory('social').then((value) {
+      AccountRepo().getServiceHistory('social').then((value) async{
         log('Value: $value');
         if (isLoading) hideLoader();
         if (value['status'] == false || value['result'] == false) {
@@ -272,6 +274,7 @@ TransactionModel? get dashBoardHistory => _dashBoardHistory;
           }
         } else {
           socialBoostHistoryModel = SocialBoostHistoryModel.fromJson(value);
+            await getUserBalance();
         }
         notifyListeners();
       });

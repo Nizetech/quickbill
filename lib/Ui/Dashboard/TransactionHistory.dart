@@ -122,8 +122,13 @@ class _TransactionhistoryState extends State<Transactionhistory> {
                               ),
                               const SizedBox(height: 10),
                               ListView.separated(
-                                separatorBuilder: (_, i) => SizedBox(
-                                  height: 12,
+                                separatorBuilder: (_, i) => Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 5),
+                                  child: Divider(
+                                    color: Colors.grey,
+                                    thickness: .2,
+                                  ),
                                 ),
                                 itemCount: value.length,
                                 padding: const EdgeInsets.all(0),

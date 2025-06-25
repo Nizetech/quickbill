@@ -10,7 +10,6 @@ import 'package:jost_pay_wallet/Provider/service_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Paint/widget/option_summary.dart';
 import 'package:jost_pay_wallet/Ui/Paint/widget/rent_option.dart';
-import 'package:jost_pay_wallet/Ui/car/repair_screen.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';

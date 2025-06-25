@@ -10,7 +10,7 @@ import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/receipt_script.dart';
 import 'package:jost_pay_wallet/Ui/Paint/paint_history.dart';
 import 'package:jost_pay_wallet/Ui/Scripts/script_history.dart';
 import 'package:jost_pay_wallet/Ui/car/car_history.dart';
-import 'package:jost_pay_wallet/Ui/car/repairdetail_screen.dart';
+import 'package:jost_pay_wallet/Ui/repair/repairdetail_screen.dart';
 import 'package:jost_pay_wallet/Ui/giftCard/gift_card_history.dart';
 import 'package:jost_pay_wallet/Ui/pay4me/pay4me_history.dart';
 import 'package:jost_pay_wallet/Ui/promotions/social_boost_history.dart';
@@ -57,9 +57,9 @@ class HistoryCard extends StatelessWidget {
       return transaction.details!.split(' Phone: ')[1].split(',')[0].toString();
     }
 
-    String getDataPlan(Datum transaction) {
-      return transaction.details!.split(' Plan: ')[1].split(',')[0].toString();
-    }
+    // String getDataPlan(Datum transaction) {
+    //   return transaction.details!.split(' Plan: ')[1].split(',')[0].toString();
+    // }
 
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     final themedata = Theme.of(context).colorScheme;

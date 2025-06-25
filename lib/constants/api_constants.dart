@@ -56,4 +56,5 @@ class ApiRoute {
   static String sharePdf = 'services/spray-history/download';
   static String payPending = 'services/spray-history/pay';
   static String rentSpray = 'services/rent-spray';
+  static String buyRepairs = 'services/auto-repair/buy';
 }

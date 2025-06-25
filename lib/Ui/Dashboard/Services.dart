@@ -1,8 +1,5 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/DashboardProvider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyAirtime.dart';
@@ -11,14 +8,10 @@ import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/service_tile.dart';
 import 'package:jost_pay_wallet/Ui/Domain/domain_screen.dart';
 import 'package:jost_pay_wallet/Ui/Paint/paint_history.dart';
 import 'package:jost_pay_wallet/Ui/Scripts/script_history.dart';
-import 'package:jost_pay_wallet/Ui/Scripts/script_screen.dart';
 import 'package:jost_pay_wallet/Ui/car/car_history.dart';
-import 'package:jost_pay_wallet/Ui/car/carsell_screen.dart';
-import 'package:jost_pay_wallet/Ui/car/repairdetail_screen.dart';
+import 'package:jost_pay_wallet/Ui/repair/repairdetail_screen.dart';
 import 'package:jost_pay_wallet/Ui/giftCard/gift_card_history.dart';
 import 'package:jost_pay_wallet/Ui/pay4me/pay4me_history.dart';
-// ignore: unused_import
-import 'package:jost_pay_wallet/Ui/promotions/social_boost.dart';
 import 'package:jost_pay_wallet/Ui/promotions/social_boost_history.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';

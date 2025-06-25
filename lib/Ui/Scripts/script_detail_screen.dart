@@ -29,7 +29,7 @@ class _ScriptDetailScreenState extends State<ScriptDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
-    final isDark = themeProvider.isDarkMode();
+    // final isDark = themeProvider.isDarkMode();
     final themedata = Theme.of(context).colorScheme;
     return Scaffold(
       backgroundColor: themeProvider.isDarkMode()

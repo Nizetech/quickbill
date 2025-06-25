@@ -13,13 +13,17 @@ class CustomTextField extends StatelessWidget {
   final bool enabled;
   final FocusNode? focusNode;
   final VoidCallback? onTap;
+  final TextInputType keyboardType;
+  final int minlines;
   final TextEditingController? controller;
   final Function(String)? onChanged;
   const CustomTextField({
     super.key,
     required this.text,
     this.onChanged,
+    this.keyboardType = TextInputType.text,
     this.focusNode,
+    this.minlines = 1,
     this.enabled = false,
     this.suffixIcon,
     this.preffixIcon,
@@ -37,8 +41,12 @@ class CustomTextField extends StatelessWidget {
     return TextField(
       focusNode: focusNode,
       controller: controller,
+      minLines: minlines,
+      maxLines: minlines * 2,
       enabled: enabled,
+      keyboardType: keyboardType,
       onTap: onTap,
+      onTapOutside: (_) => FocusScope.of(context).unfocus(),
       onChanged: onChanged,
       decoration: InputDecoration(
         prefixIcon: preffixIcon != null
@@ -49,7 +57,7 @@ class CustomTextField extends StatelessWidget {
         fillColor: isDark ? MyColor.dark02Color : Colors.white,
         hintStyle: MyStyle.tx14Black.copyWith(
           color: Colors.grey,
-          fontSize: 16,
+          fontSize: 14,
           fontWeight: FontWeight.w500,
         ),
         enabled: false,

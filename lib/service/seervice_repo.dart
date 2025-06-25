@@ -163,6 +163,20 @@ class ServiceRepo {
     }
   }
 
+  Future<Map<String, dynamic>> buyRepaires(Map<String, dynamic> data) async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response = await client
+          .post(ApiRoute.buyRepairs, body: jsonEncode(data), requestHeaders: {
+        'Authorization': token,
+      });
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
   Future<Map<String, dynamic>> getCarDetails(String id) async {
     String token = await box.get(kAccessToken);
     try {

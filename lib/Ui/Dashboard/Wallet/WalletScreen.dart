@@ -17,7 +17,7 @@ import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/history_card.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/profile_image.dart';
 import 'package:jost_pay_wallet/Ui/Domain/domain_screen.dart';
 import 'package:jost_pay_wallet/Ui/Paint/paint_history.dart';
-import 'package:jost_pay_wallet/Ui/car/repairdetail_screen.dart';
+import 'package:jost_pay_wallet/Ui/repair/repairdetail_screen.dart';
 import 'package:jost_pay_wallet/Ui/pay4me/pay4me_history.dart';
 import 'package:jost_pay_wallet/Ui/pay4me/pay4me_screen.dart';
 import 'package:jost_pay_wallet/Ui/promotions/social_boost_history.dart';

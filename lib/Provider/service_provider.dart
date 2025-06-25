@@ -606,6 +606,35 @@ class ServiceProvider with ChangeNotifier {
     }
   }
 
+  Future<void> buyRepaires(Map<String, dynamic> data,
+      {required VoidCallback callback}) async {
+    try {
+      showLoader();
+      var res = await ServiceRepo().buyRepaires(data);
+
+      hideLoader();
+      if (res['status'] == false || res['result'] == false) {
+        if (res['message'].runtimeType == String) {
+          ErrorToast(res['message']);
+        } else {
+          String message = '';
+          res['message'].forEach((key, value) {
+            message += '$value';
+          });
+          ErrorToast(message);
+        }
+        return;
+      }
+      callback();
+      Get.back();
+      SuccessToast(res['message']);
+      notifyListeners();
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
   Future<void> payPending(int id) async {
     try {
       showLoader();

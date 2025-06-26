@@ -92,9 +92,7 @@ class _ServicesState extends State<Services> {
                       ),
                       Row(
                         children: [
-                 
                           ServiceTile(
-                        
                             icon: 'assets/images/svg/airtime.svg',
                             title: 'Buy Airtime',
                             isTransform: true,
@@ -102,7 +100,6 @@ class _ServicesState extends State<Services> {
                           ),
                           const Spacer(),
                           ServiceTile(
-                        
                             icon: 'assets/images/data.svg',
                             title: 'Buy Data',
                             isTransform: true,
@@ -165,7 +162,6 @@ class _ServicesState extends State<Services> {
                      
                           const Spacer(),
                           ServiceTile(
-                        
                             icon: 'assets/images/giftcard.svg',
                             title: 'Buy Gift Card',
                             page: const GiftCardHistory(),
@@ -241,13 +237,10 @@ class _ServicesState extends State<Services> {
                         height: 23,
                       ),
                       ServiceTile(
-                    
                         icon: 'assets/images/script.svg',
                         title: 'Buy Scripts',
                         page: ScriptHistory(),
-                        // const ScriptScreen(),
                       ),
-                 
                       const SizedBox(
                         height: 24,
                       ),
@@ -289,33 +282,24 @@ class _ServicesState extends State<Services> {
                             fontWeight: FontWeight.w400,
                             color: themedata.tertiary),
                       ),
-                      const SizedBox(
-                        height: 20,
-                      ),
+                      const SizedBox(height: 20),
                       Row(
                         children: [
                           ServiceTile(
-                        
                             icon: 'assets/images/svg/repair.svg',
                             title: 'Vehicle Repairs',
                             page: const RepairdetailScreen(),
                           ),
-                    
                           const Spacer(),
                           ServiceTile(
-                        
                             icon: 'assets/images/svg/spray.svg',
                             title: 'Paint & Spray',
                             page: const PaintHistory(),
                           ),
-                 
                         ],
                       ),
-                      const SizedBox(
-                        height: 23,
-                      ),
+                      const SizedBox(height: 23),
                       ServiceTile(
-                    
                         icon: 'assets/images/car.svg',
                         title: 'Buy Cars',
                         page: CarHistory(),

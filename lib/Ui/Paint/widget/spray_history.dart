@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jost_pay_wallet/Provider/service_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Domain/domain_screen.dart';
+import 'package:jost_pay_wallet/Ui/Domain/widget/dot.dart';
 import 'package:jost_pay_wallet/Ui/Paint/paint_history.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
@@ -167,88 +168,37 @@ class SprayHistory extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 28),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  DotLabel(
-                    text: "Rent type",
-                    flex: 3,
-                    value: history.rentType!,
-                    dotColor: MyColor.dark01Color,
-                    labelColor: const Color(0xff6E6D7A),
-                    textColor:
-                        isDark ? MyColor.mainWhiteColor : MyColor.blackColor,
-                  ),
-                  DotLabel(
-                    flex: 2,
-                    text: "Car type",
-                    dotColor: MyColor.dark01Color,
-                    value: history.carType!,
-                    labelColor: const Color(0xff6E6D7A),
-                    textColor:
-                        isDark ? MyColor.mainWhiteColor : MyColor.blackColor,
-                  ),
-                ],
-              ),
+           
+            dotTypeTile(
+              title1: "Rent type",
+              title2: "Car type",
+              value: history.rentType!,
+              value2: history.carType!,
+              isDark: isDark,
+            ),
+            const SizedBox(height: 22),
+            dotTypeTile(
+              title1: "Paint type",
+              title2: "Date",
+              value: history.paintType == '3'
+                  ? "No package"
+                  : history.paintType == '1'
+                      ? "Full Body Paint"
+                      : history.paintType == '2'
+                          ? 'Touch Up'
+                          : 'Color change',
+              value2: formatDateYear(history.date!),
+              isDark: isDark,
+            ),
               const SizedBox(height: 22),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  DotLabel(
-                    flex: 3,
-                    text: "Paint type",
-                  value: history.paintType == '3'
-                      ? "No package"
-                      : history.paintType == '1'
-                        ? "Full Body Paint"
-                        : history.paintType == '2'
-                            ? 'Touch Up'
-                              : 'Color change',
-                  // 'Full body paint color change',
-                    dotColor: MyColor.dark01Color,
-                    labelColor: const Color(0xff6E6D7A),
-                    textColor:
-                        isDark ? MyColor.mainWhiteColor : MyColor.blackColor,
-                  ),
-                  DotLabel(
-                    flex: 2,
-                    text: "Date",
-                    value: formatDateYear(
-                      history.date!,
-                    ),
-                    dotColor: MyColor.dark01Color,
-                    labelColor: const Color(0xff6E6D7A),
-                    textColor:
-                        isDark ? MyColor.mainWhiteColor : MyColor.blackColor,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 22),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  DotLabel(
-                    flex: 3,
-                    text: "Time",
-                    value: history.time!,
-                    dotColor: MyColor.dark01Color,
-                    labelColor: const Color(0xff6E6D7A),
-                    textColor:
-                        isDark ? MyColor.mainWhiteColor : MyColor.blackColor,
-                  ),
-                  DotLabel(
-                    flex: 2,
-                    text: "Care Day",
-                  value: history.paintType == '2' || history.paintType == '3'
+            dotTypeTile(
+              title1: "Time",
+              title2: "Care Day",
+              value: history.time!,
+              value2: history.paintType == '2' || history.paintType == '3'
                         ? 'NIL'
                         : "${history.careDay} Days AfterCare",
-                    dotColor: MyColor.dark01Color,
-                    labelColor: const Color(0xff6E6D7A),
-                    textColor:
-                        isDark ? MyColor.mainWhiteColor : MyColor.blackColor,
-                  ),
-                ],
+              isDark: isDark,
             ),
             const SizedBox(height: 22),
             Row(
@@ -336,4 +286,36 @@ class SprayHistory extends StatelessWidget {
       );
     });
   }
+}
+
+
+Widget dotTypeTile({
+  required bool isDark,
+  required String title1,
+  required String title2,
+  required String value,
+  required String value2,
+}) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      DotLabel(
+        text: title1,
+        flex: 3,
+        value: value,
+        dotColor: MyColor.dark01Color,
+        labelColor: const Color(0xff6E6D7A),
+        textColor: isDark ? MyColor.mainWhiteColor : MyColor.blackColor,
+      ),
+      DotLabel(
+        flex: 2,
+        text: title2,
+        value: value2,
+        dotColor: MyColor.dark01Color,
+        labelColor: const Color(0xff6E6D7A),
+        textColor: isDark ? MyColor.mainWhiteColor : MyColor.blackColor,
+      ),
+    ],
+  );
 }

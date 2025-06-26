@@ -103,6 +103,7 @@ enum Type {
   SOCIALBOOST,
   SPRAY,
   MOTORS,
+  AUTOREPAIR,
 }
 
 final typeValues = EnumValues({
@@ -114,7 +115,8 @@ final typeValues = EnumValues({
   "script": Type.SCRIPT,
   "socialboost": Type.SOCIALBOOST,
   "spray": Type.SPRAY,
-  "motors": Type.MOTORS
+  "motors": Type.MOTORS,
+  "autorepair": Type.AUTOREPAIR
 });
 
 class EnumValues<T> {

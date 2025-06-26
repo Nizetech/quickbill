@@ -10,8 +10,6 @@ class ServiceRepo {
   final client = NetworkClient();
   final box = Hive.box(kAppName);
 
-  //? PAINT AND SPRAY
-  // GET CAR TYPE
 
   Future<Map<String, dynamic>> getCarTypes() async {
     String token = await box.get(kAccessToken);
@@ -19,7 +17,19 @@ class ServiceRepo {
       final response = await client.get(ApiRoute.getCarTypes, requestHeaders: {
         'Authorization': token,
       });
-      // log('Reponse: $response');
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
+  Future<Map<String, dynamic>> getDomainList() async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response = await client.get(ApiRoute.domainList, requestHeaders: {
+        'Authorization': token,
+      });
       return response;
     } catch (e) {
       print('Error: $e');
@@ -34,7 +44,6 @@ class ServiceRepo {
           await client.get(ApiRoute.getColorPaint, requestHeaders: {
         'Authorization': token,
       });
-      // log('Reponse: $response');
       return response;
     } catch (e) {
       print('Error: $e');
@@ -177,11 +186,70 @@ class ServiceRepo {
     }
   }
 
+  Future<Map<String, dynamic>> skipRepair(String workId) async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response = await client.post(ApiRoute.skipRepair,
+          body: jsonEncode({"work_id": workId}),
+          requestHeaders: {
+            'Authorization': token,
+          });
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
+  Future<Map<String, dynamic>> shareRepairInvoice(String historyID) async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response = await client.post(ApiRoute.shareRepairInvoice,
+          body: jsonEncode({"transaction_id": historyID}),
+          requestHeaders: {
+            'Authorization': token,
+          });
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
+  Future<Map<String, dynamic>> getRepairTransactions() async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response =
+          await client.get(ApiRoute.repairTransList, requestHeaders: {
+        'Authorization': token,
+      });
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
   Future<Map<String, dynamic>> getCarDetails(String id) async {
     String token = await box.get(kAccessToken);
     try {
       final response = await client.post(ApiRoute.getCarDetails,
           body: jsonEncode({"id": int.parse(id)}),
+          requestHeaders: {
+            'Authorization': token,
+          });
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
+  Future<Map<String, dynamic>> getRepairDetails(String id) async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response = await client.post(ApiRoute.repairDetails,
+          body: jsonEncode({"transaction_id": id}),
           requestHeaders: {
             'Authorization': token,
           });

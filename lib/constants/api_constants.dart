@@ -57,4 +57,9 @@ class ApiRoute {
   static String payPending = 'services/spray-history/pay';
   static String rentSpray = 'services/rent-spray';
   static String buyRepairs = 'services/auto-repair/buy';
+  static String repairTransList = 'services/auto-repair/list';
+  static String repairDetails = 'services/auto-repair/work-list';
+  static String skipRepair = 'services/auto-repair/skip-work';
+  static String shareRepairInvoice = 'services/auto-repair/share';
+  static String domainList = 'services/domain-name/list';
 }

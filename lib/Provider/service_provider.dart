@@ -11,8 +11,11 @@ import 'package:jost_pay_wallet/Models/car_type_model.dart';
 import 'package:jost_pay_wallet/Models/card_model.dart';
 import 'package:jost_pay_wallet/Models/color_paint_mode.dart';
 import 'package:jost_pay_wallet/Models/country_model.dart';
+import 'package:jost_pay_wallet/Models/domain_list.dart';
 import 'package:jost_pay_wallet/Models/gift_card_model.dart';
 import 'package:jost_pay_wallet/Models/paymentOption.dart';
+import 'package:jost_pay_wallet/Models/repair_details.dart';
+import 'package:jost_pay_wallet/Models/repair_transaction.dart';
 import 'package:jost_pay_wallet/Models/script_details.dart';
 import 'package:jost_pay_wallet/Models/script_model.dart';
 import 'package:jost_pay_wallet/Models/script_transactions.dart';
@@ -28,6 +31,7 @@ import 'package:jost_pay_wallet/Ui/giftCard/cards_option_screen.dart';
 import 'package:jost_pay_wallet/Ui/pay4me/pay4me_success_screen.dart';
 import 'package:jost_pay_wallet/Ui/promotions/social_boost.dart';
 import 'package:jost_pay_wallet/Ui/promotions/social_success_screen.dart';
+import 'package:jost_pay_wallet/Ui/repair/repairsteps_screen.dart';
 import 'package:jost_pay_wallet/service/seervice_repo.dart';
 import 'package:jost_pay_wallet/utils/loader.dart';
 import 'package:jost_pay_wallet/utils/toast.dart';
@@ -53,6 +57,9 @@ class ServiceProvider with ChangeNotifier {
   ScriptDetailModel? scriptDetailModel;
   ScripTransactions? scriptTransactionsModel;
   CarTransactions? carTransactions;
+  RepairTransactions? repairTransactions;
+  RepairDetailsModel? repairDetails;
+  DomainListModel? domainListModel;
 
   String base64Image = '';
 
@@ -85,6 +92,32 @@ class ServiceProvider with ChangeNotifier {
       }
       carTypeModel = CarTypeModel.fromJson(res);
       hideLoader();
+      notifyListeners();
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
+  Future<void> getDomainList({bool isLoading = true}) async {
+    try {
+      if (isLoading) showLoader();
+      var res = await ServiceRepo().getDomainList();
+      if (res['status'] == false || res['result'] == false) {
+        if (isLoading) hideLoader();
+        if (res['message'].runtimeType == String) {
+          ErrorToast(res['message']);
+        } else {
+          String message = '';
+          res['message'].forEach((key, value) {
+            message += '$value';
+          });
+          ErrorToast(message);
+        }
+        return;
+      }
+      domainListModel = DomainListModel.fromJson(res);
+      if (isLoading) hideLoader();
       notifyListeners();
     } catch (e) {
       log('Error: $e');
@@ -191,6 +224,99 @@ class ServiceProvider with ChangeNotifier {
       carDetailsModel = CarDetailsModel.fromJson(res);
       hideLoader();
       Get.to(CardetailScreen());
+      notifyListeners();
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
+  Future<void> getRepairDetails(String id,
+      {required VoidCallback callback, bool isLoading = true}) async {
+    try {
+      if (isLoading) showLoader();
+      var res = await ServiceRepo().getRepairDetails(id);
+      log("res: $res");
+      if (res['status'] == false || res['result'] == false) {
+        if (isLoading) hideLoader();
+        if (res['message'].runtimeType == String) {
+          ErrorToast(res['message']);
+        } else {
+          String message = '';
+          res['message'].forEach((key, value) {
+            message += '$value';
+          });
+          ErrorToast(message);
+        }
+        return;
+      }
+      repairDetails = RepairDetailsModel.fromJson(res);
+      if (isLoading) hideLoader();
+      callback();
+      notifyListeners();
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
+  // shareRepairInvoice
+  Future<void> shareRepairInvoice(String id) async {
+    try {
+      showLoader();
+      var res = await ServiceRepo().shareRepairInvoice(id);
+      log('Response: $res');
+      hideLoader();
+      if (res['status'] == false || res['result'] == false) {
+        if (res['message'].runtimeType == String) {
+          ErrorToast(res['message']);
+        } else {
+          String message = '';
+          res['message'].forEach((key, value) {
+            message += '$value';
+          });
+          ErrorToast(message);
+        }
+        return;
+      }
+      // convert res["content_base64"] to file
+      final bytes = base64Decode(res["content_base64"]);
+      final dir = await getTemporaryDirectory();
+      final file = File('${dir.path}/${res["file_name"]}');
+      await file.writeAsBytes(bytes);
+
+      // var xFile = XFile(res);
+      Share.shareXFiles([XFile(file.path)], text: 'Transaction Receipt');
+      notifyListeners();
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
+  Future<void> skipRepair(
+      {required String repairID,
+      required String workId,
+      required VoidCallback callback}) async {
+    try {
+      showLoader();
+      var res = await ServiceRepo().skipRepair(workId);
+      log("res: $res");
+      if (res['status'] == false || res['result'] == false) {
+        hideLoader();
+        if (res['message'].runtimeType == String) {
+          ErrorToast(res['message']);
+        } else {
+          String message = '';
+          res['message'].forEach((key, value) {
+            message += '$value';
+          });
+          ErrorToast(message);
+        }
+        return;
+      }
+      await getRepairDetails(isLoading: false, repairID, callback: () {});
+      hideLoader();
       notifyListeners();
     } catch (e) {
       log('Error: $e');
@@ -583,7 +709,6 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().rentSpray(data);
-
       hideLoader();
       if (res['status'] == false || res['result'] == false) {
         if (res['message'].runtimeType == String) {
@@ -599,6 +724,32 @@ class ServiceProvider with ChangeNotifier {
       }
       Get.close(2);
       SuccessToast(res['message']);
+      notifyListeners();
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
+  Future<void> getRepairTransactions({bool isLoading = true}) async {
+    try {
+      if (isLoading) showLoader();
+      var res = await ServiceRepo().getRepairTransactions();
+      log('Response: $res');
+      if (isLoading) hideLoader();
+      if (res['status'] == false || res['result'] == false) {
+        if (res['message'].runtimeType == String) {
+          ErrorToast(res['message']);
+        } else {
+          String message = '';
+          res['message'].forEach((key, value) {
+            message += '$value';
+          });
+          ErrorToast(message);
+        }
+        return;
+      }
+      repairTransactions = RepairTransactions.fromJson(res);
       notifyListeners();
     } catch (e) {
       log('Error: $e');
@@ -740,7 +891,6 @@ class ServiceProvider with ChangeNotifier {
           ErrorToast(message);
         }
         return;
-
       }
       log('Response: $res');
       scriptTransactionsModel = ScripTransactions.fromJson(res);
@@ -751,6 +901,7 @@ class ServiceProvider with ChangeNotifier {
       ErrorToast(e.toString());
     }
   }
+
   Future<void> getCarsTransactions({bool isLoading = true}) async {
     try {
       if (isLoading) showLoader();

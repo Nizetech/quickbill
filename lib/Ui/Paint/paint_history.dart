@@ -10,6 +10,8 @@ import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:provider/provider.dart';
 
+import '../Domain/widget/dot.dart';
+
 class PaintHistory extends StatefulWidget {
   const PaintHistory({super.key});
 

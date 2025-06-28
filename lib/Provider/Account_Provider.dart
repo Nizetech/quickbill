@@ -346,7 +346,7 @@ TransactionModel? get dashBoardHistory => _dashBoardHistory;
   }
 
   // update Profile Image
-  Future<void> updateProfileImage(File image) async {
+  Future<void> updateProfileImage(String image) async {
     try {
       showLoader();
       AccountRepo().updateProfileImage(image).then((value) async {

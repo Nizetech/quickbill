@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:jost_pay_wallet/Provider/service_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
+import 'package:jost_pay_wallet/Ui/repair/Widget/notice_banner.dart';
 import 'package:jost_pay_wallet/Ui/repair/Widget/repair_option_sheet.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
@@ -26,7 +27,7 @@ class _RepairScreenState extends State<RepairScreen> {
   void initState() {
     super.initState();
     date.text = DateFormat('E, MM yyyy').format(now);
-    selectedDate = DateFormat('yyyy MM dd').format(now);
+    selectedDate = DateFormat('yyyy-MM-dd').format(now);
   }
 
   final repairOption = TextEditingController();
@@ -158,7 +159,7 @@ class _RepairScreenState extends State<RepairScreen> {
                             },
                             child: CustomTextField(
                               controller: repairOption,
-                              text: "Vehicle Repair",
+                              text: "Select Repair Options",
                               suffixIcon: Icons.expand_more,
                             ),
                           ),
@@ -194,7 +195,7 @@ class _RepairScreenState extends State<RepairScreen> {
                                 date.text =
                                     DateFormat('E, MM yyyy').format(selected);
                                 selectedDate =
-                                    DateFormat('yyyy MM dd').format(selected);
+                                    DateFormat('yyyy-MM-dd').format(selected);
                                 setState(() {});
                               }
                             },
@@ -231,7 +232,9 @@ class _RepairScreenState extends State<RepairScreen> {
                                             themeProvider: themeProvider,
                                             onSelect: (value) {
                                               status.text = value;
+                                              setState(() {});
                                             });
+                                        log('${status.text}');
                                       },
                                       child: CustomTextField(
                                         text: "Select",
@@ -268,9 +271,17 @@ class _RepairScreenState extends State<RepairScreen> {
                               )
                             ],
                           ),
-                          const SizedBox(
-                            height: 16,
-                          ),
+                          if (optionIndex == 2)
+                            NoticeBanner(
+                                text: status.text
+                                        .toLowerCase()
+                                        .contains('drive')
+                                    ? "A non-refundable N5,000 pick-up fee applies\nIf the vehicle has no petrol, fuel will be purchased and added to the invoice \nIf the vehicle is without a key or battery, we will provide a replacement brand new battery or create a new key as needed, and th invoice will be updated accordingly. \nIf the vehicle cannot move, a towing service will be arranged and the cost will be added to the invoice."
+                                    : "A non-refundable N5,000 pick-up fee applies \nAn additional towing charge will be added to the invoice")
+                          else
+                            SizedBox(
+                              height: 16,
+                            ),
                           Row(
                             children: [
                               Expanded(
@@ -420,55 +431,11 @@ class _RepairScreenState extends State<RepairScreen> {
                             );
                           }),
                           if (partProcureindex == 1)
-                            Container(
-                              margin: EdgeInsets.symmetric(vertical: 10),
-                              decoration: BoxDecoration(
-                                  color: MyColor.pending.withOpacity(.2),
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: IntrinsicHeight(
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 5,
-                                      decoration: BoxDecoration(
-                                        color: MyColor.redColor,
-                                        borderRadius: BorderRadius.horizontal(
-                                          left: Radius.circular(10),
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(10),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'Notice',
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                color: MyColor.redColor,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            SizedBox(height: 10),
-                                            Text(
-                                              '''When selecting Self Procurement, you are required to deliver the requested parts within 48 hours (2 days) from the time the part request is updated \n\nFailure to deliver the parts within this timeframe will result in a storage fee of 5,000 NGN per day for the delay and storage of your vehicle. \n\nThese charges will continue to accrue until the parts are received \nOnce the parts are delivered, the accumulated storage and delay charges will be applied to your account''',
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                color: MyColor.grey,
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
+                            NoticeBanner(
+                              text:
+                                  '''When selecting Self Procurement, you are required to deliver the requested parts within 48 hours (2 days) from the time the part request is updated \n\nFailure to deliver the parts within this timeframe will result in a storage fee of 5,000 NGN per day for the delay and storage of your vehicle. \n\nThese charges will continue to accrue until the parts are received \nOnce the parts are delivered, the accumulated storage and delay charges will be applied to your account''',
                             ),
-                          if (optionIndex == 1) ...[
+                          if (optionIndex != 2) ...[
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Text("Additional Information",
@@ -624,6 +591,7 @@ class _RepairScreenState extends State<RepairScreen> {
                                     // }
                                   };
                                   log("data: $data");
+                                  // return;
 
                                   model.buyRepaires(data, callback: () {
                                     repairOption.clear();

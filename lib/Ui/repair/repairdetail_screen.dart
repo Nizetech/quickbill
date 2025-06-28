@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jost_pay_wallet/Provider/service_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
-import 'package:jost_pay_wallet/Ui/Domain/domain_screen.dart';
 import 'package:jost_pay_wallet/Ui/Domain/widget/dot.dart';
 import 'package:jost_pay_wallet/Ui/repair/Widget/repair_transaction_tile.dart';
 import 'package:jost_pay_wallet/Ui/repair/repair_screen.dart';
@@ -164,13 +163,18 @@ class _RepairdetailScreenState extends State<RepairdetailScreen> {
                 const SizedBox(height: 10),
                 if (model.repairTransactions != null)
                   Expanded(
-                    child: ListView.separated(
-                      shrinkWrap: true,
-                      itemCount: model.repairTransactions!.repairList!.length,
-                      itemBuilder: (_, i) => RepairTransactionTile(
-                        repairTile: model.repairTransactions!.repairList![i],
+                    child: RefreshIndicator(
+                      onRefresh: () async {
+                        await model.getRepairTransactions();
+                      },
+                      child: ListView.separated(
+                        shrinkWrap: true,
+                        itemCount: model.repairTransactions!.repairList!.length,
+                        itemBuilder: (_, i) => RepairTransactionTile(
+                          repairTile: model.repairTransactions!.repairList![i],
+                        ),
+                        separatorBuilder: (_, i) => const SizedBox(height: 10),
                       ),
-                      separatorBuilder: (_, i) => const SizedBox(height: 10),
                     ),
                   ),
               ],

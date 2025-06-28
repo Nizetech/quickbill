@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -29,6 +31,7 @@ class HistoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log("Transaction: Type ===> ${transaction.type}");
     Color getStatus(Datum transaction) {
       if (transaction.type == Type.SPRAY && transaction.status == '2') {
         return MyColor.dark01GreenColor;
@@ -36,11 +39,38 @@ class HistoryCard extends StatelessWidget {
         return MyColor.orange01Color;
       } else if (transaction.status == 'success' || transaction.status == '1') {
         return MyColor.dark01GreenColor;
+      } else if (transaction.type == Type.AUTOREPAIR &&
+          transaction.status == '2') {
+        return MyColor.dark01GreenColor;
       } else if (transaction.status == 'pending') {
         return MyColor.orange01Color;
       } else {
         return MyColor.redColor;
       }
+    }
+
+
+    bool isSpecialTransactionService(Datum transaction) {
+      if (transaction.type == Type.PAY4_ME ||
+          transaction.type == Type.GIFTCARD) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    bool isValid(Datum transaction) {
+      return isSpecialTransactionService(transaction) &&
+              transaction.status == '0' ||
+          transaction.type == Type.SPRAY &&
+              transaction.status != '2' &&
+              transaction.type == Type.AUTOREPAIR &&
+              transaction.status != '2' ||
+          transaction.type == Type.AUTOREPAIR && transaction.status != '2' ||
+          transaction.apiStatus != null &&
+              transaction.apiStatus!.contains('pending') ||
+          transaction.type == Type.SOCIALBOOST &&
+              !transaction.apiStatus!.toLowerCase().contains('success');
     }
 
     String getOperator(Datum transaction) {
@@ -93,6 +123,8 @@ class HistoryCard extends StatelessWidget {
                   transaction.type != null
                       ? transaction.type == Type.SCRIPT
                           ? transaction.details!.split(' name: ')[1].toString()
+                          : transaction.type == Type.AUTOREPAIR
+                              ? "AutoRepair - ${transaction.details}"
                           : transaction.type == Type.SOCIALBOOST
                               ? transaction.details!
                                   .split(' name: ')[1]
@@ -193,9 +225,7 @@ class HistoryCard extends StatelessWidget {
                           ? const Color(0XFFCBD2EB)
                           : const Color(0xff30333A)),
                 ),
-                if (transaction.type != Type.DEPOSIT
-                  
-                    )
+                if (transaction.type != Type.DEPOSIT)
                   GestureDetector(
                     onTap: () {
                       if (transaction.type == Type.DATA) {
@@ -209,8 +239,7 @@ class HistoryCard extends StatelessWidget {
                           network: getOperator(transaction),
                           amount: transaction.amount,
                         ));
-                      }
-                     else if (transaction.type == Type.SCRIPT) {
+                      } else if (transaction.type == Type.SCRIPT) {
                         Get.to(ScriptHistory());
                       } else if (transaction.type == Type.GIFTCARD) {
                         Get.to(GiftCardHistory());
@@ -236,46 +265,49 @@ class HistoryCard extends StatelessWidget {
             Row(
               children: [
                 transaction.apiStatus != null &&
-                        transaction.apiStatus!.contains('pending')
+                            transaction.apiStatus!.contains('pending') ||
+                        isSpecialTransactionService(transaction) &&
+                            transaction.status == '0'
                     ? CircleAvatar(
                         radius: 7,
                         backgroundColor: MyColor.pending,
                         child: SvgPicture.asset('assets/images/pending.svg'))
-                    :
-                CircleAvatar(
-                  radius: 7,
-                  backgroundColor: getStatus(transaction),
-                  child: Icon(
-                    getStatus(transaction) == MyColor.dark01GreenColor
-                        ? Icons.done
-                        : Icons.close,
-                    size: 10,
-                    color: Colors.white,
-                  ),
-                ),
-                
+                    : CircleAvatar(
+                        radius: 7,
+                        backgroundColor: getStatus(transaction),
+                        child: Icon(
+                          transaction.type == Type.AUTOREPAIR &&
+                                  transaction.status != '2'
+                              ? Icons.close
+                              : getStatus(transaction) ==
+                                          MyColor.dark01GreenColor ||
+                                      isSpecialTransactionService(
+                                              transaction) &&
+                                          transaction.status == '1' ||
+                                      transaction.type == Type.AUTOREPAIR &&
+                                          transaction.status == '2'
+                                  ? Icons.done
+                                  : Icons.close,
+                          size: 10,
+                          color: Colors.white,
+                        ),
+                      ),
                 SizedBox(width: 5.w),
                 GestureDetector(
                   onTap: () {
-                    if (transaction.type == Type.SPRAY &&
-                            transaction.status != '2' &&
-                            transaction.status != '1' ||
-                        transaction.apiStatus != null &&
-                            transaction.apiStatus!.contains('pending')) {
+                    if (isValid(transaction)) {
                       ErrorToast(
                           'No receipt available yet. Your order has not been completed.');
                     } else {
                       Get.to(ReceiptScreen(
-                        status: '1',
-                       
+                          status: '1',
                         serviceDetails: transaction.type == Type.DATA
                             ? "Data"
-                            :
-                                transaction.type == Type.AIRTIME
+                              : transaction.type == Type.AIRTIME
                                 ? "Airtime"
-                            : transaction.type != null
-                                ? transaction.type!.name.capitalizeFirst!
-                                : transaction.details!,
+                                  : transaction.type != null
+                                      ? transaction.type!.name.capitalizeFirst!
+                                      : transaction.details!,
                         referenceNo: transaction.reference!,
                         amount: transaction.amount!,
                         description: transaction.type == Type.DATA ||
@@ -283,7 +315,8 @@ class HistoryCard extends StatelessWidget {
                             ? '${getOperator(transaction).toUpperCase()} - ${transaction.type!.name.capitalizeFirst!}'
                             : transaction.details!,
                         date: transaction.transDate!.toString(),
-                      ));
+                        ),
+                      );
                     }
                   },
                   child: Container(

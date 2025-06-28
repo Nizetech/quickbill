@@ -112,7 +112,7 @@ class _GiftCardHistoryState extends State<GiftCardHistory> {
                   ),
                 ),
                 const SizedBox(
-                  height: 36,
+                  height: 16,
                 ),
                 if (model.giftCardHistoryModel != null)
                   Expanded(
@@ -219,6 +219,7 @@ class _GiftCardHistoryState extends State<GiftCardHistory> {
                                             ),
                                             StatusViewReceipt(
                                               status: item.status!,
+                                              isServices: true,
                                               onTap: () {
                                                 if (item.status != '1') {
                                                   ErrorToast(

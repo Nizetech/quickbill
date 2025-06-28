@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
@@ -51,13 +52,17 @@ class AccountRepo {
     }
   }
 
-  Future<Map<String, dynamic>> updateProfileImage(File image) async {
+  Future<Map<String, dynamic>> updateProfileImage(String image) async {
     String token = await box.get(kAccessToken);
     try {
-      final response = await client.sendFormData(FormDataType.post,
-          imageKey: 'profile_photo',
-          image: image,
-          uri: ApiRoute.updateProfileImage,
+      final response = await client.post(ApiRoute.updateProfileImage,
+          // final response = await client.sendFormData(FormDataType.post,
+          //     imageKey: 'profile_photo',
+          //     image: image,
+          //     uri: ApiRoute.updateProfileImage,
+          body: {
+            jsonEncode({"profile_photo": image})
+          },
           requestHeaders: {
             'Authorization': token,
           });

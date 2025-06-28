@@ -6,36 +6,53 @@ import 'package:jost_pay_wallet/Values/MyStyle.dart';
 class StatusViewReceipt extends StatelessWidget {
   final String status;
   final VoidCallback onTap;
+  final bool isServices;
+  final bool isSocial;
   const StatusViewReceipt(
-      {super.key, required this.status, required this.onTap});
+      {super.key,
+      required this.status,
+      required this.onTap,
+      this.isSocial = false,
+      this.isServices = false});
 
   @override
   Widget build(BuildContext context) {
     final themedata = Theme.of(context).colorScheme;
+    bool isFailed(String status) {
+      return status.contains('fail') ||
+          status == '0' && !isServices ||
+          isSocial && !status.toString().contains('success') ||
+          isSocial && !status.toString().contains('processing') ||
+          status.toString().contains('fail') ||
+          status.toString().contains('cancel');
+    }
+
     return Row(
       children: [
-        
         CircleAvatar(
           radius: 7,
           backgroundColor:
-          
-         
-            status.contains('pending')
+              status.contains('pending') ||
+                  isServices && status == '0' ||
+                  status.contains('processing')
               ? MyColor.pending
-              : status.contains('fail') || status == '0' 
+              : isFailed(status)
                   ? Colors.red
                   : MyColor.dark01GreenColor,
-          child: status.contains('pending')
+          child: status.contains('pending') ||
+                  isServices && status == '0' ||
+                  status.contains('processing')
               ? SvgPicture.asset('assets/images/pending.svg')
               : Icon(
-                                    
-                  status != '0' && !status.contains('pending') ||
-                          status != '0' && !status.contains('fail')
+                  // status != '0' && !status.contains('pending') ||
+                  //         status != '0' && !status.contains('fail') ||
+                  //         status.toString().contains('cancel')
+                  !isFailed(status)
                       ? Icons.done
                       : Icons.close,
-            size: 10,
-            color: Colors.white,
-          ),
+                  size: 10,
+                  color: Colors.white,
+                ),
         ),
         const SizedBox(
           width: 8,

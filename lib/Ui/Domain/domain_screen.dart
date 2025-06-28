@@ -77,187 +77,80 @@ class _DomainScreenState extends State<DomainScreen> {
                     ),
                     Expanded(
                       child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            if (model.domainListModel != null)
-                              ListView.separated(
-                                shrinkWrap: true,
-                                separatorBuilder: (_, i) =>
-                                    SizedBox(height: 15),
-                                itemBuilder: (_, i) {
-                                  final item =
-                                      model.domainListModel!.domainList![i];
-                                  return GestureDetector(
-                                    onTap: () {
-                                      showModalBottomSheet(
-                                        context: context,
-                                        barrierColor: const Color(0xffBCBCBC)
-                                            .withOpacity(0.5),
-                                        isScrollControlled: true,
-                                        backgroundColor: Colors.transparent,
-                                        builder: (context) => DomainModalSheet(
-                                          domain: item,
-                                        ),
-                                      );
-                                    },
-                                    child: Container(
-                                      padding: const EdgeInsets.only(
-                                          bottom: 12,
-                                          right: 24,
-                                          left: 15,
-                                          top: 19),
-                                      decoration: BoxDecoration(
-                                        color: themeProvider.isDarkMode()
-                                            ? const Color(0xff101010)
-                                            : const Color(0xffFCFCFC),
-                                        borderRadius: BorderRadius.circular(10),
-                                        border: Border.all(
-                                            color: themeProvider.isDarkMode()
-                                                ? MyColor.outlineDasheColor
-                                                    .withOpacity(0.3)
-                                                : const Color(0xffE9EBF8)),
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          // Domain and Expiry
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              DotLabel(
-                                                  text: "Domain",
-                                                  value: item.dns!),
-                                              DotLabel(
-                                                  text: "Expiry date",
-                                                  value: item.expiryAt!),
-                                            ],
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        child: RefreshIndicator(
+                          onRefresh: () async {
+                            model.getDomainList();
+                          },
+                          child: Column(
+                            children: [
+                              if (model.domainListModel != null)
+                                ListView.separated(
+                                  shrinkWrap: true,
+                                  separatorBuilder: (_, i) =>
+                                      SizedBox(height: 15),
+                                  itemBuilder: (_, i) {
+                                    final item =
+                                        model.domainListModel!.domainList![i];
+                                    return GestureDetector(
+                                      onTap: () {
+                                        showModalBottomSheet(
+                                          context: context,
+                                          barrierColor: const Color(0xffBCBCBC)
+                                              .withOpacity(0.5),
+                                          isScrollControlled: true,
+                                          backgroundColor: Colors.transparent,
+                                          builder: (context) =>
+                                              DomainModalSheet(
+                                            domain: item,
                                           ),
-                                          const SizedBox(height: 22),
+                                        );
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.only(
+                                            bottom: 12,
+                                            right: 24,
+                                            left: 15,
+                                            top: 19),
+                                        decoration: BoxDecoration(
+                                          color: themeProvider.isDarkMode()
+                                              ? const Color(0xff101010)
+                                              : const Color(0xffFCFCFC),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          border: Border.all(
+                                              color: themeProvider.isDarkMode()
+                                                  ? MyColor.outlineDasheColor
+                                                      .withOpacity(0.3)
+                                                  : const Color(0xffE9EBF8)),
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            // Domain and Expiry
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                DotLabel(
+                                                    text: "Domain",
+                                                    value: item.dns!),
+                                                DotLabel(
+                                                    text: "Expiry date",
+                                                    value: item.expiryAt!),
+                                              ],
+                                            ),
+                                            const SizedBox(height: 22),
 
-                                          // Services and SSL
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Row(
-                                                      children: [
-                                                        Dot(
-                                                            color: themeProvider
-                                                                    .isDarkMode()
-                                                                ? MyColor
-                                                                    .whiteColor
-                                                                : MyColor
-                                                                    .dark01Color),
-                                                        const SizedBox(
-                                                            width: 6),
-                                                        Text(
-                                                          "Services",
-                                                          style: MyStyle
-                                                              .tx14Black
-                                                              .copyWith(
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            color: themeProvider
-                                                                    .isDarkMode()
-                                                                ? MyColor
-                                                                    .whiteColor
-                                                                : const Color(
-                                                                    0xff6E6D7A),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    const SizedBox(height: 8),
-                                                    Container(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              top: 8,
-                                                              bottom: 8,
-                                                              left: 16,
-                                                              right: 10),
-                                                      decoration: BoxDecoration(
-                                                        color: themeProvider
-                                                                .isDarkMode()
-                                                            ? MyColor
-                                                                .dark02Color
-                                                            : MyColor
-                                                                .mainWhiteColor,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(100),
-                                                        border: Border.all(
-                                                          color: themeProvider
-                                                                  .isDarkMode()
-                                                              ? const Color(
-                                                                  0xff1B1B1B)
-                                                              : const Color(
-                                                                  0xffE9EBF8),
-                                                        ),
-                                                      ),
-                                                      child: Row(
-                                                        spacing: 9,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          SvgPicture.asset(themeProvider
-                                                                  .isDarkMode()
-                                                              ? 'assets/images/svg/home-dark.svg'
-                                                              : 'assets/images/svg/home.svg'),
-                                                          SvgPicture.asset(themeProvider
-                                                                  .isDarkMode()
-                                                              ? 'assets/images/svg/lock-dark.svg'
-                                                              : 'assets/images/svg/lock.svg'),
-                                                          SvgPicture.asset(themeProvider
-                                                                  .isDarkMode()
-                                                              ? 'assets/images/svg/security-dark.svg'
-                                                              : 'assets/images/svg/security.svg'),
-                                                          Container(
-                                                            width: 23,
-                                                            height: 23,
-                                                            margin:
-                                                                const EdgeInsets
-                                                                    .only(
-                                                                    left: 4),
-                                                            // padding: const EdgeInsets.all(5),
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              shape: BoxShape
-                                                                  .circle,
-                                                              color: themeProvider
-                                                                      .isDarkMode()
-                                                                  ? const Color(
-                                                                      0xff151515)
-                                                                  : const Color(
-                                                                      0xffF5F6F8),
-                                                            ),
-                                                            alignment: Alignment
-                                                                .center,
-                                                            child: SvgPicture.asset(
-                                                                width: 8,
-                                                                height: 6,
-                                                                color: themeProvider
-                                                                        .isDarkMode()
-                                                                    ? MyColor
-                                                                        .mainWhiteColor
-                                                                    : const Color(
-                                                                        0xff6E6D7A),
-                                                                'assets/images/svg/down.svg'),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    )
-                                                  ]),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 28),
-                                                child: Column(
+                                            // Services and SSL
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Column(
                                                     crossAxisAlignment:
                                                         CrossAxisAlignment
                                                             .start,
@@ -274,7 +167,7 @@ class _DomainScreenState extends State<DomainScreen> {
                                                           const SizedBox(
                                                               width: 6),
                                                           Text(
-                                                            "SSL",
+                                                            "Services",
                                                             style: MyStyle
                                                                 .tx14Black
                                                                 .copyWith(
@@ -295,88 +188,214 @@ class _DomainScreenState extends State<DomainScreen> {
                                                       Container(
                                                         padding:
                                                             const EdgeInsets
-                                                                .symmetric(
-                                                                horizontal: 20,
-                                                                vertical: 4),
+                                                                .only(
+                                                                top: 8,
+                                                                bottom: 8,
+                                                                left: 16,
+                                                                right: 10),
                                                         decoration:
                                                             BoxDecoration(
-                                                          color: const Color(
-                                                                  0xff12B76A)
-                                                              .withOpacity(
-                                                                  0.09),
+                                                          color: themeProvider
+                                                                  .isDarkMode()
+                                                              ? MyColor
+                                                                  .dark02Color
+                                                              : MyColor
+                                                                  .mainWhiteColor,
                                                           borderRadius:
                                                               BorderRadius
                                                                   .circular(
                                                                       100),
-                                                        ),
-                                                        child: const Center(
-                                                          child: Text(
-                                                            "SSL",
-                                                            style: MyStyle
-                                                                .tx14Green,
+                                                          border: Border.all(
+                                                            color: themeProvider
+                                                                    .isDarkMode()
+                                                                ? const Color(
+                                                                    0xff1B1B1B)
+                                                                : const Color(
+                                                                    0xffE9EBF8),
                                                           ),
+                                                        ),
+                                                        child: Row(
+                                                          spacing: 9,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            SvgPicture.asset(themeProvider
+                                                                    .isDarkMode()
+                                                                ? 'assets/images/svg/home-dark.svg'
+                                                                : 'assets/images/svg/home.svg'),
+                                                            SvgPicture.asset(themeProvider
+                                                                    .isDarkMode()
+                                                                ? 'assets/images/svg/lock-dark.svg'
+                                                                : 'assets/images/svg/lock.svg'),
+                                                            SvgPicture.asset(themeProvider
+                                                                    .isDarkMode()
+                                                                ? 'assets/images/svg/security-dark.svg'
+                                                                : 'assets/images/svg/security.svg'),
+                                                            Container(
+                                                              width: 23,
+                                                              height: 23,
+                                                              margin:
+                                                                  const EdgeInsets
+                                                                      .only(
+                                                                      left: 4),
+                                                              // padding: const EdgeInsets.all(5),
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                shape: BoxShape
+                                                                    .circle,
+                                                                color: themeProvider
+                                                                        .isDarkMode()
+                                                                    ? const Color(
+                                                                        0xff151515)
+                                                                    : const Color(
+                                                                        0xffF5F6F8),
+                                                              ),
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              child: SvgPicture.asset(
+                                                                  width: 8,
+                                                                  height: 6,
+                                                                  color: themeProvider
+                                                                          .isDarkMode()
+                                                                      ? MyColor
+                                                                          .mainWhiteColor
+                                                                      : const Color(
+                                                                          0xff6E6D7A),
+                                                                  'assets/images/svg/down.svg'),
+                                                            )
+                                                          ],
                                                         ),
                                                       )
                                                     ]),
-                                              )
-                                            ],
-                                          ),
-                                          const SizedBox(height: 24),
-                                          CustomButton(
-                                              radius: 60,
-                                              text: "Manage details",
-                                              onTap: () {
-                                                showModalBottomSheet(
-                                                  context: context,
-                                                  barrierColor:
-                                                      const Color(0xffBCBCBC)
-                                                          .withOpacity(0.5),
-                                                  isScrollControlled: true,
-                                                  backgroundColor:
-                                                      Colors.transparent,
-                                                  builder: (context) =>
-                                                      DomainModalSheet(
-                                                    domain: item,
-                                                  ),
-                                                );
-                                              })
-                                        ],
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 28),
+                                                  child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                            Dot(
+                                                                color: themeProvider
+                                                                        .isDarkMode()
+                                                                    ? MyColor
+                                                                        .whiteColor
+                                                                    : MyColor
+                                                                        .dark01Color),
+                                                            const SizedBox(
+                                                                width: 6),
+                                                            Text(
+                                                              "SSL",
+                                                              style: MyStyle
+                                                                  .tx14Black
+                                                                  .copyWith(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                color: themeProvider
+                                                                        .isDarkMode()
+                                                                    ? MyColor
+                                                                        .whiteColor
+                                                                    : const Color(
+                                                                        0xff6E6D7A),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        const SizedBox(
+                                                            height: 8),
+                                                        Container(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .symmetric(
+                                                                  horizontal:
+                                                                      20,
+                                                                  vertical: 4),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: const Color(
+                                                                    0xff12B76A)
+                                                                .withOpacity(
+                                                                    0.09),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        100),
+                                                          ),
+                                                          child: const Center(
+                                                            child: Text(
+                                                              "SSL",
+                                                              style: MyStyle
+                                                                  .tx14Green,
+                                                            ),
+                                                          ),
+                                                        )
+                                                      ]),
+                                                )
+                                              ],
+                                            ),
+                                            const SizedBox(height: 24),
+                                            CustomButton(
+                                                radius: 60,
+                                                text: "Manage details",
+                                                onTap: () {
+                                                  showModalBottomSheet(
+                                                    context: context,
+                                                    barrierColor:
+                                                        const Color(0xffBCBCBC)
+                                                            .withOpacity(0.5),
+                                                    isScrollControlled: true,
+                                                    backgroundColor:
+                                                        Colors.transparent,
+                                                    builder: (context) =>
+                                                        DomainModalSheet(
+                                                      domain: item,
+                                                    ),
+                                                  );
+                                                })
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                },
-                                itemCount:
-                                    model.domainListModel!.domainList!.length,
-                              ),
-                            const SizedBox(height: 24),
-                            SizedBox(
-                              width: double.infinity,
-                              child: OutlinedButton(
-                                onPressed: () {},
-                                style: OutlinedButton.styleFrom(
-                                  side: BorderSide(
-                                    color: themeProvider.isDarkMode()
-                                        ? const Color(0xff1B1B1B)
-                                        : const Color(0xffE9EBF8),
-                                  ),
-                                  backgroundColor: themeProvider.isDarkMode()
-                                      ? MyColor.dark02Color
-                                      : MyColor.mainWhiteColor,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 24, vertical: 14),
+                                    );
+                                  },
+                                  itemCount:
+                                      model.domainListModel!.domainList!.length,
                                 ),
-                                child: Text("Show all",
-                                    style: MyStyle.tx14Black.copyWith(
-                                      fontFamily: 'SF Pro Rounded',
-                                      color: themeProvider.isDarkMode()
-                                          ? const Color(0xffCBD2EB)
-                                          : MyColor.blackColor,
-                                      fontWeight: FontWeight.w600,
-                                    )),
-                              ),
-                            ),
-                            const SizedBox(height: 100),
-                          ],
+                              const SizedBox(height: 24),
+                              // SizedBox(
+                              //   width: double.infinity,
+                              //   child: OutlinedButton(
+                              //     onPressed: () {},
+                              //     style: OutlinedButton.styleFrom(
+                              //       side: BorderSide(
+                              //         color: themeProvider.isDarkMode()
+                              //             ? const Color(0xff1B1B1B)
+                              //             : const Color(0xffE9EBF8),
+                              //       ),
+                              //       backgroundColor: themeProvider.isDarkMode()
+                              //           ? MyColor.dark02Color
+                              //           : MyColor.mainWhiteColor,
+                              //       padding: const EdgeInsets.symmetric(
+                              //           horizontal: 24, vertical: 14),
+                              //     ),
+                              //     child: Text("Show all",
+                              //         style: MyStyle.tx14Black.copyWith(
+                              //           fontFamily: 'SF Pro Rounded',
+                              //           color: themeProvider.isDarkMode()
+                              //               ? const Color(0xffCBD2EB)
+                              //               : MyColor.blackColor,
+                              //           fontWeight: FontWeight.w600,
+                              //         )),
+                              //   ),
+                              // ),
+                              // const SizedBox(height: 100),
+                            ],
+                          ),
                         ),
                       ),
                     )
@@ -412,7 +431,6 @@ class DotLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
-    final themedata = Theme.of(context).colorScheme;
     return Expanded(
       flex: flex,
       child: Row(

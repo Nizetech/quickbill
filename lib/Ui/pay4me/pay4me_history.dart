@@ -219,6 +219,7 @@ class _PayForMeHistoryState extends State<PayForMeHistory> {
                                               height: 8.h,
                                             ),
                                             StatusViewReceipt(
+                                                isServices: true,
                                                 status: item.status!,
                                                 onTap: () {
                                                   if (item.status != '1') {

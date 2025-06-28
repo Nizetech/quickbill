@@ -14,10 +14,12 @@ class DomainInfoCard extends StatelessWidget {
   final String? expiryDate;
   final bool autoRenew;
   final bool hasExpiry;
+  final bool isPrivacy;
   final void Function(bool)? onToggleRenew;
   const DomainInfoCard({
     super.key,
     required this.title,
+    this.isPrivacy = false, 
     required this.subtitle,
     required this.statusIcon,
     required this.status,
@@ -42,6 +44,15 @@ class DomainInfoCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                isPrivacy
+                    ? SvgPicture.asset(
+                        isDark
+                            ? "assets/images/svg/lock-dark.svg"
+                            : "assets/images/svg/lock.svg",
+                        width: 24,
+                        height: 24,
+                      )
+                    :
                 SvgPicture.asset(
                   statusIcon,
                   width: 24,
@@ -68,7 +79,7 @@ class DomainInfoCard extends StatelessWidget {
                 ),
               ),
             const SizedBox(height: 25),
-            if (hasExpiry)
+            if (hasExpiry && !isPrivacy)
               SizedBox(
                 width: 150,
                 child: DotLabel(
@@ -99,7 +110,19 @@ class DomainInfoCard extends StatelessWidget {
                 ),
               ),
             ),
-            if (hasExpiry) ...[
+            if (isPrivacy)
+              SizedBox(
+                width: 150,
+                child: DotLabel(
+                  text: "Expiry date",
+                  value: expiryDate!,
+                  labelStyle: MyStyle.tx14Black.copyWith(
+                      fontStyle: FontStyle.italic,
+                      color: const Color(0xff6B7280),
+                      fontWeight: FontWeight.w400),
+                ),
+              ),
+            if (hasExpiry && !isPrivacy) ...[
               const SizedBox(height: 24),
               Padding(
                 padding: const EdgeInsets.only(left: 25),
@@ -110,17 +133,17 @@ class DomainInfoCard extends StatelessWidget {
                   },
                 ),
               ),
-              const SizedBox(height: 8),
-              Padding(
-                padding: const EdgeInsets.only(left: 15),
-                child: Text(
-                  "Auto Renew",
-                  style: MyStyle.tx14Grey.copyWith(
-                      fontStyle: FontStyle.italic,
-                      fontWeight: FontWeight.w400,
-                      color: const Color(0xff6B7280)),
-                ),
-              ),
+              // const SizedBox(height: 8),
+              // Padding(
+              //   padding: const EdgeInsets.only(left: 15),
+              //   child: Text(
+              //     "Auto Renew",
+              //     style: MyStyle.tx14Grey.copyWith(
+              //         fontStyle: FontStyle.italic,
+              //         fontWeight: FontWeight.w400,
+              //         color: const Color(0xff6B7280)),
+              //   ),
+              // ),
             ],
           ],
         )

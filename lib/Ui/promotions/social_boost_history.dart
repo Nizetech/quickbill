@@ -223,9 +223,12 @@ class _SocialBoostHistoryState extends State<SocialBoostHistory> {
                                               height: 8.h,
                                             ),
                                             StatusViewReceipt(
-                                              status: item.status!,
+                                                status: item.apiStatus!,
+                                                isSocial: true,
                                                 onTap: () {
-                                                  if (item.status != '1') {
+                                                  if (!item.apiStatus!
+                                                      .toLowerCase()
+                                                      .contains('success')) {
                                                     ErrorToast(
                                                         'No receipt available yet. Your order has not been completed.');
                                                   } else {

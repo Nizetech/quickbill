@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
@@ -23,6 +24,11 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  Future<String> fileToBase64(File file) async {
+    final bytes = await file.readAsBytes();
+    return base64Encode(bytes);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +103,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               file,
                             );
                             if (enoughSpace) {
-                              model.updateProfileImage(file);
+                              String base64Image = await fileToBase64(file);
+                              model.updateProfileImage(base64Image);
                             }
                           }
                         },

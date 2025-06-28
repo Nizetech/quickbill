@@ -54,10 +54,15 @@ class RepairTransactionTile extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                if (repairTile.photo == null || repairTile.photo == '')
+                  SvgPicture.asset(
+                    isDark
+                        ? 'assets/images/svg/file-dark.svg'
+                        : 'assets/images/svg/file.svg',
+                  )
+                else
                 CachedNetworkImage(
-                  imageUrl: repairTile.photo == null
-                      ? ''
-                      : '$imageBaseUrl${repairTile.photo}',
+                    imageUrl: '$imageBaseUrl${repairTile.photo}',
                   height: 68,
                   width: 86,
                   fit: BoxFit.cover,
@@ -73,10 +78,16 @@ class RepairTransactionTile extends StatelessWidget {
                   ),
                 ),
                 StatusIndicator(
-                  text: repairTile.invoiceStatus! == '1'
+                  text: repairTile.worksNotPaid == '0' &&
+                          repairTile.invoiceStatus == '1'
+                      ? "Pending Arrival"
+                      : repairTile.invoiceStatus! == '1'
                       ? "Pending Payment"
                       : "Paid",
-                  color: repairTile.invoiceStatus! != '1'
+                  color: repairTile.worksNotPaid == '0' &&
+                          repairTile.invoiceStatus == '1'
+                      ? MyColor.blueColor
+                      : repairTile.invoiceStatus! != '1'
                       ? MyColor.greenColor
                       : isDark
                           ? const Color(0xffBE843E)
@@ -245,39 +256,34 @@ class RepairTransactionTile extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          Opacity(
-            opacity: repairTile.worksNotPaid! == '0' ? .4 : 1,
-            child: SizedBox(
-              width: double.infinity,
-              child: OutlinedButton(
-                onPressed: repairTile.worksNotPaid! == '0'
-                    ? null
-                    : () {
-                        model.getRepairDetails(repairTile.id.toString(),
-                            callback: () {
-                          Get.to(RepairstepsScreen(
-                            repairId: repairTile.id.toString(),
-                          ));
-                        });
-                      },
-                style: OutlinedButton.styleFrom(
-                  side: BorderSide(
-                    color: themeProvider.isDarkMode()
-                        ? const Color(0xff1B1B1B)
-                        : const Color(0xffE9EBF8),
-                  ),
-                  backgroundColor: themeProvider.isDarkMode()
-                      ? const Color(0xff101010)
-                      : const Color(0xffFCFCFC),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton(
+              onPressed: () {
+                model.getRepairDetails(repairTile.id.toString(), callback: () {
+                  Get.to(RepairstepsScreen(
+                    repairId: repairTile.id.toString(),
+                    isPaid: repairTile.invoiceStatus! != '1',
+                  ));
+                });
+              },
+              style: OutlinedButton.styleFrom(
+                side: BorderSide(
+                  color: themeProvider.isDarkMode()
+                      ? const Color(0xff1B1B1B)
+                      : const Color(0xffE9EBF8),
                 ),
-                child: Text("See repair details",
-                    style: MyStyle.tx16Black.copyWith(
-                      color: themedata.tertiary,
-                      fontWeight: FontWeight.w400,
-                    )),
+                backgroundColor: themeProvider.isDarkMode()
+                    ? const Color(0xff101010)
+                    : const Color(0xffFCFCFC),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               ),
+              child: Text("See repair details",
+                  style: MyStyle.tx16Black.copyWith(
+                    color: themedata.tertiary,
+                    fontWeight: FontWeight.w400,
+                  )),
             ),
           ),
         ]),

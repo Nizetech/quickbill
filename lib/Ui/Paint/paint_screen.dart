@@ -544,6 +544,7 @@ class _PaintScreenState extends State<PaintScreen> {
                                   elevation: 0,
                                 ),
                                 onPressed: () async {
+
                                         await FilePicker.platform.pickFiles(
                                           type: FileType.custom,
                                           allowedExtensions: [
@@ -553,6 +554,14 @@ class _PaintScreenState extends State<PaintScreen> {
                                           ],
                                         ).then((value) async {
                                           if (value != null) {
+                                            File file =
+                                                File(value.files.single.path!);
+                                            // Check the file size
+                                            bool enoughSpace =
+                                                await checkUploadSize(
+                                              file,
+                                            );
+                                            if (enoughSpace) {
                                             setState(() {
                                               selectedFile =
                                                   File(value.files.first.path!);
@@ -560,6 +569,7 @@ class _PaintScreenState extends State<PaintScreen> {
                                             base64Image = await fileToBase64(
                                                 selectedFile!);
                                             model.updateImage(base64Image);
+                                            }
                                           }
                                         });
                                 },

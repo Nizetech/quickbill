@@ -274,7 +274,10 @@ class HistoryCard extends StatelessWidget {
                         child: SvgPicture.asset('assets/images/pending.svg'))
                     : CircleAvatar(
                         radius: 7,
-                        backgroundColor: getStatus(transaction),
+                        backgroundColor: transaction.type == Type.AUTOREPAIR &&
+                                transaction.status != '2'
+                            ? MyColor.redColor
+                            : getStatus(transaction),
                         child: Icon(
                           transaction.type == Type.AUTOREPAIR &&
                                   transaction.status != '2'

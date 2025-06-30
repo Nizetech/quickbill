@@ -264,14 +264,14 @@ class _RepairScreenState extends State<RepairScreen> {
                                     CustomTextField(
                                       enabled: true,
                                       controller: make,
-                                      text: "Benz c300",
+                                      text: "Toyota",
                                     ),
                                   ],
                                 ),
                               )
                             ],
                           ),
-                          if (optionIndex == 2)
+                          if (optionIndex == 2 && status.text.isNotEmpty)
                             NoticeBanner(
                                 text: status.text
                                         .toLowerCase()
@@ -300,7 +300,7 @@ class _RepairScreenState extends State<RepairScreen> {
                                       height: 7,
                                     ),
                                     CustomTextField(
-                                      text: "C 300",
+                                      text: "Camry",
                                       controller: carModel,
                                       enabled: true,
                                     ),

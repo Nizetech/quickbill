@@ -83,6 +83,21 @@ class ServiceRepo {
     }
   }
 
+  Future<Map<String, dynamic>> payRepairVehicle(String id) async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response = await client.post(ApiRoute.payRepairVehicle,
+          body: jsonEncode({"transaction_id": id}),
+          requestHeaders: {
+            'Authorization': token,
+          });
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
   Future<Map<String, dynamic>> getSocialSectionss() async {
     String token = await box.get(kAccessToken);
     try {

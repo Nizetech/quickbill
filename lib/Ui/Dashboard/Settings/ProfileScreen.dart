@@ -99,13 +99,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           if (result != null) {
                             File file = File(result.files.single.path!);
                             // Check the file size
-                            bool enoughSpace = await checkUploadSize(
-                              file,
-                            );
-                            if (enoughSpace) {
+                            // bool enoughSpace = await checkUploadSize(
+                            //   file,
+                            // );
+                            // if (enoughSpace) {
                               String base64Image = await fileToBase64(file);
                               model.updateProfileImage(base64Image);
-                            }
+                            // }
                           }
                         },
                         child: Container(

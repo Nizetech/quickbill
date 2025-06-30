@@ -82,7 +82,7 @@ class DomainInfoCard extends StatelessWidget {
             if (hasExpiry && !isPrivacy)
               SizedBox(
                 width: 150,
-                child: DotLabel(
+                child: DotLabelFlexFree(
                   text: "Expiry date",
                   value: expiryDate!,
                   labelStyle: MyStyle.tx14Black.copyWith(

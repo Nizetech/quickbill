@@ -480,3 +480,71 @@ class DotLabel extends StatelessWidget {
     );
   }
 }
+
+class DotLabelFlexFree extends StatelessWidget {
+  final String text;
+  final String value;
+  final Color? labelColor;
+  final Color? textColor;
+  final Color? dotColor;
+  final TextStyle? textStyle;
+  final TextStyle? labelStyle;
+
+  const DotLabelFlexFree({
+    super.key,
+    required this.text,
+    required this.value,
+    this.dotColor,
+    this.labelColor,
+    this.textColor,
+    this.textStyle,
+    this.labelStyle,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Transform.translate(
+          offset: const Offset(0, 5),
+          child: Dot(
+              color: dotColor ??
+                  (themeProvider.isDarkMode()
+                      ? MyColor.whiteColor
+                      : MyColor.dark01Color)),
+        ),
+        const SizedBox(width: 6),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              text,
+              style: labelStyle ??
+                  (MyStyle.tx14Black.copyWith(
+                    fontWeight: FontWeight.w500,
+                    color: labelColor ??
+                        (themeProvider.isDarkMode()
+                            ? MyColor.whiteColor
+                            : const Color(0xff6E6D7A)),
+                  )),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              value,
+              style: textStyle ??
+                  MyStyle.tx16Black.copyWith(
+                    fontWeight: FontWeight.w400,
+                    color: textColor ??
+                        (themeProvider.isDarkMode()
+                            ? const Color(0xffCBD2EB)
+                            : const Color(0xff141B34)),
+                  ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}

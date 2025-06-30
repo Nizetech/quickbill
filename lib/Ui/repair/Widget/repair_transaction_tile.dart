@@ -1,3 +1,4 @@
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,6 +24,7 @@ class RepairTransactionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // final model = context.read<ServiceProvider>();
     String imageBaseUrl =
         "https://smanager.jostpay.com/assets/media/uploads/auto_repair/vehicle_photo/";
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
@@ -61,37 +63,39 @@ class RepairTransactionTile extends StatelessWidget {
                         : 'assets/images/svg/file.svg',
                   )
                 else
-                CachedNetworkImage(
+                  CachedNetworkImage(
                     imageUrl: '$imageBaseUrl${repairTile.photo}',
-                  height: 68,
-                  width: 86,
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) => SvgPicture.asset(
-                    isDark
-                        ? 'assets/images/svg/file-dark.svg'
-                        : 'assets/images/svg/file.svg',
+                    height: 68,
+                    width: 86,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => SvgPicture.asset(
+                      isDark
+                          ? 'assets/images/svg/file-dark.svg'
+                          : 'assets/images/svg/file.svg',
+                    ),
+                    errorWidget: (context, url, error) => SvgPicture.asset(
+                      isDark
+                          ? 'assets/images/svg/file-dark.svg'
+                          : 'assets/images/svg/file.svg',
+                    ),
                   ),
-                  errorWidget: (context, url, error) => SvgPicture.asset(
-                    isDark
-                        ? 'assets/images/svg/file-dark.svg'
-                        : 'assets/images/svg/file.svg',
-                  ),
-                ),
                 StatusIndicator(
                   text: repairTile.worksNotPaid == '0' &&
                           repairTile.invoiceStatus == '1'
                       ? "Pending Arrival"
-                      : repairTile.invoiceStatus! == '1'
-                      ? "Pending Payment"
-                      : "Paid",
+                      : repairTile.invoiceStatus! == '2' &&
+                              repairTile.worksNotPaid! == '0'
+                          ? "Paid"
+                          : "Pending Payment",
                   color: repairTile.worksNotPaid == '0' &&
                           repairTile.invoiceStatus == '1'
                       ? MyColor.blueColor
-                      : repairTile.invoiceStatus! != '1'
-                      ? MyColor.greenColor
-                      : isDark
-                          ? const Color(0xffBE843E)
-                          : const Color(0xffAB7738),
+                      : repairTile.invoiceStatus! == '2' &&
+                              repairTile.worksNotPaid! == '0'
+                          ? MyColor.greenColor
+                          : isDark
+                              ? const Color(0xffBE843E)
+                              : const Color(0xffAB7738),
                 )
               ],
             ),
@@ -104,7 +108,7 @@ class RepairTransactionTile extends StatelessWidget {
               boxShadow: [
                 BoxShadow(
                   color: Color(0xFFAAAAAA).withOpacity(0.08), // 8% opacity
-                  offset: const Offset(0, 5.05), // x: 0, y: 5.05
+                  offset: const Offset(0, 5.05),
                   blurRadius: 8.41,
                   spreadRadius: 0,
                 ),
@@ -112,10 +116,20 @@ class RepairTransactionTile extends StatelessWidget {
             ),
             width: double.infinity,
             child: OutlinedButton(
-              onPressed: repairTile.worksNotPaid! == '0' ? null : () {},
+              onPressed: repairTile.invoiceStatus! != '1' &&
+                          repairTile.worksNotPaid! == '0' ||
+                      repairTile.worksNotPaid == '0' &&
+                          repairTile.invoiceStatus == '1'
+                  ? null
+                  : () {
+                      model.payRepairVehicle(repairTile.id!);
+                    },
               style: OutlinedButton.styleFrom(
                 side: BorderSide.none,
-                backgroundColor: repairTile.invoiceStatus! != '1' ||
+                backgroundColor: repairTile.worksNotPaid == '0' &&
+                        repairTile.invoiceStatus == '1'
+                    ? MyColor.greenColor.withValues(alpha: .08)
+                    : repairTile.invoiceStatus! != '1' &&
                         repairTile.worksNotPaid! == '0'
                     ? MyColor.greenColor.withValues(alpha: .08)
                     : themeProvider.isDarkMode()
@@ -124,12 +138,20 @@ class RepairTransactionTile extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
               ),
-              child: Text(repairTile.invoiceStatus! != '1' ? "paid" : "Pay Now",
+              child: Text(
+                  // repairTile.invoiceStatus! != '1' &&
+                  //         repairTile.worksNotPaid! == '0'
+                  //     ? "paid"
+                  //     :
+                  "Pay Now",
                   style: MyStyle.tx14Black.copyWith(
                     fontFamily: 'SF Pro Rounded',
-                    color: repairTile.invoiceStatus! != '1'
-                        ? MyColor.grey02Color
-                        : MyColor.mainWhiteColor,
+                    color:
+                        // repairTile.invoiceStatus! != '1' &&
+                        //         repairTile.worksNotPaid! == '0'
+                        //     ? MyColor.grey02Color
+                        //     :
+                        MyColor.mainWhiteColor,
                     fontWeight: FontWeight.w600,
                   )),
             ),
@@ -187,7 +209,8 @@ class RepairTransactionTile extends StatelessWidget {
             value2: formatDateYear(repairTile.createdAt!),
             isDark: isDark,
           ),
-
+          if (repairTile.invoiceStatus! != '2' &&
+              repairTile.worksNotPaid! != '0')
           if (repairTile.amount != '0')
             Container(
               margin: EdgeInsets.only(top: 20),
@@ -263,9 +286,11 @@ class RepairTransactionTile extends StatelessWidget {
                 model.getRepairDetails(repairTile.id.toString(), callback: () {
                   Get.to(RepairstepsScreen(
                     repairId: repairTile.id.toString(),
-                    isPaid: repairTile.invoiceStatus! != '1',
-                  ));
-                });
+                          isPaid: repairTile.invoiceStatus! == '2' &&
+                              repairTile.worksNotPaid! == '0'),
+                    );
+                  },
+                );
               },
               style: OutlinedButton.styleFrom(
                 side: BorderSide(

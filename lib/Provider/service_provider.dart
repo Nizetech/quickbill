@@ -231,6 +231,35 @@ class ServiceProvider with ChangeNotifier {
     }
   }
 
+  Future<void> payRepairVehicle(String id) async {
+    try {
+      showLoader();
+      var res = await ServiceRepo().payRepairVehicle(id);
+      log("res:===> $res");
+      if (res['status'] == false || res['result'] == false) {
+        hideLoader();
+        if (res['message'].runtimeType == String) {
+          ErrorToast(res['message']);
+        } else {
+          String message = '';
+          res['message'].forEach((key, value) {
+            message += '$value';
+          });
+          ErrorToast(message);
+        }
+        return;
+      }
+
+      await getRepairTransactions(isLoading: false);
+      hideLoader();
+      SuccessToast(res['message']);
+      notifyListeners();
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
   Future<void> getRepairDetails(String id,
       {required VoidCallback callback, bool isLoading = true}) async {
     try {

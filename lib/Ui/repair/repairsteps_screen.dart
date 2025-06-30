@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -63,7 +62,7 @@ class _RepairstepsScreenState extends State<RepairstepsScreen> {
                   fontWeight: FontWeight.w500,
                   color: const Color(0xff6E6D7A),
                 )),
-            Text(price,
+            Text("${Utils.naira}$price",
                 style: MyStyle.tx16Black.copyWith(
                   fontWeight: FontWeight.w600,
                   color: themedata.tertiary,

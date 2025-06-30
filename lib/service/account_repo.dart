@@ -56,13 +56,7 @@ class AccountRepo {
     String token = await box.get(kAccessToken);
     try {
       final response = await client.post(ApiRoute.updateProfileImage,
-          // final response = await client.sendFormData(FormDataType.post,
-          //     imageKey: 'profile_photo',
-          //     image: image,
-          //     uri: ApiRoute.updateProfileImage,
-          body: {
-            jsonEncode({"profile_photo": image})
-          },
+          body: jsonEncode({"image": image}),
           requestHeaders: {
             'Authorization': token,
           });

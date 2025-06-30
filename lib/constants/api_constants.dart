@@ -61,5 +61,6 @@ class ApiRoute {
   static String repairDetails = 'services/auto-repair/work-list';
   static String skipRepair = 'services/auto-repair/skip-work';
   static String shareRepairInvoice = 'services/auto-repair/share';
+  static String payRepairVehicle = 'services/auto-repair/pay';
   static String domainList = 'services/domain-name/list';
 }

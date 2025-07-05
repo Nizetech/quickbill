@@ -5,6 +5,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Models/airtime_history.dart';
+import 'package:jost_pay_wallet/Models/banks_model.dart';
 import 'package:jost_pay_wallet/Models/data_history_model.dart';
 import 'package:jost_pay_wallet/Models/data_plans_model.dart';
 import 'package:jost_pay_wallet/Models/giftcard_history.dart';
@@ -38,6 +39,7 @@ class AccountProvider with ChangeNotifier {
   DataHistoryModel? dataHistoryModel;
   SocialBoostHistoryModel? socialBoostHistoryModel;
   ReferralCountModel? referralCountModel;
+  BanksModel? banksModel;
 
   dynamic qrcode;
   TransactionModel? _dashBoardHistory;
@@ -260,7 +262,7 @@ TransactionModel? get dashBoardHistory => _dashBoardHistory;
     try {
       if (isLoading) showLoader();
       AccountRepo().getServiceHistory('social').then((value) async{
-        log('Value: $value');
+
         if (isLoading) hideLoader();
         if (value['status'] == false || value['result'] == false) {
           if (value['message'].runtimeType == String) {
@@ -275,6 +277,33 @@ TransactionModel? get dashBoardHistory => _dashBoardHistory;
         } else {
           socialBoostHistoryModel = SocialBoostHistoryModel.fromJson(value);
             await getUserBalance();
+        }
+        notifyListeners();
+      });
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
+  Future<void> getBanks({bool isLoading = true}) async {
+    try {
+      if (isLoading) showLoader();
+      AccountRepo().getBanks().then((value) async{
+        log('Value: $value');
+        if (isLoading) hideLoader();
+        if (value['status'] == false || value['result'] == false) {
+          if (value['message'].runtimeType == String) {
+            ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';
+            });
+            ErrorToast(message);
+          }
+        } else {
+          banksModel = BanksModel.fromJson(value);
         }
         notifyListeners();
       });

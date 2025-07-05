@@ -22,6 +22,7 @@ class ApiRoute {
   static String getDataPlans = 'get-data-plans';
   static String getTransactions = 'get-purchases';
   static String getNotification = 'get-news';
+  static String getBanks = 'get-banks';
   static String readNotification = 'read-news';
   static String getPromo = 'get-promos';
   static String getReferrals = 'get-referrals';

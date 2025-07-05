@@ -74,6 +74,19 @@ class AccountRepo {
           await client.post(ApiRoute.getNotification, requestHeaders: {
         'Authorization': token,
       });
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
+  Future<Map<String, dynamic>> getBanks() async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response = await client.post(ApiRoute.getBanks, requestHeaders: {
+        'Authorization': token,
+      });
       log('Reponse: $response');
       return response;
     } catch (e) {
@@ -92,7 +105,6 @@ class AccountRepo {
         },
         body: {"use_google_auth": useGoogleAuth},
       );
-      log('Reponse: $response');
       return response;
     } catch (e) {
       print('Error: $e');

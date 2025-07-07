@@ -18,6 +18,7 @@ class ApiRoute {
   static String updateProfile = 'update-profile';
   static String getProfileImage = 'get-profile-image';
   static String updateProfileImage = 'update-image';
+  static String getInvoice = 'get-invoice';
   static String getBalance = 'get-balance';
   static String getDataPlans = 'get-data-plans';
   static String getTransactions = 'get-purchases';
@@ -27,6 +28,7 @@ class ApiRoute {
   static String getPromo = 'get-promos';
   static String getReferrals = 'get-referrals';
   static String getNetworkProviders = 'get-network-providers';
+  static String creditDeposit = 'create-deposit';
 
   // Services
   static String buyAirtime = 'buy-airtime';
@@ -37,6 +39,7 @@ class ApiRoute {
   static String buyPay4Me = 'buy-pay4me';
   static String getPayRate = 'get-rates';
   static String serviceHistory = 'get-purchases';
+  static String recentDepositHistory = 'get-recent-purchases';
   static String getSocialSections = 'get-social-sections';
   static String getGiftCard = 'get-gift-cards';
   static String getCard = 'get-gift-card';

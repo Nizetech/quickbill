@@ -2,38 +2,7 @@
 //
 //     final banksModel = banksModelFromJson(jsonString);
 
-import 'dart:convert';
-
-BanksModel banksModelFromJson(String str) =>
-    BanksModel.fromJson(json.decode(str));
-
-String banksModelToJson(BanksModel data) => json.encode(data.toJson());
-
 class BanksModel {
-  final bool? result;
-  final List<Datum>? data;
-
-  BanksModel({
-    this.result,
-    this.data,
-  });
-
-  factory BanksModel.fromJson(Map<String, dynamic> json) => BanksModel(
-        result: json["result"],
-        data: json["data"] == null
-            ? []
-            : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "result": result,
-        "data": data == null
-            ? []
-            : List<dynamic>.from(data!.map((x) => x.toJson())),
-      };
-}
-
-class Datum {
   final String? id;
   final String? bankName;
   final String? accountName;
@@ -43,7 +12,7 @@ class Datum {
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
-  Datum({
+  BanksModel({
     this.id,
     this.bankName,
     this.accountName,
@@ -54,7 +23,7 @@ class Datum {
     this.updatedAt,
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory BanksModel.fromJson(Map<String, dynamic> json) => BanksModel(
         id: json["id"],
         bankName: json["bank_name"],
         accountName: json["account_name"],

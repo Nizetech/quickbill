@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +7,9 @@ import 'package:jost_pay_wallet/Models/airtime_history.dart';
 import 'package:jost_pay_wallet/Models/banks_model.dart';
 import 'package:jost_pay_wallet/Models/data_history_model.dart';
 import 'package:jost_pay_wallet/Models/data_plans_model.dart';
+import 'package:jost_pay_wallet/Models/deposit_history_model.dart';
 import 'package:jost_pay_wallet/Models/giftcard_history.dart';
+import 'package:jost_pay_wallet/Models/invoice_model.dart';
 import 'package:jost_pay_wallet/Models/network_provider.dart';
 import 'package:jost_pay_wallet/Models/notification_model.dart';
 import 'package:jost_pay_wallet/Models/pay_for_me_history.dart';
@@ -20,6 +21,7 @@ import 'package:jost_pay_wallet/Models/user_model.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyDataSuccess.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/invalid.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/pending_purchase.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/payment_details.dart';
 import 'package:jost_pay_wallet/service/account_repo.dart';
 import 'package:jost_pay_wallet/utils/loader.dart';
 import 'package:jost_pay_wallet/utils/toast.dart';
@@ -39,7 +41,9 @@ class AccountProvider with ChangeNotifier {
   DataHistoryModel? dataHistoryModel;
   SocialBoostHistoryModel? socialBoostHistoryModel;
   ReferralCountModel? referralCountModel;
-  BanksModel? banksModel;
+  List<BanksModel> banksModel = [];
+  InvoiceModel? invoiceModel;
+  DepositHistoryModel? depositHistoryModel;
 
   dynamic qrcode;
   TransactionModel? _dashBoardHistory;
@@ -47,7 +51,7 @@ class AccountProvider with ChangeNotifier {
   Map<dynamic, List> _transGroupByData = {};
   String _profileImage = '';
 
-TransactionModel? get dashBoardHistory => _dashBoardHistory;
+  TransactionModel? get dashBoardHistory => _dashBoardHistory;
   String get profileImage => _profileImage;
   Map<dynamic, List> get transGroupByData => _transGroupByData;
 
@@ -59,7 +63,7 @@ TransactionModel? get dashBoardHistory => _dashBoardHistory;
   void updateDashBoardHistory() {
     _dashBoardHistory = TransactionModel.fromJson(transactionModel!.toJson());
     // ..sort((a, b) => b.transDate!.compareTo(a.transDate!));
-     // Sort the transactions by latest time
+    // Sort the transactions by latest time
     _dashBoardHistory?.data
         ?.sort((a, b) => b.transDate!.compareTo(a.transDate!));
     notifyListeners();
@@ -141,11 +145,46 @@ TransactionModel? get dashBoardHistory => _dashBoardHistory;
     }
   }
 
+  Future<void> getDepositInvoice(
+      {required String bankID, required String amount}) async {
+    try {
+      showLoader();
+      AccountRepo().getDepositInvoice(bankID).then((value) {
+        // log('Value: $value');
+        hideLoader();
+        if (value['status'] == false || value['result'] == false) {
+          if (value['message'].runtimeType == String) {
+            ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';
+            });
+            ErrorToast(message);
+          }
+        } else {
+          invoiceModel = InvoiceModel.fromJson(value);
+          hideLoader();
+          Get.to(
+            PaymentPayment(
+              amount: amount,
+              bankId: bankID,
+            ),
+          );
+        }
+        notifyListeners();
+      });
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
   // get User Profile
   Future<void> getAirtimeHistory({bool isLoading = true}) async {
     try {
       if (isLoading) showLoader();
-      AccountRepo().getServiceHistory('airtime').then((value)async {
+      AccountRepo().getServiceHistory('airtime').then((value) async {
         log('Value: $value');
         if (isLoading) hideLoader();
         if (value['status'] == false || value['result'] == false) {
@@ -174,7 +213,7 @@ TransactionModel? get dashBoardHistory => _dashBoardHistory;
   Future<void> getDataHistory({bool isLoading = true}) async {
     try {
       if (isLoading) showLoader();
-      AccountRepo().getServiceHistory('data').then((value) async{
+      AccountRepo().getServiceHistory('data').then((value) async {
         log('Value: $value');
         if (isLoading) hideLoader();
         if (value['status'] == false || value['result'] == false) {
@@ -189,7 +228,7 @@ TransactionModel? get dashBoardHistory => _dashBoardHistory;
           }
         } else {
           dataHistoryModel = DataHistoryModel.fromJson(value);
-            await getUserBalance();
+          await getUserBalance();
         }
         notifyListeners();
       });
@@ -203,7 +242,7 @@ TransactionModel? get dashBoardHistory => _dashBoardHistory;
   Future<void> getPay4MeHistory({bool isLoading = true}) async {
     try {
       if (isLoading) showLoader();
-      AccountRepo().getServiceHistory('pay4me').then((value) async{
+      AccountRepo().getServiceHistory('pay4me').then((value) async {
         log('Value: $value');
         if (isLoading) hideLoader();
         if (value['status'] == false || value['result'] == false) {
@@ -217,9 +256,9 @@ TransactionModel? get dashBoardHistory => _dashBoardHistory;
             ErrorToast(message);
           }
         } else {
-           pay4meHistory  = List<PayForMeHistoryModel>.from(value['data'].map((x) => PayForMeHistoryModel.fromJson(x)));
-              await getUserBalance();
-      
+          pay4meHistory = List<PayForMeHistoryModel>.from(
+              value['data'].map((x) => PayForMeHistoryModel.fromJson(x)));
+          await getUserBalance();
         }
         notifyListeners();
       });
@@ -233,7 +272,7 @@ TransactionModel? get dashBoardHistory => _dashBoardHistory;
   Future<void> getGiftCradHistory({bool isLoading = true}) async {
     try {
       if (isLoading) showLoader();
-      AccountRepo().getServiceHistory('giftcard').then((value)async {
+      AccountRepo().getServiceHistory('giftcard').then((value) async {
         log('Value: $value');
         if (isLoading) hideLoader();
         if (value['status'] == false || value['result'] == false) {
@@ -248,7 +287,7 @@ TransactionModel? get dashBoardHistory => _dashBoardHistory;
           }
         } else {
           giftCardHistoryModel = GiftCardHistoryModel.fromJson(value);
-            await getUserBalance();
+          await getUserBalance();
         }
         notifyListeners();
       });
@@ -258,38 +297,11 @@ TransactionModel? get dashBoardHistory => _dashBoardHistory;
     }
   }
 
-  Future<void> getSociaBoostHistory({bool isLoading = true}) async {
+  // get User Profile
+  Future<void> getDepositHistory({bool isLoading = true}) async {
     try {
       if (isLoading) showLoader();
-      AccountRepo().getServiceHistory('social').then((value) async{
-
-        if (isLoading) hideLoader();
-        if (value['status'] == false || value['result'] == false) {
-          if (value['message'].runtimeType == String) {
-            ErrorToast(value['message']);
-          } else {
-            String message = '';
-            value['message'].forEach((key, value) {
-              message += '$value';
-            });
-            ErrorToast(message);
-          }
-        } else {
-          socialBoostHistoryModel = SocialBoostHistoryModel.fromJson(value);
-            await getUserBalance();
-        }
-        notifyListeners();
-      });
-    } catch (e) {
-      log('Error: $e');
-      ErrorToast(e.toString());
-    }
-  }
-
-  Future<void> getBanks({bool isLoading = true}) async {
-    try {
-      if (isLoading) showLoader();
-      AccountRepo().getBanks().then((value) async{
+      AccountRepo().getDepositHistory().then((value) async {
         log('Value: $value');
         if (isLoading) hideLoader();
         if (value['status'] == false || value['result'] == false) {
@@ -303,7 +315,92 @@ TransactionModel? get dashBoardHistory => _dashBoardHistory;
             ErrorToast(message);
           }
         } else {
-          banksModel = BanksModel.fromJson(value);
+          depositHistoryModel = DepositHistoryModel.fromJson(value);
+        }
+        notifyListeners();
+      });
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
+  Future<void> createDeposit(Map<String, dynamic> data) async {
+    try {
+      showLoader();
+      AccountRepo().createDeposit(data).then((value) async {
+        hideLoader();
+        log( 'Value: $value');
+        if (value['status'] == false || value['result'] == false) {
+          if (value['message'].runtimeType == String) {
+            ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';
+            });
+            ErrorToast(message);
+          }
+        } else {
+          Get.close(3);
+          SuccessToast(value['message']);
+        
+        }
+        notifyListeners();
+      });
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
+  Future<void> getSociaBoostHistory({bool isLoading = true}) async {
+    try {
+      if (isLoading) showLoader();
+      AccountRepo().getServiceHistory('social').then((value) async {
+        if (isLoading) hideLoader();
+        if (value['status'] == false || value['result'] == false) {
+          if (value['message'].runtimeType == String) {
+            ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';
+            });
+            ErrorToast(message);
+          }
+        } else {
+          socialBoostHistoryModel = SocialBoostHistoryModel.fromJson(value);
+          await getUserBalance();
+        }
+        notifyListeners();
+      });
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
+  Future<void> getBanks({bool isLoading = true}) async {
+    try {
+      if (isLoading) showLoader();
+      AccountRepo().getBanks().then((value) async {
+        log('Value: $value');
+        if (isLoading) hideLoader();
+        if (value['status'] == false || value['result'] == false) {
+          if (value['message'].runtimeType == String) {
+            ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';
+            });
+            ErrorToast(message);
+          }
+        } else {
+          banksModel = List<BanksModel>.from(value['data']['banks'].map(
+            (x) => BanksModel.fromJson(x),
+          ));
         }
         notifyListeners();
       });
@@ -314,7 +411,8 @@ TransactionModel? get dashBoardHistory => _dashBoardHistory;
   }
 
   // get Network Provider
-  Future<void> getNetworkProviders({bool isLoading = true, VoidCallback? callback}) async {
+  Future<void> getNetworkProviders(
+      {bool isLoading = true, VoidCallback? callback}) async {
     try {
       if (isLoading) showLoader();
       AccountRepo().getNetworkProviders().then((value) {
@@ -333,9 +431,9 @@ TransactionModel? get dashBoardHistory => _dashBoardHistory;
         } else {
           networkProviderModel =
               NetworkProviderModel.fromJson(value['network_providers']);
-              if(callback != null){
-                callback();
-              }
+          if (callback != null) {
+            callback();
+          }
         }
         notifyListeners();
       });
@@ -407,7 +505,7 @@ TransactionModel? get dashBoardHistory => _dashBoardHistory;
     try {
       showLoader();
       AccountRepo().buyAirtime(data).then((value) async {
-          hideLoader();
+        hideLoader();
         if (value['result'] == null || value['result'] == false) {
           if (value['message'].toString().toLowerCase().contains('fail')) {
             Get.to(PendingPurchase(
@@ -421,34 +519,33 @@ TransactionModel? get dashBoardHistory => _dashBoardHistory;
               isData: false,
             ));
           }
-        }else{
+        } else {
+          // }
+          // if (value['status'] == false || value['result'] == false) {
+          //   hideLoader();
 
-        // }
-        // if (value['status'] == false || value['result'] == false) {
-        //   hideLoader();
-
-        //   Get.to(PendingPurchase(
-        //     isData: false,
-        //     amount: data['amount'],
-        //     phone: data['phone'],
-        //   ));
-        //   if (value['message'].runtimeType == String) {
-        //     ErrorToast(value['message']);
-        //   } else {
-        //     String message = '';
-        //     value['message'].forEach((key, value) {
-        //       message += '$value';
-        //     });
-        //     ErrorToast(message);
-        //   }
-        // }
-         if(value['message'].toString().toLowerCase().contains('pending')){
+          //   Get.to(PendingPurchase(
+          //     isData: false,
+          //     amount: data['amount'],
+          //     phone: data['phone'],
+          //   ));
+          //   if (value['message'].runtimeType == String) {
+          //     ErrorToast(value['message']);
+          //   } else {
+          //     String message = '';
+          //     value['message'].forEach((key, value) {
+          //       message += '$value';
+          //     });
+          //     ErrorToast(message);
+          //   }
+          // }
+          if (value['message'].toString().toLowerCase().contains('pending')) {
             Get.to(PendingPurchase(
               isData: true,
               amount: data['amount'],
               phone: data['phone'],
             ));
-             } else if (value['message']
+          } else if (value['message']
               .toString()
               .toLowerCase()
               .contains('failed')) {
@@ -458,12 +555,12 @@ TransactionModel? get dashBoardHistory => _dashBoardHistory;
               amount: data['amount'],
               phone: data['phone'],
             ));
-          }else{
-          Get.to(BuyDataSuccess(
-            isData: false,
-            amount: data['amount'],
-            phone: data['phone'],
-          ));
+          } else {
+            Get.to(BuyDataSuccess(
+              isData: false,
+              amount: data['amount'],
+              phone: data['phone'],
+            ));
           }
         }
 
@@ -481,47 +578,44 @@ TransactionModel? get dashBoardHistory => _dashBoardHistory;
     try {
       showLoader();
       AccountRepo().buyData(data).then((value) async {
-          hideLoader();
-          log('Value:==> $value');
-        if (value['result'] == null|| value['result'] == false) {
-           if(value['message'].toString().toLowerCase().contains('failed')){
+        hideLoader();
+        log('Value:==> $value');
+        if (value['result'] == null || value['result'] == false) {
+          if (value['message'].toString().toLowerCase().contains('failed')) {
             Get.to(PendingPurchase(
               isData: true,
               isFailed: true,
-              amount:'',
+              amount: '',
               phone: '',
             ));
-          }else{
+          } else {
             Get.to(InvalidPurchase(
               isData: true,
             ));
           }
-        }else{
-          if(value['result'] ==
-              true &&value['message'].toString().toLowerCase().contains('pending')){
+        } else {
+          if (value['result'] == true &&
+              value['message'].toString().toLowerCase().contains('pending')) {
             Get.to(PendingPurchase(
               isData: true,
               amount: '',
               phone: '',
             ));
           } else if (value['result'] == true &&
-              value['message']
-              .toString()
-              .toLowerCase()
-              .contains('fail')) {
+              value['message'].toString().toLowerCase().contains('fail')) {
             Get.to(PendingPurchase(
               isData: true,
               isFailed: true,
               amount: '',
               phone: '',
             ));
-
-          }else{
-          Get.to(BuyDataSuccess(
-            isData: true,
-            amount: amount,
-            phone: data['phone'],
-          ));        }
+          } else {
+            Get.to(BuyDataSuccess(
+              isData: true,
+              amount: amount,
+              phone: data['phone'],
+            ));
+          }
         }
         notifyListeners();
       });

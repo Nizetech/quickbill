@@ -267,7 +267,8 @@ class HistoryCard extends StatelessWidget {
                 transaction.apiStatus != null &&
                             transaction.apiStatus!.contains('pending') ||
                         isSpecialTransactionService(transaction) &&
-                            transaction.status == '0'
+                            transaction.status == '0' ||
+                        getStatus(transaction) == MyColor.orange01Color
                     ? CircleAvatar(
                         radius: 7,
                         backgroundColor: MyColor.pending,
@@ -298,7 +299,8 @@ class HistoryCard extends StatelessWidget {
                 SizedBox(width: 5.w),
                 GestureDetector(
                   onTap: () {
-                    if (isValid(transaction)) {
+                    if (isValid(transaction) ||
+                        getStatus(transaction) == MyColor.orange01Color) {
                       ErrorToast(
                           'No receipt available yet. Your order has not been completed.');
                     } else {

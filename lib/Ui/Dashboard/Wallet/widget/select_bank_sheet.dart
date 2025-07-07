@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 
 void bankSelectionSheet({
   required ThemeProvider themeProvider,
-  required Function(String) onSelect,
+  required Function(Map<dynamic, String>) onSelect,
 }) {
   final themedata = Theme.of(Get.context!).colorScheme;
   final model = Provider.of<AccountProvider>(Get.context!, listen: false);
@@ -40,19 +40,23 @@ void bankSelectionSheet({
               ),
             ),
             const SizedBox(height: 20),
+            if (model.banksModel.isNotEmpty)
             Expanded(
               child: ListView.builder(
-                itemCount: model.banksModel!.data!.length,
+                  itemCount: model.banksModel.length,
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: () {
-                      onSelect(model.banksModel!.data![index].bankName!);
+                        onSelect({
+                          "id": model.banksModel[index].id!,
+                          "name": model.banksModel[index].bankName!
+                        });
                       Get.back();
                     },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       child: Text(
-                        model.banksModel!.data![index].bankName!,
+                          model.banksModel[index].bankName!,
                         style: MyStyle.tx16Black.copyWith(
                           color: themedata.tertiary,
                           fontWeight: FontWeight.w500,

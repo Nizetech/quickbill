@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
+
 
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jost_pay_wallet/constants/api_constants.dart';
@@ -60,6 +60,21 @@ class AccountRepo {
           requestHeaders: {
             'Authorization': token,
           });
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
+  Future<Map<String, dynamic>> getDepositInvoice(String bankID) async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response = await client.post(ApiRoute.getInvoice, body: {
+        "bank_id": int.parse(bankID),
+      }, requestHeaders: {
+        'Authorization': token,
+      });
       return response;
     } catch (e) {
       print('Error: $e');
@@ -140,6 +155,25 @@ class AccountRepo {
           'Authorization': token,
         },
         body: {"type": type},
+      );
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
+  Future<dynamic> getDepositHistory() async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response = await client.post(
+        ApiRoute.recentDepositHistory,
+        requestHeaders: {
+          'Authorization': token,
+        },
+        body: {
+          "type": 'deposit',
+        },
       );
       return response;
     } catch (e) {
@@ -245,7 +279,21 @@ class AccountRepo {
           await client.post(ApiRoute.buyData, body: data, requestHeaders: {
         'Authorization': token,
       });
-      log('Response: $response');
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
+  Future<Map<String, dynamic>> createDeposit(Map<String, dynamic> data) async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response = await client
+          .post(ApiRoute.creditDeposit, body: data, requestHeaders: {
+        'Authorization': token,
+      });
+      //  log('Response: $response');
       return response;
     } catch (e) {
       print('Error: $e');

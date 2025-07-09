@@ -3,13 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jost_pay_wallet/Provider/service_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
-import 'package:jost_pay_wallet/Ui/Domain/domain_screen.dart';
 import 'package:jost_pay_wallet/Ui/Paint/paint_screen.dart';
 import 'package:jost_pay_wallet/Ui/Paint/widget/spray_history.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:provider/provider.dart';
-
 import '../Domain/widget/dot.dart';
 
 class PaintHistory extends StatefulWidget {

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/DashboardProvider.dart';
 import 'package:jost_pay_wallet/Ui/Authentication/OtpScreen.dart';
+import 'package:jost_pay_wallet/Ui/Authentication/SignInScreen.dart';
 import 'package:jost_pay_wallet/bottom_nav.dart';
 import 'package:jost_pay_wallet/service/auth_repo.dart';
 import 'package:jost_pay_wallet/utils/loader.dart';
@@ -108,6 +109,43 @@ class AuthProvider with ChangeNotifier {
     } catch (e) {
       log('Error: $e');
       // setLoading(false);
+      ErrorToast(e.toString());
+    }
+  }
+
+  Future<void> deActivateAccount() async {
+    try {
+      showLoader();
+      final res = await AuthRepo().deActivateAccount().then((value) {
+        log('Value: $value');
+        hideLoader();
+        if (value.isNotEmpty) {
+          if (value['status'] == false || value['result'] == false) {
+            if (value['message'].runtimeType == String) {
+              ErrorToast(value['message']);
+            } else {
+              String message = '';
+              value['message'].forEach((key, value) {
+                message += '$value';
+              });
+              ErrorToast(message);
+            }
+            return;
+          } else {
+            Get.offAll(SignInScreen());
+            if (value['message'] != null && value['message'] != '') {
+              SuccessToast(value['message']);
+            }
+          }
+          notifyListeners();
+        } else {
+          ErrorToast('Something went wrong');
+          return;
+        }
+      });
+      log('Value: $res');
+    } catch (e) {
+      log('Error: $e');
       ErrorToast(e.toString());
     }
   }

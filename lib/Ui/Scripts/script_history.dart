@@ -12,7 +12,6 @@ import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/utils.dart';
 import 'package:jost_pay_wallet/common/status_view_receipt.dart';
-import 'package:jost_pay_wallet/utils/toast.dart';
 import 'package:provider/provider.dart';
 
 class ScriptHistory extends StatefulWidget {

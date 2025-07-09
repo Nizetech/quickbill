@@ -119,6 +119,10 @@ String formatDateTime(DateTime dateTime) {
   return DateFormat('MMMM d, h:mm a').format(dateTime);
 }
 
+String formatDateYearTime(DateTime dateTime) {
+  return DateFormat('MMMM d, yyyy h:mm a').format(dateTime);
+}
+
 String formatDate(DateTime dateTime) {
   return DateFormat('MMMM dd').format(dateTime);
 }

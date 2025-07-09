@@ -4,8 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
-// ignore: unused_import
-import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyAirtimeConfirm.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyData.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/widget/balance_action_card.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/receipt_script.dart';
@@ -243,9 +241,9 @@ class _DataHistoryState extends State<DataHistory> {
                                                 } else {
                                                   Get.to(ReceiptScreen(
                                                     status: item.status!,
-                                                    serviceDetails: 'Data',
+                                                    serviceDetails:
+                                                        'Data - ${item.phone!}',
                                                     description: item.planName!,
-                                                    // "${item.phone!} - ${item.networkName!}",
                                                     referenceNo:
                                                         item.reference!,
                                                     amount: item.amount!,

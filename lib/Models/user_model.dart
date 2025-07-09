@@ -36,6 +36,7 @@ class User {
   String? country;
   String? useGoogleAuth;
   bool? idVerified;
+  dynamic enabledPin;
 
   User({
     this.email,
@@ -45,6 +46,7 @@ class User {
     this.country,
     this.useGoogleAuth,
     this.idVerified,
+    this.enabledPin,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -55,6 +57,7 @@ class User {
         country: json["country"],
         useGoogleAuth: json["use_google_auth"],
         idVerified: json["id_verified"],
+        enabledPin: json["enable_pin"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -65,5 +68,6 @@ class User {
         "country": country,
         "use_google_auth": useGoogleAuth,
         "id_verified": idVerified,
+        "enable_pin": enabledPin,
       };
 }

@@ -1,6 +1,6 @@
 class ApiRoute {
   // static String baseUrl = 'https://api.paypointapp.africa/api/';
-  static String baseUrl = 'https://project.jostpay.com/apis/';
+  static String baseUrl = 'https://jostpay.com/apis/';
 
   //Auth
   static String signup = 'signup';
@@ -16,6 +16,7 @@ class ApiRoute {
   // Dashboard
   static String userProfile = 'get-user-profile';
   static String updateProfile = 'update-profile';
+  static String deactivateAccount = 'deactivate-account';
   static String getProfileImage = 'get-profile-image';
   static String updateProfileImage = 'update-image';
   static String getInvoice = 'get-invoice';

@@ -153,109 +153,109 @@ class _AddFundsState extends State<AddFunds> {
                           const SizedBox(
                             height: 20,
                           ),
-                          Container(
-                              decoration: BoxDecoration(
-                                color: !themeProvider.isDarkMode()
-                                    ? Color(0xfffCFCFC)
-                                    : Color(0xff171717),
-                                border: Border.all(
-                                    color: themeProvider.isDarkMode()
-                                        ? MyColor.borderDarkColor
-                                        : MyColor.borderColor,
-                                    width: 0.5),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        20, 30, 20, 10),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                          height: 78,
-                                          width: 78,
-                                          padding: EdgeInsets.all(20),
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: !themeProvider.isDarkMode()
-                                                ? Colors.white
-                                                : Colors.black,
-                                            border: Border.all(
-                                                color: themeProvider
-                                                        .isDarkMode()
-                                                    ? MyColor.borderDarkColor
-                                                    : MyColor.whiteColor,
-                                                width: 0.5),
-                                          ),
-                                          child: Image.asset(
-                                            'assets/images/fidelity.png',
-                                          ),
-                                        ),
-                                        Container(
-                                          height: 78,
-                                          width: 78,
-                                          padding: EdgeInsets.all(20),
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: !themeProvider.isDarkMode()
-                                                ? Colors.white
-                                                : Colors.black,
-                                            border: Border.all(
-                                                color: themeProvider
-                                                        .isDarkMode()
-                                                    ? MyColor.borderDarkColor
-                                                    : MyColor.borderColor,
-                                                width: 0.5),
-                                          ),
-                                          child: Image.asset(
-                                              'assets/images/wema.png'),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    padding: EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.vertical(
-                                        bottom: Radius.circular(10),
-                                      ),
-                                      color: !themeProvider.isDarkMode()
-                                          ? Colors.white
-                                          : Colors.black,
-                                      border: Border.all(
-                                          color: themeProvider.isDarkMode()
-                                              ? MyColor.borderDarkColor
-                                              : MyColor.borderColor,
-                                          width: 0.5),
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Image.asset('assets/images/lock.png',
-                                            height: 20,
-                                            width: 20,
-                                            color: themeProvider.isDarkMode()
-                                                ? Colors.white
-                                                : Colors.black),
-                                        SizedBox(width: 10),
-                                        Expanded(
-                                          child: Text(
-                                            'Wallet are managed & Powered by your preferred bank',
-                                            style: MyStyle.tx12White.copyWith(
-                                                fontSize: 12,
-                                                color: themedata.tertiary),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              )),
-                          const SizedBox(
-                            height: 20,
-                          ),
+                          // Container(
+                          //     decoration: BoxDecoration(
+                          //       color: !themeProvider.isDarkMode()
+                          //           ? Color(0xfffCFCFC)
+                          //           : Color(0xff171717),
+                          //       border: Border.all(
+                          //           color: themeProvider.isDarkMode()
+                          //               ? MyColor.borderDarkColor
+                          //               : MyColor.borderColor,
+                          //           width: 0.5),
+                          //       borderRadius: BorderRadius.circular(10),
+                          //     ),
+                          //     child: Column(
+                          //       children: [
+                          //         Padding(
+                          //           padding: const EdgeInsets.fromLTRB(
+                          //               20, 30, 20, 10),
+                          //           child: Row(
+                          //             mainAxisAlignment:
+                          //                 MainAxisAlignment.spaceBetween,
+                          //             children: [
+                          //               Container(
+                          //                 height: 78,
+                          //                 width: 78,
+                          //                 padding: EdgeInsets.all(20),
+                          //                 decoration: BoxDecoration(
+                          //                   shape: BoxShape.circle,
+                          //                   color: !themeProvider.isDarkMode()
+                          //                       ? Colors.white
+                          //                       : Colors.black,
+                          //                   border: Border.all(
+                          //                       color: themeProvider
+                          //                               .isDarkMode()
+                          //                           ? MyColor.borderDarkColor
+                          //                           : MyColor.whiteColor,
+                          //                       width: 0.5),
+                          //                 ),
+                          //                 child: Image.asset(
+                          //                   'assets/images/fidelity.png',
+                          //                 ),
+                          //               ),
+                          //               Container(
+                          //                 height: 78,
+                          //                 width: 78,
+                          //                 padding: EdgeInsets.all(20),
+                          //                 decoration: BoxDecoration(
+                          //                   shape: BoxShape.circle,
+                          //                   color: !themeProvider.isDarkMode()
+                          //                       ? Colors.white
+                          //                       : Colors.black,
+                          //                   border: Border.all(
+                          //                       color: themeProvider
+                          //                               .isDarkMode()
+                          //                           ? MyColor.borderDarkColor
+                          //                           : MyColor.borderColor,
+                          //                       width: 0.5),
+                          //                 ),
+                          //                 child: Image.asset(
+                          //                     'assets/images/wema.png'),
+                          //               )
+                          //             ],
+                          //           ),
+                          //         ),
+                          //         Container(
+                          //           padding: EdgeInsets.all(10),
+                          //           decoration: BoxDecoration(
+                          //             borderRadius: BorderRadius.vertical(
+                          //               bottom: Radius.circular(10),
+                          //             ),
+                          //             color: !themeProvider.isDarkMode()
+                          //                 ? Colors.white
+                          //                 : Colors.black,
+                          //             border: Border.all(
+                          //                 color: themeProvider.isDarkMode()
+                          //                     ? MyColor.borderDarkColor
+                          //                     : MyColor.borderColor,
+                          //                 width: 0.5),
+                          //           ),
+                          //           child: Row(
+                          //             children: [
+                          //               Image.asset('assets/images/lock.png',
+                          //                   height: 20,
+                          //                   width: 20,
+                          //                   color: themeProvider.isDarkMode()
+                          //                       ? Colors.white
+                          //                       : Colors.black),
+                          //               SizedBox(width: 10),
+                          //               Expanded(
+                          //                 child: Text(
+                          //                   'Wallet are managed & Powered by your preferred bank',
+                          //                   style: MyStyle.tx12White.copyWith(
+                          //                       fontSize: 12,
+                          //                       color: themedata.tertiary),
+                          //                 ),
+                          //               ),
+                          //             ],
+                          //           ),
+                          //         )
+                          //       ],
+                          //     )),
+                          // const SizedBox(
+                          //   height: 20,
+                          // ),
                           // Row(
                           //   children: [
                           //     Container(
@@ -303,13 +303,20 @@ class _AddFundsState extends State<AddFunds> {
                           //   ],
                           // ),
 
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Deposit History',
-                              style: MyStyle.tx14Black
-                                  .copyWith(color: themedata.tertiary),
-                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Deposit History',
+                                style: MyStyle.tx14Black
+                                    .copyWith(color: themedata.tertiary),
+                              ),
+                              Text(
+                                'View all',
+                                style: MyStyle.tx14Black
+                                    .copyWith(color: themedata.tertiary),
+                              ),
+                            ],
                           ),
                           const SizedBox(
                             height: 20,

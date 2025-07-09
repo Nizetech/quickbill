@@ -77,41 +77,49 @@ class PaymentPayment extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text.rich(
-                                TextSpan(
-                                  text: "Invoice: ",
-                                  style: MyStyle.tx14Black.copyWith(
-                                    color: themedata.tertiary,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                  children: [
-                                    TextSpan(
-                                      text: model.invoiceModel!.invoiceNumber!,
-                                      style: MyStyle.tx18Black.copyWith(
-                                        color: themedata.tertiary,
-                                      ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Invoice',
+                                    style: MyStyle.tx16Black.copyWith(
+                                      color: themedata.tertiary,
+                                      fontWeight: FontWeight.w600,
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                  Text(
+                                    model.invoiceModel!.invoiceNumber!,
+                                    style: MyStyle.tx16Black.copyWith(
+                                      color: themedata.tertiary,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
                               ),
                               SizedBox(height: 10),
-                              Text.rich(
-                                TextSpan(
-                                  text: amount,
-                                  style: MyStyle.tx18Black.copyWith(
-                                    color: themedata.tertiary,
-                                  ),
-                                  children: [
-                                    TextSpan(
-                                      text: "  NGN",
-                                      style: MyStyle.tx14Black.copyWith(
-                                        color: themedata.tertiary,
-                                        fontWeight: FontWeight.w500,
-                                      ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Amount',
+                                    style: MyStyle.tx16Black.copyWith(
+                                      color: themedata.tertiary,
+                                      fontWeight: FontWeight.w600,
                                     ),
-                                  ],
-                                ),
-                              )
+                                  ),
+                                  Text(
+                                    "$amount NGN",
+                                    style: MyStyle.tx16Black.copyWith(
+                                      color: themedata.tertiary,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                             
+                           
                             ],
                           ),
                         ),
@@ -215,6 +223,16 @@ class PaymentPayment extends StatelessWidget {
                             'bank_id': int.parse(bankId),
                           }),
                         ),
+                        SizedBox(height: 10),
+                        Text(
+                          'Once you make payment tap "I have paid".',
+                          style: MyStyle.tx12Black.copyWith(
+                            color: themedata.tertiary,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        
+
                       ],
                     ),
                   ),

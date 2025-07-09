@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Domain/domain_screen.dart';
+import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
+import 'package:jost_pay_wallet/Values/utils.dart';
 import 'package:provider/provider.dart';
 
 class RewardRecordScreen extends StatefulWidget {
@@ -15,14 +19,14 @@ class RewardRecordScreen extends StatefulWidget {
 
 class _RewardRecordScreenState extends State<RewardRecordScreen>
     with SingleTickerProviderStateMixin {
-  late TabController _tabController;
+  // late TabController _tabController;
   bool isSelected = true;
   bool isSelected2 = false;
-  @override
-  void initState() {
-    _tabController = TabController(length: 2, vsync: this);
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   _tabController = TabController(length: 2, vsync: this);
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -33,204 +37,242 @@ class _RewardRecordScreenState extends State<RewardRecordScreen>
         backgroundColor: themeProvider.isDarkMode()
             ? MyColor.dark02Color
             : MyColor.mainWhiteColor,
-        body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 68)
-                .copyWith(bottom: 0),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Row(
+        body: Consumer<AccountProvider>(builder: (context, model, _) {
+          return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 68)
+                  .copyWith(bottom: 0),
+              child:
+                    Column(
                 children: [
-                  InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Image.asset(
-                      'assets/images/arrow_left.png',
-                      color: themeProvider.isDarkMode()
-                          ? MyColor.mainWhiteColor
-                          : MyColor.dark01Color,
-                    ),
-                  ),
-                  const Spacer(),
-                  Transform.translate(
-                    offset: const Offset(-20, 0),
-                    child: Text(
-                      'Rewards',
-                      style: MyStyle.tx18Black.copyWith(
-                          color: themedata.tertiary,
-                          fontWeight: FontWeight.w500),
-                    ),
-                  ),
-                  const Spacer(), // Adds flexible space after the text
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Row(children: [
-                Expanded(
-                  child: InkWell(
-                    onTap: () {
-                      setState(() {
-                        isSelected = true;
-                        isSelected2 = false;
-                      });
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.symmetric(vertical: 13),
-                      decoration: BoxDecoration(
-                        border: Border(
-                            bottom: BorderSide(
-                                width: 1.5,
-                                color: isSelected
-                                    ? (isDark
-                                        ? const Color(0xff0B930B)
-                                        : MyColor.greenColor)
-                                    : isDark
-                                        ? const Color(0xff1B1B1B)
-                                        : const Color(0xffE9EBF8))),
-                        color: isDark
-                            ? const Color(0xff101010)
-                            : const Color(0xffFCFCFC),
-                      ),
-                      child: Text(
-                        "Current Task",
-                        style: MyStyle.tx16Black.copyWith(
-                            color: themedata.tertiary,
-                            fontWeight: FontWeight.w400),
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: InkWell(
-                    onTap: () {
-                      setState(() {
-                        isSelected = false;
-                        isSelected2 = true;
-                      });
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.symmetric(vertical: 13),
-                      decoration: BoxDecoration(
-                        border: Border(
-                            bottom: BorderSide(
-                                width: 1.5,
-                                color: isSelected2
-                                    ? (isDark
-                                        ? const Color(0xff0B930B)
-                                        : MyColor.greenColor)
-                                    : isDark
-                                        ? const Color(0xff1B1B1B)
-                                        : const Color(0xffE9EBF8))),
-                        color: isDark
-                            ? const Color(0xff101010)
-                            : const Color(0xffFCFCFC),
-                      ),
-                      child: Text(
-                        "History",
-                        style: MyStyle.tx16Black.copyWith(
-                            color: themedata.tertiary,
-                            fontWeight: FontWeight.w400),
-                      ),
-                    ),
-                  ),
-                ),
-              ]),
-
-              const SizedBox(height: 29),
-
-              // Card
-
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20.0, vertical: 17),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                      color: isDark
-                          ? MyColor.outlineDasheColor.withOpacity(0.25)
-                          : const Color(0xffE9EBF8)),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        DotLabel(
-                          text: "Reg date",
-                          value: "Jan 23,2025 02:48PM",
-                          dotColor: MyColor.dark01Color,
-                          labelColor: const Color(0xff6E6D7A),
-                          textColor: isDark
+                  Row(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Image.asset(
+                          'assets/images/arrow_left.png',
+                          color: themeProvider.isDarkMode()
                               ? MyColor.mainWhiteColor
-                              : MyColor.blackColor,
+                              : MyColor.dark01Color,
                         ),
-                        DotLabel(
-                          text: "First Name",
-                          dotColor: MyColor.dark01Color,
-                          value: "Anthonia",
-                          labelColor: const Color(0xff6E6D7A),
-                          textColor: isDark
-                              ? MyColor.mainWhiteColor
-                              : MyColor.blackColor,
+                      ),
+                      const Spacer(),
+                      Transform.translate(
+                        offset: const Offset(-20, 0),
+                        child: Text(
+                          'Rewards',
+                          style: MyStyle.tx18Black.copyWith(
+                              color: themedata.tertiary,
+                              fontWeight: FontWeight.w500),
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 29),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 18.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      ),
+                      const Spacer(), // Adds flexible space after the text
+                    ],
+                  ),
+                  Expanded(
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          DotLabel(
-                            text: "Rewarded at",
-                            value: "Jan 23,2025 04: 12PM",
-                            dotColor: MyColor.dark01Color,
-                            labelColor: const Color(0xff6E6D7A),
-                            textColor: isDark
-                                ? MyColor.mainWhiteColor
-                                : MyColor.blackColor,
-                          ),
-                          DotLabel(
-                            text: "Amount",
-                            value: "300",
-                            dotColor: MyColor.dark01Color,
-                            labelColor: const Color(0xff6E6D7A),
-                            textColor: isDark
-                                ? MyColor.mainWhiteColor
-                                : MyColor.blackColor,
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    SizedBox(
-                      width: double.infinity,
-                      child: OutlinedButton(
-                        onPressed: () {},
-                        style: OutlinedButton.styleFrom(
-                          side: BorderSide.none,
-                          backgroundColor:
-                              const Color(0xff12B76A).withOpacity(0.09),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 24, vertical: 10),
-                        ),
-                        child: Text("Funded",
-                            style: MyStyle.tx16Black.copyWith(
-                              color: isDark
-                                  ? const Color(0xff0B930B)
-                                  : MyColor.greenColor,
-                              fontWeight: FontWeight.w400,
-                            )),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ])));
+                          // const SizedBox(
+                          //   height: 20,
+                          // ),
+                          // Row(children: [
+                          //   Expanded(
+                          //     child: InkWell(
+                          //       onTap: () {
+                          //         setState(() {
+                          //           isSelected = true;
+                          //           isSelected2 = false;
+                          //         });
+                          //       },
+                          //       child: Container(
+                          //         alignment: Alignment.center,
+                          //         padding: const EdgeInsets.symmetric(vertical: 13),
+                          //         decoration: BoxDecoration(
+                          //           border: Border(
+                          //               bottom: BorderSide(
+                          //                   width: 1.5,
+                          //                   color: isSelected
+                          //                       ? (isDark
+                          //                           ? const Color(0xff0B930B)
+                          //                           : MyColor.greenColor)
+                          //                       : isDark
+                          //                           ? const Color(0xff1B1B1B)
+                          //                           : const Color(0xffE9EBF8))),
+                          //           color: isDark
+                          //               ? const Color(0xff101010)
+                          //               : const Color(0xffFCFCFC),
+                          //         ),
+                          //         child: Text(
+                          //           "Current Task",
+                          //           style: MyStyle.tx16Black.copyWith(
+                          //               color: themedata.tertiary,
+                          //               fontWeight: FontWeight.w400),
+                          //         ),
+                          //       ),
+                          //     ),
+                          //   ),
+                          //   Expanded(
+                          //     child: InkWell(
+                          //       onTap: () {
+                          //         setState(() {
+                          //           isSelected = false;
+                          //           isSelected2 = true;
+                          //         });
+                          //       },
+                          //       child: Container(
+                          //         alignment: Alignment.center,
+                          //         padding: const EdgeInsets.symmetric(vertical: 13),
+                          //         decoration: BoxDecoration(
+                          //           border: Border(
+                          //               bottom: BorderSide(
+                          //                   width: 1.5,
+                          //                   color: isSelected2
+                          //                       ? (isDark
+                          //                           ? const Color(0xff0B930B)
+                          //                           : MyColor.greenColor)
+                          //                       : isDark
+                          //                           ? const Color(0xff1B1B1B)
+                          //                           : const Color(0xffE9EBF8))),
+                          //           color: isDark
+                          //               ? const Color(0xff101010)
+                          //               : const Color(0xffFCFCFC),
+                          //         ),
+                          //         child: Text(
+                          //           "History",
+                          //           style: MyStyle.tx16Black.copyWith(
+                          //               color: themedata.tertiary,
+                          //               fontWeight: FontWeight.w400),
+                          //         ),
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ]),
+                          
+                          // const SizedBox(height: 29),
+
+                          // Card
+                          if (model.referralCountModel != null &&
+                              model.referralCountModel!.referrals!.isNotEmpty)
+                            
+                            ListView.separated(
+                              shrinkWrap: true,
+                              itemBuilder: (_, i) {
+                                final item =
+                                    model.referralCountModel!.referrals![i];
+                                return Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20.0, vertical: 17),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: isDark
+                                            ? MyColor.outlineDasheColor
+                                                .withOpacity(0.25)
+                                            : const Color(0xffE9EBF8)),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          DotLabel(
+                                            text: "Reg date",
+                                            value: formatDateYearTime(
+                                                item.createdAt!),
+                                            dotColor: MyColor.dark01Color,
+                                            labelColor: const Color(0xff6E6D7A),
+                                            textColor: isDark
+                                                ? MyColor.mainWhiteColor
+                                                : MyColor.blackColor,
+                                          ),
+                                          SizedBox(width: 20),
+                                          DotLabel(
+                                            text: "First Name",
+                                            dotColor: MyColor.dark01Color,
+                                            value:
+                                                "${item.firstName!.capitalizeFirst} ${item.lastName!.capitalizeFirst}",
+                                            labelColor: const Color(0xff6E6D7A),
+                                            textColor: isDark
+                                                ? MyColor.mainWhiteColor
+                                                : MyColor.blackColor,
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 29),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 18.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            DotLabel(
+                                              text: "Rewarded at",
+                                              value: formatDateYearTime(
+                                                  item.rewardAt!),
+                                              // "Jan 23,2025 04: 12PM",
+                                              dotColor: MyColor.dark01Color,
+                                              labelColor:
+                                                  const Color(0xff6E6D7A),
+                                              textColor: isDark
+                                                  ? MyColor.mainWhiteColor
+                                                  : MyColor.blackColor,
+                                            ),
+                                            SizedBox(width: 40),
+                                            DotLabel(
+                                              text: "Amount",
+                                              value:
+                                                  "${Utils.naira}${item.amount}",
+                                              dotColor: MyColor.dark01Color,
+                                              labelColor:
+                                                  const Color(0xff6E6D7A),
+                                              textColor: isDark
+                                                  ? MyColor.mainWhiteColor
+                                                  : MyColor.blackColor,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(height: 20),
+                                   
+                                      SizedBox(
+                                        width: double.infinity,
+                                        child: OutlinedButton(
+                                          onPressed: () {},
+                                          style: OutlinedButton.styleFrom(
+                                            side: BorderSide.none,
+                                            backgroundColor:
+                                                const Color(0xff12B76A)
+                                                    .withOpacity(0.09),
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 24, vertical: 10),
+                                          ),
+                                          child: Text("Funded",
+                                              style: MyStyle.tx16Black.copyWith(
+                                                color: isDark
+                                                    ? const Color(0xff0B930B)
+                                                    : MyColor.greenColor,
+                                                fontWeight: FontWeight.w400,
+                                              )),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                              separatorBuilder: (_, i) =>
+                                  const SizedBox(height: 16),
+                              itemCount:
+                                  model.referralCountModel!.referrals!.length,
+                            ),
+                        ]),
+                  ),
+                ],
+              ));
+        }));
   }
 }
 
@@ -264,44 +306,44 @@ class InfoColumn extends StatelessWidget {
   }
 }
 
-class CustomUnderlineTabIndicator extends Decoration {
-  final BorderSide borderSide;
-  final EdgeInsetsGeometry insets;
+// class CustomUnderlineTabIndicator extends Decoration {
+//   final BorderSide borderSide;
+//   final EdgeInsetsGeometry insets;
 
-  const CustomUnderlineTabIndicator({
-    this.borderSide = const BorderSide(width: 2.0, color: Colors.green),
-    this.insets = EdgeInsets.zero,
-  });
+//   const CustomUnderlineTabIndicator({
+//     this.borderSide = const BorderSide(width: 2.0, color: Colors.green),
+//     this.insets = EdgeInsets.zero,
+//   });
 
-  @override
-  BoxPainter createBoxPainter([VoidCallback? onChanged]) {
-    return _CustomUnderlinePainter(this, onChanged);
-  }
-}
+//   @override
+//   BoxPainter createBoxPainter([VoidCallback? onChanged]) {
+//     return _CustomUnderlinePainter(this, onChanged);
+//   }
+// }
 
-class _CustomUnderlinePainter extends BoxPainter {
-  final CustomUnderlineTabIndicator decoration;
+// class _CustomUnderlinePainter extends BoxPainter {
+//   final CustomUnderlineTabIndicator decoration;
 
-  _CustomUnderlinePainter(this.decoration, VoidCallback? onChanged)
-      : super(onChanged);
+//   _CustomUnderlinePainter(this.decoration, VoidCallback? onChanged)
+//       : super(onChanged);
 
-  @override
-  void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
-    final Rect rect = offset & configuration.size!;
-    final TextDirection textDirection = configuration.textDirection!;
-    final Rect indicator =
-        decoration.insets.resolve(textDirection).deflateRect(rect);
+//   @override
+//   void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
+//     final Rect rect = offset & configuration.size!;
+//     final TextDirection textDirection = configuration.textDirection!;
+//     final Rect indicator =
+//         decoration.insets.resolve(textDirection).deflateRect(rect);
 
-    final double indicatorWidth =
-        configuration.size!.width / 2.2; // tight to text width
-    final double dx = rect.left + (rect.width - indicatorWidth) / 2;
-    final double dy = rect.bottom - decoration.borderSide.width;
+//     final double indicatorWidth =
+//         configuration.size!.width / 2.2; // tight to text width
+//     final double dx = rect.left + (rect.width - indicatorWidth) / 2;
+//     final double dy = rect.bottom - decoration.borderSide.width;
 
-    final Paint paint = decoration.borderSide.toPaint();
-    canvas.drawLine(
-      Offset(dx, dy),
-      Offset(dx + indicatorWidth, dy),
-      paint,
-    );
-  }
-}
+//     final Paint paint = decoration.borderSide.toPaint();
+//     canvas.drawLine(
+//       Offset(dx, dy),
+//       Offset(dx + indicatorWidth, dy),
+//       paint,
+//     );
+//   }
+// }

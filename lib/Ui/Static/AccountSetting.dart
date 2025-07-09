@@ -2,7 +2,9 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
+import 'package:jost_pay_wallet/Provider/auth_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Authentication/change_password.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/profile_image.dart';
@@ -50,7 +52,8 @@ class _AccountsettingState extends State<Accountsetting> {
     final themedata = Theme.of(context).colorScheme;
     return Scaffold(
       // backgroundColor: Colors.white,
-      body: Consumer<AccountProvider>(builder: (context, model, _) {
+      body: Consumer2<AccountProvider, AuthProvider>(
+          builder: (context, model, auth, _) {
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 68, horizontal: 24),
           child: Column(
@@ -315,6 +318,27 @@ class _AccountsettingState extends State<Accountsetting> {
                               color: themeProvider.isDarkMode()
                                   ? const Color(0XFFAAAAAA)
                                   : MyColor.lightBlackColor)
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 24,
+                    ),
+                    GestureDetector(
+                      onTap: () => auth.deActivateAccount(),
+                      child: Row(
+                        children: [
+                          Icon(Iconsax.trash, color: MyColor.redColor),
+                          const SizedBox(
+                            width: 12,
+                          ),
+                          Text(
+                            'Delete My Account',
+                            style: MyStyle.tx16LightBlack.copyWith(
+                              color: MyColor.redColor,
+                            ),
+                          ),
+                        
                         ],
                       ),
                     ),

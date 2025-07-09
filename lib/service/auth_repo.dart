@@ -154,6 +154,21 @@ class AuthRepo {
     }
   }
 
+  // update profile
+  Future<Map<String, dynamic>> deActivateAccount() async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response =
+          await client.post(ApiRoute.deactivateAccount, requestHeaders: {
+        'Authorization': token,
+      });
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
   // change password
   Future<Map<String, dynamic>> changePassword(Map<String, dynamic> data) async {
     String token = await box.get(kAccessToken);

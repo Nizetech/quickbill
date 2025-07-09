@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -42,6 +44,7 @@ class _GiftCardHistoryState extends State<GiftCardHistory> {
     final themedata = Theme.of(context).colorScheme;
     return Scaffold(
       body: Consumer<AccountProvider>(builder: (context, model, _) {
+        log(" Length ===>>>  ${model.giftCardHistoryModel?.data?.length}");
         return SafeArea(
           child: Padding(
             padding: const EdgeInsets.only(top: 10, left: 24, right: 24),

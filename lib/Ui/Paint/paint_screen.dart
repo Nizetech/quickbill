@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -491,7 +490,7 @@ class _PaintScreenState extends State<PaintScreen> {
                       ),
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: Text("Upload",
+                        child: Text("Upload Car Photo",
                             style: MyStyle.tx14Black.copyWith(
                               fontSize: 17,
                               color: themedata.tertiary,

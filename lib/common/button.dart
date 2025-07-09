@@ -12,10 +12,14 @@ class CustomButton extends StatelessWidget {
   final String text;
   final VoidCallback onTap;
   final double? radius;
+  final Color? bgColor;
+  final Color? textColor;
   const CustomButton(
       {super.key,
       this.isLoading = false,
       this.radius,
+      this.bgColor,
+      this.textColor,
       required this.text,
       required this.onTap});
 
@@ -26,7 +30,7 @@ class CustomButton extends StatelessWidget {
       child: TextButton(
         onPressed: isLoading ? null : onTap,
         style: TextButton.styleFrom(
-          backgroundColor: MyColor.greenColor,
+          backgroundColor: bgColor ?? MyColor.greenColor,
           padding: const EdgeInsets.symmetric(vertical: 14),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(radius ?? 10),
@@ -41,7 +45,7 @@ class CustomButton extends StatelessWidget {
             : Text(
                 text,
                 style: NewStyle.btnTx16SplashBlue
-                    .copyWith(color: NewColor.mainWhiteColor),
+                    .copyWith(color: textColor ?? NewColor.mainWhiteColor),
               ),
       ),
     );

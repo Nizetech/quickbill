@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Models/script_model.dart';
 import 'package:jost_pay_wallet/Provider/service_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
-import 'package:jost_pay_wallet/Ui/Domain/domain_screen.dart';
 import 'package:jost_pay_wallet/Ui/Domain/widget/dot.dart';
 import 'package:jost_pay_wallet/Ui/Scripts/script_detail_screen.dart';
 import 'package:jost_pay_wallet/Ui/Scripts/script_summary.dart';

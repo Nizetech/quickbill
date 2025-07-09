@@ -25,13 +25,12 @@ import 'package:jost_pay_wallet/Models/spray_details.dart';
 import 'package:jost_pay_wallet/Models/spray_history_model.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Ui/Paint/paint_invoice_screen.dart';
-import 'package:jost_pay_wallet/Ui/car/buy_car_success.dart';
+import 'package:jost_pay_wallet/Ui/car/buy_car_script_success.dart';
 import 'package:jost_pay_wallet/Ui/car/cardetail_screen.dart';
 import 'package:jost_pay_wallet/Ui/giftCard/cards_option_screen.dart';
 import 'package:jost_pay_wallet/Ui/pay4me/pay4me_success_screen.dart';
 import 'package:jost_pay_wallet/Ui/promotions/social_boost.dart';
 import 'package:jost_pay_wallet/Ui/promotions/social_success_screen.dart';
-import 'package:jost_pay_wallet/Ui/repair/repairsteps_screen.dart';
 import 'package:jost_pay_wallet/service/seervice_repo.dart';
 import 'package:jost_pay_wallet/utils/loader.dart';
 import 'package:jost_pay_wallet/utils/toast.dart';
@@ -400,7 +399,11 @@ class ServiceProvider with ChangeNotifier {
         return;
       }
       hideLoader();
-      Get.to(BuyCarSuccess());
+      Get.to(
+        BuyCarScriptSuccess(
+          isCar: true,
+        ),
+      );
       notifyListeners();
     } catch (e) {
       log('Error: $e');
@@ -455,7 +458,9 @@ class ServiceProvider with ChangeNotifier {
         return;
       }
       hideLoader();
-      Get.to(BuyCarSuccess());
+      Get.to(BuyCarScriptSuccess(
+        isCar: false,
+      ));
       notifyListeners();
     } catch (e) {
       log('Error: $e');
@@ -806,6 +811,7 @@ class ServiceProvider with ChangeNotifier {
         return;
       }
       callback();
+      await getSprayHistory();
       Get.back();
       SuccessToast(res['message']);
       notifyListeners();

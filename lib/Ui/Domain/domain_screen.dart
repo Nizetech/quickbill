@@ -87,6 +87,7 @@ class _DomainScreenState extends State<DomainScreen> {
                               if (model.domainListModel != null)
                                 ListView.separated(
                                   shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
                                   separatorBuilder: (_, i) =>
                                       SizedBox(height: 15),
                                   itemBuilder: (_, i) {

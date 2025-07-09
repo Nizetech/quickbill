@@ -508,11 +508,10 @@ class AccountProvider with ChangeNotifier {
         hideLoader();
         if (value['result'] == null || value['result'] == false) {
           if (value['message'].toString().toLowerCase().contains('fail')) {
-            Get.to(PendingPurchase(
+            Get.to(PendingFailedPurchase(
               isData: true,
               isFailed: true,
-              amount: data['amount'],
-              phone: data['phone'],
+            
             ));
           } else {
             Get.to(InvalidPurchase(
@@ -540,20 +539,18 @@ class AccountProvider with ChangeNotifier {
           //   }
           // }
           if (value['message'].toString().toLowerCase().contains('pending')) {
-            Get.to(PendingPurchase(
+            Get.to(PendingFailedPurchase(
               isData: true,
-              amount: data['amount'],
-              phone: data['phone'],
+             
             ));
           } else if (value['message']
               .toString()
               .toLowerCase()
               .contains('failed')) {
-            Get.to(PendingPurchase(
+            Get.to(PendingFailedPurchase(
               isData: true,
               isFailed: true,
-              amount: data['amount'],
-              phone: data['phone'],
+             
             ));
           } else {
             Get.to(BuyDataSuccess(
@@ -582,11 +579,10 @@ class AccountProvider with ChangeNotifier {
         log('Value:==> $value');
         if (value['result'] == null || value['result'] == false) {
           if (value['message'].toString().toLowerCase().contains('failed')) {
-            Get.to(PendingPurchase(
+            Get.to(PendingFailedPurchase(
               isData: true,
               isFailed: true,
-              amount: '',
-              phone: '',
+            
             ));
           } else {
             Get.to(InvalidPurchase(
@@ -596,18 +592,16 @@ class AccountProvider with ChangeNotifier {
         } else {
           if (value['result'] == true &&
               value['message'].toString().toLowerCase().contains('pending')) {
-            Get.to(PendingPurchase(
+            Get.to(PendingFailedPurchase(
               isData: true,
-              amount: '',
-              phone: '',
+             
             ));
           } else if (value['result'] == true &&
               value['message'].toString().toLowerCase().contains('fail')) {
-            Get.to(PendingPurchase(
+            Get.to(PendingFailedPurchase(
               isData: true,
               isFailed: true,
-              amount: '',
-              phone: '',
+              
             ));
           } else {
             Get.to(BuyDataSuccess(

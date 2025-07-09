@@ -257,7 +257,8 @@ class HistoryCard extends StatelessWidget {
                     },
                     child: Padding(
                         padding: EdgeInsets.only(left: 5.w),
-                        child: SvgPicture.asset('assets/images/refresh.svg')),
+                      child: SvgPicture.asset('assets/images/refresh.svg'),
+                    ),
                   ),
               ],
             ),
@@ -307,7 +308,7 @@ class HistoryCard extends StatelessWidget {
                       Get.to(ReceiptScreen(
                           status: '1',
                         serviceDetails: transaction.type == Type.DATA
-                            ? "Data"
+                              ? "Data - ${getPhone(transaction)}"
                               : transaction.type == Type.AIRTIME
                                 ? "Airtime"
                                   : transaction.type != null

@@ -1,3 +1,4 @@
+import 'dart:developer';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Authentication/change_password.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/profile_image.dart';
 import 'package:jost_pay_wallet/Ui/Static/2fa.dart';
+import 'package:jost_pay_wallet/Ui/Static/set_pin_login.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:provider/provider.dart';
 
@@ -51,9 +53,9 @@ class _AccountsettingState extends State<Accountsetting> {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     final themedata = Theme.of(context).colorScheme;
     return Scaffold(
-      // backgroundColor: Colors.white,
       body: Consumer2<AccountProvider, AuthProvider>(
           builder: (context, model, auth, _) {
+        log("Pin Enabled==> ${model.userModel?.user!.toJson()}");
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 68, horizontal: 24),
           child: Column(
@@ -101,7 +103,6 @@ class _AccountsettingState extends State<Accountsetting> {
                           width: 20,
                         ),
                         Expanded(
-                          // Wrap the Container with Expanded
                           child: Container(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -273,11 +274,11 @@ class _AccountsettingState extends State<Accountsetting> {
                                 account: context.read<AccountProvider>(),
                               );
                             } else {
-                            model.toogle2Fa(1).then((val) {
-                              if (val != null) {
-                                Get.to(TwoFAScreen());
-                              }
-                            });
+                              model.toogle2Fa(1).then((val) {
+                                if (val != null) {
+                                  Get.to(TwoFAScreen());
+                                }
+                              });
                             }
                             // log("Switch value: ");
                           },
@@ -291,6 +292,38 @@ class _AccountsettingState extends State<Accountsetting> {
                         //         ? const Color(0XFFAAAAAA)
                         //         : MyColor.lightBlackColor)
                       ],
+                    ),
+                    const SizedBox(
+                      height: 24,
+                    ),
+                    GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () => Get.to(SetPinLogin()),
+                      child: Row(
+                        children: [
+                          Image.asset('assets/images/lock-password.png',
+                              color: themeProvider.isDarkMode()
+                                  ? const Color(0XFFAAAAAA)
+                                  : MyColor.lightBlackColor),
+                          const SizedBox(
+                            width: 12,
+                          ),
+                          Text(
+                            model.userModel!.user!.enabledPin == null
+                                ? 'Set Pin Login'
+                                : "Change Pin Login",
+                            style: MyStyle.tx16LightBlack.copyWith(
+                                color: themeProvider.isDarkMode()
+                                    ? const Color(0XFFAAAAAA)
+                                    : MyColor.lightBlackColor),
+                          ),
+                          const Spacer(),
+                          Image.asset('assets/images/arrow-right.png',
+                              color: themeProvider.isDarkMode()
+                                  ? const Color(0XFFAAAAAA)
+                                  : MyColor.lightBlackColor)
+                        ],
+                      ),
                     ),
                     const SizedBox(
                       height: 24,
@@ -325,7 +358,47 @@ class _AccountsettingState extends State<Accountsetting> {
                       height: 24,
                     ),
                     GestureDetector(
-                      onTap: () => auth.deActivateAccount(),
+                      onTap: () {
+                        Get.dialog(
+                          AlertDialog(
+                            title: const Text('Delete Account'),
+                            content: const Text(
+                                'Are you sure you want to delete your account?'),
+                            actions: [
+                              TextButton(
+                                style: TextButton.styleFrom(
+                                  backgroundColor:
+                                      MyColor.greenColor.withValues(alpha: .5),
+                                ),
+                                child: const Text(
+                                  'Cancel',
+                                  style: TextStyle(
+                                    color: MyColor.whiteColor,
+                                  ),
+                                ),
+                                onPressed: () {
+                                  Get.back();
+                                },
+                              ),
+                              TextButton(
+                                style: TextButton.styleFrom(
+                                  backgroundColor:
+                                      MyColor.redColor.withValues(alpha: .5),
+                                ),
+                                child: const Text(
+                                  'Delete',
+                                  style: TextStyle(
+                                    color: MyColor.whiteColor,
+                                  ),
+                                ),
+                                onPressed: () {
+                                  auth.deActivateAccount();
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                      },
                       child: Row(
                         children: [
                           Icon(Iconsax.trash, color: MyColor.redColor),
@@ -338,7 +411,6 @@ class _AccountsettingState extends State<Accountsetting> {
                               color: MyColor.redColor,
                             ),
                           ),
-                        
                         ],
                       ),
                     ),

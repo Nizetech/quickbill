@@ -1,3 +1,4 @@
+import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -5,12 +6,14 @@ import 'package:jost_pay_wallet/Provider/auth_provider.dart';
 import 'package:jost_pay_wallet/Ui/Authentication/OtpScreen.dart';
 import 'package:jost_pay_wallet/Ui/Authentication/SignUpScreen.dart';
 import 'package:jost_pay_wallet/Ui/Authentication/forget_password.dart';
+import 'package:jost_pay_wallet/Values/NewColor.dart';
 import 'package:jost_pay_wallet/Values/NewStyle.dart';
 import 'package:flutter/material.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/common/button.dart';
 import 'package:jost_pay_wallet/constants/constants.dart';
+import 'package:jost_pay_wallet/utils/toast.dart';
 // import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
 
@@ -81,6 +84,8 @@ class _SignInScreenState extends State<SignInScreen> {
     super.initState();
     box.put(kExistingUser, true);
   }
+String pin = '';
+  bool isPinLogin = true;
 
   @override
   Widget build(BuildContext context) {
@@ -122,13 +127,47 @@ class _SignInScreenState extends State<SignInScreen> {
                           ],
                         ),
                         const SizedBox(height: 28),
-                        Text(
-                          'Email',
-                          style: NewStyle.tx14SplashWhite.copyWith(
-                              color: MyColor.lightBlackColor,
-                              fontWeight: FontWeight.w700,
-                              height: 2),
-                        ),
+                        if (isPinLogin) ...[
+                          Text(
+                            'Email',
+                            style: NewStyle.tx14SplashWhite.copyWith(
+                                color: MyColor.lightBlackColor,
+                                fontWeight: FontWeight.w700,
+                                height: 2),
+                          ),
+                          SizedBox(height: 20),
+                          OtpTextField(
+                            numberOfFields: 4,
+                            borderColor: Colors.white,
+                            fillColor: NewColor.inputFillColor,
+                            focusedBorderColor: MyColor.greenColor,
+                            textStyle: const TextStyle(
+                                fontSize: 16,
+                                height: 1.3,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.black),
+                            filled: true,
+                            borderWidth: 0.68,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(12.5)),
+                            showFieldAsBox: true,
+                            // clearText: clearText,
+                            autoFocus: true,
+                            onCodeChanged: (String code) {
+                              pin = code;
+                            },
+                            onSubmit: (String code) {
+                              pin = code;
+                            },
+                          ),
+                        ] else ...[
+                          Text(
+                            'Email',
+                            style: NewStyle.tx14SplashWhite.copyWith(
+                                color: MyColor.lightBlackColor,
+                                fontWeight: FontWeight.w700,
+                                height: 2),
+                          ),
                         TextFormField(
                           style: TextStyle(
                             fontSize: 14.sp,
@@ -176,13 +215,17 @@ class _SignInScreenState extends State<SignInScreen> {
                             }
                             return null;
                           },
-                        ),
+                          ),
+                        ],
 
                         Align(
                           alignment: Alignment.bottomRight,
                           child: TextButton(
-                            onPressed: () => Get.to(ForgotPassword()),
+                            onPressed: () => Get.to(ForgotPassword(
+                              isPin: isPinLogin,
+                            )),
                             child: Text(
+                              isPinLogin ? 'Forgot PIN?' :
                             'Forgot Password?',
                               style: NewStyle.tx14SplashWhite
                                   .copyWith(color: MyColor.greenColor),
@@ -196,10 +239,13 @@ class _SignInScreenState extends State<SignInScreen> {
                   CustomButton(
                       text: 'Login',
                       isLoading: model.isLoading,
-                      onTap: ()
-                          // => Get.offAll(BottomNav())),
-                          =>
-                          _validateForm(model)),
+                      onTap: () {
+                        isPinLogin
+                            ? pin.isNotEmpty && pin.length == 4
+                                ? model.pinLogin(pin)
+                                : ErrorToast('Please enter a valid PIN')
+                            : _validateForm(model);
+                      }),
                   const SizedBox(
                     height: 10,
                   ),

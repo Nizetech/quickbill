@@ -12,6 +12,9 @@ class ApiRoute {
   static String enable2fa = 'enable-2fa';
   static String changePassword = 'change-password';
   static String resetPassword = 'forget-password';
+  static String updatePin = 'pin-update';
+  static String pinLogin = 'pin-login';
+  static String updatePinLogin = 'pin-update';
 
   // Dashboard
   static String userProfile = 'get-user-profile';

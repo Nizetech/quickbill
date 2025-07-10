@@ -169,6 +169,47 @@ class AuthRepo {
     }
   }
 
+  // update PinLogIn
+  Future<Map<String, dynamic>> updatePinLogin(String pin) async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response = await client.post(ApiRoute.updatePinLogin,
+          body: jsonEncode(
+            {
+              "pin": pin,
+              "enable_pin": true,
+            },
+          ),
+          requestHeaders: {
+            'Authorization': token,
+          });
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
+  // Pin Log IN
+  Future<Map<String, dynamic>> pinLogin(String pin) async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response = await client.post(ApiRoute.pinLogin,
+          body: jsonEncode(
+            {
+              "pin": pin,
+            },
+          ),
+          requestHeaders: {
+            'Authorization': token,
+          });
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
   // change password
   Future<Map<String, dynamic>> changePassword(Map<String, dynamic> data) async {
     String token = await box.get(kAccessToken);

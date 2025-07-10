@@ -7,7 +7,8 @@ import 'package:jost_pay_wallet/common/button.dart';
 import 'package:provider/provider.dart';
 
 class ForgotPassword extends StatelessWidget {
-  const ForgotPassword({super.key});
+  final bool isPin;
+  const ForgotPassword({super.key, required this.isPin});
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +60,7 @@ class ForgotPassword extends StatelessWidget {
                 SizedBox(
                   width: 160,
                   child: Text(
+                    isPin ? 'Forgot Pin' :
                     'Forgot Password',
                     style: NewStyle.tx28White
                         .copyWith(fontSize: 24, color: MyColor.blackColor),
@@ -74,7 +76,6 @@ class ForgotPassword extends StatelessWidget {
                 const SizedBox(height: 20),
                 TextFormField(
                   controller: email,
-                
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your email address';

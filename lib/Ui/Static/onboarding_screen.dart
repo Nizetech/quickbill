@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gif_view/gif_view.dart';
 import 'package:jost_pay_wallet/Ui/Authentication/SignInScreen.dart';
 import 'package:jost_pay_wallet/Ui/Authentication/SignUpScreen.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
@@ -12,7 +13,7 @@ class OnboardingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Center(
             child: Column(
@@ -30,15 +31,21 @@ class OnboardingScreen extends StatelessWidget {
                           left: -80.w,
                           child: Transform.scale(
                               scale: 0.4,
-                              child: Image.asset(
-                                  'assets/images/JostPayLogo.png'))),
+                          child: Image.asset(
+                            'assets/images/JostPayLogo.png',
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
-                Image.asset('assets/images/onboard.png'),
-                const SizedBox(
-                  height: 40,
+                GifView.asset(
+                  'assets/images/justpay_gif.gif',
+                  height: 300,
+                  frameRate: 10,
+                  fit: BoxFit.cover,
                 ),
+                Spacer(),
                 const Text(
                   'Welcome to JostPay',
                   style: TextStyle(
@@ -59,9 +66,8 @@ class OnboardingScreen extends StatelessWidget {
                       fontFamily: 'SF Pro Rounded'),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(
-                  height: 40,
-                ),
+                Spacer(),
+
                 SizedBox(
                   width: double.infinity,
                   child: TextButton(
@@ -116,7 +122,7 @@ class OnboardingScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(
-                  height: 24,
+                  height: 35,
                 ),
               ],
             ),

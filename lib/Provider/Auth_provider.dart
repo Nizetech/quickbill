@@ -150,6 +150,81 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
+  Future<void> updatePinLogin(String pin, AccountProvider account) async {
+    try {
+      showLoader();
+      final res = await AuthRepo().updatePinLogin(pin).then((value)async {
+        log('Value: $value');
+        hideLoader();
+        if (value.isNotEmpty) {
+          if (value['status'] == false || value['result'] == false) {
+            if (value['message'].runtimeType == String) {
+              ErrorToast(value['message']);
+            } else {
+              String message = '';
+              value['message'].forEach((key, value) {
+                message += '$value';
+              });
+              ErrorToast(message);
+            }
+            return;
+          } else {
+            await account.getUserProfile();
+            Get.close(2);
+            if (value['message'] != null && value['message'] != '') {
+              SuccessToast(value['message']);
+            }
+          }
+          notifyListeners();
+        } else {
+          ErrorToast('Something went wrong');
+          return;
+        }
+      });
+      log('Value: $res');
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
+  Future<void> pinLogin(String pin,) async {
+    try {
+      showLoader();
+      final res = await AuthRepo().pinLogin(pin).then((value)async {
+        log('Value: $value');
+        hideLoader();
+        if (value.isNotEmpty) {
+          if (value['status'] == false || value['result'] == false) {
+            if (value['message'].runtimeType == String) {
+              ErrorToast(value['message']);
+            } else {
+              String message = '';
+              value['message'].forEach((key, value) {
+                message += '$value';
+              });
+              ErrorToast(message);
+            }
+            return;
+          } else {
+             Get.offAll(BottomNav());
+            if (value['message'] != null && value['message'] != '') {
+              SuccessToast(value['message']);
+            }
+          }
+          notifyListeners();
+        } else {
+          ErrorToast('Something went wrong');
+          return;
+        }
+      });
+      log('Value: $res');
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
   Future<void> resendOtp(String email,
       {bool isForgetPass = false, String? authToken}) async {
     try {

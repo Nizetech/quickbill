@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,13 +13,9 @@ import 'package:jost_pay_wallet/Ui/Static/onboarding_screen.dart';
 import 'package:jost_pay_wallet/bottom_nav.dart';
 import 'package:jost_pay_wallet/constants/constants.dart';
 import 'package:provider/provider.dart';
-// import 'package:uni_links/uni_links.dart';
-
 import 'Provider/account_provider.dart';
 import 'Provider/DashboardProvider.dart';
 import 'Provider/InternetProvider.dart';
-
-// bool _initialUriIsHandled = false;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,6 +28,9 @@ void main() async {
   runApp(const MyApp());
 }
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
@@ -40,51 +38,41 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
-  // StreamSubscription? _sub;
-  // void _handleIncomingLinks() {
-  //   if (!kIsWeb) {
-  //     // It will handle app links while the app is already started - be it in
-  //     // the foreground or in the background.
-  //     // _sub = uriLinkStream.listen((Uri? uri) {
-  //     //   if (!mounted) return;
-  //     //   // print('got uri: $uri');
-  //     //   Utils.wcUrlVal = '$uri';
-  //     // }, onError: (Object err) {
-  //     //   // print("error----"+err.toString());
-  //     // });
-  //   }
-  // }
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
-  // Future<void> _handleInitialUri() async {
-  //   // In this example app this is an almost useless guard, but it is here to
-  //   // show we are not going to call getInitialUri multiple times, even if this
-  //   // was a weidget that will be disposed of (ex. a navigation route change).
-  //   // print("initial-------------"+_initialUriIsHandled.toString());
-  //   if (!_initialUriIsHandled) {
-  //     // _initialUriIsHandled = true;
-  //     // final uri = await getInitialUri();
-  //     // if (uri == null) {
-  //     //   // print('no initial uri');
-  //     // } else {
-  //     //   // print('got initial uri: $uri');
-  //     //   Utils.wcUrlVal = '$uri';
-  //     // }
-  //   }
-  // }
 
   @override
   void initState() {
     super.initState();
     getToken();
-    // _handleInitialUri();
-    // _handleIncomingLinks();
+    WidgetsBinding.instance.addObserver(this);
+
   }
 
   final box = Hive.box(kAppName);
 
   String token = '';
   bool isExistingUser = false;
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused && mounted) {
+      // Delay navigation until after current frame
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        navigatorKey.currentState?.pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (_) => SignInScreen(),
+            ),
+            (route) => false);
+      });
+    }
+  }
 
   FutureOr getToken() async {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -115,6 +103,7 @@ class _MyAppState extends State<MyApp> {
           minTextAdapt: true,
           splitScreenMode: true,
           child: GetMaterialApp(
+            navigatorKey: navigatorKey,
             debugShowCheckedModeBanner: false,
             title: 'JostPayWallet',
             theme: themeProvider.lightTheme,

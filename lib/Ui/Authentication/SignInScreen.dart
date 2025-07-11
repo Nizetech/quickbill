@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,7 +15,6 @@ import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/common/button.dart';
 import 'package:jost_pay_wallet/constants/constants.dart';
 import 'package:jost_pay_wallet/utils/toast.dart';
-// import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -62,7 +60,6 @@ class _SignInScreenState extends State<SignInScreen> {
         "email": _emailController.text.trim(),
         "password": _passwordController.text.trim(),
       };
-      // loginAccount();
       model.login(body);
     } else {
       // Form is invalid, no action needed here since warnings are shown automatically
@@ -84,14 +81,14 @@ class _SignInScreenState extends State<SignInScreen> {
   String pin = '';
   String token = '';
   String pinEnabled = '';
+  bool useEmailLogin = false;
   @override
   void initState() {
     super.initState();
     box.put(kExistingUser, true);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      pinEnabled = box.get(isPinEnabled, defaultValue: "N/A");
-      token = await box.get(kAccessToken, defaultValue: "N/A");
-      log("My Token ==>> $token, isPinEnabled ==>> $isPinEnabled");
+      pinEnabled = box.get(isPinEnabled, defaultValue: "");
+      token = await box.get(kAccessToken, defaultValue: "");
       setState(() {});
     });
   }
@@ -99,8 +96,8 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     // final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
-    log("Token ==> $token");
-    log("isPinEnabled ==> ${box.get(isPinEnabled, defaultValue: "")}");
+    // log("Token ==> $token");
+    // log("isPinEnabled ==> ${box.get(isPinEnabled, defaultValue: "")}");
     final themedata = Theme.of(context).colorScheme;
     return Scaffold(
       backgroundColor: Colors.white, // Set the background color to white
@@ -138,7 +135,9 @@ class _SignInScreenState extends State<SignInScreen> {
                           ],
                         ),
                         const SizedBox(height: 28),
-                        if (pinEnabled == '1' && token.isNotEmpty) ...[
+                        if (!useEmailLogin &&
+                            pinEnabled == '1' &&
+                            token.isNotEmpty) ...[
                           SizedBox(height: Get.height * 0.1),
                           Text(
                             'Pin Login',
@@ -232,12 +231,22 @@ class _SignInScreenState extends State<SignInScreen> {
                         Align(
                           alignment: Alignment.bottomRight,
                           child: TextButton(
-                            onPressed: () => Get.to(ForgotPassword(
-                              isPin: pinEnabled == '1',
-                            )),
+                            onPressed: () {
+                              if (pinEnabled == '1') {
+                                setState(() {
+                                  useEmailLogin = true;
+                                });
+                              } else {
+                                Get.to(ForgotPassword(
+                                  isPin: false,
+                                  // pinEnabled == '1',
+                                ));
+                              }
+                            },
                             child: Text(
-                              pinEnabled == '1'
-                                  ? 'Forgot PIN?'
+                              pinEnabled == '1' && !useEmailLogin
+                                  ? "Use Email"
+                                  // 'Forgot PIN?'
                                   : 'Forgot Password?',
                               style: NewStyle.tx14SplashWhite
                                   .copyWith(color: MyColor.greenColor),

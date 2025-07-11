@@ -195,11 +195,10 @@ class AuthRepo {
     String token = await box.get(kAccessToken);
     try {
       final response = await client.post(ApiRoute.pinLogin,
-          body: jsonEncode(
-            {
+          body: jsonEncode({
               "pin": pin,
-            },
-          ),
+          }),
+          
           requestHeaders: {
             'Authorization': token,
           });

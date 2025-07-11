@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jost_pay_wallet/Models/airtime_history.dart';
 import 'package:jost_pay_wallet/Models/banks_model.dart';
 import 'package:jost_pay_wallet/Models/data_history_model.dart';
@@ -22,6 +23,7 @@ import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyDataSuccess.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/invalid.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/pending_purchase.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/payment_details.dart';
+import 'package:jost_pay_wallet/constants/constants.dart';
 import 'package:jost_pay_wallet/service/account_repo.dart';
 import 'package:jost_pay_wallet/utils/loader.dart';
 import 'package:jost_pay_wallet/utils/toast.dart';
@@ -50,7 +52,7 @@ class AccountProvider with ChangeNotifier {
   List<PayForMeHistoryModel> pay4meHistory = [];
   Map<dynamic, List> _transGroupByData = {};
   String _profileImage = '';
-
+  final box = Hive.box(kAppName);
   TransactionModel? get dashBoardHistory => _dashBoardHistory;
   String get profileImage => _profileImage;
   Map<dynamic, List> get transGroupByData => _transGroupByData;
@@ -135,6 +137,8 @@ class AccountProvider with ChangeNotifier {
           }
         } else {
           userModel = UserModel.fromJson(value);
+          box.put(isPinEnabled, userModel?.user?.enabledPin);
+          log("Enable Pin:===> ${box.get(isPinEnabled)}");
           if (isLoading) hideLoader();
         }
         notifyListeners();
@@ -181,10 +185,15 @@ class AccountProvider with ChangeNotifier {
   }
 
   // get User Profile
-  Future<void> getAirtimeHistory({bool isLoading = true}) async {
+  Future<void> getAirtimeHistory({
+    bool isLoading = true,
+    Map<String, dynamic>? filter,
+  }) async {
     try {
       if (isLoading) showLoader();
-      AccountRepo().getServiceHistory('airtime').then((value) async {
+      AccountRepo()
+          .getServiceHistory('airtime', filter: filter)
+          .then((value) async {
         log('Value: $value');
         if (isLoading) hideLoader();
         if (value['status'] == false || value['result'] == false) {
@@ -210,10 +219,15 @@ class AccountProvider with ChangeNotifier {
   }
 
   // get data History
-  Future<void> getDataHistory({bool isLoading = true}) async {
+  Future<void> getDataHistory({
+    bool isLoading = true,
+    Map<String, dynamic>? filter,
+  }) async {
     try {
       if (isLoading) showLoader();
-      AccountRepo().getServiceHistory('data').then((value) async {
+      AccountRepo()
+          .getServiceHistory('data', filter: filter)
+          .then((value) async {
         log('Value: $value');
         if (isLoading) hideLoader();
         if (value['status'] == false || value['result'] == false) {
@@ -239,10 +253,15 @@ class AccountProvider with ChangeNotifier {
   }
 
   // get Airtime History
-  Future<void> getPay4MeHistory({bool isLoading = true}) async {
+  Future<void> getPay4MeHistory({
+    bool isLoading = true,
+    Map<String, dynamic>? filter,
+  }) async {
     try {
       if (isLoading) showLoader();
-      AccountRepo().getServiceHistory('pay4me').then((value) async {
+      AccountRepo()
+          .getServiceHistory('pay4me', filter: filter)
+          .then((value) async {
         log('Value: $value');
         if (isLoading) hideLoader();
         if (value['status'] == false || value['result'] == false) {
@@ -269,10 +288,15 @@ class AccountProvider with ChangeNotifier {
   }
 
   // get User Profile
-  Future<void> getGiftCradHistory({bool isLoading = true}) async {
+  Future<void> getGiftCradHistory({
+    bool isLoading = true,
+    Map<String, dynamic>? filter,
+  }) async {
     try {
       if (isLoading) showLoader();
-      AccountRepo().getServiceHistory('giftcard').then((value) async {
+      AccountRepo()
+          .getServiceHistory('giftcard', filter: filter)
+          .then((value) async {
         log('Value: $value');
         if (isLoading) hideLoader();
         if (value['status'] == false || value['result'] == false) {
@@ -330,7 +354,7 @@ class AccountProvider with ChangeNotifier {
       showLoader();
       AccountRepo().createDeposit(data).then((value) async {
         hideLoader();
-        log( 'Value: $value');
+        log('Value: $value');
         if (value['status'] == false || value['result'] == false) {
           if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
@@ -344,7 +368,6 @@ class AccountProvider with ChangeNotifier {
         } else {
           Get.close(3);
           SuccessToast(value['message']);
-        
         }
         notifyListeners();
       });
@@ -354,10 +377,16 @@ class AccountProvider with ChangeNotifier {
     }
   }
 
-  Future<void> getSociaBoostHistory({bool isLoading = true}) async {
+  Future<void> getSociaBoostHistory({
+    bool isLoading = true,
+    Map<String, dynamic>? filter,
+  }) async {
     try {
       if (isLoading) showLoader();
-      AccountRepo().getServiceHistory('social').then((value) async {
+      AccountRepo()
+          .getServiceHistory('social', filter: filter)
+          .then((value) async {
+        log('Value: $value');
         if (isLoading) hideLoader();
         if (value['status'] == false || value['result'] == false) {
           if (value['message'].runtimeType == String) {
@@ -511,7 +540,6 @@ class AccountProvider with ChangeNotifier {
             Get.to(PendingFailedPurchase(
               isData: true,
               isFailed: true,
-            
             ));
           } else {
             Get.to(InvalidPurchase(
@@ -541,7 +569,6 @@ class AccountProvider with ChangeNotifier {
           if (value['message'].toString().toLowerCase().contains('pending')) {
             Get.to(PendingFailedPurchase(
               isData: true,
-             
             ));
           } else if (value['message']
               .toString()
@@ -550,7 +577,6 @@ class AccountProvider with ChangeNotifier {
             Get.to(PendingFailedPurchase(
               isData: true,
               isFailed: true,
-             
             ));
           } else {
             Get.to(BuyDataSuccess(
@@ -582,7 +608,6 @@ class AccountProvider with ChangeNotifier {
             Get.to(PendingFailedPurchase(
               isData: true,
               isFailed: true,
-            
             ));
           } else {
             Get.to(InvalidPurchase(
@@ -594,14 +619,12 @@ class AccountProvider with ChangeNotifier {
               value['message'].toString().toLowerCase().contains('pending')) {
             Get.to(PendingFailedPurchase(
               isData: true,
-             
             ));
           } else if (value['result'] == true &&
               value['message'].toString().toLowerCase().contains('fail')) {
             Get.to(PendingFailedPurchase(
               isData: true,
               isFailed: true,
-              
             ));
           } else {
             Get.to(BuyDataSuccess(

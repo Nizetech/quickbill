@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -31,7 +30,6 @@ class HistoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    log("Transaction: Type ===> ${transaction.type}");
     Color getStatus(Datum transaction) {
       if (transaction.type == Type.SPRAY && transaction.status == '2') {
         return MyColor.dark01GreenColor;
@@ -40,7 +38,7 @@ class HistoryCard extends StatelessWidget {
       } else if (transaction.status == 'success' || transaction.status == '1') {
         return MyColor.dark01GreenColor;
       } else if (transaction.type == Type.AUTOREPAIR &&
-          transaction.status == '2') {
+          transaction.status!.isNotEmpty) {
         return MyColor.dark01GreenColor;
       } else if (transaction.status == 'pending') {
         return MyColor.orange01Color;
@@ -64,9 +62,9 @@ class HistoryCard extends StatelessWidget {
               transaction.status == '0' ||
           transaction.type == Type.SPRAY &&
               transaction.status != '2' &&
-              transaction.type == Type.AUTOREPAIR &&
-              transaction.status != '2' ||
-          transaction.type == Type.AUTOREPAIR && transaction.status != '2' ||
+              //     transaction.type == Type.AUTOREPAIR &&
+              //     transaction.status != '2' ||
+              // transaction.type == Type.AUTOREPAIR && transaction.status != '2' ||
           transaction.apiStatus != null &&
               transaction.apiStatus!.contains('pending') ||
           transaction.type == Type.SOCIALBOOST &&
@@ -276,21 +274,26 @@ class HistoryCard extends StatelessWidget {
                         child: SvgPicture.asset('assets/images/pending.svg'))
                     : CircleAvatar(
                         radius: 7,
-                        backgroundColor: transaction.type == Type.AUTOREPAIR &&
-                                transaction.status != '2'
-                            ? MyColor.redColor
-                            : getStatus(transaction),
+                        backgroundColor:
+                            //  transaction.type == Type.AUTOREPAIR &&
+                            //         transaction.status != '2'
+                            //     ? MyColor.redColor
+                            //     :
+                            getStatus(transaction),
                         child: Icon(
-                          transaction.type == Type.AUTOREPAIR &&
-                                  transaction.status != '2'
-                              ? Icons.close
-                              : getStatus(transaction) ==
+                          // transaction.type == Type.AUTOREPAIR &&
+                          //         transaction.status != '2'
+                          //     ?
+                          // Icons.close
+                          // :
+                          getStatus(transaction) ==
                                           MyColor.dark01GreenColor ||
                                       isSpecialTransactionService(
                                               transaction) &&
-                                          transaction.status == '1' ||
-                                      transaction.type == Type.AUTOREPAIR &&
-                                          transaction.status == '2'
+                                      transaction.status == '1'
+                              //     ||
+                              // transaction.type == Type.AUTOREPAIR &&
+                              //     transaction.status == '2'
                                   ? Icons.done
                                   : Icons.close,
                           size: 10,

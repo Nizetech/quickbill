@@ -54,9 +54,10 @@ class _SetPinLoginState extends State<SetPinLogin> {
                 const SizedBox(
                   height: 30,
                 ),
-                const Align(
+                Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
+                    widget.isUpdate ? "Update PIN Login" :
                     "Set PIN Login",
                     style: MyStyle.tx28Black,
                   ),

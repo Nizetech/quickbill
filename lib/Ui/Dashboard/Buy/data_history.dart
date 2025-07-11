@@ -29,9 +29,18 @@ class _DataHistoryState extends State<DataHistory> {
     var model = Provider.of<AccountProvider>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (model.dataHistoryModel == null) {
-        model.getDataHistory();
+        model.getDataHistory(filter: {
+          "from_date": "2025-01-10",
+          "to_date": "2025-07-10",
+        });
       } else {
-        model.getDataHistory(isLoading: false);
+        model.getDataHistory(
+          isLoading: false,
+          filter: {
+            "from_date": "2025-01-10",
+            "to_date": "2025-07-10",
+          },
+        );
       }
       if (model.networkProviderModel == null) {
         model.getNetworkProviders();

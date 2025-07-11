@@ -146,7 +146,10 @@ class AccountRepo {
     }
   }
 
-  Future<dynamic> getServiceHistory(String type) async {
+  Future<dynamic> getServiceHistory(
+    String type, {
+    Map<String, dynamic>? filter,
+  }) async {
     String token = await box.get(kAccessToken);
     try {
       final response = await client.post(
@@ -154,7 +157,10 @@ class AccountRepo {
         requestHeaders: {
           'Authorization': token,
         },
-        body: {"type": type},
+        body: {
+          "type": type,
+          if (filter != null) ...filter,
+        },
       );
       return response;
     } catch (e) {

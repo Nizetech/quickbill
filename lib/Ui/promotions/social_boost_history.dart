@@ -224,7 +224,7 @@ class _SocialBoostHistoryState extends State<SocialBoostHistory> {
                                             ),
                                             StatusViewReceipt(
                                                 status: item.apiStatus!,
-                                                isSocial: true,
+                                                // isSocial: true,
                                                 onTap: () {
                                                   if (!item.apiStatus!
                                                       .toLowerCase()

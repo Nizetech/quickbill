@@ -298,7 +298,9 @@ class _AccountsettingState extends State<Accountsetting> {
                     ),
                     GestureDetector(
                       behavior: HitTestBehavior.opaque,
-                      onTap: () => Get.to(SetPinLogin()),
+                      onTap: () => Get.to(SetPinLogin(
+                        isUpdate: model.userModel!.user!.enabledPin == '1',
+                      )),
                       child: Row(
                         children: [
                           Image.asset('assets/images/lock-password.png',
@@ -309,7 +311,7 @@ class _AccountsettingState extends State<Accountsetting> {
                             width: 12,
                           ),
                           Text(
-                            model.userModel!.user!.enabledPin == null
+                            model.userModel!.user!.enabledPin != '1'
                                 ? 'Set Pin Login'
                                 : "Change Pin Login",
                             style: MyStyle.tx16LightBlack.copyWith(

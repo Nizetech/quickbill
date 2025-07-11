@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -79,17 +81,26 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   final box = Hive.box(kAppName);
+  String pin = '';
+  String token = '';
+  String pinEnabled = '';
   @override
   void initState() {
     super.initState();
     box.put(kExistingUser, true);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      pinEnabled = box.get(isPinEnabled, defaultValue: "N/A");
+      token = await box.get(kAccessToken, defaultValue: "N/A");
+      log("My Token ==>> $token, isPinEnabled ==>> $isPinEnabled");
+      setState(() {});
+    });
   }
-String pin = '';
-  bool isPinLogin = true;
 
   @override
   Widget build(BuildContext context) {
     // final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
+    log("Token ==> $token");
+    log("isPinEnabled ==> ${box.get(isPinEnabled, defaultValue: "")}");
     final themedata = Theme.of(context).colorScheme;
     return Scaffold(
       backgroundColor: Colors.white, // Set the background color to white
@@ -127,9 +138,10 @@ String pin = '';
                           ],
                         ),
                         const SizedBox(height: 28),
-                        if (isPinLogin) ...[
+                        if (pinEnabled == '1' && token.isNotEmpty) ...[
+                          SizedBox(height: Get.height * 0.1),
                           Text(
-                            'Email',
+                            'Pin Login',
                             style: NewStyle.tx14SplashWhite.copyWith(
                                 color: MyColor.lightBlackColor,
                                 fontWeight: FontWeight.w700,
@@ -168,65 +180,65 @@ String pin = '';
                                 fontWeight: FontWeight.w700,
                                 height: 2),
                           ),
-                        TextFormField(
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            color: themedata.tertiary,
-                            fontFamily: 'SF Pro Rounded',
+                          TextFormField(
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              color: themedata.tertiary,
+                              fontFamily: 'SF Pro Rounded',
+                            ),
+                            controller: _emailController,
+                            decoration: NewStyle.authInputDecoration
+                                .copyWith(hintText: 'Email address'),
+                            keyboardType: TextInputType.emailAddress,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter a valid email address';
+                              } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
+                                  .hasMatch(value)) {
+                                return 'Please enter a valid email address';
+                              }
+                              return null;
+                            },
                           ),
-                          controller: _emailController,
-                          decoration: NewStyle.authInputDecoration
-                              .copyWith(hintText: 'Email address'),
-                          keyboardType: TextInputType.emailAddress,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter a valid email address';
-                            } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
-                                .hasMatch(value)) {
-                              return 'Please enter a valid email address';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 14),
-                        Text(
-                          'Password',
-                          style: NewStyle.tx14SplashWhite.copyWith(
-                              color: MyColor.lightBlackColor,
-                              fontWeight: FontWeight.w700,
-                              height: 2),
-                        ),
-                        TextFormField(
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            color: themedata.tertiary,
-                            fontFamily: 'SF Pro Rounded',
+                          const SizedBox(height: 14),
+                          Text(
+                            'Password',
+                            style: NewStyle.tx14SplashWhite.copyWith(
+                                color: MyColor.lightBlackColor,
+                                fontWeight: FontWeight.w700,
+                                height: 2),
                           ),
-                          controller: _passwordController,
-                          obscureText: true,
-                          decoration: NewStyle.authInputDecoration
-                              .copyWith(hintText: 'Enter your password'),
-                          keyboardType: TextInputType.emailAddress,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter a password';
-                            } else if (value.length < 8) {
-                              return 'Please enter at least 8 letters';
-                            }
-                            return null;
-                          },
+                          TextFormField(
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              color: themedata.tertiary,
+                              fontFamily: 'SF Pro Rounded',
+                            ),
+                            controller: _passwordController,
+                            obscureText: true,
+                            decoration: NewStyle.authInputDecoration
+                                .copyWith(hintText: 'Enter your password'),
+                            keyboardType: TextInputType.emailAddress,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter a password';
+                              } else if (value.length < 8) {
+                                return 'Please enter at least 8 letters';
+                              }
+                              return null;
+                            },
                           ),
                         ],
-
                         Align(
                           alignment: Alignment.bottomRight,
                           child: TextButton(
                             onPressed: () => Get.to(ForgotPassword(
-                              isPin: isPinLogin,
+                              isPin: pinEnabled == '1',
                             )),
                             child: Text(
-                              isPinLogin ? 'Forgot PIN?' :
-                            'Forgot Password?',
+                              pinEnabled == '1'
+                                  ? 'Forgot PIN?'
+                                  : 'Forgot Password?',
                               style: NewStyle.tx14SplashWhite
                                   .copyWith(color: MyColor.greenColor),
                             ),
@@ -240,7 +252,7 @@ String pin = '';
                       text: 'Login',
                       isLoading: model.isLoading,
                       onTap: () {
-                        isPinLogin
+                        pinEnabled == '1'
                             ? pin.isNotEmpty && pin.length == 4
                                 ? model.pinLogin(pin)
                                 : ErrorToast('Please enter a valid PIN')
@@ -250,7 +262,6 @@ String pin = '';
                     height: 10,
                   ),
                   Row(
-                    
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
@@ -280,8 +291,7 @@ String pin = '';
             ),
           ),
         );
-      }
-      ),
+      }),
     );
   }
 }

@@ -12,6 +12,7 @@ import 'package:jost_pay_wallet/Ui/Authentication/SignInScreen.dart';
 import 'package:jost_pay_wallet/Ui/Static/onboarding_screen.dart';
 import 'package:jost_pay_wallet/bottom_nav.dart';
 import 'package:jost_pay_wallet/constants/constants.dart';
+import 'package:jost_pay_wallet/utils/keep_alive_state.dart';
 import 'package:provider/provider.dart';
 import 'Provider/account_provider.dart';
 import 'Provider/DashboardProvider.dart';
@@ -20,7 +21,7 @@ import 'Provider/InternetProvider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await ScreenUtil.ensureScreenSize();
-  // await InAppWebViewController.setWebContentsDebuggingEnabled(true);
+  startKeepAlive();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   await Hive.initFlutter();
@@ -50,36 +51,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   }
 
   final box = Hive.box(kAppName);
-
   String token = '';
   String pinEnabled = '';
-  Timer? _keepAliveTimer;
   bool isExistingUser = false;
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-final _inactivityTimeout = Duration(minutes: 3);
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.paused && mounted) {
-      // Delay navigation until after current frame
-      print('Inactivity timeout has began');
-      _keepAliveTimer?.cancel();
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (!mounted) return;
-        _keepAliveTimer = Timer(_inactivityTimeout, () {
-          print('Inactivity timeout triggered 3 minutes');
-        navigatorKey.currentState?.pushAndRemoveUntil(
-            MaterialPageRoute(
-              builder: (_) => SignInScreen(),
-            ),
-            (route) => false);
-      });
-      });
-    }
-  }
+
 
   FutureOr getToken() async {
     WidgetsBinding.instance.addPostFrameCallback((_) async {

@@ -34,14 +34,16 @@ class StatusViewReceipt extends StatelessWidget {
           backgroundColor:
               status.contains('pending') ||
                   isServices && status == '0' ||
-                  status.contains('processing')
+                  status.contains('processing') ||
+                  status.contains('waiting')
               ? MyColor.pending
               : isFailed(status)
                   ? Colors.red
                   : MyColor.dark01GreenColor,
           child: status.contains('pending') ||
                   isServices && status == '0' ||
-                  status.contains('processing')
+                  status.contains('processing') ||
+                  status.contains('waiting')
               ? SvgPicture.asset('assets/images/pending.svg')
               : Icon(
                   // status != '0' && !status.contains('pending') ||

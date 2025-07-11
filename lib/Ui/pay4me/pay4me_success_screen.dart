@@ -16,8 +16,8 @@ class _Pay4meSuccessScreenState extends State<Pay4meSuccessScreen> {
   Widget build(BuildContext context) {
     final model = context.read<AccountProvider>();
     return SuccessScreen(
-      title: 
-                "Your Pay4Me order has been successfully placed. Our team is reviewing your request, and your invoice will be paid within 24 hours. You will receive a status update once the payment is completed",
+      title: "Pay4Me order placed successfully",
+      subtitle: "Pay4Me orders are usually completed within 24 hours.",
       onTap: () {
                   model.getPay4MeHistory(isLoading: false);
                   Get.close(3);

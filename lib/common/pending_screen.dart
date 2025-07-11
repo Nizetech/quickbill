@@ -8,8 +8,10 @@ import 'package:provider/provider.dart';
 
 class PendingScreen extends StatelessWidget {
   final VoidCallback onTap;
+  final String title;
   const PendingScreen({
     super.key,
+    required this.title,
     required this.onTap,
   });
 
@@ -55,7 +57,7 @@ class PendingScreen extends StatelessWidget {
                 height: 20,
               ),
               Text(
-                "Transaction pending.... \n This may take 3-5 minutes to complete.",
+                title,
                 textAlign: TextAlign.center,
                 style: MyStyle.tx18Black.copyWith(
                     height: 1.5,

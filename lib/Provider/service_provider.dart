@@ -498,6 +498,7 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().buyGiftCard(data);
+      log("res: $res");
       if (res['status'] == false || res['result'] == false) {
         hideLoader();
         if (res['message'].runtimeType == String) {

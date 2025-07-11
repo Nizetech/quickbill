@@ -8,10 +8,12 @@ import 'package:provider/provider.dart';
 
 class SuccessScreen extends StatelessWidget {
   final String title;
+  final String subtitle;
   final VoidCallback onTap;
   const SuccessScreen({
     super.key,
     required this.title,
+    required this.subtitle,
     required this.onTap,
   });
 
@@ -67,7 +69,7 @@ class SuccessScreen extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Text(
-                "This transaction takes less than 10 minutes.",
+                subtitle,
                 textAlign: TextAlign.center,
                 style: MyStyle.tx14Black.copyWith(
                   color: MyColor.grey,

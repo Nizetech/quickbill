@@ -52,24 +52,31 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   final box = Hive.box(kAppName);
 
   String token = '';
+  String pinEnabled = '';
+  Timer? _keepAliveTimer;
   bool isExistingUser = false;
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
-
+final _inactivityTimeout = Duration(minutes: 3);
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.paused && mounted) {
       // Delay navigation until after current frame
+      print('Inactivity timeout has began');
+      _keepAliveTimer?.cancel();
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!mounted) return;
+        _keepAliveTimer = Timer(_inactivityTimeout, () {
+          print('Inactivity timeout triggered 3 minutes');
         navigatorKey.currentState?.pushAndRemoveUntil(
             MaterialPageRoute(
               builder: (_) => SignInScreen(),
             ),
             (route) => false);
+      });
       });
     }
   }
@@ -79,6 +86,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       token = await box.get(kAccessToken, defaultValue: '');
       isExistingUser = await box.get(kExistingUser, defaultValue: false);
       log(token);
+      pinEnabled = box.get(isPinEnabled, defaultValue: "");
       setState(() {});
     });
   }
@@ -110,9 +118,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             darkTheme: themeProvider.darkTheme,
             themeMode: themeProvider.themeMode,
             home:
-                token.isNotEmpty
+                token.isNotEmpty && pinEnabled != '1'
                 ? const BottomNav()
-                : isExistingUser
+                : isExistingUser && pinEnabled == '1'
                     ? SignInScreen()
                     : const OnboardingScreen(),
           ),

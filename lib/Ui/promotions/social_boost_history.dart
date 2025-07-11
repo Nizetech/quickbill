@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -224,11 +225,15 @@ class _SocialBoostHistoryState extends State<SocialBoostHistory> {
                                             ),
                                             StatusViewReceipt(
                                                 status: item.apiStatus!,
-                                                // isSocial: true,
                                                 onTap: () {
                                                   if (!item.apiStatus!
                                                       .toLowerCase()
-                                                      .contains('success')) {
+                                                          .contains(
+                                                              'success') &&
+                                                      !item.apiStatus!
+                                                          .toLowerCase()
+                                                          .contains(
+                                                              'completed')) {
                                                     ErrorToast(
                                                         'No receipt available yet. Your order has not been completed.');
                                                   } else {

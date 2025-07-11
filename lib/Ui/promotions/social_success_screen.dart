@@ -18,9 +18,11 @@ class _SocialSuccessScreenState extends State<SocialSuccessScreen> {
     final model = Provider.of<AccountProvider>(context, listen: false);
     return SuccessScreen(
       title: widget.isGiftCard
-          ? "Your gift card has been purchased successfully!\n We will confirm as soon as possible."
-          : "Thank your for your purchase. Your Social Boost is now being processed.",
-         
+          ? "Gift card purchased successfully"
+          : "Social boost order placed successfully.",
+      subtitle: widget.isGiftCard
+          ? "GiftCard orders are usually completed within 24 hours."
+          : "SocialBoost orders complete within minutes to hours.",   
       onTap: () {
         if (widget.isGiftCard) {
                     model.getGiftCradHistory(isLoading: false);

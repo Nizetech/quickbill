@@ -25,7 +25,12 @@ class _BuyDataSuccessState extends State<BuyDataSuccess> {
     final model = context.read<AccountProvider>();
     return SuccessScreen(
       title:
-          'You have successfully purchased ${Utils.naira}${widget.amount}  \n${widget.isData ? "data bundle" : "airtime"} to ${widget.phone}',
+          widget.isData
+          ? "Data purchase plan for ${widget.phone} was successful."
+          : 'Airtime purchase of ${Utils.naira}${widget.amount} to ${widget.phone} was successful.',
+      subtitle: widget.isData
+          ? "Data typically delivers in seconds"
+          : "Airtime typically delivers in seconds",
       onTap: () {
                   if (widget.isData) {
                     model.getDataHistory(isLoading: false);

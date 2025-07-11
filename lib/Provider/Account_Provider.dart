@@ -597,7 +597,7 @@ class AccountProvider with ChangeNotifier {
 
   // buy Data
   Future<void> buyData(Map<String, dynamic> data,
-      {required String amount}) async {
+      {required String amount, required String plan}) async {
     try {
       showLoader();
       AccountRepo().buyData(data).then((value) async {
@@ -619,6 +619,10 @@ class AccountProvider with ChangeNotifier {
               value['message'].toString().toLowerCase().contains('pending')) {
             Get.to(PendingFailedPurchase(
               isData: true,
+              plan: plan,
+              phone: data['phone'],
+              amount: amount,
+              
             ));
           } else if (value['result'] == true &&
               value['message'].toString().toLowerCase().contains('fail')) {

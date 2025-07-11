@@ -225,9 +225,14 @@ class _GiftCardHistoryState extends State<GiftCardHistory> {
                                               isServices: true,
                                               onTap: () {
                                                 if (item.status != '1' ||
-                                                    item.reloadlyStatus!
-                                                            .toLowerCase() ==
-                                                        'pending') {
+                                                    !item.reloadlyStatus!
+                                                            .toLowerCase()
+                                                            .contains(
+                                                                'complete') &&
+                                                        !item.reloadlyStatus!
+                                                            .toLowerCase()
+                                                            .contains(
+                                                                'success')) {
                                                   ErrorToast(
                                                       'No receipt available yet. Your order has not been completed.');
                                                 } else {

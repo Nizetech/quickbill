@@ -44,143 +44,143 @@ class _BuyDataState extends State<BuyData> {
   int selectedItem = -1;
   String selectedBundle = '';
 
-  void _showBottomSheet(BuildContext context, {bool? isDarkMode}) {
-    final themedata = Theme.of(context).colorScheme;
-    // final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          width: double.infinity,
-          height: 600,
-          decoration:
-              BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor),
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
-          child: Column(
-            children: [
-              Container(
-                padding: const EdgeInsets.only(bottom: 10),
-                decoration: BoxDecoration(
-                    border: Border(
-                        bottom: BorderSide(
-                            color: isDarkMode ?? false
-                                ? MyColor.borderDarkColor
-                                : MyColor.borderColor,
-                            width: 1))),
-                child: Row(
-                  children: [
-                    Text(
-                      selectedBundle == '' ? 'Select a Bundle' : selectedBundle,
-                      style: MyStyle.tx12Grey,
-                    ),
-                    const Spacer(),
-                    GestureDetector(
-                      onTap: () => Navigator.pop(context),
-                      child: Container(
-                        height: 35,
-                        width: 35,
-                        // padding: const EdgeInsets.all(13),
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                            color: themedata.secondary, shape: BoxShape.circle),
-                        child: const Icon(Icons.close),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              Expanded(
-                  child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    for (int i = 0; i < 10; i++) ...[
-                      Row(
-                        children: [
-                          for (int j = 0; j < 3; j++) ...[
-                            InkWell(
-                              onTap: () => {
-                                setState(() {
-                                  selectedBundle = '1GB(1 day)';
-                                })
-                              },
-                              child: GestureDetector(
-                                onTap: () {},
-                                // =>
-                                //  Navigator.pushReplacement(
-                                //     context,
-                                //     MaterialPageRoute(
-                                //         builder: (context) =>
-                                //             const BuyDataConfirm())),
-                                child: Container(
-                                  width: 100,
-                                  height: 78,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      color: themedata.secondary
-                                          .withValues(alpha: 0.3),
-                                      borderRadius: BorderRadius.circular(8)),
-                                  child: Column(
-                                    children: [
-                                      const Spacer(),
-                                      Text(
-                                        '1GB(1 day)',
-                                        style: MyStyle.tx12Black.copyWith(
-                                          fontWeight: FontWeight.w600,
-                                          color: themedata.tertiary,
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 4,
-                                      ),
-                                      const Text(
-                                        'N50',
-                                        style: MyStyle.tx12Grey,
-                                      ),
-                                      const SizedBox(
-                                        height: 4,
-                                      ),
-                                      Container(
-                                        width: 72,
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                            color: themedata.secondary,
-                                            borderRadius:
-                                                BorderRadius.circular(6)),
-                                        child: Text(
-                                          '5% off',
-                                          style: MyStyle.tx12Black.copyWith(
-                                              color: MyColor.greenColor),
-                                        ),
-                                      ),
-                                      const Spacer(),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const Spacer(),
-                          ]
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      )
-                    ]
-                  ],
-                ),
-              ))
-            ],
-          ),
-        );
-      },
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.zero, // Set all corners to 0 radius
-      ),
-    );
-  }
+  // void _showBottomSheet(BuildContext context, {bool? isDarkMode}) {
+  //   final themedata = Theme.of(context).colorScheme;
+  //   // final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
+  //   showModalBottomSheet(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return Container(
+  //         width: double.infinity,
+  //         height: 600,
+  //         decoration:
+  //             BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor),
+  //         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+  //         child: Column(
+  //           children: [
+  //             Container(
+  //               padding: const EdgeInsets.only(bottom: 10),
+  //               decoration: BoxDecoration(
+  //                   border: Border(
+  //                       bottom: BorderSide(
+  //                           color: isDarkMode ?? false
+  //                               ? MyColor.borderDarkColor
+  //                               : MyColor.borderColor,
+  //                           width: 1))),
+  //               child: Row(
+  //                 children: [
+  //                   Text(
+  //                     selectedBundle == '' ? 'Select a Bundle' : selectedBundle,
+  //                     style: MyStyle.tx12Grey,
+  //                   ),
+  //                   const Spacer(),
+  //                   GestureDetector(
+  //                     onTap: () => Navigator.pop(context),
+  //                     child: Container(
+  //                       height: 35,
+  //                       width: 35,
+  //                       // padding: const EdgeInsets.all(13),
+  //                       alignment: Alignment.center,
+  //                       decoration: BoxDecoration(
+  //                           color: themedata.secondary, shape: BoxShape.circle),
+  //                       child: const Icon(Icons.close),
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //             const SizedBox(
+  //               height: 12,
+  //             ),
+  //             Expanded(
+  //                 child: SingleChildScrollView(
+  //               child: Column(
+  //                 children: [
+  //                   for (int i = 0; i < 10; i++) ...[
+  //                     Row(
+  //                       children: [
+  //                         for (int j = 0; j < 3; j++) ...[
+  //                           InkWell(
+  //                             onTap: () => {
+  //                               setState(() {
+  //                                 selectedBundle = '1GB(1 day)';
+  //                               })
+  //                             },
+  //                             child: GestureDetector(
+  //                               onTap: () {},
+  //                               // =>
+  //                               //  Navigator.pushReplacement(
+  //                               //     context,
+  //                               //     MaterialPageRoute(
+  //                               //         builder: (context) =>
+  //                               //             const BuyDataConfirm())),
+  //                               child: Container(
+  //                                 width: 100,
+  //                                 height: 78,
+  //                                 alignment: Alignment.center,
+  //                                 decoration: BoxDecoration(
+  //                                     color: themedata.secondary
+  //                                         .withValues(alpha: 0.3),
+  //                                     borderRadius: BorderRadius.circular(8)),
+  //                                 child: Column(
+  //                                   children: [
+  //                                     const Spacer(),
+  //                                     Text(
+  //                                       '1GB(1 day)',
+  //                                       style: MyStyle.tx12Black.copyWith(
+  //                                         fontWeight: FontWeight.w600,
+  //                                         color: themedata.tertiary,
+  //                                       ),
+  //                                     ),
+  //                                     const SizedBox(
+  //                                       height: 4,
+  //                                     ),
+  //                                     const Text(
+  //                                       'N50',
+  //                                       style: MyStyle.tx12Grey,
+  //                                     ),
+  //                                     const SizedBox(
+  //                                       height: 4,
+  //                                     ),
+  //                                     Container(
+  //                                       width: 72,
+  //                                       alignment: Alignment.center,
+  //                                       decoration: BoxDecoration(
+  //                                           color: themedata.secondary,
+  //                                           borderRadius:
+  //                                               BorderRadius.circular(6)),
+  //                                       child: Text(
+  //                                         '5% off',
+  //                                         style: MyStyle.tx12Black.copyWith(
+  //                                             color: MyColor.greenColor),
+  //                                       ),
+  //                                     ),
+  //                                     const Spacer(),
+  //                                   ],
+  //                                 ),
+  //                               ),
+  //                             ),
+  //                           ),
+  //                           const Spacer(),
+  //                         ]
+  //                       ],
+  //                     ),
+  //                     const SizedBox(
+  //                       height: 12,
+  //                     )
+  //                   ]
+  //                 ],
+  //               ),
+  //             ))
+  //           ],
+  //         ),
+  //       );
+  //     },
+  //     shape: const RoundedRectangleBorder(
+  //       borderRadius: BorderRadius.zero, // Set all corners to 0 radius
+  //     ),
+  //   );
+  // }
 
   final FlutterNativeContactPicker _contactPicker =
       FlutterNativeContactPicker();

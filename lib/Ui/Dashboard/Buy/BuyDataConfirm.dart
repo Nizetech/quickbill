@@ -1,3 +1,4 @@
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -261,20 +262,15 @@ class _BuyDataConfirmState extends State<BuyDataConfirm> {
                       ),
                     ),
                     onPressed: () {
-                      // Navigator.pushReplacement(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => BuyDataSuccess(
-                      //               amount: widget.plan.price.toString(),
-                      //               isData: true,
-                      //               phone: widget.phone,
-                      //             )));
                       model.buyData({
                         "network_name": widget.network.network!.toLowerCase(),
                         "phone": widget.phone,
                         "data_type": "SME",
                         "plan_id": widget.plan.planId,
-                      }, amount: widget.plan.price.toString());
+                        },
+                        amount: widget.plan.price.toString(),
+                        plan: widget.plan.name!,
+                      );
                     },
                     child: Text(
                       "Confirm",

@@ -8,9 +8,11 @@ import 'package:provider/provider.dart';
 
 class FailedScreen extends StatelessWidget {
   final VoidCallback onTap;
+  final String title;
   const FailedScreen({
     super.key,
     required this.onTap,
+    required this.title,  
   });
 
   @override
@@ -55,7 +57,7 @@ class FailedScreen extends StatelessWidget {
                 height: 20,
               ),
               Text(
-                "We couldn't process your transaction at the moment. Please try again",
+                title,
                 textAlign: TextAlign.center,
                 style: MyStyle.tx18Black.copyWith(
                     color: Theme.of(context).colorScheme.tertiary,

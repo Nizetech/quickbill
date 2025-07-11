@@ -12,8 +12,12 @@ class BuyCarScriptSuccess extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = context.read<ServiceProvider>();
     return SuccessScreen(
-      title:
-          "Your order has been successfully placed. You will recieve an email for more details.",
+      title: isCar
+          ? "Car purchase request submitted successfully."
+          : "Script purchased successfully. A download link has been sent to your email.",
+      subtitle: isCar
+          ? "We process car orders within a few minutes."
+          : "Script purchase is instant. Please check your email.",
       onTap: () {
         if (isCar) {
           model.getCarsTransactions(isLoading: false);

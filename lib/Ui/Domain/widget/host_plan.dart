@@ -13,7 +13,7 @@ class HostPlan extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
-    final isDark = themeProvider.isDarkMode();
+    // final isDark = themeProvider.isDarkMode();
     final themedata = Theme.of(context).colorScheme;
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),

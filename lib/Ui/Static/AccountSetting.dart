@@ -303,7 +303,11 @@ class _AccountsettingState extends State<Accountsetting> {
                       )),
                       child: Row(
                         children: [
-                          Image.asset('assets/images/lock-password.png',
+                          // Image.asset('assets/images/lock-password.png',
+                          //     color: themeProvider.isDarkMode()
+                          //         ? const Color(0XFFAAAAAA)
+                          //         : MyColor.lightBlackColor),
+                          Icon(Iconsax.password_check,
                               color: themeProvider.isDarkMode()
                                   ? const Color(0XFFAAAAAA)
                                   : MyColor.lightBlackColor),
@@ -334,7 +338,7 @@ class _AccountsettingState extends State<Accountsetting> {
                       onTap: () => Get.to(ChangePassword()),
                       child: Row(
                         children: [
-                          Image.asset('assets/images/lock-password.png',
+                          Icon(Iconsax.key_square,
                               color: themeProvider.isDarkMode()
                                   ? const Color(0XFFAAAAAA)
                                   : MyColor.lightBlackColor),

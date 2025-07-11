@@ -211,7 +211,9 @@ class _RewardRecordScreenState extends State<RewardRecordScreen>
                                           children: [
                                             DotLabel(
                                               text: "Rewarded at",
-                                              value: formatDateYearTime(
+                                              value: item.rewardAt == null
+                                                  ? "N/A"
+                                                  : formatDateYearTime(
                                                   item.rewardAt!),
                                               // "Jan 23,2025 04: 12PM",
                                               dotColor: MyColor.dark01Color,
@@ -224,7 +226,9 @@ class _RewardRecordScreenState extends State<RewardRecordScreen>
                                             SizedBox(width: 40),
                                             DotLabel(
                                               text: "Amount",
-                                              value:
+                                              value: item.amount == null
+                                                  ? "N/A"
+                                                  :
                                                   "${Utils.naira}${item.amount}",
                                               dotColor: MyColor.dark01Color,
                                               labelColor:

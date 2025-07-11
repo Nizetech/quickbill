@@ -126,9 +126,12 @@ class _SignInScreenState extends State<SignInScreen> {
                         const SizedBox(
                           height: 6,
                         ),
-                        const Row(
+                        Row(
                           children: [
                             Text(
+                              !useEmailLogin
+                                  ? "Enter your PIN. Forgot it? Use email login."
+                                  :
                               'Welcome back, Sign in to your account',
                               style: MyStyle.tx16Gray,
                             )
@@ -140,7 +143,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             token.isNotEmpty) ...[
                           SizedBox(height: Get.height * 0.1),
                           Text(
-                            'Pin Login',
+                            'Enter Pin',
                             style: NewStyle.tx14SplashWhite.copyWith(
                                 color: MyColor.lightBlackColor,
                                 fontWeight: FontWeight.w700,
@@ -152,6 +155,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             borderColor: Colors.white,
                             fillColor: NewColor.inputFillColor,
                             focusedBorderColor: MyColor.greenColor,
+                            obscureText: true,
                             textStyle: const TextStyle(
                                 fontSize: 16,
                                 height: 1.3,
@@ -164,11 +168,18 @@ class _SignInScreenState extends State<SignInScreen> {
                             showFieldAsBox: true,
                             // clearText: clearText,
                             autoFocus: true,
+                            
                             onCodeChanged: (String code) {
                               pin = code;
+                              if (pin.length == 4) {
+                                model.pinLogin(pin);
+                              }
                             },
                             onSubmit: (String code) {
                               pin = code;
+                              if (pin.length == 4) {
+                                model.pinLogin(pin);
+                              }
                             },
                           ),
                         ] else ...[
@@ -270,6 +281,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   const SizedBox(
                     height: 10,
                   ),
+                  if (pinEnabled != '1' || useEmailLogin)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

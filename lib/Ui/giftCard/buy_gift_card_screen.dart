@@ -268,7 +268,7 @@ class CardsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
-    final themedata = Theme.of(context).colorScheme;
+    // final themedata = Theme.of(context).colorScheme;
     return Container(
       // height: 134.h,
       width: 150.w,

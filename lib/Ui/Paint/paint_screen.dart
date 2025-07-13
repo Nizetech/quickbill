@@ -159,7 +159,9 @@ class _PaintScreenState extends State<PaintScreen> {
                                         title: 'Rent Spray Booth',
                                         amount:
                                         selectedCar != null
-                                            ? "N ${formatNumber((num.parse(model.carTypeModel!.booth!) + num.parse(selectedCar!.price15!) + num.parse(selectedCar!.price!)))} /hr"
+                                            ? "N ${formatNumber((num.parse(model.carTypeModel!.booth!)
+                                                //  + num.parse(selectedCar!.price15!)
+                                                + num.parse(selectedCar!.price!)))} /hr"
                                             :
                                             "N ${formatNumber(num.parse(model.carTypeModel!.booth!))} /hr",
                                         onTap: () {
@@ -169,16 +171,16 @@ class _PaintScreenState extends State<PaintScreen> {
                                               total = formatNumber(num.parse(
                                                       model.carTypeModel!
                                                           .booth!) +
-                                                  num.parse(
-                                                      selectedCar!.price15!) +
+                                                  // num.parse(
+                                                  //     selectedCar!.price15!) +
                                                   num.parse(
                                                       selectedCar!.price!));
                                               option.text =
                                                   "Spray Booth ${formatNumber(
                                                 num.parse(model
                                                         .carTypeModel!.booth!) +
-                                                    num.parse(
-                                                        selectedCar!.price15!) +
+                                                    // num.parse(
+                                                    //     selectedCar!.price15!) +
                                                     num.parse(
                                                         selectedCar!.price!),
                                               )} /hr";
@@ -215,8 +217,8 @@ class _PaintScreenState extends State<PaintScreen> {
                                             ? "N ${formatNumber(
                                                 num.parse(model
                                                         .carTypeModel!.booth!) +
-                                                    num.parse(
-                                                        selectedCar!.price15!) +
+                                                    // num.parse(
+                                                    //     selectedCar!.price15!) +
                                                     num.parse(
                                                         selectedCar!.price!) +
                                                     num.parse(model
@@ -232,8 +234,8 @@ class _PaintScreenState extends State<PaintScreen> {
                                               total = formatNumber(num.parse(
                                                       model.carTypeModel!
                                                           .booth!) +
-                                                  num.parse(
-                                                      selectedCar!.price15!) +
+                                                  // num.parse(
+                                                  //     selectedCar!.price15!) +
                                                   num.parse(
                                                       selectedCar!.price!) +
                                                   num.parse(model.carTypeModel!
@@ -242,8 +244,8 @@ class _PaintScreenState extends State<PaintScreen> {
                                                   "Booth & Compressor ${formatNumber(
                                                 num.parse(model
                                                         .carTypeModel!.booth!) +
-                                                    num.parse(
-                                                        selectedCar!.price15!) +
+                                                    // num.parse(
+                                                    //     selectedCar!.price15!) +
                                                     num.parse(
                                                         selectedCar!.price!) +
                                                     num.parse(model
@@ -333,8 +335,8 @@ class _PaintScreenState extends State<PaintScreen> {
                                                   total = formatNumber(
                                                       num.parse(selectedCar!
                                                               .price!) +
-                                                          num.parse(selectedCar!
-                                                              .price15!) +
+                                                      // num.parse(selectedCar!
+                                                      //     .price15!) +
                                                           num.parse(model
                                                               .carTypeModel!
                                                               .booth!));
@@ -342,8 +344,8 @@ class _PaintScreenState extends State<PaintScreen> {
                                                       "Spray Booth ${formatNumber(
                                                     num.parse(selectedCar!
                                                             .price!) +
-                                                        num.parse(selectedCar!
-                                                            .price15!) +
+                                                        // num.parse(selectedCar!
+                                                        //     .price15!) +
                                                         num.parse(model
                                                             .carTypeModel!
                                                             .booth!),
@@ -352,8 +354,8 @@ class _PaintScreenState extends State<PaintScreen> {
                                                   total = formatNumber(
                                                       num.parse(selectedCar!
                                                               .price!) +
-                                                          num.parse(selectedCar!
-                                                              .price15!) +
+                                                      // num.parse(selectedCar!
+                                                      //     .price15!) +
                                                           num.parse(model
                                                               .carTypeModel!
                                                               .booth!) +
@@ -365,8 +367,8 @@ class _PaintScreenState extends State<PaintScreen> {
                                                     num.parse(model
                                                             .carTypeModel!
                                                             .booth!) +
-                                                        num.parse(selectedCar!
-                                                            .price15!) +
+                                                        // num.parse(selectedCar!
+                                                        //     .price15!) +
                                                         num.parse(selectedCar!
                                                             .price!) +
                                                         num.parse(model

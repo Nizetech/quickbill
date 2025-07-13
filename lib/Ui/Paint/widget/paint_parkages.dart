@@ -9,10 +9,12 @@ class PaintPackages extends StatelessWidget {
     required this.isDark,
     required this.price,
     required this.title,
+    required this.tag,
     required this.themedata,
     required this.themeProvider,
     required this.isSelected,
     required this.onTap,
+    required this.subtitle,
   });
 
   final bool isDark;
@@ -20,6 +22,8 @@ class PaintPackages extends StatelessWidget {
   final String price;
   final VoidCallback onTap;
   final String title;
+  final String subtitle;
+  final String tag;
   final ColorScheme themedata;
   final ThemeProvider themeProvider;
 
@@ -89,7 +93,7 @@ class PaintPackages extends StatelessWidget {
                       ),
                       child: Center(
                         child: Text(
-                          "Popular",
+                          tag,
                           style: MyStyle.tx14Green.copyWith(
                               fontSize: 10,
                               color: isDark
@@ -111,7 +115,7 @@ class PaintPackages extends StatelessWidget {
             height: 13,
           ),
           Text(
-            "Premium, high-quality paint with excellent durability",
+            subtitle,
             style: MyStyle.tx16Black.copyWith(
                 fontWeight: FontWeight.w400, color: const Color(0xff6B7280)),
           ),

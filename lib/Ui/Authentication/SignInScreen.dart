@@ -1,4 +1,3 @@
-
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -12,6 +11,7 @@ import 'package:jost_pay_wallet/Values/NewStyle.dart';
 import 'package:flutter/material.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
+import 'package:jost_pay_wallet/bottom_nav.dart';
 import 'package:jost_pay_wallet/common/button.dart';
 import 'package:jost_pay_wallet/constants/constants.dart';
 import 'package:jost_pay_wallet/utils/toast.dart';
@@ -86,19 +86,20 @@ class _SignInScreenState extends State<SignInScreen> {
   void initState() {
     super.initState();
     box.put(kExistingUser, true);
+
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       pinEnabled = box.get(isPinEnabled, defaultValue: "");
       token = await box.get(kAccessToken, defaultValue: "");
+      if (token.isNotEmpty && pinEnabled.isNotEmpty && pinEnabled == '0') {
+        Get.offAll(BottomNav());
+      }
       setState(() {});
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
-    // log("Token ==> $token");
-    // log("isPinEnabled ==> ${box.get(isPinEnabled, defaultValue: "")}");
-    final themedata = Theme.of(context).colorScheme;
+    // final themedata = Theme.of(context).colorScheme;
     return Scaffold(
       backgroundColor: Colors.white, // Set the background color to white
       body: Consumer<AuthProvider>(builder: (context, model, _) {
@@ -133,8 +134,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                       pinEnabled == '1' &&
                                       token.isNotEmpty
                                   ? "Enter your PIN. Forgot it? Use email login."
-                                  :
-                              'Welcome back, Sign in to your account',
+                                  : 'Welcome back, Sign in to your account',
                               style: MyStyle.tx16Gray,
                             )
                           ],
@@ -170,7 +170,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             showFieldAsBox: true,
                             // clearText: clearText,
                             autoFocus: true,
-                            
+
                             onCodeChanged: (String code) {
                               pin = code;
                               if (pin.length == 4) {
@@ -195,7 +195,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           TextFormField(
                             style: TextStyle(
                               fontSize: 14.sp,
-                              color: themedata.tertiary,
+                              color: MyColor.blackColor,
                               fontFamily: 'SF Pro Rounded',
                             ),
                             controller: _emailController,
@@ -223,7 +223,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           TextFormField(
                             style: TextStyle(
                               fontSize: 14.sp,
-                              color: themedata.tertiary,
+                              color: MyColor.blackColor,
                               fontFamily: 'SF Pro Rounded',
                             ),
                             controller: _passwordController,
@@ -274,7 +274,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       text: 'Login',
                       isLoading: model.isLoading,
                       onTap: () {
-                        pinEnabled == '1'
+                        !useEmailLogin && pinEnabled == '1' && token.isNotEmpty
                             ? pin.isNotEmpty && pin.length == 4
                                 ? model.pinLogin(pin)
                                 : ErrorToast('Please enter a valid PIN')
@@ -284,30 +284,30 @@ class _SignInScreenState extends State<SignInScreen> {
                     height: 10,
                   ),
                   if (pinEnabled != '1' || useEmailLogin)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Don’t have an account? ',
-                        style: NewStyle.btnTx16SplashBlue.copyWith(
-                            color: MyColor.signGray,
-                            fontWeight: FontWeight.w400),
-                      ),
-                      TextButton(
-                        onPressed: () => Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const SignUpScreen(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Don’t have an account? ',
+                          style: NewStyle.btnTx16SplashBlue.copyWith(
+                              color: MyColor.signGray,
+                              fontWeight: FontWeight.w400),
+                        ),
+                        TextButton(
+                          onPressed: () => Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SignUpScreen(),
+                            ),
+                          ),
+                          child: Text(
+                            'Sign Up',
+                            style: NewStyle.btnTx16SplashBlue
+                                .copyWith(color: MyColor.greenColor),
                           ),
                         ),
-                        child: Text(
-                          'Sign Up',
-                          style: NewStyle.btnTx16SplashBlue
-                              .copyWith(color: MyColor.greenColor),
-                        ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
                   const SizedBox(height: 34)
                 ],
               ),

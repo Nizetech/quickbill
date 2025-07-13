@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:jost_pay_wallet/Models/color_paint_mode.dart' as paint;
-import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/service_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Paint/paint_screen.dart';
@@ -15,7 +14,6 @@ import 'package:jost_pay_wallet/Ui/Paint/widget/rental.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
-import 'package:jost_pay_wallet/utils/toast.dart';
 import 'package:provider/provider.dart';
 
 class PaintformScreen extends StatefulWidget {
@@ -31,10 +29,11 @@ class _PaintformScreenState extends State<PaintformScreen> {
   List parkageList = ["Full Body Painting", "Touch-up", "Color Change"];
   List painterType = ["Use Company Painter", "Use My Own Painter"];
   List careDurationList = [
-    '15 days After Care',
     '30 days After Care',
-    '60 days After Care'
+    '90 days After Care',
+    '180 days After Care'
   ];
+  List tags = ['Premium', 'Standard', 'Basic'];
   int careDuration = 0;
   int packageIndex = 0;
   List<paint.PaintColor> selectedTouch = [];
@@ -47,6 +46,7 @@ class _PaintformScreenState extends State<PaintformScreen> {
     super.initState();
     final model = Provider.of<ServiceProvider>(context, listen: false);
     total = num.parse(widget.rentalData.total) +
+        widget.rentalData.price15 +
         num.parse(touchPrice(
             parkageIndex: packageIndex,
             color: model.colorPaintModel!.color!,
@@ -56,6 +56,7 @@ class _PaintformScreenState extends State<PaintformScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // log("Price 15 =>> ${widget.rentalData.price15}. ===> ${num.parse(widget.rentalData.total) + widget.rentalData.price15}");
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     final themedata = Theme.of(context).colorScheme;
     final isDark = themeProvider.isDarkMode();
@@ -118,7 +119,7 @@ class _PaintformScreenState extends State<PaintformScreen> {
                           color: isDark
                               ? const Color(0xff101010)
                               : const Color(0xffFCFCFC),
-                        ), 
+                        ),
                         alignment: Alignment.center,
                         child: Text(
                           "Choose Your Painting Package",
@@ -138,14 +139,18 @@ class _PaintformScreenState extends State<PaintformScreen> {
                           setState(() {
                             painterindex = painterType.indexOf(val);
                             if (painterindex == 1) {
-                              total = num.parse(widget.rentalData.total);
+                              total = num.parse(widget.rentalData.total) +
+                                  widget.rentalData.price15;
                             } else {
                               if (packageIndex == 1) {
                                 selectedTouch = [];
-                                total = num.parse(widget.rentalData.total);
+                                total = num.parse(widget.rentalData.total) +
+                                    widget.rentalData.price15;
                               } else {
                                 total = num.parse(widget.rentalData.total) +
-                                    num.parse(touchPrice(
+                                    widget.rentalData.price15 +
+                                    num.parse(
+                                      touchPrice(
                                         parkageIndex: packageIndex,
                                         color: model.colorPaintModel!.color!,
                                         careIndex: careDuration,
@@ -182,6 +187,7 @@ class _PaintformScreenState extends State<PaintformScreen> {
                               packageIndex = parkageList.indexOf(val);
                               if (packageIndex != 1) {
                                 total = num.parse(widget.rentalData.total) +
+                                    widget.rentalData.price15 +
                                     num.parse(touchPrice(
                                         parkageIndex: packageIndex,
                                         color: model.colorPaintModel!.color!,
@@ -190,7 +196,8 @@ class _PaintformScreenState extends State<PaintformScreen> {
                                             .paints![touchIndex]));
                               } else {
                                 selectedTouch = [];
-                                total = num.parse(widget.rentalData.total);
+                                total = num.parse(widget.rentalData.total) +
+                                    widget.rentalData.price15;
                               }
                             });
                           },
@@ -218,6 +225,7 @@ class _PaintformScreenState extends State<PaintformScreen> {
                               setState(() {
                                 careDuration = careDurationList.indexOf(val);
                                 total = num.parse(widget.rentalData.total) +
+                                    widget.rentalData.price15 +
                                     num.parse(touchPrice(
                                         parkageIndex: packageIndex,
                                         color: model.colorPaintModel!.color!,
@@ -292,6 +300,11 @@ class _PaintformScreenState extends State<PaintformScreen> {
                             separatorBuilder: (_, i) => SizedBox(height: 16),
                             itemCount: model.colorPaintModel!.paints!.length,
                             itemBuilder: (_, i) {
+                              num durationDay = careDuration == 0
+                                  ? 30
+                                  : careDuration == 1
+                                      ? 90
+                                      : 180;
                               num price = num.parse(touchPrice(
                                   careIndex: careDuration,
                                   parkageIndex: packageIndex,
@@ -305,15 +318,23 @@ class _PaintformScreenState extends State<PaintformScreen> {
                                           model.colorPaintModel!.paints![i].id!;
                                       total =
                                           num.parse(widget.rentalData.total) +
+                                              widget.rentalData.price15 +
                                               price;
                                       log('packageId: $packageId');
                                     });
                                   },
+                                  subtitle: i == 0
+                                      ? "Premium-grade paint: sleek finish, top durability. $durationDay-dayaftercare: any defects reported within $durationDay days will be fixed free of charge."
+                                      : i == 1
+                                          ? "High-quality paint: smooth finish, strong durability. $durationDay-dayaftercare: any defects reported within $durationDay days will be fixed free of charge."
+                                          : "Good-quality paint: solid durability, clean finish. $durationDay-dayaftercare: any defects found within $durationDay days after delivery will be fixed free of charge.",
                                   isSelected: i == touchIndex,
+                                  tag: tags[i],
                                   title:
                                       model.colorPaintModel!.paints![i].name!,
                                   isDark: isDark,
-                                  price: "N${formatNumber(price)}",
+                                  price:
+                                      "N${formatNumber(price + widget.rentalData.price15)}",
                                   themedata: themedata,
                                   themeProvider: themeProvider);
                             },
@@ -446,6 +467,8 @@ class _PaintformScreenState extends State<PaintformScreen> {
                                                         total = num.parse(widget
                                                                 .rentalData
                                                                 .total) +
+                                                            widget.rentalData
+                                                                .price15 +
                                                             selectedTouch.fold(
                                                                 0,
                                                                 (previousValue,

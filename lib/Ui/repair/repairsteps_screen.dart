@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -100,6 +102,7 @@ class _RepairstepsScreenState extends State<RepairstepsScreen> {
     final isDark = themeProvider.isDarkMode();
     final model = context.watch<ServiceProvider>();
     final themedata = Theme.of(context).colorScheme;
+    log("Total ==> $total");
     return Scaffold(
         backgroundColor: themeProvider.isDarkMode()
             ? MyColor.dark02Color
@@ -195,6 +198,7 @@ class _RepairstepsScreenState extends State<RepairstepsScreen> {
                                                   callback: () {
                                                     calculateTotal(model);
                                                   });
+                                             
                                             },
                                           ),
                                         )

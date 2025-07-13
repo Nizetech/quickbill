@@ -9,10 +9,10 @@ class Utils {
   static String naira = "₦";
   static String pageType = "";
   static String pageType1 = "";
-  static String faqUrl = "https://project.jostpay.com/our/faq";
-  static String aboutUs = "https://project.jostpay.com/our/aboutus";
-  static String termsUrl = "https://project.jostpay.com/terms";
-  static String privacyUrl = "https://project.jostpay.com/privacy";
+  static String faqUrl = "https://jostpay.com/our/faq";
+  static String aboutUs = "https://jostpay.com/our/aboutus";
+  static String termsUrl = "https://jostpay.com/terms";
+  static String privacyUrl = "https://jostpay.com/privacy";
   static String amlUrl = "https://instantexchangers.net/aml";
   static String verifyUrl = "https://www.instantexchangers.net";
   static String sellUrl = "https://instantexchangers.net/sell/final?transaction=";

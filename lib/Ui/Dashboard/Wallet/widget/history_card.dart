@@ -309,7 +309,6 @@ class HistoryCard extends StatelessWidget {
                         transaction.apiStatus!.contains('pending') ||
                         (isSpecialTransactionService(transaction) &&
                             transaction.status == '0') ||
-                       
                         getStatus(transaction) == MyColor.orange01Color) {
                       ErrorToast(
                           'No receipt available yet. Your order has not been completed.');

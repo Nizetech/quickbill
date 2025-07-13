@@ -558,12 +558,12 @@ class _PaintformScreenState extends State<PaintformScreen> {
                                     .split(" ")
                                     .first,
                             };
-                            if (num.parse(total.toString()) >
-                                context.read<AccountProvider>().balance!) {
-                              ErrorToast('Insufficient balance');
-                            } else {
+                            // if (num.parse(total.toString()) >
+                            //     context.read<AccountProvider>().balance!) {
+                            //   ErrorToast('Insufficient balance');
+                            // } else {
                             model.rentSpray(sprayData);
-                            }
+                            // }
                           },
                           style: OutlinedButton.styleFrom(
                             side: BorderSide.none,

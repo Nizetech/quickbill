@@ -17,12 +17,14 @@ class OptionSummary extends StatefulWidget {
   final DateTime date;
   final int? rentType;
   final String? carType;
+  final num price15;
   final String? image;
 
   const OptionSummary({
     super.key,
     required this.date,
     required this.time,
+    required this.price15,
     this.rentType,
     this.total,
     this.carType,
@@ -177,6 +179,7 @@ class _OptionSummaryState extends State<OptionSummary> {
                           rentalData: RentalData(
                             time: widget.time,
                             date: widget.date,
+                            price15: widget.price15,
                             image: widget.image!,
                             rentType: widget.rentType!,
                             carType: widget.carType!,
@@ -198,7 +201,6 @@ class _OptionSummaryState extends State<OptionSummary> {
                       const EdgeInsets.symmetric(horizontal: 38, vertical: 10),
                   decoration: BoxDecoration(
                     color: MyColor.greenColor,
-                 
                     border: Border.all(
                         color: isDark
                             ? const Color(0xffFFFFFF).withOpacity(0.1)
@@ -208,8 +210,7 @@ class _OptionSummaryState extends State<OptionSummary> {
                   child: Text(
                     "Proceed",
                     style:
-                        MyStyle.tx14White.copyWith(
-                        fontWeight: FontWeight.w500),
+                        MyStyle.tx14White.copyWith(fontWeight: FontWeight.w500),
                   ),
                 ),
               ),

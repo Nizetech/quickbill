@@ -69,7 +69,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    // log('My token is $token');
+    log('My token is $token, PIN =-> $pinEnabled');
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => DashboardProvider()),
@@ -93,7 +93,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             darkTheme: themeProvider.darkTheme,
             themeMode: themeProvider.themeMode,
             home:
-                token.isNotEmpty && pinEnabled != '1'
+                token.isNotEmpty && pinEnabled.isNotEmpty && pinEnabled == '0'
                 ? const BottomNav()
                 : isExistingUser && pinEnabled == '1'
                     ? SignInScreen()

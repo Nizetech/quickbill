@@ -129,7 +129,9 @@ class _SignInScreenState extends State<SignInScreen> {
                         Row(
                           children: [
                             Text(
-                              !useEmailLogin
+                              !useEmailLogin &&
+                                      pinEnabled == '1' &&
+                                      token.isNotEmpty
                                   ? "Enter your PIN. Forgot it? Use email login."
                                   :
                               'Welcome back, Sign in to your account',

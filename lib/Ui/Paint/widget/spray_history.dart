@@ -63,7 +63,7 @@ class SprayHistory extends StatelessWidget {
                 children: [
                   CachedNetworkImage(
                     imageUrl:
-                        'https://project.jostpay.com/uploads/${history.image}',
+                        'https://jostpay.com/uploads/${history.image}',
                     height: 68,
                     width: 86,
                     fit: BoxFit.cover,

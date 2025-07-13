@@ -11,7 +11,6 @@ import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/NewColor.dart';
 import 'package:jost_pay_wallet/Values/NewStyle.dart';
 import 'package:jost_pay_wallet/Values/utils.dart';
-import 'package:jost_pay_wallet/utils/toast.dart';
 import 'package:provider/provider.dart';
 
 class BuyScriptSummary extends StatefulWidget {
@@ -221,11 +220,11 @@ class _BuyScriptSummaryState extends State<BuyScriptSummary> {
                       ),
                     ),
                     onPressed: () {
-                      if (num.parse(widget.data['price']) > model.balance!) {
-                        ErrorToast('Insufficient balance');
-                      } else {
+                      // if (num.parse(widget.data['price']) > model.balance!) {
+                      //   ErrorToast('Insufficient balance');
+                      // } else {
                         service.buyScript(widget.data['id']);
-                      }
+                      // }
                     },
                     child: Text(
                       "Confirm",

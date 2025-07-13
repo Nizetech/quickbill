@@ -208,7 +208,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                     height: 13,
                                   ),
                                   Text(
-                                    "https://project.jostpay.com/register? referral_code=${model.referralCountModel?.referralId ?? ""}",
+                                    "https://jostpay.com/register? referral_code=${model.referralCountModel?.referralId ?? ""}",
                                     style: MyStyle.tx12Black.copyWith(
                                         fontSize: 10,
                                         color: isDark

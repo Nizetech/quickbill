@@ -11,7 +11,6 @@ import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/NewColor.dart';
 import 'package:jost_pay_wallet/Values/NewStyle.dart';
 import 'package:jost_pay_wallet/Values/utils.dart';
-import 'package:jost_pay_wallet/utils/toast.dart';
 import 'package:provider/provider.dart';
 
 class BuyCarSummary extends StatefulWidget {
@@ -243,16 +242,16 @@ class _BuyCarSummaryState extends State<BuyCarSummary> {
                       ),
                     ),
                     onPressed: () {
-                      if (num.parse(widget.data['price']) > model.balance!) {
-                        ErrorToast('Insufficient balance');
-                      } else {
+                      // if (num.parse(widget.data['price']) > model.balance!) {
+                      //   ErrorToast('Insufficient balance');
+                      // } else {
                         service.buyCar({
                           "car_id": widget.data['id'],
                           "paid_option": selectedOption == 0
                               ? "self_option"
                               : "paid_option",
                         });
-                      }
+                      // }
                     },
                     child: Text(
                       "Confirm",

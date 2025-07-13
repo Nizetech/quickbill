@@ -343,7 +343,9 @@ class ServiceProvider with ChangeNotifier {
         }
         return;
       }
-      await getRepairDetails(isLoading: false, repairID, callback: () {});
+      await getRepairTransactions();
+      await getRepairDetails(isLoading: false, repairID, callback: callback);
+      callback();
       hideLoader();
       notifyListeners();
     } catch (e) {
@@ -811,8 +813,8 @@ class ServiceProvider with ChangeNotifier {
         }
         return;
       }
-      callback();
       await getSprayHistory();
+      callback();
       Get.back();
       SuccessToast(res['message']);
       notifyListeners();

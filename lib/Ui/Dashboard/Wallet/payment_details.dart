@@ -128,7 +128,9 @@ class PaymentPayment extends StatelessWidget {
                           width: double.infinity,
                           padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: MyColor.grey01Color,
+                            color: themeProvider.isDarkMode()
+                                ? MyColor.dark02Color
+                                : MyColor.grey01Color,
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Column(

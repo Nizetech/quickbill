@@ -707,15 +707,15 @@ class _BuyAirtimeConfirmState extends State<BuyAirtimeConfirm> {
                               } else if (selectedItem == -1) {
                                 ErrorToast('Please select network');
                               } else {
-                                if (num.parse(_amount.text) > model.balance!) {
+                                // if (num.parse(_amount.text) > model.balance!) {
                                   ErrorToast('Insufficient balance');
-                                } else {
+                                // } else {
                                 Get.to(Buyairtimeconfirmdetail(
                                   selectedNetwork: selectedNetwork!,
                                   number: _controller.text,
                                   amount: _amount.text,
                                 ));
-                                }
+                                // }
                               }
                             },
                             child: Text(

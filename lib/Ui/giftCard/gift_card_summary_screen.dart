@@ -4,7 +4,6 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jost_pay_wallet/Models/card_model.dart';
-import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/service_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
@@ -13,7 +12,6 @@ import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/NewColor.dart';
 import 'package:jost_pay_wallet/Values/NewStyle.dart';
 import 'package:jost_pay_wallet/Values/utils.dart';
-import 'package:jost_pay_wallet/utils/toast.dart';
 import 'package:provider/provider.dart';
 
 class GiftCardSummaryScreen extends StatefulWidget {
@@ -263,10 +261,10 @@ class _GiftCardSummaryScreenState extends State<GiftCardSummaryScreen> {
                       ),
                     ),
                     onPressed: () {
-                      if (num.parse(total.toString()) >
-                          context.read<AccountProvider>().balance!) {
-                        ErrorToast('Insufficient balance');
-                      } else {
+                      // if (num.parse(total.toString()) >
+                      //     context.read<AccountProvider>().balance!) {
+                      //   ErrorToast('Insufficient balance');
+                      // } else {
                         model.buyGiftCard({
                           "country_code": widget.countryCode,
                           "gift_id": widget.cardModel.product!.productId,
@@ -281,7 +279,7 @@ class _GiftCardSummaryScreenState extends State<GiftCardSummaryScreen> {
                         //     context,
                         //     MaterialPageRoute(
                         //         builder: (context) => const SocialSuccessScreen()));
-                      }
+                      // }
                     },
                     child: Text(
                       "Confirm",

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jost_pay_wallet/Provider/DashboardProvider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 // import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
@@ -44,7 +43,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
-    final dashProvider = Provider.of<DashboardProvider>(context, listen: false);
+    // final dashProvider = Provider.of<DashboardProvider>(context, listen: false);
     return Scaffold(
         body: SafeArea(
       child: Stack(

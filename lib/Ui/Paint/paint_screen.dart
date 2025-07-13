@@ -653,6 +653,9 @@ class _PaintScreenState extends State<PaintScreen> {
                       OptionSummary(
                         date: selectedDate ?? now,
                         time: time.text,
+                        price15: selectedCar == null
+                            ? 0
+                            : num.parse(selectedCar!.price15!),
                         total: total,
                         image: model.base64Image,
                         rentType: rentType,

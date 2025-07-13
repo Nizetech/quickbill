@@ -592,7 +592,6 @@ class _RepairScreenState extends State<RepairScreen> {
                                   };
                                   log("data: $data");
                                   // return;
-
                                   model.buyRepaires(data, callback: () {
                                     repairOption.clear();
                                     date.clear();

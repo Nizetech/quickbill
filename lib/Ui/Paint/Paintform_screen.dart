@@ -14,6 +14,7 @@ import 'package:jost_pay_wallet/Ui/Paint/widget/rental.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
+import 'package:jost_pay_wallet/utils/toast.dart';
 import 'package:provider/provider.dart';
 
 class PaintformScreen extends StatefulWidget {
@@ -139,8 +140,9 @@ class _PaintformScreenState extends State<PaintformScreen> {
                           setState(() {
                             painterindex = painterType.indexOf(val);
                             if (painterindex == 1) {
-                              total = num.parse(widget.rentalData.total) +
-                                  widget.rentalData.price15;
+                              total = num.parse(widget.rentalData.total);
+                              // +
+                              // widget.rentalData.price15;
                             } else {
                               if (packageIndex == 1) {
                                 selectedTouch = [];
@@ -196,8 +198,9 @@ class _PaintformScreenState extends State<PaintformScreen> {
                                             .paints![touchIndex]));
                               } else {
                                 selectedTouch = [];
-                                total = num.parse(widget.rentalData.total) +
-                                    widget.rentalData.price15;
+                                total = num.parse(widget.rentalData.total);
+                                // +
+                                //     widget.rentalData.price15;
                               }
                             });
                           },
@@ -467,8 +470,8 @@ class _PaintformScreenState extends State<PaintformScreen> {
                                                         total = num.parse(widget
                                                                 .rentalData
                                                                 .total) +
-                                                            widget.rentalData
-                                                                .price15 +
+                                                            // widget.rentalData
+                                                            //     .price15 +
                                                             selectedTouch.fold(
                                                                 0,
                                                                 (previousValue,
@@ -506,6 +509,18 @@ class _PaintformScreenState extends State<PaintformScreen> {
                               ))
                         ],
                       ],
+                      if (packageIndex != 1 && painterindex == 0)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: Text(
+                            "This cost covers paint, equipment rental, interior/engine wash, and labour. If any dents or damaged parts are found on your vehicle, the invoice will be updated to include repair or replacement costs.",
+                            style: MyStyle.tx12Black.copyWith(
+                              height: 1.5,
+                              color: const Color(0xff6B7280),
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
                       PaintSummary(
                         time: widget.rentalData.time,
                         date: dateFormat.format(widget.rentalData.date),
@@ -581,12 +596,11 @@ class _PaintformScreenState extends State<PaintformScreen> {
                                     .split(" ")
                                     .first,
                             };
-                            // if (num.parse(total.toString()) >
-                            //     context.read<AccountProvider>().balance!) {
-                            //   ErrorToast('Insufficient balance');
-                            // } else {
+                            if (selectedTouch.isEmpty && packageIndex == 1) {
+                              ErrorToast('Please select at least one touch');
+                            } else {
                             model.rentSpray(sprayData);
-                            // }
+                            }
                           },
                           style: OutlinedButton.styleFrom(
                             side: BorderSide.none,

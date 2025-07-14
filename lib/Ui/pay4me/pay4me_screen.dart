@@ -361,8 +361,8 @@ class _Pay4meScreenState extends State<Pay4meScreen> {
                                 ErrorToast("Please fill all fields");
                                 // } else if (num.parse(amountCtrl.text) < 30) {
                                 //   ErrorToast("Minimum amount is \$30");
-                              } else if (amount > ctrl.balance!) {
-                                ErrorToast('Insufficient balance');
+                                // } else if (amount > ctrl.balance!) {
+                                //   ErrorToast('Insufficient balance');
                               } else {
                                 Navigator.push(
                                   context,

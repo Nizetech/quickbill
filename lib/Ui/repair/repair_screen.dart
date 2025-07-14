@@ -97,7 +97,7 @@ class _RepairScreenState extends State<RepairScreen> {
                       Transform.translate(
                         offset: const Offset(-20, 0),
                         child: Text(
-                          'Autolot7 Motors',
+                          'Auto Repairs',
                           style: MyStyle.tx18Black
                               .copyWith(color: themedata.tertiary),
                         ),

@@ -708,7 +708,7 @@ class _BuyAirtimeConfirmState extends State<BuyAirtimeConfirm> {
                                 ErrorToast('Please select network');
                               } else {
                                 // if (num.parse(_amount.text) > model.balance!) {
-                                  ErrorToast('Insufficient balance');
+                                // ErrorToast('Insufficient balance');
                                 // } else {
                                 Get.to(Buyairtimeconfirmdetail(
                                   selectedNetwork: selectedNetwork!,

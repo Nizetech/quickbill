@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:jost_pay_wallet/Models/color_paint_mode.dart' as paint;
 import 'package:jost_pay_wallet/Provider/service_provider.dart';
@@ -510,14 +511,23 @@ class _PaintformScreenState extends State<PaintformScreen> {
                         ],
                       ],
                       if (packageIndex != 1 && painterindex == 0)
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 10),
+                        Container(
+                          padding: EdgeInsets.all(10),
+                          margin: const EdgeInsets.only(bottom: 10),
                           child: Text(
                             "This cost covers paint, equipment rental, interior/engine wash, and labour. If any dents or damaged parts are found on your vehicle, the invoice will be updated to include repair or replacement costs.",
                             style: MyStyle.tx12Black.copyWith(
                               height: 1.5,
-                              color: const Color(0xff6B7280),
+                              color: MyColor.dark01GreenColor,
                               fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          decoration: BoxDecoration(
+                            color:
+                                MyColor.dark01GreenColor.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(15),
+                            border: Border.all(
+                              color: MyColor.dark01GreenColor,
                             ),
                           ),
                         ),

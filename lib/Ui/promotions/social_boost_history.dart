@@ -1,3 +1,4 @@
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -77,6 +78,7 @@ class _SocialBoostHistoryState extends State<SocialBoostHistory> {
                 const SizedBox(
                   height: 30,
                 ),
+             
                 BalanceActionCard(
                     title: 'Try Social Boost',
                     onTap: () {

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -392,6 +394,7 @@ class _ScriptScreenState extends State<ScriptScreen> {
                                               fontWeight: FontWeight.w600,
                                             )),
                                       ),
+                                      if (Platform.isAndroid)
                                       OutlinedButton(
                                         onPressed: () {
                                           Get.to(BuyScriptSummary(data: {

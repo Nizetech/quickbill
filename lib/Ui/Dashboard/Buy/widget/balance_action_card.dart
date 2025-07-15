@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
@@ -8,9 +10,14 @@ import 'package:provider/provider.dart';
 
 class BalanceActionCard extends StatelessWidget {
   final String title;
+  final bool isScript;
   final VoidCallback onTap;
-  const BalanceActionCard(
-      {super.key, required this.title, required this.onTap});
+  const BalanceActionCard({
+    super.key,
+    this.isScript = false,
+    required this.title,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +57,7 @@ class BalanceActionCard extends StatelessWidget {
               ],
             ),
           ),
+          if (isScript && Platform.isAndroid)
           TextButton(
             onPressed: onTap,
             style: TextButton.styleFrom(

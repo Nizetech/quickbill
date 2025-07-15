@@ -224,8 +224,7 @@ class _RepairstepsScreenState extends State<RepairstepsScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                // model.repairDetails!.autoRepairHistory!.any(
-                                //     (e) => e.status == '2')?
+                           
                                 "Total Cost",
                                 style: MyStyle.tx16Black.copyWith(
                                   color: const Color(0xff6E6D7A),

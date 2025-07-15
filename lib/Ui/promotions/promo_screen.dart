@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -50,8 +49,8 @@ class _PromoScreenState extends State<PromoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final totalPages = (userPromos!.length / rowsPerPage).ceil();
-    log("totalPages: $totalPages");
+    // final totalPages = (userPromos!.length / rowsPerPage).ceil();
+    // log("totalPages: $totalPages");
     // List<UserPromo> currentData = userPromos!
     //     .skip((currentPage - 1) * rowsPerPage)
     //     .take(rowsPerPage)
@@ -77,7 +76,7 @@ class _PromoScreenState extends State<PromoScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Follow the follow to win Big!',
+                          "You're Eligible for a Promo!",
                           style: MyStyle.tx18Black.copyWith(
                               fontWeight: FontWeight.w600,
                               color: Theme.of(context).colorScheme.tertiary),
@@ -85,12 +84,52 @@ class _PromoScreenState extends State<PromoScreen> {
                         const SizedBox(
                           height: 27,
                         ),
-                        Text(
-                          'For every airtime and data purchase, you qualify for a promo! If you have a promo code, tap submit to enter for a chance to win amazing gifts.',
-                          style: MyStyle.tx18Black.copyWith(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
-                              color: const Color(0xff6B7280)),
+                        // Text(
+                        //   'For every airtime and data purchase, you qualify for a promo! If you have a promo code, tap submit to enter for a chance to win amazing gifts.',
+                        //   style: MyStyle.tx18Black.copyWith(
+                        //       fontWeight: FontWeight.w400,
+                        //       fontSize: 14,
+                        //       color: const Color(0xff6B7280)),
+                        // ),
+                        Text.rich(
+                          TextSpan(
+                            text:
+                                'Every time you buy airtime, data, gift cards, Pay4Me, Social Boost, cars, scripts, auto repairs, painting, or web hosting — you qualify for a promo! \nHave a promo code? You’ll be automatically entered into a raffle to win',
+                            style: MyStyle.tx18Black.copyWith(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 14,
+                                color: const Color(0xff6B7280)),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: ' 2x Data, JostPay Credit, ',
+                                style: MyStyle.tx18Black.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14,
+                                    color: Color(0xff6B7280)),
+                              ),
+                              TextSpan(
+                                text: 'or amazing physical gifts like ',
+                                style: MyStyle.tx18Black.copyWith(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 14,
+                                    color: const Color(0xff6B7280)),
+                              ),
+                              TextSpan(
+                                text: 'cars, generators, inverters, ',
+                                style: MyStyle.tx18Black.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14,
+                                    color: Color(0xff6B7280)),
+                              ),
+                              TextSpan(
+                                text: 'and more!',
+                                style: MyStyle.tx18Black.copyWith(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 14,
+                                    color: const Color(0xff6B7280)),
+                              ),
+                            ],
+                          ),
                         ),
                         const SizedBox(
                           height: 37,

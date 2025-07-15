@@ -119,6 +119,18 @@ class _OtpScreenState extends State<OtpScreen> {
                   onCodeChanged: (String code) {},
                   onSubmit: (String verificationCode) {
                     emailCode = verificationCode;
+                    if (emailCode.length == 6) {
+                      model.confirmOtp(
+                          authToken: model.authToken,
+                          account: context.read<AccountProvider>(),
+                          dashProvider: context.read<DashboardProvider>(),
+                          is2fa: widget.is2Fa,
+                          isForgetPass: widget.isForgetPass,
+                          {
+                            "email": widget.email,
+                            "code": emailCode,
+                          });
+                    }
                   },
                 ),
                 const SizedBox(height: 14),

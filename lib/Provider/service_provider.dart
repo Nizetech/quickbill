@@ -813,7 +813,7 @@ class ServiceProvider with ChangeNotifier {
         }
         return;
       }
-      await getSprayHistory();
+      await getRepairTransactions();
       callback();
       Get.back();
       SuccessToast(res['message']);

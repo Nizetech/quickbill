@@ -25,7 +25,7 @@ class RepairstepsScreen extends StatefulWidget {
 class _RepairstepsScreenState extends State<RepairstepsScreen> {
   void calculateTotal(ServiceProvider model) {
     total = model.repairDetails!.autoRepairHistory!
-        .where((e) => e.status != '20')
+        .where((e) => e.status != '20' && e.status != '2')
         .fold<num>(
       0,
       (previousValue, element) {
@@ -48,6 +48,7 @@ class _RepairstepsScreenState extends State<RepairstepsScreen> {
     String name,
     String price,
     VoidCallback onSkip,
+    bool isPaid,
   ) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     final isDark = themeProvider.isDarkMode();
@@ -73,7 +74,7 @@ class _RepairstepsScreenState extends State<RepairstepsScreen> {
         ),
         const SizedBox(height: 7),
         InkWell(
-          onTap: widget.isPaid ? null : onSkip,
+          onTap: isPaid ? null : onSkip,
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
             decoration: BoxDecoration(
@@ -84,7 +85,7 @@ class _RepairstepsScreenState extends State<RepairstepsScreen> {
                 ),
                 borderRadius: BorderRadius.circular(999),
                 color: isDark ? MyColor.dark02Color : MyColor.mainWhiteColor),
-            child: Text(widget.isPaid ? "Paid" : "Skip",
+            child: Text(isPaid ? "Paid" : "Skip",
                 style: MyStyle.tx14Black.copyWith(
                   fontWeight: FontWeight.w500,
                   color: isDark ? const Color(0xff0B930B) : MyColor.greenColor,
@@ -197,43 +198,23 @@ class _RepairstepsScreenState extends State<RepairstepsScreen> {
                                                   workId: item.id!,
                                                   callback: () {
                                                     calculateTotal(model);
-                                                  });
+                                                },
+                                              );
                                              
                                             },
+                                            item.status == '2',
                                           ),
                                         )
                                       ],
                                     );
                             }),
                         SizedBox(height: 20),
-                        Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 14, horizontal: 19),
-                          decoration: BoxDecoration(
-                            color: isDark
-                                ? const Color(0xff101010)
-                                : const Color(0xffFCFCFC),
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Total Section",
-                                style: MyStyle.tx16Black.copyWith(
-                                  color: const Color(0xff6E6D7A),
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              Text(
-                                "${model.repairDetails!.autoRepairHistory!.where((e) => e.status != '20').toList().length} Services",
-                                style: MyStyle.tx16Black.copyWith(
-                                  color: themedata.tertiary,
-                                ),
-                              ),
-                            ],
-                          ),
+                        _totalSection(
+                          title: "Total Section",
+                          total: model.repairDetails!.autoRepairHistory!
+                              .where((e) => e.status != '20')
+                              .toList()
+                              .length,
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(
@@ -243,6 +224,8 @@ class _RepairstepsScreenState extends State<RepairstepsScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
+                                // model.repairDetails!.autoRepairHistory!.any(
+                                //     (e) => e.status == '2')?
                                 "Total Cost",
                                 style: MyStyle.tx16Black.copyWith(
                                   color: const Color(0xff6E6D7A),
@@ -330,4 +313,37 @@ class _RepairstepsScreenState extends State<RepairstepsScreen> {
           ),
         ));
   }
+
+  _totalSection({required String title, required int total}) {
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
+    final isDark = themeProvider.isDarkMode();
+    final themedata = Theme.of(context).colorScheme;
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 19),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xff101010) : const Color(0xffFCFCFC),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: MyStyle.tx16Black.copyWith(
+              color: const Color(0xff6E6D7A),
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          Text(
+            "$total Services",
+            style: MyStyle.tx16Black.copyWith(
+              color: themedata.tertiary,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+                        
 }

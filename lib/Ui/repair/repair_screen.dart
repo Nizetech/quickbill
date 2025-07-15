@@ -580,15 +580,12 @@ class _RepairScreenState extends State<RepairScreen> {
                                     "vehicle_year": year.text,
                                     "part_accessory_procurement":
                                         partProcure[partProcureindex]['title'],
-                                    // if (optionIndex == 1)
                                     "additional_info": info.text,
                                     "replaced_part_handling":
                                         replacedPart[partReplacedIndex]
                                             ['title'],
-                                    // if (optionIndex == 2) ...{
                                     "agent_contact_number": agentContact.text,
                                     "agent_contact_name": agentName.text,
-                                    // }
                                   };
                                   log("data: $data");
                                   // return;

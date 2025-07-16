@@ -89,9 +89,6 @@ class _TransactionhistoryState extends State<Transactionhistory> {
                             return Padding(
                               padding: const EdgeInsets.symmetric(vertical: 10),
                               child: DottedBorder(
-                                child: SizedBox(
-                                  height: 0,
-                                ),
                                 color: themeProvider.isDarkMode()
                                     ? MyColor.borderDarkColor
                                     : MyColor.borderColor,
@@ -103,6 +100,9 @@ class _TransactionhistoryState extends State<Transactionhistory> {
                                 customPath: (size) => Path()
                                   ..moveTo(0, 0)
                                   ..lineTo(size.width, 0),
+                                child: SizedBox(
+                                  height: 0,
+                                ),
                               ),
                             );
                           },

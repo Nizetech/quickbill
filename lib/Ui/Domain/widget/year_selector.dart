@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class YearSelector extends StatefulWidget {
+  const YearSelector({super.key});
+
   @override
   _YearSelectorState createState() => _YearSelectorState();
 }

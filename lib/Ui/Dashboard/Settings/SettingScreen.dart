@@ -415,6 +415,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                 MaterialPageRoute(
                                   builder: (context) => const SignInScreen(),
                                 ));
+                            dashProvider.changeBottomIndex(0);
                           },
                           child: Row(
                             children: [

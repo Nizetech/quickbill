@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 // import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
-import 'package:jost_pay_wallet/Values/utils.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class SupportScreen extends StatefulWidget {

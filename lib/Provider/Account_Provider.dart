@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +19,6 @@ import 'package:jost_pay_wallet/Models/social_boost_history_model.dart';
 import 'package:jost_pay_wallet/Models/transactions.dart';
 import 'package:jost_pay_wallet/Models/user_model.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyDataSuccess.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Buy/invalid.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/pending_purchase.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/payment_details.dart';
 import 'package:jost_pay_wallet/constants/constants.dart';
@@ -112,7 +110,7 @@ class AccountProvider with ChangeNotifier {
       }
       return qrcode;
     } catch (e) {
-      log('Error: $e');
+      // log('Error: $e');
       ErrorToast(e.toString());
       return null;
     }
@@ -123,7 +121,7 @@ class AccountProvider with ChangeNotifier {
     try {
       if (isLoading) showLoader();
       AccountRepo().getProfile().then((value) {
-        // log('Value: $value');
+        //
         if (isLoading) hideLoader();
         if (value['status'] == false || value['result'] == false) {
           if (value['message'].runtimeType == String) {
@@ -138,13 +136,12 @@ class AccountProvider with ChangeNotifier {
         } else {
           userModel = UserModel.fromJson(value);
           box.put(isPinEnabled, userModel?.user?.enabledPin);
-          log("Enable Pin:===> ${box.get(isPinEnabled)}");
           if (isLoading) hideLoader();
         }
         notifyListeners();
       });
     } catch (e) {
-      log('Error: $e');
+      // log('Error: $e');
       ErrorToast(e.toString());
     }
   }
@@ -154,7 +151,7 @@ class AccountProvider with ChangeNotifier {
     try {
       showLoader();
       AccountRepo().getDepositInvoice(bankID).then((value) {
-        // log('Value: $value');
+        //
         hideLoader();
         if (value['status'] == false || value['result'] == false) {
           if (value['message'].runtimeType == String) {
@@ -179,7 +176,7 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      log('Error: $e');
+      // log('Error: $e');
       ErrorToast(e.toString());
     }
   }
@@ -194,7 +191,7 @@ class AccountProvider with ChangeNotifier {
       AccountRepo()
           .getServiceHistory('airtime', filter: filter)
           .then((value) async {
-        log('Value: $value');
+       
         if (isLoading) hideLoader();
         if (value['status'] == false || value['result'] == false) {
           if (value['message'].runtimeType == String) {
@@ -213,7 +210,7 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      log('Error: $e');
+      // log('Error: $e');
       ErrorToast(e.toString());
     }
   }
@@ -228,7 +225,7 @@ class AccountProvider with ChangeNotifier {
       AccountRepo()
           .getServiceHistory('data', filter: filter)
           .then((value) async {
-        log('Value: $value');
+       
         if (isLoading) hideLoader();
         if (value['status'] == false || value['result'] == false) {
           if (value['message'].runtimeType == String) {
@@ -247,7 +244,7 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      log('Error: $e');
+      // log('Error: $e');
       ErrorToast(e.toString());
     }
   }
@@ -262,7 +259,7 @@ class AccountProvider with ChangeNotifier {
       AccountRepo()
           .getServiceHistory('pay4me', filter: filter)
           .then((value) async {
-        log('Value: $value');
+       
         if (isLoading) hideLoader();
         if (value['status'] == false || value['result'] == false) {
           if (value['message'].runtimeType == String) {
@@ -282,7 +279,7 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      log('Error: $e');
+      // log('Error: $e');
       ErrorToast(e.toString());
     }
   }
@@ -297,7 +294,7 @@ class AccountProvider with ChangeNotifier {
       AccountRepo()
           .getServiceHistory('giftcard', filter: filter)
           .then((value) async {
-        log('Value: $value');
+       
         if (isLoading) hideLoader();
         if (value['status'] == false || value['result'] == false) {
           if (value['message'].runtimeType == String) {
@@ -316,7 +313,7 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      log('Error: $e');
+      // log('Error: $e');
       ErrorToast(e.toString());
     }
   }
@@ -326,7 +323,7 @@ class AccountProvider with ChangeNotifier {
     try {
       if (isLoading) showLoader();
       AccountRepo().getDepositHistory().then((value) async {
-        log('Value: $value');
+       
         if (isLoading) hideLoader();
         if (value['status'] == false || value['result'] == false) {
           if (value['message'].runtimeType == String) {
@@ -344,7 +341,7 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      log('Error: $e');
+      // log('Error: $e');
       ErrorToast(e.toString());
     }
   }
@@ -354,7 +351,7 @@ class AccountProvider with ChangeNotifier {
       showLoader();
       AccountRepo().createDeposit(data).then((value) async {
         hideLoader();
-        log('Value: $value');
+       
         if (value['status'] == false || value['result'] == false) {
           if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
@@ -372,7 +369,7 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      log('Error: $e');
+      // log('Error: $e');
       ErrorToast(e.toString());
     }
   }
@@ -386,7 +383,7 @@ class AccountProvider with ChangeNotifier {
       AccountRepo()
           .getServiceHistory('social', filter: filter)
           .then((value) async {
-        log('Value: $value');
+       
         if (isLoading) hideLoader();
         if (value['status'] == false || value['result'] == false) {
           if (value['message'].runtimeType == String) {
@@ -405,7 +402,7 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      log('Error: $e');
+      // log('Error: $e');
       ErrorToast(e.toString());
     }
   }
@@ -414,7 +411,7 @@ class AccountProvider with ChangeNotifier {
     try {
       if (isLoading) showLoader();
       AccountRepo().getBanks().then((value) async {
-        log('Value: $value');
+       
         if (isLoading) hideLoader();
         if (value['status'] == false || value['result'] == false) {
           if (value['message'].runtimeType == String) {
@@ -434,7 +431,7 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      log('Error: $e');
+      // log('Error: $e');
       ErrorToast(e.toString());
     }
   }
@@ -445,7 +442,7 @@ class AccountProvider with ChangeNotifier {
     try {
       if (isLoading) showLoader();
       AccountRepo().getNetworkProviders().then((value) {
-        log('Value: $value');
+       
         if (isLoading) hideLoader();
         if (value['status'] == false || value['result'] == false) {
           if (value['message'].runtimeType == String) {
@@ -467,7 +464,7 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      log('Error: $e');
+      // log('Error: $e');
       ErrorToast(e.toString());
     }
   }
@@ -477,7 +474,7 @@ class AccountProvider with ChangeNotifier {
     try {
       if (isLoading) showLoader();
       AccountRepo().getProfileImage().then((value) {
-        log('Value: $value');
+       
         if (isLoading) hideLoader();
         if (value['status'] == false || value['result'] == false) {
           if (value['message'].runtimeType == String) {
@@ -496,7 +493,7 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      log('Error: $e');
+      // log('Error: $e');
       ErrorToast(e.toString());
     }
   }
@@ -524,7 +521,7 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      log('Error: $e');
+      // log('Error: $e');
       ErrorToast(e.toString());
     }
   }
@@ -582,7 +579,7 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      log('Error: $e');
+      // log('Error: $e');
       ErrorToast(e.toString());
     }
   }
@@ -594,7 +591,6 @@ class AccountProvider with ChangeNotifier {
       showLoader();
       AccountRepo().buyData(data).then((value) async {
         hideLoader();
-        log('Value:==> $value');
         if (value['result'] == null || value['result'] == false) {
           if (value['message'].toString().toLowerCase().contains('failed')) {
             Get.to(PendingFailedPurchase(
@@ -643,7 +639,7 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      log('Error: $e');
+      // log('Error: $e');
       ErrorToast(e.toString());
     }
   }
@@ -652,7 +648,7 @@ class AccountProvider with ChangeNotifier {
   Future<void> getNotification() async {
     try {
       AccountRepo().getNotification().then((value) {
-        log('Value: $value');
+       
         if (value['status'] == false || value['result'] == false) {
           if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
@@ -670,7 +666,7 @@ class AccountProvider with ChangeNotifier {
       });
       notifyListeners();
     } catch (e) {
-      log('Error: $e');
+      // log('Error: $e');
       ErrorToast(e.toString());
     }
   }
@@ -686,7 +682,7 @@ class AccountProvider with ChangeNotifier {
       });
       notifyListeners();
     } catch (e) {
-      log('Error: $e');
+      // log('Error: $e');
       ErrorToast(e.toString());
     }
   }
@@ -696,7 +692,7 @@ class AccountProvider with ChangeNotifier {
     try {
       setLoading(true);
       AccountRepo().getBalance().then((value) {
-        log('Value: $value');
+       
         setLoading(false);
         if (value['status'] == false || value['result'] == false) {
           if (value['message'].runtimeType == String) {
@@ -717,7 +713,7 @@ class AccountProvider with ChangeNotifier {
       setLoading(false);
       notifyListeners();
     } catch (e) {
-      log('Error: $e');
+      // log('Error: $e');
       setLoading(false);
       ErrorToast(e.toString());
     }
@@ -728,7 +724,7 @@ class AccountProvider with ChangeNotifier {
     try {
       if (isLoading) showLoader();
       AccountRepo().getTransactions().then((value) {
-        log('Value: $value');
+       
         if (value['status'] == false || value['result'] == false) {
           if (isLoading) hideLoader();
           if (value['message'].runtimeType == String) {
@@ -749,7 +745,7 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      log('Error: $e');
+      // log('Error: $e');
       // setLoading(false);
       ErrorToast(e.toString());
     }
@@ -760,7 +756,7 @@ class AccountProvider with ChangeNotifier {
     try {
       if (isLoading) showLoader();
       AccountRepo().getReferral().then((value) {
-        log('Value: $value');
+       
         if (value['status'] == false || value['result'] == false) {
           if (isLoading) hideLoader();
           if (value['message'].runtimeType == String) {
@@ -779,7 +775,7 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      log('Error: $e');
+      // log('Error: $e');
       ErrorToast(e.toString());
     }
   }
@@ -790,7 +786,7 @@ class AccountProvider with ChangeNotifier {
     try {
       if (isLoading) showLoader();
       AccountRepo().getDataPlans(network).then((value) {
-        log('Value: $value');
+       
         if (value['status'] == false || value['result'] == false) {
           if (isLoading) hideLoader();
           if (value['message'].runtimeType == String) {
@@ -809,7 +805,7 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      log('Error: $e');
+      // log('Error: $e');
       ErrorToast(e.toString());
     }
   }
@@ -819,7 +815,7 @@ class AccountProvider with ChangeNotifier {
     try {
       if (isLoading) showLoader();
       AccountRepo().getPromotion().then((value) {
-        log('Value: $value');
+       
         if (value['status'] == false || value['result'] == false) {
           if (isLoading) hideLoader();
           if (value['message'].runtimeType == String) {
@@ -838,7 +834,7 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      log('Error: $e');
+      // log('Error: $e');
       ErrorToast(e.toString());
     }
   }

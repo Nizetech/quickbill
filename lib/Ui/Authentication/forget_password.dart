@@ -12,10 +12,10 @@ class ForgotPassword extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
+    final formKey = GlobalKey<FormState>();
     final email = TextEditingController();
-    void _validateForm(AuthProvider model) async {
-      if (_formKey.currentState?.validate() ?? false) {
+    void validateForm(AuthProvider model) async {
+      if (formKey.currentState?.validate() ?? false) {
         // loginAccount();
         model.forgetPassword(email.text.trim());
       } else {
@@ -50,7 +50,7 @@ class ForgotPassword extends StatelessWidget {
       ),
       body: Consumer<AuthProvider>(builder: (context, model, _) {
         return Form(
-          key: _formKey,
+          key: formKey,
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
@@ -98,7 +98,7 @@ class ForgotPassword extends StatelessWidget {
                 CustomButton(
                     text: 'Verify',
                     isLoading: model.isLoading,
-                    onTap: () => _validateForm(model)),
+                    onTap: () => validateForm(model)),
               ],
             ),
           ),

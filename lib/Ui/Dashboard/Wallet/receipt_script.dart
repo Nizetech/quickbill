@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -33,7 +32,6 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
 
   @override
   Widget build(BuildContext context) {
-    log("Receipt Screen: ${widget.amount}");
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     final theme = Theme.of(context).colorScheme;
     return Scaffold(

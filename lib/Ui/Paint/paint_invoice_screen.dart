@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -256,15 +255,14 @@ class _PaintInvoiceScreenState extends State<PaintInvoiceScreen> {
                               separatorBuilder: (context, index) =>
                                   const Padding(
                                 padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
-                                child: const Divider(
+                                    EdgeInsets.symmetric(vertical: 10),
+                                child: Divider(
                                   height: 1,
                                   color: Color(0xffE9EBF8),
                                 ),
                               ),
                               itemBuilder: (_, i) {
                                 final data = model.sprayDetailsModel!.data![i];
-                                log('Price ==> ${data.price}, ${data.name}. ${data.description}');
                                 return Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Row(

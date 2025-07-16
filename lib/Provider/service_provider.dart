@@ -206,7 +206,7 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().getCarDetails(id);
-      log("res: $res");
+    
       if (res['status'] == false || res['result'] == false) {
         hideLoader();
         if (res['message'].runtimeType == String) {
@@ -234,7 +234,6 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().payRepairVehicle(id);
-      log("res:===> $res");
       if (res['status'] == false || res['result'] == false) {
         hideLoader();
         if (res['message'].runtimeType == String) {
@@ -264,7 +263,7 @@ class ServiceProvider with ChangeNotifier {
     try {
       if (isLoading) showLoader();
       var res = await ServiceRepo().getRepairDetails(id);
-      log("res: $res");
+    
       if (res['status'] == false || res['result'] == false) {
         if (isLoading) hideLoader();
         if (res['message'].runtimeType == String) {
@@ -293,7 +292,7 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().shareRepairInvoice(id);
-      log('Response: $res');
+     
       hideLoader();
       if (res['status'] == false || res['result'] == false) {
         if (res['message'].runtimeType == String) {
@@ -329,7 +328,7 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().skipRepair(workId);
-      log("res: $res");
+    
       if (res['status'] == false || res['result'] == false) {
         hideLoader();
         if (res['message'].runtimeType == String) {
@@ -358,7 +357,7 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().getScriptDetails(id);
-      log("res: $res");
+    
       if (res['status'] == false || res['result'] == false) {
         hideLoader();
         if (res['message'].runtimeType == String) {
@@ -386,7 +385,7 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().buyCar(data);
-      log("res: $res");
+    
       if (res['status'] == false || res['result'] == false) {
         hideLoader();
         if (res['message'].runtimeType == String) {
@@ -417,7 +416,7 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().bookInspection(data);
-      log("res: $res");
+    
       if (res['status'] == false || res['result'] == false) {
         hideLoader();
         if (res['message'].runtimeType == String) {
@@ -445,7 +444,7 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().buyScript(id);
-      log("res: $res");
+    
       if (res['status'] == false || res['result'] == false) {
         hideLoader();
         if (res['message'].runtimeType == String) {
@@ -500,7 +499,7 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().buyGiftCard(data);
-      log("res: $res");
+    
       if (res['status'] == false || res['result'] == false) {
         hideLoader();
         if (res['message'].runtimeType == String) {
@@ -772,7 +771,7 @@ class ServiceProvider with ChangeNotifier {
     try {
       if (isLoading) showLoader();
       var res = await ServiceRepo().getRepairTransactions();
-      log('Response: $res');
+     
       if (isLoading) hideLoader();
       if (res['status'] == false || res['result'] == false) {
         if (res['message'].runtimeType == String) {
@@ -856,7 +855,7 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().getPdfReceipt(id);
-      log('Response: $res');
+     
       hideLoader();
       if (res['status'] == false || res['result'] == false) {
         if (res['message'].runtimeType == String) {
@@ -930,7 +929,7 @@ class ServiceProvider with ChangeNotifier {
         }
         return;
       }
-      log('Response: $res');
+     
       scriptTransactionsModel = ScripTransactions.fromJson(res);
       if (isLoading) hideLoader();
       notifyListeners();
@@ -945,7 +944,7 @@ class ServiceProvider with ChangeNotifier {
       if (isLoading) showLoader();
 
       var res = await ServiceRepo().getCarsTransactions();
-      log('Response: $res');
+     
       if (res['status'] == false || res['result'] == false) {
         if (isLoading) hideLoader();
         if (res['message'].runtimeType == String) {

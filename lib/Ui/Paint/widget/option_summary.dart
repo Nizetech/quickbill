@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -189,10 +188,8 @@ class _OptionSummaryState extends State<OptionSummary> {
                       ),
                     );
                   } else if ((widget.rentType ?? -1) < 0) {
-                    log('rnt type ${widget.rentType}');
                     ErrorToast("Please select rental type");
                   } else {
-                    log(" car type ${widget.carType}, total ${widget.total}, image ${widget.image}, rent type ${widget.rentType}, date ${widget.date}, time ${widget.time}, ");
                     ErrorToast("Please select all fields");
                   }
                 },

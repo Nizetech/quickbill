@@ -137,7 +137,7 @@ class _Pay4meScreenState extends State<Pay4meScreen> {
                                         fontWeight: FontWeight.w400,
                                       ),
                                     )))
-                                .toList(),
+                                ,
                           ],
                           onSelected: (val) {
                             selectedOption = paymentOption.indexOf(val);

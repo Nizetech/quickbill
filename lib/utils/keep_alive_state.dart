@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:jost_pay_wallet/Ui/Authentication/SignInScreen.dart';
 import 'package:jost_pay_wallet/main.dart';
@@ -47,7 +46,6 @@ class _KeepAliveObserver extends WidgetsBindingObserver {
 
 /// Must be called only when app is visible, and exactly once
 void startKeepAlive() {
-  log("Starting KeepAlive");
   assert(_keepAliveTimer == null);
   _keepAlive(true);
   WidgetsBinding.instance.addObserver(_KeepAliveObserver());

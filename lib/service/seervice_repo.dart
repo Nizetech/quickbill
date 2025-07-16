@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jost_pay_wallet/constants/api_constants.dart';
@@ -60,7 +59,6 @@ class ServiceRepo {
           .post(ApiRoute.rentSpray, body: body, requestHeaders: {
         'Authorization': token,
       });
-      log('Reponse: $response');
       return response;
     } catch (e) {
       print('Error: $e');
@@ -455,7 +453,7 @@ class ServiceRepo {
           requestHeaders: {
             'Authorization': token,
           });
-      log('Reponse: $response');
+
       return response;
     } catch (e) {
       print('Error: $e');
@@ -471,7 +469,6 @@ class ServiceRepo {
           await client.get(ApiRoute.getSprayHistory, requestHeaders: {
         'Authorization': token,
       });
-      log('Reponse: $response');
       return response;
     } catch (e) {
       print('Error: $e');

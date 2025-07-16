@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 
 import 'package:hive_flutter/hive_flutter.dart';
@@ -102,7 +101,7 @@ class AccountRepo {
       final response = await client.post(ApiRoute.getBanks, requestHeaders: {
         'Authorization': token,
       });
-      log('Reponse: $response');
+    
       return response;
     } catch (e) {
       print('Error: $e');
@@ -138,7 +137,7 @@ class AccountRepo {
         },
         body: {"network_name": network},
       );
-      log('Reponse: $response');
+    
       return response;
     } catch (e) {
       print('Error: $e');
@@ -198,7 +197,7 @@ class AccountRepo {
         },
         body: {"id": 0},
       );
-      log('Reponse: $response');
+    
       return response;
     } catch (e) {
       print('Error: $e');
@@ -228,7 +227,6 @@ class AccountRepo {
           await client.post(ApiRoute.getReferrals, requestHeaders: {
         'Authorization': token,
       });
-      log('Response: $response');
       return response;
     } catch (e) {
       print('Error: $e');

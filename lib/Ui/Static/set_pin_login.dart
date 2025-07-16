@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
@@ -100,7 +99,6 @@ class _SetPinLoginState extends State<SetPinLogin> {
                       if (pin.isEmpty && pin.length < 4) {
                         return;
                       } else {
-                        // log("PIN ==> $pin");
                         model.updatePinLogin(
                             pin, context.read<AccountProvider>());
                       }

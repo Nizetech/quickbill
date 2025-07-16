@@ -197,7 +197,7 @@ class _BuyCarSummaryState extends State<BuyCarSummary> {
                                 Radio<int>(
                                   value: index,
                                   activeColor: MyColor.greenColor,
-                                  fillColor: MaterialStateColor.resolveWith(
+                                  fillColor: WidgetStateColor.resolveWith(
                                     (states) => MyColor.greenColor,
                                   ),
                                   groupValue: selectedOption,

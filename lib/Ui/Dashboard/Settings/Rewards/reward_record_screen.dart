@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
@@ -284,7 +283,7 @@ class InfoColumn extends StatelessWidget {
   final String title;
   final String value;
 
-  const InfoColumn({required this.title, required this.value});
+  const InfoColumn({super.key, required this.title, required this.value});
 
   @override
   Widget build(BuildContext context) {

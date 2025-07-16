@@ -11,12 +11,12 @@ class ChangePassword extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
+    final formKey = GlobalKey<FormState>();
     final cfmPwd = TextEditingController();
     final newPwd = TextEditingController();
     final currentPwd = TextEditingController();
-    void _validateForm(AuthProvider model) async {
-      if (_formKey.currentState?.validate() ?? false) {
+    void validateForm(AuthProvider model) async {
+      if (formKey.currentState?.validate() ?? false) {
         // loginAccount();
         model.changePassword({
           "current_password": currentPwd.text.trim(),
@@ -36,7 +36,7 @@ class ChangePassword extends StatelessWidget {
       ),
       body: Consumer<AuthProvider>(builder: (context, model, _) {
         return Form(
-          key: _formKey,
+          key: formKey,
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
@@ -129,7 +129,7 @@ class ChangePassword extends StatelessWidget {
                 CustomButton(
                     text: 'Verify',
                     isLoading: model.isLoading,
-                    onTap: () => _validateForm(model)),
+                    onTap: () => validateForm(model)),
               ],
             ),
           ),

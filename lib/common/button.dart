@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/NewStyle.dart';
@@ -39,7 +38,7 @@ class CustomButton extends StatelessWidget {
         child: isLoading
             ? const SizedBox.square(
                 dimension: 24,
-                child: const CircularProgressIndicator(
+                child: CircularProgressIndicator(
                   color: MyColor.mainWhiteColor,
                 ))
             : Text(

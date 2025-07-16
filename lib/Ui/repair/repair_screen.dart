@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -234,7 +233,6 @@ class _RepairScreenState extends State<RepairScreen> {
                                               status.text = value;
                                               setState(() {});
                                             });
-                                        log('${status.text}');
                                       },
                                       child: CustomTextField(
                                         text: "Select",
@@ -390,7 +388,7 @@ class _RepairScreenState extends State<RepairScreen> {
                                   width: 20,
                                   child: Radio<int>(
                                     activeColor: MyColor.greenColor,
-                                    fillColor: MaterialStateProperty.all(
+                                    fillColor: WidgetStateProperty.all(
                                         MyColor.greenColor),
                                     value: index,
                                     groupValue: partProcureindex,
@@ -476,7 +474,7 @@ class _RepairScreenState extends State<RepairScreen> {
                                     width: 20,
                                     child: Radio<int>(
                                       activeColor: MyColor.greenColor,
-                                      fillColor: MaterialStateProperty.all(
+                                      fillColor: WidgetStateProperty.all(
                                           MyColor.greenColor),
                                       value: index,
                                       groupValue: partReplacedIndex,
@@ -587,7 +585,6 @@ class _RepairScreenState extends State<RepairScreen> {
                                     "agent_contact_number": agentContact.text,
                                     "agent_contact_name": agentName.text,
                                   };
-                                  log("data: $data");
                                   // return;
                                   model.buyRepaires(data, callback: () {
                                     repairOption.clear();

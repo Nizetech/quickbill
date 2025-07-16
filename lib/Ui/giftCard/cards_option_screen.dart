@@ -111,7 +111,7 @@ class _CardsOptionScreenState extends State<CardsOptionScreen> {
                                         fontWeight: FontWeight.w400,
                                       ),
                                     )))
-                                .toList(),
+                                ,
                           ],
                           onSelected: (val) {
                             setState(() {
@@ -183,7 +183,7 @@ class _CardsOptionScreenState extends State<CardsOptionScreen> {
                                         ),
                                       ],
                                     )))
-                                .toList(),
+                                ,
                           ],
                           onSelected: (val) {
                             setState(() {

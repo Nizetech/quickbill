@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -271,7 +270,6 @@ class _SocialBoostState extends State<SocialBoost> {
                               return null;
                             },
                             onChanged: (value) {
-                              log('Value: $value');
                               if (value.isNotEmpty) {
                                 setState(() {
                                   var amount = num.parse(value) *

@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -55,7 +54,6 @@ class _AccountsettingState extends State<Accountsetting> {
     return Scaffold(
       body: Consumer2<AccountProvider, AuthProvider>(
           builder: (context, model, auth, _) {
-        log("Pin Enabled==> ${model.userModel?.user!.toJson()}");
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 68, horizontal: 24),
           child: Column(

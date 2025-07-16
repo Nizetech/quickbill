@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -323,7 +322,6 @@ class _PaintformScreenState extends State<PaintformScreen> {
                                           num.parse(widget.rentalData.total) +
                                               widget.rentalData.price15 +
                                               price;
-                                      log('packageId: $packageId');
                                     });
                                   },
                                   subtitle: i == 0
@@ -513,20 +511,20 @@ class _PaintformScreenState extends State<PaintformScreen> {
                         Container(
                           padding: EdgeInsets.all(10),
                           margin: const EdgeInsets.only(bottom: 10),
-                          child: Text(
-                            "This cost covers paint, equipment rental, interior/engine wash, and labour. If any dents or damaged parts are found on your vehicle, the invoice will be updated to include repair or replacement costs.",
-                            style: MyStyle.tx12Black.copyWith(
-                              height: 1.5,
-                              color: MyColor.dark01GreenColor,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
                           decoration: BoxDecoration(
                             color:
                                 MyColor.dark01GreenColor.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(15),
                             border: Border.all(
                               color: MyColor.dark01GreenColor,
+                            ),
+                          ),
+                          child: Text(
+                            "This cost covers paint, equipment rental, interior/engine wash, and labour. If any dents or damaged parts are found on your vehicle, the invoice will be updated to include repair or replacement costs.",
+                            style: MyStyle.tx12Black.copyWith(
+                              height: 1.5,
+                              color: MyColor.dark01GreenColor,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),

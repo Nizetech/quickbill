@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
@@ -41,8 +40,6 @@ class _OtpScreenState extends State<OtpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final model = context.read<AuthProvider>();
-    log('Auth Token: => ${model.authToken}');
     return Scaffold(
       backgroundColor: Colors.white,
       body: Consumer<AuthProvider>(builder: (context, model, _) {

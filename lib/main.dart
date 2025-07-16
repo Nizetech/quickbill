@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -60,7 +59,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       token = await box.get(kAccessToken, defaultValue: '');
       isExistingUser = await box.get(kExistingUser, defaultValue: false);
-      log(token);
       pinEnabled = box.get(isPinEnabled, defaultValue: "");
       setState(() {});
     });
@@ -69,7 +67,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    log('My token is $token, PIN =-> $pinEnabled');
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => DashboardProvider()),

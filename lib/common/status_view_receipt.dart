@@ -62,12 +62,11 @@ class StatusViewReceipt extends StatelessWidget {
         GestureDetector(
           onTap: onTap,
           child: Container(
-              width: 68,
               decoration: BoxDecoration(
                   color: themedata.secondary,
                   borderRadius: BorderRadius.circular(15)),
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 2),
+                padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

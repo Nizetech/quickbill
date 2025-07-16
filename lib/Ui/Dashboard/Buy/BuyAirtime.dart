@@ -86,8 +86,7 @@ class _BuyAirtimeState extends State<BuyAirtime> {
                       Get.to(const BuyAirtimeConfirm());
                     }),
                 const SizedBox(
-                  height: 36,
-                ),
+                  height: 20),
                 SizedBox(
                   width: double.infinity,
                   child: Row(

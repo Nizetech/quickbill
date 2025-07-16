@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:jost_pay_wallet/Models/color_paint_mode.dart' as paint;
 import 'package:jost_pay_wallet/Provider/service_provider.dart';

@@ -301,6 +301,7 @@ class HistoryCard extends StatelessWidget {
                         ),
                       ),
                 SizedBox(width: 5.w),
+
                 GestureDetector(
                   onTap: () {
                     if ((transaction.apiStatus != null &&
@@ -334,12 +335,13 @@ class HistoryCard extends StatelessWidget {
                     }
                   },
                   child: Container(
-                      width: 68,
+                   
                       decoration: BoxDecoration(
                           color: themedata.secondary,
                           borderRadius: BorderRadius.circular(15)),
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 2),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 2, horizontal: 5),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -356,6 +358,7 @@ class HistoryCard extends StatelessWidget {
                         ),
                       )),
                 ),
+              
               ],
             )
           ],

@@ -1,3 +1,5 @@
+
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -80,6 +82,7 @@ class _SocialBoostHistoryState extends State<SocialBoostHistory> {
                 ),
              
                 BalanceActionCard(
+                    showBtn: Platform.isIOS ? false : true,
                     title: 'Try Social Boost',
                     onTap: () {
                       Get.to(const SocialsScreen());

@@ -78,6 +78,7 @@ class _ScriptHistoryState extends State<ScriptHistory> {
                   height: 30,
                 ),
                 BalanceActionCard(
+                  
                     title: Platform.isAndroid ? 'Buy Script' : 'View Script',
                     onTap: () {
                       Get.to(const ScriptScreen());

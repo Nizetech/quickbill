@@ -20,11 +20,11 @@ class _SplashScreenState extends State<SplashScreen> {
     getToken();
 
     Future.delayed(Duration(seconds: 2), () {
-      // token.isNotEmpty && pinEnabled.isNotEmpty && pinEnabled == '0'
-      //     ? Get.offAll(() => BottomNav())
-      //     : isExistingUser && pinEnabled == '1'
-      //         ? Get.offAll(SignInScreen())
-      //         : Get.offAll(() => (OnboardingScreen()));
+      token.isNotEmpty && pinEnabled.isNotEmpty && pinEnabled == '0'
+          ? Get.offAll(() => BottomNav())
+          : isExistingUser && pinEnabled == '1'
+              ? Get.offAll(SignInScreen())
+              : Get.offAll(() => (OnboardingScreen()));
     });
   }
 
@@ -45,6 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Center(
         child: Image.asset(width: double.infinity, 'assets/images/splash.png'),
       ),

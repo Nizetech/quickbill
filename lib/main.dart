@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,7 +7,10 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jost_pay_wallet/Provider/auth_provider.dart';
 import 'package:jost_pay_wallet/Provider/service_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
-import 'package:jost_pay_wallet/Ui/Authentication/SplashScreen.dart';
+import 'package:jost_pay_wallet/Ui/Authentication/SignInScreen.dart';
+import 'package:jost_pay_wallet/Ui/Static/onboarding_screen.dart';
+import 'package:jost_pay_wallet/bottom_nav.dart';
+import 'package:jost_pay_wallet/common/splash.dart';
 import 'package:jost_pay_wallet/constants/constants.dart';
 import 'package:jost_pay_wallet/utils/keep_alive_state.dart';
 import 'package:provider/provider.dart';
@@ -27,6 +31,7 @@ void main() async {
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
+
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
@@ -35,10 +40,28 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+
+
   @override
   void initState() {
     super.initState();
+    getToken();
     WidgetsBinding.instance.addObserver(this);
+
+  }
+
+  final box = Hive.box(kAppName);
+  String token = '';
+  String pinEnabled = '';
+  bool isExistingUser = false;
+
+  FutureOr getToken() async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      token = await box.get(kAccessToken, defaultValue: '');
+      isExistingUser = await box.get(kExistingUser, defaultValue: false);
+      pinEnabled = box.get(isPinEnabled, defaultValue: "");
+      setState(() {});
+    });
   }
 
   // This widget is the root of your application.
@@ -60,13 +83,14 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           minTextAdapt: true,
           splitScreenMode: true,
           child: GetMaterialApp(
-              navigatorKey: navigatorKey,
-              debugShowCheckedModeBanner: false,
-              title: 'JostPayWallet',
-              theme: themeProvider.lightTheme,
-              darkTheme: themeProvider.darkTheme,
-              themeMode: themeProvider.themeMode,
-              home: SplashScreen()),
+            navigatorKey: navigatorKey,
+            debugShowCheckedModeBanner: false,
+            title: 'JostPayWallet',
+            theme: themeProvider.lightTheme,
+            darkTheme: themeProvider.darkTheme,
+            themeMode: themeProvider.themeMode,
+            home: SplashScreen(),
+          ),
         );
       }),
     );

@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
+import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
+import 'package:jost_pay_wallet/Values/utils.dart';
 import 'package:jost_pay_wallet/common/button.dart';
 import 'package:provider/provider.dart';
 
@@ -79,9 +83,15 @@ class SuccessScreen extends StatelessWidget {
               ),
 
               Spacer(),
-              Image.asset(themeProvider.isDarkMode()
-                  ? 'assets/images/dark_rate.png'
-                  : 'assets/images/light_rate.png'),
+              GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: Platform.isAndroid
+                    ? () => launchWeb(Utils.playStoreLink)
+                    : () {},
+                child: Image.asset(themeProvider.isDarkMode()
+                    ? 'assets/images/dark_rate.png'
+                    : 'assets/images/light_rate.png'),
+              ),
               SizedBox(height: 30),
               CustomButton(
                 text: "Buy More",

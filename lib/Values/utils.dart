@@ -9,6 +9,10 @@ class Utils {
   static String naira = "₦";
   static String pageType = "";
   static String pageType1 = "";
+  static String socialBoostLink =
+      "https://jostpay.com/our_services/socialboost";
+  static String giftcardLink =
+      "https://jostpay.com/our_services/giftcard?code=US&number=1&query=";
   static String faqUrl = "https://jostpay.com/our/faq";
   static String aboutUs = "https://jostpay.com/our/aboutus";
   static String termsUrl = "https://jostpay.com/terms";

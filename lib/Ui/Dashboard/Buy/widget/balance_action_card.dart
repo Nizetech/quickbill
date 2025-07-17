@@ -61,7 +61,8 @@ class BalanceActionCard extends StatelessWidget {
             onPressed: onTap,
             style: TextButton.styleFrom(
               backgroundColor: MyColor.greenColor,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -71,7 +72,9 @@ class BalanceActionCard extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: MyStyle.tx12White,
+                    style: MyStyle.tx12White.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
                 ),
                 SizedBox(width: 5),
                 Icon(Icons.arrow_forward_ios_rounded,

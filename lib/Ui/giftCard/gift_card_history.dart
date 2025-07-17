@@ -1,3 +1,4 @@
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -78,8 +79,11 @@ class _GiftCardHistoryState extends State<GiftCardHistory> {
                   height: 30,
                 ),
                 BalanceActionCard(
-                    title: 'Buy Gift Card',
+                    title: Platform.isIOS ? 'View Gift Card' : 'Buy Gift Card',
                     onTap: () {
+                      Platform.isIOS
+                          ? launchWeb(Utils.giftcardLink)
+                          :
                       Get.to(const BuyGiftCardScreen());
                     }),
                 const SizedBox(

@@ -82,9 +82,12 @@ class _SocialBoostHistoryState extends State<SocialBoostHistory> {
                 ),
              
                 BalanceActionCard(
-                    showBtn: Platform.isIOS ? false : true,
+                    // showBtn: Platform.isIOS ? false : true,
                     title: 'Try Social Boost',
                     onTap: () {
+                      Platform.isIOS
+                          ? launchWeb(Utils.socialBoostLink)
+                          :
                       Get.to(const SocialsScreen());
                     }),
                 const SizedBox(

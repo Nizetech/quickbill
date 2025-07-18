@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,6 +18,7 @@ import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/history_card.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/profile_image.dart';
 import 'package:jost_pay_wallet/Ui/Domain/domain_screen.dart';
 import 'package:jost_pay_wallet/Ui/Paint/paint_history.dart';
+import 'package:jost_pay_wallet/Ui/car/car_history.dart';
 import 'package:jost_pay_wallet/Ui/repair/repairdetail_screen.dart';
 import 'package:jost_pay_wallet/Ui/pay4me/pay4me_history.dart';
 import 'package:jost_pay_wallet/Ui/promotions/social_boost_history.dart';
@@ -663,8 +665,13 @@ class _WalletScreenState extends State<WalletScreen> {
                                 onTap: () => Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                            const SocialBoostHistory())),
+                                    builder: (context) {
+                                      return Platform.isIOS
+                                          ? CarHistory()
+                                          : SocialBoostHistory();
+                                    },
+                                  ),
+                                ),
                                 child: Container(
                                   child: Column(
                                     children: [
@@ -682,6 +689,9 @@ class _WalletScreenState extends State<WalletScreen> {
                                           ],
                                         ),
                                         child: SvgPicture.asset(
+                                          Platform.isIOS
+                                              ? 'assets/images/car.svg'
+                                              :
                                           'assets/images/svg/socialBoost.svg',
                                           height: 33.r,
                                           width: 33.r,
@@ -692,7 +702,10 @@ class _WalletScreenState extends State<WalletScreen> {
                                       ),
                                       Row(
                                         children: [
-                                          Text('Social Boost',
+                                          Text(
+                                              Platform.isIOS
+                                                  ? "Buy Car"
+                                                  : 'Social Boost',
                                               style: MyStyle.tx12Black.copyWith(
                                                   color: Theme.of(context)
                                                       .colorScheme

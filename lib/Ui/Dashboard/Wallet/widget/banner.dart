@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/DashboardProvider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
+import 'package:jost_pay_wallet/Ui/Support/terms_screen.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:provider/provider.dart';
@@ -90,6 +94,11 @@ class BannerAds extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
+                        Platform.isIOS
+                            ? Get.to(TermsScreen(
+                                isFromHome: true,
+                              ))
+                            :
                         dashProvider.hidePromotionbanner(false);
                       },
                       child: Container(
@@ -98,11 +107,12 @@ class BannerAds extends StatelessWidget {
                         margin: EdgeInsets.only(bottom: 12.h),
                         decoration: BoxDecoration(
                             color: MyColor.greenColor,
-                            borderRadius: BorderRadius.circular(5)),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
                         padding: const EdgeInsets.symmetric(
                             vertical: 5, horizontal: 12),
-                        child: const Text(
-                          'Close  X',
+                        child: Text(
+                          Platform.isIOS ? 'View Rules' : 'Close',
                           style: MyStyle.tx8White,
                         ),
                       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/DashboardProvider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 // import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -9,7 +10,11 @@ import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class TermsScreen extends StatefulWidget {
-  const TermsScreen({super.key});
+  final bool isFromHome;
+  const TermsScreen({
+    super.key,
+    this.isFromHome = false,
+  });
 
   @override
   State<TermsScreen> createState() => _TermsScreenState();
@@ -70,7 +75,13 @@ class _TermsScreenState extends State<TermsScreen> {
                   offset: const Offset(10, -8),
                   child: BackBtn(
                     onTap: () {
-                      dashProvider.changeBottomIndex(4);
+                      if (widget.isFromHome) {
+                        dashProvider.changeBottomIndex(0);
+                        Get.back();
+                      } else {
+                        dashProvider.changeBottomIndex(4);
+                        Get.back();
+                      }
                     },
                   ),
                 ),
@@ -91,7 +102,6 @@ class _TermsScreenState extends State<TermsScreen> {
               ],
             ),
           ))
-       
         ],
       ),
     ));

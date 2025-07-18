@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:jost_pay_wallet/Provider/DashboardProvider.dart';
@@ -110,6 +112,8 @@ class _ServicesState extends State<Services> {
                       const SizedBox(
                         height: 24,
                       ),
+                      if (Platform.isAndroid) ...[
+
                       SizedBox(
                         width: double.infinity, // Full width of the screen
                         height: 4, // Adjust height as needed
@@ -142,7 +146,7 @@ class _ServicesState extends State<Services> {
                       const SizedBox(
                         height: 27,
                       ),
-                      Text(
+                        Text(
                         'Finance',
                         style: MyStyle.tx18Black.copyWith(
                             fontWeight: FontWeight.w400,
@@ -171,7 +175,8 @@ class _ServicesState extends State<Services> {
                       ),
                       const SizedBox(
                         height: 24,
-                      ),
+                        ),
+                      ],
                       SizedBox(
                         width: double.infinity, // Full width of the screen
                         height: 4, // Adjust height as needed
@@ -223,12 +228,20 @@ class _ServicesState extends State<Services> {
                           ),
                      
                           const Spacer(),
+                          if (Platform.isAndroid)
+
                           ServiceTile(
                         
                             icon: 'assets/images/boost.svg',
                             title: 'Try Social Boost',
                             page: const SocialBoostHistory(),
-                          ),
+                            )
+                          else
+                            ServiceTile(
+                              icon: 'assets/images/money.svg',
+                              title: 'Try Pay4me',
+                              page: const PayForMeHistory(),
+                            ),
                  
                   
                         ],
@@ -236,6 +249,8 @@ class _ServicesState extends State<Services> {
                       const SizedBox(
                         height: 23,
                       ),
+                      if (Platform.isAndroid)
+
                       ServiceTile(
                         icon: 'assets/images/script.svg',
                         title: 'Buy Scripts',

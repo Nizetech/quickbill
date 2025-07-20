@@ -82,7 +82,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           child: GetMaterialApp(
             navigatorKey: navigatorKey,
             debugShowCheckedModeBanner: false,
-            title: 'JostPayWallet',
+            title: 'JostPay',
             theme: themeProvider.lightTheme,
             darkTheme: themeProvider.darkTheme,
             themeMode: themeProvider.themeMode,

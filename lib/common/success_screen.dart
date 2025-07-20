@@ -81,7 +81,6 @@ class SuccessScreen extends StatelessWidget {
                   fontStyle: FontStyle.italic,
                 ),
               ),
-
               Spacer(),
               GestureDetector(
                 behavior: HitTestBehavior.opaque,

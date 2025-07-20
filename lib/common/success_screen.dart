@@ -87,7 +87,7 @@ class SuccessScreen extends StatelessWidget {
                 behavior: HitTestBehavior.opaque,
                 onTap: Platform.isAndroid
                     ? () => launchWeb(Utils.playStoreLink)
-                    : () {},
+                    : () => launchWeb(Utils.appleLink),
                 child: Image.asset(themeProvider.isDarkMode()
                     ? 'assets/images/dark_rate.png'
                     : 'assets/images/light_rate.png'),

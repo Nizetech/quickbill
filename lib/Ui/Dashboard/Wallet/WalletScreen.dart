@@ -809,7 +809,9 @@ class _WalletScreenState extends State<WalletScreen> {
                                               style: MyStyle.tx12Black.copyWith(
                                                   color: Theme.of(context)
                                                       .colorScheme
-                                                      .tertiary))
+                                                  .tertiary,
+                                            ),
+                                          )
                                         ],
                                       )
                                     ],

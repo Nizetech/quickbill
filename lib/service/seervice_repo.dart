@@ -110,6 +110,20 @@ class ServiceRepo {
     }
   }
 
+  Future<Map<String, dynamic>> getCableTransactions() async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response =
+          await client.get(ApiRoute.cableTransactions, requestHeaders: {
+        'Authorization': token,
+      });
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
   Future<Map<String, dynamic>> getGiftCard(String code) async {
     String token = await box.get(kAccessToken);
     try {

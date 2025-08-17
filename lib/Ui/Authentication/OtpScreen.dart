@@ -88,15 +88,26 @@ class _OtpScreenState extends State<OtpScreen> {
                   ],
                 ),
                 if (!widget.is2Fa)
-                const Row(
-                  children: [
-                    Text(
-                      'Enter it here to verify your identity',
-                      style: MyStyle.tx16Gray,
-                    )
-                  ],
-                ),
-                const SizedBox(height: 28),
+
+                  Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'Enter it here to verify your identity. ',
+                          style: MyStyle.tx16Gray,
+                        ),
+                        TextSpan(
+                          text:
+                              "If you don't see it in your inbox, please check your spam or junk folder.",
+                          style: MyStyle.tx16Green.copyWith(
+                            color: Colors.red,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                const SizedBox(height: 35),
                 OtpTextField(
                   numberOfFields: 6,
                   borderColor: Colors.white,

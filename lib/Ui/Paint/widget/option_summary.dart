@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 class OptionSummary extends StatefulWidget {
   final String? total;
   final String time;
-  final DateTime date;
+  final DateTime? date;
   final int? rentType;
   final String? carType;
   final num price15;
@@ -90,7 +90,9 @@ class _OptionSummaryState extends State<OptionSummary> {
               DotLabel(
                 flex: 3,
                 text: "Date",
-                value: dateFormat.format(widget.date),
+                value: widget.date != null
+                    ? dateFormat.format(widget.date!)
+                    : "Select Date",
                 dotColor: MyColor.dark01Color,
                 labelColor: const Color(0xff6E6D7A),
                 textColor: isDark ? MyColor.mainWhiteColor : MyColor.blackColor,
@@ -170,14 +172,18 @@ class _OptionSummaryState extends State<OptionSummary> {
                   if ((widget.rentType ?? -1) >= 0 &&
                       (widget.carType ?? "").isNotEmpty &&
                       (widget.total ?? "").isNotEmpty &&
-                      (widget.image ?? "").isNotEmpty) {
+                      (widget.image ?? "").isNotEmpty &&
+                      widget.date != null &&
+                      widget.time.isNotEmpty &&
+                      widget.total != null &&
+                      widget.total!.isNotEmpty) {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => PaintformScreen(
                           rentalData: RentalData(
                             time: widget.time,
-                            date: widget.date,
+                            date: widget.date!,
                             price15: widget.price15,
                             image: widget.image!,
                             rentType: widget.rentType!,

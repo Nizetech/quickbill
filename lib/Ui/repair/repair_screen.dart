@@ -22,12 +22,6 @@ class RepairScreen extends StatefulWidget {
 class _RepairScreenState extends State<RepairScreen> {
   final now = DateTime.now();
   String? selectedDate;
-  @override
-  void initState() {
-    super.initState();
-    date.text = DateFormat('E, MM yyyy').format(now);
-    selectedDate = DateFormat('yyyy-MM-dd').format(now);
-  }
 
   final repairOption = TextEditingController();
   final status = TextEditingController();
@@ -160,6 +154,7 @@ class _RepairScreenState extends State<RepairScreen> {
                               controller: repairOption,
                               text: "Select Repair Options",
                               suffixIcon: Icons.expand_more,
+                              enabled: false,
                             ),
                           ),
                           const SizedBox(
@@ -182,8 +177,8 @@ class _RepairScreenState extends State<RepairScreen> {
                               final selected = await showDatePicker(
                                   context: context,
                                   initialDate: DateTime.now(),
-                                  firstDate: DateTime(2000),
-                                  lastDate: DateTime(50000),
+                                  firstDate: DateTime.now(),
+                                  lastDate: DateTime(60000),
                                   builder: (context, child) {
                                     return Theme(
                                       data: ThemeData.dark(),
@@ -199,9 +194,10 @@ class _RepairScreenState extends State<RepairScreen> {
                               }
                             },
                             child: CustomTextField(
-                              text: "Date",
+                              text: "Select Date",
                               asset: "assets/images/svg/calendar.svg",
                               controller: date,
+                              enabled: false,
                             ),
                           ),
                           const SizedBox(
@@ -238,6 +234,7 @@ class _RepairScreenState extends State<RepairScreen> {
                                         text: "Select",
                                         suffixIcon: Icons.expand_more,
                                         controller: status,
+                                        enabled: false,
                                       ),
                                     ),
                                   ],
@@ -260,7 +257,7 @@ class _RepairScreenState extends State<RepairScreen> {
                                       height: 7,
                                     ),
                                     CustomTextField(
-                                      enabled: true,
+                                     
                                       controller: make,
                                       text: "Toyota",
                                     ),
@@ -300,7 +297,7 @@ class _RepairScreenState extends State<RepairScreen> {
                                     CustomTextField(
                                       text: "Camry",
                                       controller: carModel,
-                                      enabled: true,
+                                   
                                     ),
                                   ],
                                 ),
@@ -325,7 +322,7 @@ class _RepairScreenState extends State<RepairScreen> {
                                       text: "2022",
                                       controller: year,
                                       keyboardType: TextInputType.number,
-                                      enabled: true,
+                                    
                                     ),
                                   ],
                                 ),
@@ -354,7 +351,7 @@ class _RepairScreenState extends State<RepairScreen> {
                               text: "",
                               keyboardType: TextInputType.number,
                               controller: agentContact,
-                              enabled: true,
+                             
                             ),
                             const SizedBox(height: 16),
                             Text("Name",
@@ -367,7 +364,7 @@ class _RepairScreenState extends State<RepairScreen> {
                             CustomTextField(
                               text: "",
                               controller: agentName,
-                              enabled: true,
+                            
                             ),
                             SizedBox(height: 16),
                           ],
@@ -448,7 +445,7 @@ class _RepairScreenState extends State<RepairScreen> {
                               text: "Additional Information",
                               minlines: 5,
                               controller: info,
-                              enabled: true,
+                             
                             ),
                           ],
                           ...[
@@ -567,7 +564,8 @@ class _RepairScreenState extends State<RepairScreen> {
                                     partProcureindex == -1 ||
                                     partReplacedIndex == -1) {
                                   ErrorToast("Please fill all the fields");
-                                }
+                                } 
+                                 else {
                                 {
                                   Map<String, dynamic> data = {
                                     "repair_type": repairOption.text,
@@ -581,7 +579,7 @@ class _RepairScreenState extends State<RepairScreen> {
                                     "additional_info": info.text,
                                     "replaced_part_handling":
                                         replacedPart[partReplacedIndex]
-                                            ['title'],
+                                              ['title'],                 
                                     "agent_contact_number": agentContact.text,
                                     "agent_contact_name": agentName.text,
                                   };
@@ -599,6 +597,7 @@ class _RepairScreenState extends State<RepairScreen> {
                                     agentContact.clear();
                                     agentName.clear();
                                   });
+                                  }
                                 }
                               },
                               style: OutlinedButton.styleFrom(

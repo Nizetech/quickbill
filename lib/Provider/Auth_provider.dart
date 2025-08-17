@@ -6,6 +6,7 @@ import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/DashboardProvider.dart';
 import 'package:jost_pay_wallet/Ui/Authentication/OtpScreen.dart';
 import 'package:jost_pay_wallet/Ui/Authentication/SignInScreen.dart';
+import 'package:jost_pay_wallet/Ui/Static/set_pin_login.dart';
 import 'package:jost_pay_wallet/bottom_nav.dart';
 import 'package:jost_pay_wallet/service/auth_repo.dart';
 import 'package:jost_pay_wallet/utils/loader.dart';
@@ -72,7 +73,7 @@ class AuthProvider with ChangeNotifier {
     try {
       // setLoading(true);
       showLoader();
-      final res = await AuthRepo().login(data).then((value) {
+       await AuthRepo().login(data).then((value) {
        
         // setLoading(false);
         hideLoader();
@@ -125,7 +126,7 @@ class AuthProvider with ChangeNotifier {
   Future<void> deActivateAccount() async {
     try {
       showLoader();
-      final res = await AuthRepo().deActivateAccount().then((value) {
+       await AuthRepo().deActivateAccount().then((value) {
        
         hideLoader();
         if (value.isNotEmpty) {
@@ -159,10 +160,10 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  Future<void> updatePinLogin(String pin, AccountProvider account) async {
+  Future<void> updatePinLogin(String pin, AccountProvider account, {bool? isFromAuth}) async {
     try {
       showLoader();
-      final res = await AuthRepo().updatePinLogin(pin).then((value) async {
+      await AuthRepo().updatePinLogin(pin).then((value) async {
        
         hideLoader();
         if (value.isNotEmpty) {
@@ -179,7 +180,11 @@ class AuthProvider with ChangeNotifier {
             return;
           } else {
             await account.getUserProfile();
+            if (isFromAuth != null) {
+              Get.offAll(BottomNav());
+            }else{
             Get.close(2);
+            }
             if (value['message'] != null && value['message'] != '') {
               SuccessToast(value['message']);
             }
@@ -202,7 +207,7 @@ class AuthProvider with ChangeNotifier {
   ) async {
     try {
       showLoader();
-      final res = await AuthRepo().pinLogin(pin).then((value) async {
+       await AuthRepo().pinLogin(pin).then((value) async {
        
         hideLoader();
         if (value.isNotEmpty) {
@@ -324,7 +329,13 @@ class AuthProvider with ChangeNotifier {
             }
             updateAuthToken('');
             notifyListeners();
-            Get.offAll(BottomNav());
+            
+            // todo check if the user has Set Pin
+            Get.to(
+              SetPinLogin(
+                isFromAuth: true,
+              ),
+            );
             if (value['message'] != null && value['message'] != '') {
               SuccessToast(value['message']);
             } else {

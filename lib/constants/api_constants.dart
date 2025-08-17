@@ -1,6 +1,6 @@
 class ApiRoute {
-  // static String baseUrl = 'https://api.paypointapp.africa/api/';
-  static String baseUrl = 'https://jostpay.com/apis/';
+  static String baseUrl = 'https://project.jostpay.com/apis/';
+  // static String baseUrl = 'https://jostpay.com/apis/';
 
   //Auth
   static String signup = 'signup';
@@ -71,4 +71,5 @@ class ApiRoute {
   static String shareRepairInvoice = 'services/auto-repair/share';
   static String payRepairVehicle = 'services/auto-repair/pay';
   static String domainList = 'services/domain-name/list';
+  static String cableTransactions = 'services/cable-landing';
 }

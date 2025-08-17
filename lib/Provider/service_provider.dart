@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jost_pay_wallet/Models/cable_transactions.dart';
 import 'package:jost_pay_wallet/Models/car_details.dart';
 import 'package:jost_pay_wallet/Models/car_listing.dart';
 import 'package:jost_pay_wallet/Models/car_transactions.dart';
@@ -59,6 +60,7 @@ class ServiceProvider with ChangeNotifier {
   RepairTransactions? repairTransactions;
   RepairDetailsModel? repairDetails;
   DomainListModel? domainListModel;
+  CableTransactionModel? cableTransactionModel;
 
   String base64Image = '';
 
@@ -142,6 +144,32 @@ class ServiceProvider with ChangeNotifier {
         return;
       }
       socialSectionsModel = SocialSectionsModel.fromJson(res);
+      if (isLoading) hideLoader();
+      notifyListeners();
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
+  Future<void> getCableTransactions({bool isLoading = true}) async {
+    try {
+      if (isLoading) showLoader();
+      var res = await ServiceRepo().getCableTransactions();
+      if (res['status'] == false || res['result'] == false) {
+        if (isLoading) hideLoader();
+        if (res['message'].runtimeType == String) {
+          ErrorToast(res['message']);
+        } else {
+          String message = '';
+          res['message'].forEach((key, value) {
+            message += '$value';
+          });
+          ErrorToast(message);
+        }
+        return;
+      }
+      cableTransactionModel = CableTransactionModel.fromJson(res);
       if (isLoading) hideLoader();
       notifyListeners();
     } catch (e) {

@@ -1,4 +1,5 @@
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
+// ignore: unused_import
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -13,6 +14,8 @@ import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/bottom_nav.dart';
 import 'package:jost_pay_wallet/common/button.dart';
+import 'package:jost_pay_wallet/common/text_field.dart';
+import 'package:jost_pay_wallet/common/upgrader.dart';
 import 'package:jost_pay_wallet/constants/constants.dart';
 import 'package:jost_pay_wallet/utils/toast.dart';
 import 'package:provider/provider.dart';
@@ -34,21 +37,6 @@ class _SignInScreenState extends State<SignInScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  // final String _response = "";
-
-  // static Future<void> saveToken(String token) async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   await prefs.setString("token", token);
-  // }
-
-  // Future<void> _launchURL(String url) async {
-  //   final Uri uri = Uri.parse(url);
-  //   if (await canLaunchUrl(uri)) {
-  //     await launchUrl(uri);
-  //   } else {
-  //     throw 'Could not launch $url';
-  //   }
-  // }
 
   void _validateForm(AuthProvider model) async {
     if (_formKey.currentState?.validate() ?? false) {
@@ -72,7 +60,9 @@ class _SignInScreenState extends State<SignInScreen> {
         MaterialPageRoute(
             builder: (context) => OtpScreen(
                   email: _emailController.text,
-                )));
+        ),
+      ),
+    );
     // Navigator.pushReplacement(context,
     //     MaterialPageRoute(builder: (context) => const DashboardScreen()));
   }
@@ -99,217 +89,216 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final themedata = Theme.of(context).colorScheme;
     return Scaffold(
-      backgroundColor: Colors.white, // Set the background color to white
+      backgroundColor: Colors.white, 
       body: Consumer<AuthProvider>(builder: (context, model, _) {
         return SafeArea(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 40),
-                        const Row(
-                          children: [
-                            Text(
-                              'Hi There! 👋',
-                              style: MyStyle.tx30Black,
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 6,
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              !useEmailLogin &&
-                                      pinEnabled == '1' &&
-                                      token.isNotEmpty
-                                  ? "Enter your PIN. Forgot it? Use email login."
-                                  : 'Welcome back, Sign in to your account',
-                              style: MyStyle.tx16Gray,
-                            )
-                          ],
-                        ),
-                        const SizedBox(height: 28),
-                        if (!useEmailLogin &&
-                            pinEnabled == '1' &&
-                            token.isNotEmpty) ...[
-                          SizedBox(height: Get.height * 0.1),
-                          Text(
-                            'Enter Pin',
-                            style: NewStyle.tx14SplashWhite.copyWith(
-                                color: MyColor.lightBlackColor,
-                                fontWeight: FontWeight.w700,
-                                height: 2),
+          child: AppUpgrader(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 40),
+                          const Row(
+                            children: [
+                              Text(
+                                'Hi There! 👋',
+                                style: MyStyle.tx30Black,
+                              ),
+                            ],
                           ),
-                          SizedBox(height: 20),
-                          OtpTextField(
-                            numberOfFields: 4,
-                            borderColor: Colors.white,
-                            fillColor: NewColor.inputFillColor,
-                            focusedBorderColor: MyColor.greenColor,
-                            obscureText: true,
-                            textStyle: const TextStyle(
-                                fontSize: 16,
-                                height: 1.3,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.black),
-                            filled: true,
-                            borderWidth: 0.68,
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(12.5)),
-                            showFieldAsBox: true,
-                            // clearText: clearText,
-                            autoFocus: true,
+                          const SizedBox(
+                            height: 6,
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                !useEmailLogin &&
+                                        pinEnabled == '1' &&
+                                        token.isNotEmpty
+                                    ? "Enter your PIN. Forgot it? Use email login."
+                                    : 'Welcome back, Sign in to your account',
+                                style: MyStyle.tx16Gray,
+                              )
+                            ],
+                          ),
+                          const SizedBox(height: 28),
+                          if (!useEmailLogin &&
+                              pinEnabled == '1' &&
+                              token.isNotEmpty) ...[
+                            SizedBox(height: Get.height * 0.1),
+                            Text(
+                              'Enter Pin',
+                              style: NewStyle.tx14SplashWhite.copyWith(
+                                  color: MyColor.lightBlackColor,
+                                  fontWeight: FontWeight.w700,
+                                  height: 2),
+                            ),
+                            SizedBox(height: 20),
+                            OtpTextField(
+                              numberOfFields: 4,
+                              borderColor: Colors.white,
+                              fillColor: NewColor.inputFillColor,
+                              focusedBorderColor: MyColor.greenColor,
+                              obscureText: true,
+                              textStyle: const TextStyle(
+                                  fontSize: 16,
+                                  height: 1.3,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.black),
+                              filled: true,
+                              borderWidth: 0.68,
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(12.5)),
+                              showFieldAsBox: true,
+                              // clearText: clearText,
+                              autoFocus: true,
 
-                            onCodeChanged: (String code) {
-                              pin = code;
-                              if (pin.length == 4) {
-                                model.pinLogin(pin);
-                              }
-                            },
-                            onSubmit: (String code) {
-                              pin = code;
-                              if (pin.length == 4) {
-                                model.pinLogin(pin);
-                              }
-                            },
-                          ),
-                        ] else ...[
-                          Text(
-                            'Email',
-                            style: NewStyle.tx14SplashWhite.copyWith(
+                              onCodeChanged: (String code) {
+                                pin = code;
+                                if (pin.length == 4) {
+                                  model.pinLogin(pin);
+                                }
+                              },
+                              onSubmit: (String code) {
+                                pin = code;
+                                if (pin.length == 4) {
+                                  model.pinLogin(pin);
+                                }
+                              },
+                            ),
+                          ] else ...[
+                            Text(
+                              'Email',
+                              style: NewStyle.tx14SplashWhite.copyWith(
+                                  color: MyColor.lightBlackColor,
+                                  fontWeight: FontWeight.w700,
+                                  height: 2),
+                            ),
+                            CustomTextField(
+                              text: 'Email address',
+                              isAuth: true,
+                              keyboardType: TextInputType.emailAddress,
+                              controller: _emailController,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter a valid email address';
+                                } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
+                                    .hasMatch(value)) {
+                                  return 'Please enter a valid email address';
+                                }
+                                return null;
+                              },
+                            ),
+                             
+                          
+                           
+                            const SizedBox(height: 14),
+                            Text(
+                              'Password',
+                              style: NewStyle.tx14SplashWhite.copyWith(
                                 color: MyColor.lightBlackColor,
                                 fontWeight: FontWeight.w700,
-                                height: 2),
-                          ),
-                          TextFormField(
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              color: MyColor.blackColor,
-                              fontFamily: 'SF Pro Rounded',
+                                height: 2,
+                              ),
                             ),
-                            controller: _emailController,
-                            decoration: NewStyle.authInputDecoration
-                                .copyWith(hintText: 'Email address'),
-                            keyboardType: TextInputType.emailAddress,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter a valid email address';
-                              } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
-                                  .hasMatch(value)) {
-                                return 'Please enter a valid email address';
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 14),
-                          Text(
-                            'Password',
-                            style: NewStyle.tx14SplashWhite.copyWith(
-                                color: MyColor.lightBlackColor,
-                                fontWeight: FontWeight.w700,
-                                height: 2),
-                          ),
-                          TextFormField(
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              color: MyColor.blackColor,
-                              fontFamily: 'SF Pro Rounded',
+                          
+                            CustomTextField(
+                              text: 'Enter your password',
+                              isAuth: true,
+                              isPassword: true,
+                              controller: _passwordController,
+                              keyboardType: TextInputType.visiblePassword,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter a password';
+                                } else if (value.length < 8) {
+                                  return 'Please enter at least 8 letters';
+                                }
+                                return null;
+                              },
                             ),
-                            controller: _passwordController,
-                            obscureText: true,
-                            decoration: NewStyle.authInputDecoration
-                                .copyWith(hintText: 'Enter your password'),
-                            keyboardType: TextInputType.emailAddress,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter a password';
-                              } else if (value.length < 8) {
-                                return 'Please enter at least 8 letters';
-                              }
-                              return null;
-                            },
+                          ],
+                          Align(
+                            alignment: Alignment.bottomRight,
+                            child: TextButton(
+                              onPressed: () {
+                                print(pinEnabled);
+                                if (pinEnabled == '1' && !useEmailLogin) {
+                                  setState(() {
+                                    useEmailLogin = true;
+                                  });
+                                } else {
+                                  Get.to(ForgotPassword(
+                                    isPin: false,
+                                    // pinEnabled == '1',
+                                  ));
+                                }
+                              },
+                              child: Text(
+                                pinEnabled == '1' && !useEmailLogin
+                                    ? "Use Email"
+                                    // 'Forgot PIN?'
+                                    : 'Forgot Password?',
+                                style: NewStyle.tx14SplashWhite
+                                    .copyWith(color: MyColor.greenColor),
+                              ),
+                            ),
                           ),
                         ],
-                        Align(
-                          alignment: Alignment.bottomRight,
-                          child: TextButton(
-                            onPressed: () {
-                              if (pinEnabled == '1') {
-                                setState(() {
-                                  useEmailLogin = true;
-                                });
-                              } else {
-                                Get.to(ForgotPassword(
-                                  isPin: false,
-                                  // pinEnabled == '1',
-                                ));
-                              }
-                            },
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    CustomButton(
+                        text: 'Login',
+                        isLoading: model.isLoading,
+                        onTap: () {
+                          !useEmailLogin &&
+                                  pinEnabled == '1' &&
+                                  token.isNotEmpty
+                              ? pin.isNotEmpty && pin.length == 4
+                                  ? model.pinLogin(pin)
+                                  : ErrorToast('Please enter a valid PIN')
+                              : _validateForm(model);
+                        }),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    if (pinEnabled != '1' || useEmailLogin)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Don’t have an account? ',
+                            style: NewStyle.btnTx16SplashBlue.copyWith(
+                                color: MyColor.signGray,
+                                fontWeight: FontWeight.w400),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const SignUpScreen(),
+                              ),
+                            ),
                             child: Text(
-                              pinEnabled == '1' && !useEmailLogin
-                                  ? "Use Email"
-                                  // 'Forgot PIN?'
-                                  : 'Forgot Password?',
-                              style: NewStyle.tx14SplashWhite
+                              'Sign Up',
+                              style: NewStyle.btnTx16SplashBlue
                                   .copyWith(color: MyColor.greenColor),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  CustomButton(
-                      text: 'Login',
-                      isLoading: model.isLoading,
-                      onTap: () {
-                        !useEmailLogin && pinEnabled == '1' && token.isNotEmpty
-                            ? pin.isNotEmpty && pin.length == 4
-                                ? model.pinLogin(pin)
-                                : ErrorToast('Please enter a valid PIN')
-                            : _validateForm(model);
-                      }),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  if (pinEnabled != '1' || useEmailLogin)
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Don’t have an account? ',
-                          style: NewStyle.btnTx16SplashBlue.copyWith(
-                              color: MyColor.signGray,
-                              fontWeight: FontWeight.w400),
-                        ),
-                        TextButton(
-                          onPressed: () => Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const SignUpScreen(),
-                            ),
-                          ),
-                          child: Text(
-                            'Sign Up',
-                            style: NewStyle.btnTx16SplashBlue
-                                .copyWith(color: MyColor.greenColor),
-                          ),
-                        ),
-                      ],
-                    ),
-                  const SizedBox(height: 34)
-                ],
+                        ],
+                      ),
+                    const SizedBox(height: 34)
+                  ],
+                ),
               ),
             ),
           ),

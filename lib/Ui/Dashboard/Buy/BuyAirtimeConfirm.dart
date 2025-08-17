@@ -14,6 +14,7 @@ import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/NewColor.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
+import 'package:jost_pay_wallet/common/text_field.dart';
 import 'package:jost_pay_wallet/utils/data.dart';
 import 'package:jost_pay_wallet/utils/toast.dart';
 import 'package:provider/provider.dart';
@@ -309,27 +310,9 @@ class _BuyAirtimeConfirmState extends State<BuyAirtimeConfirm> {
                                     ),
                                   ),
                                 ),
-                                child: TextFormField(
-                                  controller: _controller,
-                                  keyboardType: TextInputType.number,
-                                  style: TextStyle(
-                                    fontSize: 14.sp,
-                                    color: themedata.tertiary,
-                                    fontFamily: 'SF Pro Rounded',
-                                  ),
-                                  decoration: const InputDecoration(
-                                    hintText: 'Enter Mobile number',
-                                    hintStyle: TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xFF999999),
-                                      fontFamily: 'SF Pro Rounded',
-                                    ),
-                                    border: InputBorder
-                                        .none, // No border for the TextFormField
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 10), // Adjust as needed
-                                  ),
-                                ),
+                                  child: UnderlineTextfield(
+                                      controller: _controller,
+                                      hintText: 'Enter Mobile number') 
                               ),
                             ),
                             const SizedBox(width: 16),
@@ -346,309 +329,6 @@ class _BuyAirtimeConfirmState extends State<BuyAirtimeConfirm> {
                           ],
                         ),
                         const SizedBox(height: 24),
-                        // Align(
-                        //   alignment: Alignment.centerLeft,
-                        //   child: Text(
-                        //     'Best Rate',
-                        //     style: MyStyle.tx14Black
-                        //         .copyWith(color: themedata.tertiary),
-                        //   ),
-                        // ),
-                        // const SizedBox(
-                        //   height: 8,
-                        // ),
-                        // Container(
-                        //   decoration: BoxDecoration(
-                        //       border: Border.all(
-                        //           color: themeProvider.isDarkMode()
-                        //               ? MyColor.borderDarkColor
-                        //               : MyColor.borderColor,
-                        //           width: 0.5),
-                        //       borderRadius: BorderRadius.circular(5)),
-                        //   child: Padding(
-                        //     padding: const EdgeInsets.all(20),
-                        //     child: Column(
-                        //       children: [
-                        //         Row(
-                        //           children: [
-                        //             GestureDetector(
-                        //                 onTap: () => Navigator.pushReplacement(
-                        //                     context,
-                        //                     MaterialPageRoute(
-                        //                         builder: (context) =>
-                        //                             const Buyairtimeconfirmdetail())),
-                        //                 child: Container(
-                        //                   width: 100,
-                        //                   height: 62,
-                        //                   alignment: Alignment.center,
-                        //                   decoration: BoxDecoration(
-                        //                       color: themedata.secondary,
-                        //                       borderRadius:
-                        //                           BorderRadius.circular(8)),
-                        //                   child: Column(
-                        //                     children: [
-                        //                       const Spacer(),
-                        //                       const Text(
-                        //                         'N500',
-                        //                         style: MyStyle.tx14Green,
-                        //                       ),
-                        //                       const SizedBox(
-                        //                         height: 4,
-                        //                       ),
-                        //                       Container(
-                        //                         width: 72,
-                        //                         alignment: Alignment.center,
-                        //                         decoration: BoxDecoration(
-                        //                             color: themedata.secondary,
-                        //                             borderRadius:
-                        //                                 BorderRadius.circular(6)),
-                        //                         child: Text(
-                        //                           'Pay N500',
-                        //                           style: MyStyle.tx12Black
-                        //                               .copyWith(
-                        //                                   color:
-                        //                                       MyColor.greenColor),
-                        //                         ),
-                        //                       ),
-                        //                       const Spacer(),
-                        //                     ],
-                        //                   ),
-                        //                 )),
-                        //             const Spacer(),
-                        //             GestureDetector(
-                        //                 onTap: () => Navigator.pushReplacement(
-                        //                     context,
-                        //                     MaterialPageRoute(
-                        //                         builder: (context) =>
-                        //                             const Buyairtimeconfirmdetail())),
-                        //                 child: Container(
-                        //                   width: 100,
-                        //                   height: 62,
-                        //                   alignment: Alignment.center,
-                        //                   decoration: BoxDecoration(
-                        //                       color: themedata.secondary,
-                        //                       borderRadius:
-                        //                           BorderRadius.circular(8)),
-                        //                   child: Column(
-                        //                     children: [
-                        //                       const Spacer(),
-                        //                       const Text(
-                        //                         'N500',
-                        //                         style: MyStyle.tx14Green,
-                        //                       ),
-                        //                       const SizedBox(
-                        //                         height: 4,
-                        //                       ),
-                        //                       Container(
-                        //                         width: 72,
-                        //                         alignment: Alignment.center,
-                        //                         decoration: BoxDecoration(
-                        //                             color: themedata.secondary,
-                        //                             borderRadius:
-                        //                                 BorderRadius.circular(6)),
-                        //                         child: Text(
-                        //                           'Pay N500',
-                        //                           style: MyStyle.tx12Black
-                        //                               .copyWith(
-                        //                                   color:
-                        //                                       MyColor.greenColor),
-                        //                         ),
-                        //                       ),
-                        //                       const Spacer(),
-                        //                     ],
-                        //                   ),
-                        //                 )),
-                        //             const Spacer(),
-                        //             GestureDetector(
-                        //                 onTap: () => Navigator.pushReplacement(
-                        //                     context,
-                        //                     MaterialPageRoute(
-                        //                         builder: (context) =>
-                        //                             const Buyairtimeconfirmdetail())),
-                        //                 child: Container(
-                        //                   width: 100,
-                        //                   height: 62,
-                        //                   alignment: Alignment.center,
-                        //                   decoration: BoxDecoration(
-                        //                       color: themedata.secondary,
-                        //                       borderRadius:
-                        //                           BorderRadius.circular(8)),
-                        //                   child: Column(
-                        //                     children: [
-                        //                       const Spacer(),
-                        //                       const Text(
-                        //                         'N500',
-                        //                         style: MyStyle.tx14Green,
-                        //                       ),
-                        //                       const SizedBox(
-                        //                         height: 4,
-                        //                       ),
-                        //                       Container(
-                        //                         width: 72,
-                        //                         alignment: Alignment.center,
-                        //                         decoration: BoxDecoration(
-                        //                             color: themedata.secondary,
-                        //                             borderRadius:
-                        //                                 BorderRadius.circular(6)),
-                        //                         child: Text(
-                        //                           'Pay N500',
-                        //                           style: MyStyle.tx12Black
-                        //                               .copyWith(
-                        //                                   color:
-                        //                                       MyColor.greenColor),
-                        //                         ),
-                        //                       ),
-                        //                       const Spacer(),
-                        //                     ],
-                        //                   ),
-                        //                 )),
-                        //           ],
-                        //         ),
-                        //         const SizedBox(
-                        //           height: 12,
-                        //         ),
-                        //         Row(
-                        //           children: [
-                        //             GestureDetector(
-                        //                 onTap: () => Navigator.pushReplacement(
-                        //                     context,
-                        //                     MaterialPageRoute(
-                        //                         builder: (context) =>
-                        //                             const Buyairtimeconfirmdetail())),
-                        //                 child: Container(
-                        //                   width: 100,
-                        //                   height: 62,
-                        //                   alignment: Alignment.center,
-                        //                   decoration: BoxDecoration(
-                        //                       color: themedata.secondary,
-                        //                       borderRadius:
-                        //                           BorderRadius.circular(8)),
-                        //                   child: Column(
-                        //                     children: [
-                        //                       const Spacer(),
-                        //                       const Text(
-                        //                         'N500',
-                        //                         style: MyStyle.tx14Green,
-                        //                       ),
-                        //                       const SizedBox(
-                        //                         height: 4,
-                        //                       ),
-                        //                       Container(
-                        //                         width: 72,
-                        //                         alignment: Alignment.center,
-                        //                         decoration: BoxDecoration(
-                        //                             color: themedata.secondary,
-                        //                             borderRadius:
-                        //                                 BorderRadius.circular(6)),
-                        //                         child: Text(
-                        //                           'Pay N500',
-                        //                           style: MyStyle.tx12Black
-                        //                               .copyWith(
-                        //                                   color:
-                        //                                       MyColor.greenColor),
-                        //                         ),
-                        //                       ),
-                        //                       const Spacer(),
-                        //                     ],
-                        //                   ),
-                        //                 )),
-                        //             const Spacer(),
-                        //             GestureDetector(
-                        //                 onTap: () => Navigator.pushReplacement(
-                        //                     context,
-                        //                     MaterialPageRoute(
-                        //                         builder: (context) =>
-                        //                             const Buyairtimeconfirmdetail())),
-                        //                 child: Container(
-                        //                   width: 100,
-                        //                   height: 62,
-                        //                   alignment: Alignment.center,
-                        //                   decoration: BoxDecoration(
-                        //                       color: themedata.secondary,
-                        //                       borderRadius:
-                        //                           BorderRadius.circular(8)),
-                        //                   child: Column(
-                        //                     children: [
-                        //                       const Spacer(),
-                        //                       const Text(
-                        //                         'N500',
-                        //                         style: MyStyle.tx14Green,
-                        //                       ),
-                        //                       const SizedBox(
-                        //                         height: 4,
-                        //                       ),
-                        //                       Container(
-                        //                         width: 72,
-                        //                         alignment: Alignment.center,
-                        //                         decoration: BoxDecoration(
-                        //                             color: themedata.secondary,
-                        //                             borderRadius:
-                        //                                 BorderRadius.circular(6)),
-                        //                         child: Text(
-                        //                           'Pay N500',
-                        //                           style: MyStyle.tx12Black
-                        //                               .copyWith(
-                        //                                   color:
-                        //                                       MyColor.greenColor),
-                        //                         ),
-                        //                       ),
-                        //                       const Spacer(),
-                        //                     ],
-                        //                   ),
-                        //                 )),
-                        //             const Spacer(),
-                        //             GestureDetector(
-                        //                 onTap: () => Navigator.pushReplacement(
-                        //                     context,
-                        //                     MaterialPageRoute(
-                        //                         builder: (context) =>
-                        //                             const Buyairtimeconfirmdetail())),
-                        //                 child: Container(
-                        //                   width: 100,
-                        //                   height: 62,
-                        //                   alignment: Alignment.center,
-                        //                   decoration: BoxDecoration(
-                        //                       color: themedata.secondary,
-                        //                       borderRadius:
-                        //                           BorderRadius.circular(8)),
-                        //                   child: Column(
-                        //                     children: [
-                        //                       const Spacer(),
-                        //                       const Text(
-                        //                         'N500',
-                        //                         style: MyStyle.tx14Green,
-                        //                       ),
-                        //                       const SizedBox(
-                        //                         height: 4,
-                        //                       ),
-                        //                       Container(
-                        //                         width: 72,
-                        //                         alignment: Alignment.center,
-                        //                         decoration: BoxDecoration(
-                        //                             color: themedata.secondary,
-                        //                             borderRadius:
-                        //                                 BorderRadius.circular(6)),
-                        //                         child: Text(
-                        //                           'Pay N500',
-                        //                           style: MyStyle.tx12Black
-                        //                               .copyWith(
-                        //                                   color:
-                        //                                       MyColor.greenColor),
-                        //                         ),
-                        //                       ),
-                        //                       const Spacer(),
-                        //                     ],
-                        //                   ),
-                        //                 )),
-                        //           ],
-                        //         )
-                        //       ],
-                        //     ),
-                        //   ),
-                        // ),
-                        // const SizedBox(
-                        //   height: 18,
-                        // ),
                         Container(
                           decoration: const BoxDecoration(
                               border: Border(
@@ -665,27 +345,9 @@ class _BuyAirtimeConfirmState extends State<BuyAirtimeConfirm> {
                                 width: 10,
                               ),
                               Expanded(
-                                  child: TextFormField(
-                                controller: _amount,
-                                keyboardType: TextInputType.number,
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  color: themedata.tertiary,
-                                  fontFamily: 'SF Pro Rounded',
-                                ),
-                                decoration: const InputDecoration(
-                                  hintText: 'Enter an amount',
-                                  hintStyle: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF999999),
-                                    fontFamily: 'SF Pro Rounded',
-                                  ),
-                                  border: InputBorder
-                                      .none, // No border for the TextFormField
-                                  contentPadding: EdgeInsets.symmetric(
-                                      vertical: 10), // Adjust as needed
-                                ),
-                              ))
+                                  child: UnderlineTextfield(
+                                      controller: _amount,
+                                      hintText: 'Enter an amount'))
                             ],
                           ),
                         ),
@@ -702,20 +364,21 @@ class _BuyAirtimeConfirmState extends State<BuyAirtimeConfirm> {
                             ),
                             onPressed: () {
                               if (_controller.text.isEmpty ||
-                                  _amount.text.isEmpty) {
+                                  _amount.text.isEmpty ||
+                                  num.parse(_amount.text) < 10) {
                                 ErrorToast('Please fill all fields');
                               } else if (selectedItem == -1) {
                                 ErrorToast('Please select network');
                               } else {
-                                // if (num.parse(_amount.text) > model.balance!) {
-                                // ErrorToast('Insufficient balance');
-                                // } else {
+                                if (num.parse(_amount.text) > model.balance!) {
+                                  ErrorToast('Insufficient balance');
+                                } else {
                                 Get.to(Buyairtimeconfirmdetail(
                                   selectedNetwork: selectedNetwork!,
                                   number: _controller.text,
                                   amount: _amount.text,
                                 ));
-                                // }
+                                }
                               }
                             },
                             child: Text(

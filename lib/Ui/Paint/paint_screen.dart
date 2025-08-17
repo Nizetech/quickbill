@@ -29,14 +29,7 @@ class _PaintScreenState extends State<PaintScreen> {
   final date = TextEditingController();
   final time = TextEditingController();
   Car? selectedCar;
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      date.text = dateFormat.format(now);
-      time.text = nowTime.format(context);
-    });
-  }
+
   final now = DateTime.now();
   final nowTime = TimeOfDay.now();
  
@@ -274,6 +267,7 @@ class _PaintScreenState extends State<PaintScreen> {
                           text: "Choose Option",
                           controller: option,
                           suffixIcon: Icons.expand_more,
+                          enabled: false,
                         ),
                       ),
                       const SizedBox(
@@ -396,6 +390,7 @@ class _PaintScreenState extends State<PaintScreen> {
                           text: "Select",
                           controller: carType,
                           suffixIcon: Icons.expand_more,
+                          enabled: false,
                         ),
                       ),
                       const SizedBox(
@@ -418,7 +413,7 @@ class _PaintScreenState extends State<PaintScreen> {
                           showDatePicker(
                               context: context,
                               initialDate: DateTime.now(),
-                              firstDate: DateTime(2005),
+                              firstDate: DateTime.now(),
                               lastDate: DateTime(60000),
                               builder: (context, child) {
                                 return Theme(
@@ -432,16 +427,19 @@ class _PaintScreenState extends State<PaintScreen> {
                                   child: child!,
                                 );
                               }).then((value) {
+                            if (value != null) {
                             setState(() {
-                              date.text = dateFormat.format(value!);
-                              selectedDate = value;
-                            });
+                                date.text = dateFormat.format(value);
+                                selectedDate = value;
+                              });
+                            }
                           });
                         },
                         child: CustomTextField(
                           controller: date,
-                          text: dateFormat.format(now),
+                          text: "Select Date",
                           suffixIcon: Icons.expand_more,
+                          enabled: false,
                         ),
                       ),
                       const SizedBox(
@@ -482,9 +480,10 @@ class _PaintScreenState extends State<PaintScreen> {
                           });
                         },
                         child: CustomTextField(
-                          text: nowTime.format(context),
+                          text: "Select Time",
                           controller: time,
                           suffixIcon: Icons.expand_more,
+                          enabled: false,
                         ),
                       ),
                       const SizedBox(
@@ -547,12 +546,8 @@ class _PaintScreenState extends State<PaintScreen> {
                                 onPressed: () async {
 
                                         await FilePicker.platform.pickFiles(
-                                          type: FileType.custom,
-                                          allowedExtensions: [
-                                            'jpg',
-                                            'png',
-                                            'jpeg',
-                                          ],
+                                          type: FileType.image,
+                                       
                                         ).then((value) async {
                                           if (value != null) {
                                             // File file =
@@ -653,7 +648,7 @@ class _PaintScreenState extends State<PaintScreen> {
                         height: 36,
                       ),
                       OptionSummary(
-                        date: selectedDate ?? now,
+                        date: selectedDate,
                         time: time.text,
                         price15: selectedCar == null
                             ? 0

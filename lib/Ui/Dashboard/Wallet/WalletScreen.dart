@@ -13,7 +13,6 @@ import 'package:jost_pay_wallet/Ui/Dashboard/AddFunds.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/AlarmScreen.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyAirtime.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/data_history.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/banner.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/history_card.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/profile_image.dart';
 import 'package:jost_pay_wallet/Ui/Domain/domain_screen.dart';
@@ -25,6 +24,7 @@ import 'package:jost_pay_wallet/Ui/promotions/social_boost_history.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
+import 'package:jost_pay_wallet/common/timer.dart';
 import 'package:provider/provider.dart';
 import 'dart:core';
 
@@ -322,7 +322,7 @@ class _WalletScreenState extends State<WalletScreen> {
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 accountProvider.isLoading
                                     ? const SizedBox.square(
@@ -537,12 +537,12 @@ class _WalletScreenState extends State<WalletScreen> {
                     ],
                   ),
                 ),
-
-                Visibility(
-                    visible: dashProvider.promotionBanner,
-                    child: BannerAds(
-                      dashProvider: dashProvider,
-                    )),
+                DeleteBanner(),
+                // Visibility(
+                //     visible: dashProvider.promotionBanner,
+                //     child: BannerAds(
+                //       dashProvider: dashProvider,
+                //     )),
                 //?
                 //! Here is the services section
                 Expanded(

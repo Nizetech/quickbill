@@ -1,8 +1,10 @@
+import 'dart:developer';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/auth_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/common/button.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,9 +15,11 @@ import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 
 class SetPinLogin extends StatefulWidget {
   final bool isUpdate;
+  final bool isFromAuth;
   const SetPinLogin({
     super.key,
     this.isUpdate = false,
+    this.isFromAuth = false,
   });
 
   @override
@@ -30,23 +34,25 @@ class _SetPinLoginState extends State<SetPinLogin> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
+    final isDark = themeProvider.isDarkMode();
+    log("isFromAuth: ${widget.isFromAuth}");
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor:
+          isDark && !widget.isFromAuth ? MyColor.dark02Color : Colors.white,
       body: Consumer<AuthProvider>(builder: (context, model, _) {
         return SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.only(top: 70, right: 16.w, left: 16.w),
             child: Column(
               children: <Widget>[
-                InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Image.asset(
-                      "assets/images/arrow_left.png",
-                      fit: BoxFit.cover,
+              
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Transform.translate(
+                    offset: Offset(-20, 0),
+                    child: BackBtn(
+                      isFromAuth: widget.isFromAuth,
                     ),
                   ),
                 ),
@@ -56,17 +62,25 @@ class _SetPinLoginState extends State<SetPinLogin> {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    widget.isUpdate ? "Update PIN Login" :
-                    "Set PIN Login",
-                    style: MyStyle.tx28Black,
-                  ),
+                    widget.isUpdate ? "Update Access PIN" : "Access PIN Setup",
+                    style: MyStyle.tx28Black.copyWith(
+                        color: isDark && !widget.isFromAuth
+                            ? MyColor.whiteColor
+                            : MyColor.lightBlackColor),
+                  ),  
                 ),
                 const SizedBox(
                   height: 16,
                 ),
-                const Text(
-                  'Set your 4-digit PIN to login to your account',
-                  style: MyStyle.tx14Black,
+                Text(
+                  'Set your 4-digit PIN for instant, secure account access.',
+                  style: MyStyle.tx14Black.copyWith(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    color: !widget.isFromAuth && isDark
+                        ? MyColor.whiteColor
+                        : MyColor.lightBlackColor,
+                  ),
                 ),
                 const SizedBox(height: 28),
                 OtpTextField(
@@ -74,14 +88,17 @@ class _SetPinLoginState extends State<SetPinLogin> {
                   borderColor: Colors.white,
                   fillColor: NewColor.inputFillColor,
                   focusedBorderColor: MyColor.greenColor,
-                  textStyle: const TextStyle(
+                  textStyle: TextStyle(
                       fontSize: 16,
                       height: 1.3,
                       fontWeight: FontWeight.w700,
-                      color: Colors.black),
+                    color: MyColor.lightBlackColor,
+                  ),
                   filled: true,
                   borderWidth: 0.68,
-                  borderRadius: const BorderRadius.all(Radius.circular(12.5)),
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(12.5),
+                  ),
                   showFieldAsBox: true,
                   clearText: clearText,
                   autoFocus: true,
@@ -99,8 +116,14 @@ class _SetPinLoginState extends State<SetPinLogin> {
                       if (pin.isEmpty && pin.length < 4) {
                         return;
                       } else {
-                        model.updatePinLogin(
-                            pin, context.read<AccountProvider>());
+                        if (widget.isFromAuth) {
+                          model.updatePinLogin(
+                              pin, context.read<AccountProvider>(),
+                              isFromAuth: widget.isFromAuth);
+                        } else {
+                          model.updatePinLogin(
+                              pin, context.read<AccountProvider>());
+                        }
                       }
                     })
               ],

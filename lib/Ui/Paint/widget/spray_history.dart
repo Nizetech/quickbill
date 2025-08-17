@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/service_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Domain/domain_screen.dart';
@@ -11,6 +12,7 @@ import 'package:jost_pay_wallet/Ui/Paint/paint_history.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
+import 'package:jost_pay_wallet/utils/toast.dart';
 import 'package:provider/provider.dart';
 
 import '../../../Models/spray_history_model.dart' as his;
@@ -27,7 +29,8 @@ class SprayHistory extends StatelessWidget {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     final isDark = themeProvider.isDarkMode();
     final themedata = Theme.of(context).colorScheme;
-    return Consumer<ServiceProvider>(builder: (context, model, _) {
+    return Consumer2<ServiceProvider, AccountProvider>(
+        builder: (context, model, account, _) {
       return Container(
         margin: const EdgeInsets.only(top: 20),
         padding: const EdgeInsets.symmetric(
@@ -107,7 +110,12 @@ class SprayHistory extends StatelessWidget {
                 onPressed: history.status! == '2'
                     ? null
                     : () {
+                        if (account.balance! <
+                            num.parse(history.total ?? '0')) {
+                          ErrorToast("Insufficient balance");
+                        } else {
                         model.payPending(int.parse(history.id!));
+                        }
                       },
                 style: OutlinedButton.styleFrom(
                   side: BorderSide.none,

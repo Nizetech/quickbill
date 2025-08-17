@@ -1,8 +1,11 @@
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:jost_pay_wallet/Models/color_paint_mode.dart' as paint;
+import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/service_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Paint/paint_screen.dart';
@@ -10,6 +13,7 @@ import 'package:jost_pay_wallet/Ui/Paint/widget/dropdown_option.dart';
 import 'package:jost_pay_wallet/Ui/Paint/widget/paint_parkages.dart';
 import 'package:jost_pay_wallet/Ui/Paint/widget/paint_summary.dart';
 import 'package:jost_pay_wallet/Ui/Paint/widget/rental.dart';
+import 'package:jost_pay_wallet/Ui/Support/terms_screen.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
@@ -56,7 +60,6 @@ class _PaintformScreenState extends State<PaintformScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // log("Price 15 =>> ${widget.rentalData.price15}. ===> ${num.parse(widget.rentalData.total) + widget.rentalData.price15}");
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     final themedata = Theme.of(context).colorScheme;
     final isDark = themeProvider.isDarkMode();
@@ -64,7 +67,8 @@ class _PaintformScreenState extends State<PaintformScreen> {
       backgroundColor: themeProvider.isDarkMode()
           ? MyColor.dark02Color
           : MyColor.mainWhiteColor,
-      body: Consumer<ServiceProvider>(builder: (context, model, _) {
+      body: Consumer2<ServiceProvider, AccountProvider>(
+          builder: (context, model, account, _) {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 68)
               .copyWith(bottom: 0),
@@ -311,7 +315,9 @@ class _PaintformScreenState extends State<PaintformScreen> {
                                   careIndex: careDuration,
                                   parkageIndex: packageIndex,
                                   color: model.colorPaintModel!.color!,
-                                  paint: model.colorPaintModel!.paints![i]));
+                                  paint: model.colorPaintModel!.paints![i],
+                                ),
+                              );
                               return PaintPackages(
                                   onTap: () {
                                     setState(() {
@@ -519,14 +525,46 @@ class _PaintformScreenState extends State<PaintformScreen> {
                               color: MyColor.dark01GreenColor,
                             ),
                           ),
-                          child: Text(
-                            "This cost covers paint, equipment rental, interior/engine wash, and labour. If any dents or damaged parts are found on your vehicle, the invoice will be updated to include repair or replacement costs.",
-                            style: MyStyle.tx12Black.copyWith(
+                            child:
+                                // Text(
+                                //   ""
+                                //   "This cost covers paint, equipment rental, interior/engine wash, and labour. If any dents or damaged parts are found on your vehicle, the invoice will be updated to include repair or replacement costs.",
+                                //   style: MyStyle.tx12Black.copyWith(
+                                //     height: 1.5,
+                                //     color: MyColor.dark01GreenColor,
+                                //     fontWeight: FontWeight.w500,
+                                //   ),
+                                // ),
+                                Text.rich(
+                              TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text:
+                                        "This cost covers paint, equipment rental, interior/engine wash, labour, and VAT. If any dents or damaged parts are found on your vehicle, the invoice will be updated to include repair or replacement costs. Please note that the aftercare service does not cover scratches or damage resulting from driver error, collisions, or accidental impact. For full details and a clear understanding, kindly refer to our ",
+                                    style: MyStyle.tx12Black.copyWith(
                               height: 1.5,
                               color: MyColor.dark01GreenColor,
                               fontWeight: FontWeight.w500,
                             ),
-                          ),
+                                  ),
+                                  TextSpan(
+                                    text: "Terms and Conditions",
+                                    style: MyStyle.tx12Black.copyWith(
+                                      color: MyColor.blueColor,
+                                      fontWeight: FontWeight.w500,
+                                      decoration: TextDecoration.underline,
+                                      decorationColor: MyColor.blueColor,
+                                    ),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        Get.to(TermsScreen(
+                                          isFromPaint: true,
+                                        ));
+                                      },
+                                  ),
+                                ],
+                              ),
+                            )
                         ),
                       PaintSummary(
                         time: widget.rentalData.time,
@@ -606,7 +644,11 @@ class _PaintformScreenState extends State<PaintformScreen> {
                             if (selectedTouch.isEmpty && packageIndex == 1) {
                               ErrorToast('Please select at least one touch');
                             } else {
-                            model.rentSpray(sprayData);
+                              if (account.balance! >= total) {
+                                model.rentSpray(sprayData);
+                              } else {
+                                ErrorToast('Insufficient balance');
+                              }
                             }
                           },
                           style: OutlinedButton.styleFrom(

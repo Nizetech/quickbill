@@ -53,7 +53,8 @@ class CustomButton extends StatelessWidget {
 
 class BackBtn extends StatelessWidget {
   final VoidCallback? onTap;
-  const BackBtn({super.key, this.onTap});
+  final bool isFromAuth;
+  const BackBtn({super.key, this.onTap, this.isFromAuth = false});
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +71,7 @@ class BackBtn extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.transparent,
             border: Border.all(
-                color: themeProvider.isDarkMode()
+                color: themeProvider.isDarkMode() && !isFromAuth
                     ? MyColor.mainWhiteColor
                     : MyColor.dark01Color,
                 width: 1),
@@ -78,7 +79,7 @@ class BackBtn extends StatelessWidget {
           ),
           child: Icon(
             Icons.arrow_back_ios_new,
-            color: themeProvider.isDarkMode()
+            color: themeProvider.isDarkMode() && !isFromAuth
                 ? MyColor.mainWhiteColor
                 : MyColor.dark01Color,
             size: 20,

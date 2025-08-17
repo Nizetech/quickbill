@@ -40,21 +40,11 @@ static Dio createDio() {
   }
 
   Map<String, String> get _getAuthHeader {
-    // const token = '';
-    //TODO uncomment this line when you want to use auth header
-    //! LocalCacheImpl().getToken();
-    //  LocalCacheImpl().getToken();
-    // if (token.isNotEmpty) {
       return {
       "Accept": "application/json",
       "Content-Type": "application/x-www-form-urlencoded",
-      };
-    // }
+    };
 
-    // print("====== GetAuthHeader ======");
-    // print(token);
-
-    // return {};
   }
 
 // ======================================================
@@ -66,8 +56,6 @@ static Dio createDio() {
     String uri, {
     Map<String, dynamic> queryParameters = const {},
     Map<String, dynamic> requestHeaders = const {},
-    // Options options,
-    // CancelToken? cancelToken,
     String? token,
     ProgressCallback? onReceiveProgress,
   }) async {

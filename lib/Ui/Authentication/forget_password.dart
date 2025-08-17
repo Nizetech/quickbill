@@ -24,6 +24,7 @@ class ForgotPassword extends StatelessWidget {
     }
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         leading: Padding(
           padding: const EdgeInsets.fromLTRB(15, 10, 1, 0),
@@ -57,14 +58,10 @@ class ForgotPassword extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 20),
-                SizedBox(
-                  width: 160,
-                  child: Text(
-                    isPin ? 'Forgot Pin' :
-                    'Forgot Password',
-                    style: NewStyle.tx28White
-                        .copyWith(fontSize: 24, color: MyColor.blackColor),
-                  ),
+                Text(
+                  isPin ? 'Forgot Pin' : 'Forgot Password',
+                  style: NewStyle.tx28White
+                      .copyWith(fontSize: 24, color: MyColor.blackColor),
                 ),
                 const SizedBox(height: 7),
                 Text(

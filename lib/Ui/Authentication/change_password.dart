@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:jost_pay_wallet/Provider/auth_provider.dart';
+import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/NewStyle.dart';
 import 'package:jost_pay_wallet/common/button.dart';
+import 'package:jost_pay_wallet/common/text_field.dart';
 import 'package:provider/provider.dart';
 
 class ChangePassword extends StatelessWidget {
   const ChangePassword({super.key});
-
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
+    final isDark = themeProvider.isDarkMode();
     final formKey = GlobalKey<FormState>();
     final cfmPwd = TextEditingController();
     final newPwd = TextEditingController();
@@ -42,32 +45,38 @@ class ChangePassword extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 40),
+                const SizedBox(height: 20),
                 Text(
                   'Change Password',
                   style: NewStyle.tx28White
-                      .copyWith(fontSize: 24, color: MyColor.blackColor),
+                      .copyWith(
+                      fontSize: 24,
+                      color: isDark
+                          ? MyColor.whiteColor
+                          : MyColor.lightBlackColor),
                 ),
                 const SizedBox(height: 7),
-                const Text(
+                Text(
                   'Carefully enter your correct password',
-                  style: MyStyle.tx16Gray,
+                  style: MyStyle.tx16Gray.copyWith(
+                    color:
+                        isDark ? MyColor.whiteColor : MyColor.lightBlackColor,
+                  ),
                 ),
                 const SizedBox(height: 20),
                 Text(
                   'Current Password',
                   style: NewStyle.tx14SplashWhite.copyWith(
-                      color: MyColor.lightBlackColor,
+                      color:
+                          isDark ? MyColor.whiteColor : MyColor.lightBlackColor,
                       fontWeight: FontWeight.w700,
                       height: 2),
                 ),
-                TextFormField(
-                  style: MyStyle.tx14Black,
+                CustomTextField(
+                  text: 'Enter your current password',
                   controller: currentPwd,
-                  obscureText: true,
-                  decoration: NewStyle.authInputDecoration
-                      .copyWith(hintText: 'Enter your current password'),
                   keyboardType: TextInputType.emailAddress,
+                  isPassword: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your current password';
@@ -77,21 +86,21 @@ class ChangePassword extends StatelessWidget {
                     return null;
                   },
                 ),
+                    
                 const SizedBox(height: 20),
                 Text(
                   'New Password',
                   style: NewStyle.tx14SplashWhite.copyWith(
-                      color: MyColor.lightBlackColor,
+                      color:
+                          isDark ? MyColor.whiteColor : MyColor.lightBlackColor,
                       fontWeight: FontWeight.w700,
                       height: 2),
                 ),
-                TextFormField(
-                  style: MyStyle.tx14Black,
+                CustomTextField(
+                  text: 'Enter your new password',
                   controller: newPwd,
-                  obscureText: true,
-                  decoration: NewStyle.authInputDecoration
-                      .copyWith(hintText: 'Enter your new password'),
                   keyboardType: TextInputType.emailAddress,
+                  isPassword: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your new password';
@@ -101,30 +110,31 @@ class ChangePassword extends StatelessWidget {
                     return null;
                   },
                 ),
+             
                 const SizedBox(height: 20),
                 Text(
                   'Confirm Password',
                   style: NewStyle.tx14SplashWhite.copyWith(
-                      color: MyColor.lightBlackColor,
+                      color:
+                          isDark ? MyColor.whiteColor : MyColor.lightBlackColor,
                       fontWeight: FontWeight.w700,
                       height: 2),
                 ),
-                TextFormField(
-                  style: MyStyle.tx14Black,
+                CustomTextField(
+                  text: 'Enter your confirm password',
                   controller: cfmPwd,
-                  obscureText: true,
-                  decoration: NewStyle.authInputDecoration
-                      .copyWith(hintText: 'Enter your confirm password'),
                   keyboardType: TextInputType.emailAddress,
+                  isPassword: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please re-enter your password';
+                      return 'Please enter your confirm password';
                     } else if (value.length < 8) {
                       return 'Please enter at least 8 letters';
                     }
                     return null;
                   },
                 ),
+              
                 SizedBox(height: 40),
                 CustomButton(
                     text: 'Verify',

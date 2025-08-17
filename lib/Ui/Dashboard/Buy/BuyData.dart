@@ -584,12 +584,12 @@ class _BuyDataState extends State<BuyData> {
                                                 ErrorToast(
                                                     'Please select network');
                                               } else {
-                                                // if (num.parse(
-                                                //         plan.price.toString()) >
-                                                //     model.balance!) {
-                                                //   ErrorToast(
-                                                //       'Insufficient balance');
-                                                // } else {
+                                                if (num.parse(
+                                                        plan.price.toString()) >
+                                                    model.balance!) {
+                                                  ErrorToast(
+                                                      'Insufficient balance');
+                                                } else {  
                                                   Navigator.pushReplacement(
                                                     context,
                                                     MaterialPageRoute(
@@ -603,7 +603,7 @@ class _BuyDataState extends State<BuyData> {
                                                     ),
                                                   );
                                                 }
-                                              // }
+                                              }
                                             },
                                             child: Container(
                                               width: 140,

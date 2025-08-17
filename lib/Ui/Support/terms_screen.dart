@@ -11,9 +11,11 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 class TermsScreen extends StatefulWidget {
   final bool isFromHome;
+  final bool isFromPaint;
   const TermsScreen({
     super.key,
     this.isFromHome = false,
+    this.isFromPaint = false,
   });
 
   @override
@@ -26,6 +28,8 @@ class _TermsScreenState extends State<TermsScreen> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
@@ -35,15 +39,18 @@ class _TermsScreenState extends State<TermsScreen> {
           },
           onPageStarted: (String url) {},
           onPageFinished: (String url) {
+              if (mounted) {
             setState(() {
               isLoading = false;
             });
+              }
           },
           onHttpError: (HttpResponseError error) {},
           onWebResourceError: (WebResourceError error) {},
         ),
       )
       ..loadRequest(Uri.parse(Utils.termsUrl));
+    });
   }
 
   @override
@@ -54,9 +61,10 @@ class _TermsScreenState extends State<TermsScreen> {
         body: SafeArea(
       child: Stack(
         children: [
+          if (controller != null)
           WebViewWidget(controller: controller!),
           Visibility(
-            visible: isLoading,
+            visible: isLoading && controller == null,
             child: const Center(
                 child: CircularProgressIndicator(
               color: MyColor.greenColor,
@@ -77,6 +85,8 @@ class _TermsScreenState extends State<TermsScreen> {
                     onTap: () {
                       if (widget.isFromHome) {
                         dashProvider.changeBottomIndex(0);
+                        Get.back();
+                      } else if (widget.isFromPaint) {
                         Get.back();
                       } else {
                         dashProvider.changeBottomIndex(4);

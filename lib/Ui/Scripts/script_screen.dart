@@ -102,7 +102,7 @@ class _ScriptScreenState extends State<ScriptScreen> {
                   const SizedBox(height: 20),
 
                   CustomTextField(
-                    enabled: true,
+                  
                     focusNode: _focusNode,
                     text: 'Search any sort of script here',
                     controller: _controller,

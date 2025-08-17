@@ -110,7 +110,7 @@ class _DepositDetailsState extends State<DepositDetails> {
                         CustomTextField(
                           text: 'Enter amount',
                           controller: amount,
-                          enabled: true,
+                       
                           keyboardType: TextInputType.number,
                         ),
                         SizedBox(height: 20),

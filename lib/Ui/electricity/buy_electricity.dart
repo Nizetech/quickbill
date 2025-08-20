@@ -2,16 +2,13 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:jost_pay_wallet/Models/cable_varaitaions.dart';
-import 'package:jost_pay_wallet/Models/network_provider.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/service_provider.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/AddFunds.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/widget/balance_action_card.dart';
-import 'package:jost_pay_wallet/Ui/cable/cable_summary.dart';
-import 'package:jost_pay_wallet/Ui/cable/widget/cable_provider_sheet.dart';
+import 'package:jost_pay_wallet/Ui/electricity/electricity_summary.dart';
+import 'package:jost_pay_wallet/Ui/electricity/widget/provider_sheet.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/NewColor.dart';
@@ -21,23 +18,25 @@ import 'package:jost_pay_wallet/utils/toast.dart';
 import 'package:provider/provider.dart';
 import 'package:jost_pay_wallet/Values/NewStyle.dart';
 
-class BuyCableBills extends StatefulWidget {
+class BuyElectricity extends StatefulWidget {
   final String? package;
   final String? network;
   final String? amount;
-  const BuyCableBills({super.key, this.package, this.network, this.amount});
+  const BuyElectricity({
+    super.key,
+    this.package,
+    this.network,
+    this.amount,
+  });
 
   @override
-  State<BuyCableBills> createState() => _BuyCableBillsState();
+  State<BuyElectricity> createState() => _BuyElectricityState();
 }
 
-class _BuyCableBillsState extends State<BuyCableBills> {
+class _BuyElectricityState extends State<BuyElectricity> {
   final _controller = TextEditingController();
   final _focusNode = FocusNode();
-  int selectedItem = -1;
-  bool permissionDenied = false;
-  String selectedServiceId = '';
-  Network? selectedNetwork;
+  Map<String, dynamic> selectedService = {};
   Timer? _typingTimer;
   String cableMerchant = '';
 
@@ -60,17 +59,16 @@ class _BuyCableBillsState extends State<BuyCableBills> {
 
   void resolveMeterNumber() async {
     final model = Provider.of<ServiceProvider>(context, listen: false);
-    if (_controller.text.isEmpty ||
-        selectedItem == -1 ||
-        _controller.text.length < 10) {
+    if (_controller.text.isEmpty || _controller.text.length < 10) {
       return;
     } else {
       Map<String, dynamic> data = {
-        'card': _controller.text,
-        'service_id': services[selectedItem]['serviceId'],
+        'meter_number': _controller.text,
+        'service_id': selectedService['serviceId'],
+        'meter_type': meterTypes[selectedMeterType].toLowerCase(),
       };
       _focusNode.unfocus();
-      model.getCableMerchant(data, callback: () {
+      model.getElectricityMerchant(data, callback: () {
         setState(() {
           cableMerchant = model.merchantModel!.res.content.customerName ?? '';
         });
@@ -88,27 +86,60 @@ class _BuyCableBillsState extends State<BuyCableBills> {
 
   List<Map<String, dynamic>> services = [
     {
-      'img': 'assets/images/dstv.png',
-      'serviceId': 'dstv',
-      'name': 'DSTV',
+      'serviceId': 'ikeja-electric',
+      'name': 'Ikeja Electric',
     },
     {
-      'img': 'assets/images/gotv.png',
-      'serviceId': 'gotv',
-      'name': 'GOTV',
+      'serviceId': 'kano-electric',
+      'name': 'Kano Electric',
     },
     {
-      'img': 'assets/images/startime.png',
-      'serviceId': 'startimes',
-      'name': 'Startimes',
+      'serviceId': 'eko-electric',
+      'name': 'Eko Electric',
     },
     {
-      'img': 'assets/images/showmax.png',
-      'serviceId': 'showmax',
-      'name': 'Showmax',
+      'serviceId': 'portharcourt-electric',
+      'name': 'P.Harcourt Electric',
+    },
+    {
+      'serviceId': 'jos-electric',
+      'name': 'Jos Electric',
+    },
+    {
+      'serviceId': 'ibadan-electric',
+      'name': 'Ibadan Electric',
+    },
+    {
+      'serviceId': 'kaduna-electric',
+      'name': 'Kaduna Electric',
+    },
+    {
+      'serviceId': 'abuja-electric',
+      'name': 'Abuja Electric',
+    },
+    {
+      'serviceId': 'enugu-electric',
+      'name': 'Enugu Electric',
+    },
+    {
+      'serviceId': 'benin-electric',
+      'name': 'Benin Electric',
+    },
+    {
+      'serviceId': 'aba-electric',
+      'name': 'Aba Electric',
+    },
+    {
+      'serviceId': 'yola-electric',
+      'name': 'Yola Electric',
     },
   ];
-  Plan? selectedPlan;
+
+  List meterTypes = [
+    'Prepaid',
+    'Postpaid',
+  ];
+  int selectedMeterType = 0;
   final phone = TextEditingController();
   final amount = TextEditingController();
   @override
@@ -143,7 +174,7 @@ class _BuyCableBillsState extends State<BuyCableBills> {
                     Transform.translate(
                       offset: const Offset(-20, 0),
                       child: Text(
-                        'Buy Cable Bills',
+                        'Electricity',
                         style: MyStyle.tx18Black
                             .copyWith(color: themedata.tertiary),
                       ),
@@ -180,83 +211,106 @@ class _BuyCableBillsState extends State<BuyCableBills> {
                         const SizedBox(
                           height: 8,
                         ),
-                        SizedBox(
-                            height: 100,
-                            child: ListView.separated(
-                                shrinkWrap: true,
-                                padding: EdgeInsets.zero,
-                                separatorBuilder: (_, i) => SizedBox(
-                                      width: 16.w,
-                                    ),
-                                itemCount: services.length,
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (context, index) {
-                                  var item = services[index];
-                                  return SizedBox(
-                                    width: 86.w,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        InkWell(
-                                          onTap: () => {
-                                            setState(
-                                              () {
-                                                selectedItem = index;
-                                                selectedServiceId =
-                                                    item['serviceId'];
-                                                selectedPlan = null;
-                                                cableMerchant = '';
-                                              },
-                                            ),
-                                            service.getCableVariations(
-                                                selectedServiceId)
-                                          },
-                                          child: Stack(
-                                            children: [
-                                              ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                child: Image.asset(
-                                                  item['img'],
-                                                ),
-                                              ),
-                                              if (selectedItem == index)
-                                                Align(
-                                                  alignment: Alignment.topRight,
-                                                  child: Padding(
-                                                    padding: EdgeInsets.only(
-                                                        top: 2.r, right: 8.r),
-                                                    child: Icon(
-                                                      Icons.check_circle,
-                                                      color: MyColor.greenColor,
-                                                    ),
-                                                  ),
-                                                )
-                                            ],
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 4,
-                                        ),
-                                        Text(
-                                          item['name'],
-                                          style: MyStyle.tx12Black.copyWith(
-                                              fontFamily: 'SF Pro Rounded',
-                                              fontWeight: FontWeight.w600,
-                                              color: selectedItem == index
-                                                  ? MyColor.greenColor
-                                                  : themedata.tertiary),
-                                        )
-                                      ],
-                                    ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  showElectricityProviderSheet(
+                                    onProviderSelected: (provider) {
+                                      setState(() {
+                                        selectedService = provider;
+                                        cableMerchant = '';
+                                      });
+                                      log('selectedService: $selectedService');
+                                    },
+                                    providers: services,
+                                    context: context,
+                                    themeProvider: themeProvider,
                                   );
-                                })),
-                        const SizedBox(
-                          height: 10,
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 15),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: themeProvider.isDarkMode()
+                                        ? MyColor.dark01Color
+                                        : MyColor.grey01Color,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        selectedService['name'] ??
+                                            'Please select package',
+                                        style: MyStyle.tx12Black.copyWith(
+                                          fontWeight: FontWeight.w400,
+                                          color: themedata.tertiary,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                      const Spacer(),
+                                      const SizedBox(width: 10),
+                                      Icon(
+                                        Icons.keyboard_arrow_down_sharp,
+                                        color: themedata.tertiary,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            PopupMenuButton(
+                              itemBuilder: (context) => meterTypes.map((e) {
+                                return PopupMenuItem(
+                                  value: meterTypes.indexOf(e),
+                                  child: Text(
+                                    e,
+                                    style: MyStyle.tx12Black.copyWith(
+                                      color: MyColor.greenColor,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                              onSelected: (value) {
+                                setState(() {
+                                  selectedMeterType = value;
+                                });
+                                if (selectedService.isNotEmpty) {
+                                  resolveMeterNumber();
+                                }
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    color: MyColor.greenColor,
+                                    width: 1,
+                                  ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Text(meterTypes[selectedMeterType],
+                                        style: MyStyle.tx12Black.copyWith(
+                                          color: MyColor.greenColor,
+                                          fontWeight: FontWeight.w600,
+                                        )),
+                                    Icon(
+                                      Icons.keyboard_arrow_down_sharp,
+                                      color: MyColor.greenColor,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
+                        const SizedBox(height: 10),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment
                               .end, // Aligns vertically centered
@@ -309,9 +363,9 @@ class _BuyCableBillsState extends State<BuyCableBills> {
                                 ),
                                 child: UnderlineTextfield(
                                     controller: _controller,
-                                    isEnabled: selectedItem != -1,
+                                    isEnabled: selectedService.isNotEmpty,
                                     focusNode: _focusNode,
-                                    hintText: 'Enter IUC /Smart Card Number'),
+                                    hintText: 'Enter Meter Number'),
                               ),
                             ),
                           ],
@@ -354,76 +408,16 @@ class _BuyCableBillsState extends State<BuyCableBills> {
                           height: 10,
                         ),
                         Text(
-                          'Select Package',
+                          'Amount',
                           style: MyStyle.tx12Black.copyWith(
                             fontWeight: FontWeight.w400,
                             color: themedata.tertiary,
                           ),
                         ),
                         const SizedBox(height: 10),
-
-                        GestureDetector(
-                          onTap: service.cableVariationsModel != null &&
-                                  selectedItem != -1
-                              ? () {
-                                  showCableProviderSheet(
-                                    onPlanSelected: (plan) {
-                                      setState(() {
-                                        selectedPlan = plan;
-                                        amount.text =
-                                            plan.variationAmount.toString();
-                                      });
-                                      log('selectedPlan: ${selectedPlan?.toJson()}');
-                                    },
-                                    service: service,
-                                    context: context,
-                                    themeProvider: themeProvider,
-                                  );
-                                }
-                              : () {},
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 15),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: themeProvider.isDarkMode()
-                                  ? MyColor.dark01Color
-                                  : MyColor.grey01Color,
-                            ),
-                            child: Row(
-                              children: [
-                                Text(
-                                  selectedPlan?.name ?? 'Please select package',
-                                  style: MyStyle.tx12Black.copyWith(
-                                    fontWeight: FontWeight.w400,
-                                    color: themedata.tertiary,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                                const Spacer(),
-                                const SizedBox(width: 10),
-                                Icon(
-                                  Icons.keyboard_arrow_down_sharp,
-                                  color: themedata.tertiary,
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        if (selectedPlan != null)
-                          Text(
-                            'Amount',
-                            style: MyStyle.tx12Black.copyWith(
-                              fontWeight: FontWeight.w400,
-                              color: themedata.tertiary,
-                            ),
-                          ),
-                        const SizedBox(height: 10),
                         CustomTextField(
                           text: 'Enter Amount',
                           controller: amount,
-                          enabled: false,
                         ),
                         const SizedBox(height: 40),
                         SizedBox(
@@ -441,24 +435,21 @@ class _BuyCableBillsState extends State<BuyCableBills> {
                                   phone.text.isEmpty ||
                                   cableMerchant.isEmpty) {
                                 ErrorToast('Please fill all fields');
-                              } else if (selectedItem == -1) {
-                                ErrorToast('Please select network');
                               } else {
                                 if (num.parse(amount.text) > model.balance!) {
                                   ErrorToast('Insufficient balance');
                                 } else {
-                                  Get.to(CableSummaryScreen(
+                                  Get.to(ElectricitySummaryScreen(
                                     data: {
-                                      'id': selectedPlan!.variationCode,
-                                      'img': services[selectedItem]['img'],
-                                      'service_id': services[selectedItem]
-                                          ['serviceId'],
-                                      'name': selectedPlan!.name,
+                                      'service_id':
+                                          selectedService['serviceId'],
+                                      'name': selectedService['name'],
                                       'phone': phone.text,
                                       'amount': amount.text,
-                                      'cableMerchant': cableMerchant,
-                                      'card': _controller.text,
-                                      'package': selectedPlan!.name,
+                                      'merchant': cableMerchant,
+                                      'meter_number': _controller.text,
+                                      'meter_type':
+                                          meterTypes[selectedMeterType],
                                     },
                                   ));
                                 }

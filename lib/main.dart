@@ -57,7 +57,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       token = await box.get(kAccessToken, defaultValue: '');
       isExistingUser = await box.get(kExistingUser, defaultValue: false);
       pinEnabled = box.get(isPinEnabled, defaultValue: "");
-      setState(() {});
+      if (mounted) {
+        setState(() {});
+      }
     });
   }
 

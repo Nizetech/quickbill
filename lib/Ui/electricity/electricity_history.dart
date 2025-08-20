@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -9,32 +7,36 @@ import 'package:jost_pay_wallet/Provider/service_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/widget/balance_action_card.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/receipt_script.dart';
-import 'package:jost_pay_wallet/Ui/Scripts/script_screen.dart';
+import 'package:jost_pay_wallet/Ui/electricity/buy_electricity.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/utils.dart';
 import 'package:jost_pay_wallet/common/status_view_receipt.dart';
+import 'package:jost_pay_wallet/utils/toast.dart';
 import 'package:provider/provider.dart';
 
-class ScriptHistory extends StatefulWidget {
-  const ScriptHistory({super.key});
+class ElectricityHistory extends StatefulWidget {
+  const ElectricityHistory({super.key});
 
   @override
-  State<ScriptHistory> createState() => _ScriptHistoryState();
+  State<ElectricityHistory> createState() => _ElectricityHistoryState();
 }
 
-class _ScriptHistoryState extends State<ScriptHistory> {
+class _ElectricityHistoryState extends State<ElectricityHistory> {
   @override
   void initState() {
     super.initState();
     var model = Provider.of<ServiceProvider>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (model.scriptTransactionsModel == null) {
-        model.getScriptTransactions(account: context.read<AccountProvider>());
+      if (model.electricityHistoryModel == null) {
+        model.getElectricityTransactions(
+            account: context.read<AccountProvider>());
       } else {
-        model.getScriptTransactions(
-            isLoading: false, account: context.read<AccountProvider>());
+        model.getElectricityTransactions(
+          isLoading: false,
+          account: context.read<AccountProvider>(),
+        );
       }
     });
   }
@@ -43,6 +45,7 @@ class _ScriptHistoryState extends State<ScriptHistory> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     final themedata = Theme.of(context).colorScheme;
+
     return Scaffold(
       body: Consumer<ServiceProvider>(builder: (context, model, _) {
         return SafeArea(
@@ -68,7 +71,7 @@ class _ScriptHistoryState extends State<ScriptHistory> {
                     Transform.translate(
                       offset: const Offset(-20, 0),
                       child: Text(
-                        'Buy Script',
+                        'Electricity',
                         style: MyStyle.tx18Black
                             .copyWith(color: themedata.tertiary),
                       ),
@@ -80,10 +83,9 @@ class _ScriptHistoryState extends State<ScriptHistory> {
                   height: 30,
                 ),
                 BalanceActionCard(
-                  
-                    title: Platform.isAndroid ? 'Buy Script' : 'View Script',
+                    title: 'Buy Electricity',
                     onTap: () {
-                      Get.to(const ScriptScreen());
+                      Get.to(const BuyElectricity());
                     }),
                 const SizedBox(
                   height: 36,
@@ -95,7 +97,7 @@ class _ScriptHistoryState extends State<ScriptHistory> {
                       Row(
                         children: [
                           Text(
-                            'Script History',
+                            'Electricity History',
                             style: MyStyle.tx14Black
                                 .copyWith(color: themedata.tertiary),
                           ),
@@ -116,23 +118,22 @@ class _ScriptHistoryState extends State<ScriptHistory> {
                   ),
                 ),
                 const SizedBox(
-                  height: 36,
+                  height: 16,
                 ),
-                if (model.scriptTransactionsModel != null)
+                if (model.electricityHistoryModel != null)
                   Expanded(
                     child: RefreshIndicator(
                       onRefresh: () async {
-                        await model.getScriptTransactions(
+                        await model.getCableTransactions(
                             account: context.read<AccountProvider>());
                       },
                       child: ListView.builder(
                           itemCount: model
-                              .scriptTransactionsModel!.transactions!.length,
-                          shrinkWrap: true,
+                              .electricityHistoryModel!.transactions!.length,
                           padding: const EdgeInsets.all(0),
                           itemBuilder: (context, index) {
                             var item = model
-                                .scriptTransactionsModel!.transactions![index];
+                                .electricityHistoryModel!.transactions![index];
                             return Container(
                               decoration: BoxDecoration(
                                   border: Border(
@@ -165,7 +166,6 @@ class _ScriptHistoryState extends State<ScriptHistory> {
                                         width: 6,
                                       ),
                                       Expanded(
-                                        flex: 2,
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -173,36 +173,33 @@ class _ScriptHistoryState extends State<ScriptHistory> {
                                               MainAxisAlignment.start,
                                           children: [
                                             Text(
-                                              item.title ?? "",
+                                              item.discoName?.capitalizeFirst ??
+                                                  "",
                                               maxLines: 1,
                                               style: MyStyle.tx12Black.copyWith(
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   color: themedata.tertiary),
                                             ),
-                                            if (item.activeCode != null &&
-                                                item.activeCode!.isNotEmpty)
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 4),
-                                                child: Text(
-                                                  item.activeCode ?? "",
-                                                  maxLines: 1,
-                                                  style: MyStyle.tx12Black
-                                                      .copyWith(
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          color: themedata
-                                                              .tertiary),
-                                                ),
-                                              ),
+                                            const SizedBox(
+                                              height: 4,
+                                            ),
+                                            Text(
+                                              item.reference ?? "",
+                                              maxLines: 1,
+                                              style: MyStyle.tx12Black.copyWith(
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  color: themedata.tertiary),
+                                            ),
                                             const SizedBox(
                                               height: 4,
                                             ),
                                             Text(
                                               formatDateTime(
-                                                item.updatedAt!,
+                                                DateTime.parse(item.updatedAt!),
                                               ),
+                                              //  dateFormat.format(item.createdAt!),
                                               style: MyStyle.tx12Black.copyWith(
                                                 color: themeProvider
                                                         .isDarkMode()
@@ -213,7 +210,7 @@ class _ScriptHistoryState extends State<ScriptHistory> {
                                           ],
                                         ),
                                       ),
-                                      const Spacer(),
+                                      SizedBox(width: 25),
                                       Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.end,
@@ -231,22 +228,36 @@ class _ScriptHistoryState extends State<ScriptHistory> {
                                               height: 8.h,
                                             ),
                                             StatusViewReceipt(
-                                              status: '1',
+                                              status: item.status!,
+                                              isServices: true,
                                               onTap: () {
-                                                  // if (item.status != '1') {
-                                                  //   ErrorToast(
-                                                  //       'No receipt available yet. Your order has not been completed.');
-                                                  // } else {
-                                                Get.to(ReceiptScreen(
-                                                    status: '1',
-                                                  serviceDetails: item.title!,
-                                                  referenceNo: item.activeCode!,
-                                                  amount: item.amount!,
-                                                  date:
-                                                      item.updatedAt.toString(),
-                                                ));
-                                                  // }
+                                                if (item.status != '1' ||
+                                                    !item.apiStatus!
+                                                            .toLowerCase()
+                                                            .contains(
+                                                                'complete') &&
+                                                        !item.apiStatus!
+                                                            .toLowerCase()
+                                                            .contains(
+                                                                'success')) {
+                                                  ErrorToast(
+                                                      'No receipt available yet. Your order has not been completed.');
+                                                } else {
+                                                  Get.to(ReceiptScreen(
+                                                    status: item.status!,
+                                                    serviceDetails: item
+                                                            .discoName
+                                                            ?.capitalizeFirst ??
+                                                        "",
+                                                    description:
+                                                        "${item.discoName?.capitalizeFirst} ",
+                                                    referenceNo:
+                                                        item.reference!,
+                                                    amount: item.amount!,
+                                                    date: item.updatedAt!,
+                                                  ));
                                                 }
+                                              },
                                             ),
                                           ])
                                     ],

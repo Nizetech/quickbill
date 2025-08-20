@@ -212,7 +212,20 @@ class AccountRepo {
       final response = await client.post(ApiRoute.getPromo, requestHeaders: {
         'Authorization': token,
       });
-      // log('Reponse: $response');
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
+  Future<Map<String, dynamic>> deleteAccount() async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response =
+          await client.post(ApiRoute.deleteAccount, requestHeaders: {
+        'Authorization': token,
+      });
       return response;
     } catch (e) {
       print('Error: $e');

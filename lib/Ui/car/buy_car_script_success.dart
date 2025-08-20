@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/service_provider.dart';
 import 'package:jost_pay_wallet/common/success_screen.dart';
 import 'package:provider/provider.dart';
@@ -20,9 +21,10 @@ class BuyCarScriptSuccess extends StatelessWidget {
           : "Script purchase is instant. Please check your email.",
       onTap: () {
         if (isCar) {
-          model.getCarsTransactions(isLoading: false);
-        } else {
-          model.getScriptTransactions();
+          model.getCarsTransactions(
+              isLoading: false, account: context.read<AccountProvider>());
+        } else {  
+          model.getScriptTransactions(account: context.read<AccountProvider>());
         }
         Get.close(3);
       },

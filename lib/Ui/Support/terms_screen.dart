@@ -28,7 +28,7 @@ class _TermsScreenState extends State<TermsScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
     
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)

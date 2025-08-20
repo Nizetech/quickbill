@@ -1,9 +1,6 @@
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:jost_pay_wallet/Models/card_model.dart';
 import 'package:jost_pay_wallet/Provider/service_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
@@ -12,46 +9,22 @@ import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/NewColor.dart';
 import 'package:jost_pay_wallet/Values/NewStyle.dart';
 import 'package:jost_pay_wallet/Values/utils.dart';
+import 'package:jost_pay_wallet/common/button.dart';
 import 'package:provider/provider.dart';
 
-class GiftCardSummaryScreen extends StatefulWidget {
-  final CardModel cardModel;
-  final String phoneNumber;
-  final String amount;
-  final String countryCode;
-  final String qty;
-  const GiftCardSummaryScreen({
+class ElectricitySummaryScreen extends StatefulWidget {
+  final Map<String, dynamic> data;
+  const ElectricitySummaryScreen({
     super.key,
-    required this.countryCode,
-    required this.phoneNumber,
-    required this.amount,
-    required this.qty,
-    required this.cardModel,
+    required this.data,
   });
 
   @override
-  State<GiftCardSummaryScreen> createState() => _GiftCardSummaryScreenState();
+  State<ElectricitySummaryScreen> createState() =>
+      _ElectricitySummaryScreenState();
 }
 
-class _GiftCardSummaryScreenState extends State<GiftCardSummaryScreen> {
-  String total = '';
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        var giftCardPrice =
-            (num.parse(widget.amount) + widget.cardModel.product!.senderFee!) *
-                num.parse(widget.qty) *
-                num.parse(widget.cardModel.ngnPrice!);
-        var fee = giftCardPrice * widget.cardModel.giftFeePercent!;
-        total = fee.toString();
-        // (giftCardPrice + fee).toString();
-        // log("giftCardPrice $giftCardPrice fee $fee total $total, Percent ${widget.cardModel.giftFeePercent}, SenderFee ${widget.cardModel.product!.senderFee}, NGNPrice ${widget.cardModel.ngnPrice}");
-      });
-    });
-  }
-
+class _ElectricitySummaryScreenState extends State<ElectricitySummaryScreen> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
@@ -65,20 +38,12 @@ class _GiftCardSummaryScreenState extends State<GiftCardSummaryScreen> {
               children: [
                 Row(
                   children: [
-                    InkWell(
-                      onTap: () => Navigator.pop(context),
-                      child: Image.asset(
-                        'assets/images/arrow_left.png',
-                        color: themeProvider.isDarkMode()
-                            ? MyColor.mainWhiteColor
-                            : MyColor.dark01Color,
-                      ),
-                    ),
+                    BackBtn(),
                     const Spacer(),
                     Transform.translate(
                       offset: const Offset(-20, 0),
                       child: Text(
-                        'Trade summary',
+                        'Electricity Summary',
                         style: MyStyle.tx18Black.copyWith(
                           color: themedata.tertiary,
                         ),
@@ -100,21 +65,8 @@ class _GiftCardSummaryScreenState extends State<GiftCardSummaryScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: CachedNetworkImage(
-                            imageUrl: widget.cardModel.product!.logoUrls!.first,
-                            height: 85.r,
-                            width: 85.r,
-                            fit: BoxFit.cover,
-                            placeholder: (context, url) => Container(),
-                            errorWidget: (context, url, error) => Container()),
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
                       Text(
-                        'Card Trade Summary',
+                        'Electricity Summary',
                         style: MyStyle.tx14Black.copyWith(
                             fontFamily: 'Roboto', color: themedata.tertiary),
                       ),
@@ -124,12 +76,12 @@ class _GiftCardSummaryScreenState extends State<GiftCardSummaryScreen> {
                       Row(
                         children: [
                           const Text(
-                            'Card Amount',
+                            'Service Name',
                             style: MyStyle.tx12Grey,
                           ),
                           const Spacer(),
                           Text(
-                            '\$${widget.amount}',
+                            widget.data['name'],
                             style: MyStyle.tx12Black.copyWith(
                                 color: themedata.tertiary,
                                 fontFamily: 'SF Pro Rounded'),
@@ -142,12 +94,12 @@ class _GiftCardSummaryScreenState extends State<GiftCardSummaryScreen> {
                       Row(
                         children: [
                           const Text(
-                            'Quantity',
+                            'Customer Name',
                             style: MyStyle.tx12Grey,
                           ),
                           const Spacer(),
                           Text(
-                            '${widget.qty} Card',
+                            widget.data['merchant'],
                             style: MyStyle.tx12Black.copyWith(
                                 color: themedata.tertiary,
                                 fontFamily: 'SF Pro Rounded'),
@@ -160,12 +112,48 @@ class _GiftCardSummaryScreenState extends State<GiftCardSummaryScreen> {
                       Row(
                         children: [
                           const Text(
-                            'Your Number',
+                            'Phone Number',
                             style: MyStyle.tx12Grey,
                           ),
                           const Spacer(),
                           Text(
-                            widget.phoneNumber,
+                            widget.data['phone'],
+                            style: MyStyle.tx12Black.copyWith(
+                                color: themedata.tertiary,
+                                fontFamily: 'SF Pro Rounded'),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      Row(
+                        children: [
+                          const Text(
+                            'Meter Number',
+                            style: MyStyle.tx12Grey,
+                          ),
+                          const Spacer(),
+                          Text(
+                            widget.data['meter_number'],
+                            style: MyStyle.tx12Black.copyWith(
+                                color: themedata.tertiary,
+                                fontFamily: 'SF Pro Rounded'),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      Row(
+                        children: [
+                          const Text(
+                            'Meter Type',
+                            style: MyStyle.tx12Grey,
+                          ),
+                          const Spacer(),
+                          Text(
+                            widget.data['meter_type'],
                             style: MyStyle.tx12Black.copyWith(
                                 color: themedata.tertiary,
                                 fontFamily: 'SF Pro Rounded'),
@@ -198,7 +186,6 @@ class _GiftCardSummaryScreenState extends State<GiftCardSummaryScreen> {
                         height: 4, // Adjust height as needed
                         child: Stack(
                           children: [
-                            // Bottom border
                             Positioned(
                               bottom: 0,
                               left: 0,
@@ -234,22 +221,23 @@ class _GiftCardSummaryScreenState extends State<GiftCardSummaryScreen> {
                             style: MyStyle.tx12Grey,
                           ),
                           const Spacer(),
-                          if (total.isNotEmpty)
-                            Text(
-                              '${Utils.naira} ${formatNumber(num.parse(total))}',
-                              style: MyStyle.tx14Black.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  color: themedata.tertiary,
-                                  fontFamily: 'SF Pro Rounded'),
-                            ),
+                          Text(
+                            '${Utils.naira} ${formatNumber(
+                              num.parse(
+                                widget.data['amount'],
+                              ),
+                            )}',
+                            style: MyStyle.tx14Black.copyWith(
+                                fontWeight: FontWeight.w600,
+                                color: themedata.tertiary,
+                                fontFamily: 'SF Pro Rounded'),
+                          ),
                         ],
                       ),
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: 47.h
-                ),
+                SizedBox(height: 47.h),
                 SizedBox(
                   width: double.infinity,
                   child: TextButton(
@@ -261,25 +249,14 @@ class _GiftCardSummaryScreenState extends State<GiftCardSummaryScreen> {
                       ),
                     ),
                     onPressed: () {
-                      // if (num.parse(total.toString()) >
-                      //     context.read<AccountProvider>().balance!) {
-                      //   ErrorToast('Insufficient balance');
-                      // } else {
-                        model.buyGiftCard({
-                          "country_code": widget.countryCode,
-                          "gift_id": widget.cardModel.product!.productId,
-                          "usd_amount": widget.amount,
-                          "qty": widget.qty,
-                          "phone": widget.countryCode == "NG" &&
-                                  !widget.phoneNumber.startsWith("0")
-                              ? "0${widget.phoneNumber}"
-                              : widget.phoneNumber,
-                        });
-                        // Navigator.pushReplacement(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => const SocialSuccessScreen()));
-                      // }
+                      Map<String, dynamic> data = {
+                        'type': widget.data['meter_type'],
+                        "service_id": widget.data['service_id'],
+                        "amount": widget.data['amount'],
+                        "number": widget.data['meter_number'],
+                        "phone": widget.data['phone'],
+                      };
+                      model.buyElectricity(data);
                     },
                     child: Text(
                       "Confirm",

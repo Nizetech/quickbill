@@ -12,6 +12,7 @@ import 'package:jost_pay_wallet/Ui/Paint/paint_history.dart';
 import 'package:jost_pay_wallet/Ui/Scripts/script_history.dart';
 import 'package:jost_pay_wallet/Ui/cable/cable_history.dart';
 import 'package:jost_pay_wallet/Ui/car/car_history.dart';
+import 'package:jost_pay_wallet/Ui/electricity/electricity_history.dart';
 import 'package:jost_pay_wallet/Ui/repair/repairdetail_screen.dart';
 import 'package:jost_pay_wallet/Ui/giftCard/gift_card_history.dart';
 import 'package:jost_pay_wallet/Ui/pay4me/pay4me_history.dart';
@@ -227,17 +228,16 @@ class _ServicesState extends State<Services> {
                             title: 'Web Hosting',
                             page: const DomainScreen(),
                           ),
-                     
+                          // todo uncomment this
                           const Spacer(),
                           if (Platform.isAndroid)
-
-                          ServiceTile(
-                        
+                            ServiceTile(
                             icon: 'assets/images/boost.svg',
                             title: 'Try Social Boost',
                             page: const SocialBoostHistory(),
                             )
                           else
+                         
                             ServiceTile(
                               icon: 'assets/images/money.svg',
                               // title: 'Try Pay4me',
@@ -245,8 +245,27 @@ class _ServicesState extends State<Services> {
                               page: const CableHistory(),
                               // const PayForMeHistory(),
                             ),
-                 
-                  
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        children: [
+                          ServiceTile(
+                            icon: 'assets/images/money.svg',
+                            title: 'Electricity',
+                            page: const ElectricityHistory(),
+                          ),
+                          const Spacer(),
+                          if (Platform.isAndroid)
+                            ServiceTile(
+                              icon: 'assets/images/money.svg',
+                              // title: 'Try Pay4me',
+                              title: 'Cable Bills',
+                              page: const CableHistory(),
+                              // const PayForMeHistory(),
+                            ),
                         ],
                       ),
                       const SizedBox(

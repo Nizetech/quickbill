@@ -23,7 +23,7 @@ class _PaintInvoiceScreenState extends State<PaintInvoiceScreen> {
   void initState() {
     super.initState();
     final model = Provider.of<ServiceProvider>(context, listen: false);
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       var totalPrice = model.sprayDetailsModel!.data!.fold<num>(
         0,
         (prev, item) {

@@ -22,7 +22,7 @@ class _PaintHistoryState extends State<PaintHistory> {
   void initState() {
     super.initState();
     final service = Provider.of<ServiceProvider>(context, listen: false);
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       service.getCarTypes();
       service.getColorPaint();
       service.getSprayHistory();

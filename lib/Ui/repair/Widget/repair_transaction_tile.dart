@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Models/repair_transaction.dart';
+import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/service_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Domain/widget/dot.dart';
@@ -122,7 +123,10 @@ class RepairTransactionTile extends StatelessWidget {
                           repairTile.invoiceStatus == '1'
                   ? null
                   : () {
-                      model.payRepairVehicle(repairTile.id!);
+                      model.payRepairVehicle(
+                        repairTile.id!,
+                        account: context.read<AccountProvider>(),
+                      );
                     },
               style: OutlinedButton.styleFrom(
                 side: BorderSide.none,

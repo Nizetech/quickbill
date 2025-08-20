@@ -53,7 +53,7 @@ class _AddFundsState extends State<AddFunds> {
   void initState() {
     super.initState();
     final model = Provider.of<AccountProvider>(context, listen: false);
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (model.depositHistoryModel == null) {
         model.getDepositHistory();
       } else {

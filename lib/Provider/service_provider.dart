@@ -4,7 +4,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jost_pay_wallet/Models/cable_merchant.dart';
 import 'package:jost_pay_wallet/Models/cable_transactions.dart';
+import 'package:jost_pay_wallet/Models/cable_varaitaions.dart';
 import 'package:jost_pay_wallet/Models/car_details.dart';
 import 'package:jost_pay_wallet/Models/car_listing.dart';
 import 'package:jost_pay_wallet/Models/car_transactions.dart';
@@ -13,6 +15,7 @@ import 'package:jost_pay_wallet/Models/card_model.dart';
 import 'package:jost_pay_wallet/Models/color_paint_mode.dart';
 import 'package:jost_pay_wallet/Models/country_model.dart';
 import 'package:jost_pay_wallet/Models/domain_list.dart';
+import 'package:jost_pay_wallet/Models/electricity_history.dart';
 import 'package:jost_pay_wallet/Models/gift_card_model.dart';
 import 'package:jost_pay_wallet/Models/paymentOption.dart';
 import 'package:jost_pay_wallet/Models/repair_details.dart';
@@ -26,6 +29,7 @@ import 'package:jost_pay_wallet/Models/spray_details.dart';
 import 'package:jost_pay_wallet/Models/spray_history_model.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Ui/Paint/paint_invoice_screen.dart';
+import 'package:jost_pay_wallet/Ui/cable/cable_electricity_success.dart';
 import 'package:jost_pay_wallet/Ui/car/buy_car_script_success.dart';
 import 'package:jost_pay_wallet/Ui/car/cardetail_screen.dart';
 import 'package:jost_pay_wallet/Ui/giftCard/cards_option_screen.dart';
@@ -61,6 +65,9 @@ class ServiceProvider with ChangeNotifier {
   RepairDetailsModel? repairDetails;
   DomainListModel? domainListModel;
   CableTransactionModel? cableTransactionModel;
+  MerchantModel? merchantModel;
+  ElectricityHistoryModel? electricityHistoryModel;
+  CableVariations? cableVariationsModel;
 
   String base64Image = '';
 
@@ -90,10 +97,11 @@ class ServiceProvider with ChangeNotifier {
           ErrorToast(message);
         }
         return;
+      } else {
+        carTypeModel = CarTypeModel.fromJson(res);
+        hideLoader();
+        notifyListeners();
       }
-      carTypeModel = CarTypeModel.fromJson(res);
-      hideLoader();
-      notifyListeners();
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
@@ -116,10 +124,11 @@ class ServiceProvider with ChangeNotifier {
           ErrorToast(message);
         }
         return;
+      } else {
+        domainListModel = DomainListModel.fromJson(res);
+        hideLoader();
+        notifyListeners();
       }
-      domainListModel = DomainListModel.fromJson(res);
-      if (isLoading) hideLoader();
-      notifyListeners();
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
@@ -142,17 +151,19 @@ class ServiceProvider with ChangeNotifier {
           ErrorToast(message);
         }
         return;
+      } else {
+        socialSectionsModel = SocialSectionsModel.fromJson(res);
+        hideLoader();
+        notifyListeners();
       }
-      socialSectionsModel = SocialSectionsModel.fromJson(res);
-      if (isLoading) hideLoader();
-      notifyListeners();
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
     }
   }
 
-  Future<void> getCableTransactions({bool isLoading = true}) async {
+  Future<void> getCableTransactions(
+      {bool isLoading = true, required AccountProvider account}) async {
     try {
       if (isLoading) showLoader();
       var res = await ServiceRepo().getCableTransactions();
@@ -168,9 +179,82 @@ class ServiceProvider with ChangeNotifier {
           ErrorToast(message);
         }
         return;
+      } else {
+        cableTransactionModel = CableTransactionModel.fromJson(res);
+        await account.getUserBalance();
+        hideLoader();
+        notifyListeners();
       }
-      cableTransactionModel = CableTransactionModel.fromJson(res);
-      if (isLoading) hideLoader();
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
+  Future<void> getElectricityTransactions(
+      {bool isLoading = true, required AccountProvider account}) async {
+    try {
+      if (isLoading) showLoader();
+      var res = await ServiceRepo().getElectricityTransactions();
+      if (res['status'] == false || res['result'] == false) {
+        if (isLoading) hideLoader();
+        if (res['message'].runtimeType == String) {
+          ErrorToast(res['message']);
+        } else {
+          String message = '';
+          res['message'].forEach((key, value) {
+            message += '$value';
+          });
+          ErrorToast(message);
+        }
+        return;
+      } else {
+        electricityHistoryModel = ElectricityHistoryModel.fromJson(res);
+        await account.getUserBalance();
+        hideLoader();
+        notifyListeners();
+      }
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
+  Future<void> getCableMerchant(Map<String, dynamic> data,
+      {required VoidCallback callback}) async {
+    try {
+      showLoader();
+      var res = await ServiceRepo().getCableMerchant(data);
+      if (res['res'] != null &&
+          res['res']['content'].toString().contains('error')) {
+        hideLoader();
+        ErrorToast(res['res']['content']['error']);
+        return;
+      }
+      merchantModel = MerchantModel.fromJson(res);
+      hideLoader();
+      callback();
+      notifyListeners();
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
+  Future<void> getElectricityMerchant(Map<String, dynamic> data,
+      {required VoidCallback callback}) async {
+    try {
+      showLoader();
+      var res = await ServiceRepo().getElectricityMerchant(data);
+      if (res['res'] != null &&
+          res['res']['content'].toString().contains('error')) {
+        hideLoader();
+        ErrorToast(res['res']['content']['error']);
+        return;
+      }
+      merchantModel = MerchantModel.fromJson(res);
+      hideLoader();
+      callback();
       notifyListeners();
     } catch (e) {
       log('Error: $e');
@@ -194,10 +278,38 @@ class ServiceProvider with ChangeNotifier {
           ErrorToast(message);
         }
         return;
+      } else {
+        carListingModel = CarListingModel.fromJson(res);
+        hideLoader();
+        notifyListeners();
       }
-      carListingModel = CarListingModel.fromJson(res);
-      if (isLoading) hideLoader();
-      notifyListeners();
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
+  Future<void> getCableVariations(String serviceId) async {
+    try {
+      showLoader();
+      var res = await ServiceRepo().getCableVariations(serviceId);
+      if (res['status'] == false || res['result'] == false) {
+        hideLoader();
+        if (res['message'].runtimeType == String) {
+          ErrorToast(res['message']);
+        } else {
+          String message = '';
+          res['message'].forEach((key, value) {
+            message += '$value';
+          });
+          ErrorToast(message);
+        }
+        return;
+      } else {
+        cableVariationsModel = CableVariations.fromJson(res);
+        hideLoader();
+        notifyListeners();
+      }
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
@@ -220,10 +332,11 @@ class ServiceProvider with ChangeNotifier {
           ErrorToast(message);
         }
         return;
+      } else {
+        scriptModel = ScriptModel.fromJson(res);
+        hideLoader();
+        notifyListeners();
       }
-      scriptModel = ScriptModel.fromJson(res);
-      if (isLoading) hideLoader();
-      notifyListeners();
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
@@ -247,18 +360,20 @@ class ServiceProvider with ChangeNotifier {
           ErrorToast(message);
         }
         return;
+      } else {
+        carDetailsModel = CarDetailsModel.fromJson(res);
+        hideLoader();
+        Get.to(CardetailScreen());
+        notifyListeners();
       }
-      carDetailsModel = CarDetailsModel.fromJson(res);
-      hideLoader();
-      Get.to(CardetailScreen());
-      notifyListeners();
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
     }
   }
 
-  Future<void> payRepairVehicle(String id) async {
+  Future<void> payRepairVehicle(String id,
+      {required AccountProvider account}) async {
     try {
       showLoader();
       var res = await ServiceRepo().payRepairVehicle(id);
@@ -274,12 +389,12 @@ class ServiceProvider with ChangeNotifier {
           ErrorToast(message);
         }
         return;
-      }
-
-      await getRepairTransactions(isLoading: false);
-      hideLoader();
+      } else {
+        await getRepairTransactions(isLoading: false, account: account);
+        hideLoader();
       SuccessToast(res['message']);
-      notifyListeners();
+        notifyListeners();
+      }
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
@@ -304,11 +419,12 @@ class ServiceProvider with ChangeNotifier {
           ErrorToast(message);
         }
         return;
+      } else {
+        repairDetails = RepairDetailsModel.fromJson(res);
+        hideLoader();
+        callback();
+        notifyListeners();
       }
-      repairDetails = RepairDetailsModel.fromJson(res);
-      if (isLoading) hideLoader();
-      callback();
-      notifyListeners();
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
@@ -333,16 +449,15 @@ class ServiceProvider with ChangeNotifier {
           ErrorToast(message);
         }
         return;
+      } else {
+        // convert res["content_base64"] to file
+        final bytes = base64Decode(res["content_base64"]);
+        final dir = await getTemporaryDirectory();
+        final file = File('${dir.path}/${res["file_name"]}');
+        await file.writeAsBytes(bytes);
+        Share.shareXFiles([XFile(file.path)], text: 'Transaction Receipt');
+        notifyListeners();
       }
-      // convert res["content_base64"] to file
-      final bytes = base64Decode(res["content_base64"]);
-      final dir = await getTemporaryDirectory();
-      final file = File('${dir.path}/${res["file_name"]}');
-      await file.writeAsBytes(bytes);
-
-      // var xFile = XFile(res);
-      Share.shareXFiles([XFile(file.path)], text: 'Transaction Receipt');
-      notifyListeners();
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
@@ -352,7 +467,9 @@ class ServiceProvider with ChangeNotifier {
   Future<void> skipRepair(
       {required String repairID,
       required String workId,
-      required VoidCallback callback}) async {
+    required VoidCallback callback,
+    required AccountProvider account,
+  }) async {
     try {
       showLoader();
       var res = await ServiceRepo().skipRepair(workId);
@@ -369,12 +486,13 @@ class ServiceProvider with ChangeNotifier {
           ErrorToast(message);
         }
         return;
+      } else {
+        await getRepairTransactions(account: account);
+        await getRepairDetails(isLoading: false, repairID, callback: callback);
+        callback();
+        hideLoader();
+        notifyListeners();
       }
-      await getRepairTransactions();
-      await getRepairDetails(isLoading: false, repairID, callback: callback);
-      callback();
-      hideLoader();
-      notifyListeners();
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
@@ -398,11 +516,12 @@ class ServiceProvider with ChangeNotifier {
           ErrorToast(message);
         }
         return;
+      } else {
+        scriptDetailModel = ScriptDetailModel.fromJson(res);
+        hideLoader();
+        callback();
+        notifyListeners();
       }
-      scriptDetailModel = ScriptDetailModel.fromJson(res);
-      hideLoader();
-      callback();
-      notifyListeners();
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
@@ -426,14 +545,15 @@ class ServiceProvider with ChangeNotifier {
           ErrorToast(message);
         }
         return;
+      } else {
+        hideLoader();
+        Get.to(
+          BuyCarScriptSuccess(
+            isCar: true,
+          ),
+        );
+        notifyListeners();
       }
-      hideLoader();
-      Get.to(
-        BuyCarScriptSuccess(
-          isCar: true,
-        ),
-      );
-      notifyListeners();
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
@@ -457,11 +577,12 @@ class ServiceProvider with ChangeNotifier {
           ErrorToast(message);
         }
         return;
+      } else {
+        hideLoader();
+        Get.back();
+        SuccessToast(res['message']);
+        notifyListeners();
       }
-      hideLoader();
-      Get.back();
-      SuccessToast(res['message']);
-      notifyListeners();
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
@@ -485,12 +606,13 @@ class ServiceProvider with ChangeNotifier {
           ErrorToast(message);
         }
         return;
+      } else {
+        hideLoader();
+        Get.to(BuyCarScriptSuccess(
+          isCar: false,
+        ));
+        notifyListeners();
       }
-      hideLoader();
-      Get.to(BuyCarScriptSuccess(
-        isCar: false,
-      ));
-      notifyListeners();
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
@@ -513,10 +635,11 @@ class ServiceProvider with ChangeNotifier {
           ErrorToast(message);
         }
         return;
+      } else {
+        giftCardsModel = GiftCardsModel.fromJson(res);
+        hideLoader();
+        notifyListeners();
       }
-      giftCardsModel = GiftCardsModel.fromJson(res);
-      hideLoader();
-      notifyListeners();
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
@@ -540,12 +663,100 @@ class ServiceProvider with ChangeNotifier {
           ErrorToast(message);
         }
         return;
+      } else {
+        hideLoader();
+        Get.to(SocialSuccessScreen(
+          isGiftCard: true,
+        ));
+        notifyListeners();
       }
-      hideLoader();
-      Get.to(SocialSuccessScreen(
-        isGiftCard: true,
-      ));
-      notifyListeners();
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
+  Future<void> buyCable(Map<String, dynamic> data) async {
+    try {
+      showLoader();
+      var res = await ServiceRepo().buyCable(data);
+
+      if (res['status'] == false || res['result'] == false) {
+        hideLoader();
+        if (res['message'].runtimeType == String) {
+          ErrorToast(res['message']);
+        } else {
+          String message = '';
+          res['message'].forEach((key, value) {
+            message += '$value';
+          });
+          ErrorToast(message);
+        }
+        return;
+      } else if (res['result'] == 'failed') {
+        hideLoader();
+        ErrorToast(res['message']);
+        return;
+      } else if (res['result'] == 'pending') {
+        hideLoader();
+        Get.to(CableElectricitySuccessScreen(
+          isCable: true,
+          isPending: true,
+        ));
+        notifyListeners();
+      } else {
+        hideLoader();
+        Get.to(CableElectricitySuccessScreen(
+          isCable: true,
+        ));
+        notifyListeners();
+      }
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
+  Future<void> buyElectricity(Map<String, dynamic> data) async {
+    try {
+      showLoader();
+      var res = await ServiceRepo().buyElectricity(data);
+
+      if (res['status'] == false || res['result'] == false) {
+        hideLoader();
+        if (res['message'].runtimeType == String) {
+          ErrorToast(res['message']);
+        } else {
+          String message = '';
+          res['message'].forEach((key, value) {
+            message += '$value';
+          });
+          ErrorToast(message);
+        }
+        return;
+      } else if (res['result'] == 'failed') {
+        hideLoader();
+        ErrorToast(res['message']);
+        return;
+      } else if (res['result'] == 'pending') {
+        hideLoader();
+        Get.to(CableElectricitySuccessScreen(
+          isCable: false,
+          isPending: true,
+        ));
+        notifyListeners();
+      } else {
+        Map<String, dynamic> result = {
+          'token': res['data']['token'],
+          'unit': res['data']['units'],
+        };
+        hideLoader();
+        Get.to(CableElectricitySuccessScreen(
+          isCable: false,
+          data: result,
+        ));
+        notifyListeners();
+      }
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
@@ -568,10 +779,11 @@ class ServiceProvider with ChangeNotifier {
           ErrorToast(message);
         }
         return;
+      } else {
+        hideLoader();
+        Get.to(Pay4meSuccessScreen());
+        notifyListeners();
       }
-      hideLoader();
-      Get.to(Pay4meSuccessScreen());
-      notifyListeners();
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
@@ -594,11 +806,12 @@ class ServiceProvider with ChangeNotifier {
           ErrorToast(message);
         }
         return;
+      } else {
+        cardModel = CardModel.fromJson(res);
+        hideLoader();
+        Get.to(CardsOptionScreen());
+        notifyListeners();
       }
-      cardModel = CardModel.fromJson(res);
-      hideLoader();
-      Get.to(CardsOptionScreen());
-      notifyListeners();
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
@@ -621,10 +834,11 @@ class ServiceProvider with ChangeNotifier {
           ErrorToast(message);
         }
         return;
+      } else {
+        paymentFeeModel = PaymentFeeModel.fromJson(res);
+        hideLoader();
+        notifyListeners();
       }
-      paymentFeeModel = PaymentFeeModel.fromJson(res);
-      hideLoader();
-      notifyListeners();
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
@@ -647,10 +861,11 @@ class ServiceProvider with ChangeNotifier {
           ErrorToast(message);
         }
         return;
+      } else {
+        countryModel = CountryModel.fromJson(res);
+        hideLoader();
+        notifyListeners();
       }
-      countryModel = CountryModel.fromJson(res);
-      if (isLoading) hideLoader();
-      notifyListeners();
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
@@ -673,11 +888,12 @@ class ServiceProvider with ChangeNotifier {
           ErrorToast(message);
         }
         return;
+      } else {
+        socialServiceModel = SocialServicceModel.fromJson(res);
+        hideLoader();
+        Get.to(SocialBoost());
+        notifyListeners();
       }
-      socialServiceModel = SocialServicceModel.fromJson(res);
-      hideLoader();
-      Get.to(SocialBoost());
-      notifyListeners();
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
@@ -701,11 +917,12 @@ class ServiceProvider with ChangeNotifier {
           ErrorToast(message);
         }
         return;
+      } else {
+        await ctrl.getTrasactions(isLoading: false);
+        hideLoader();
+        Get.to(SocialSuccessScreen());
+        notifyListeners();
       }
-      await ctrl.getTrasactions(isLoading: false);
-      hideLoader();
-      Get.to(SocialSuccessScreen());
-      notifyListeners();
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
@@ -728,12 +945,13 @@ class ServiceProvider with ChangeNotifier {
           ErrorToast(message);
         }
         return;
+      } else {
+        await getSprayHistory(isLoading: false);
+        hideLoader();
+        Get.close(2);
+        SuccessToast(res['message']);
+        notifyListeners();
       }
-      await getSprayHistory(isLoading: false);
-      hideLoader();
-      Get.close(2);
-      SuccessToast(res['message']);
-      notifyListeners();
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
@@ -756,13 +974,14 @@ class ServiceProvider with ChangeNotifier {
           ErrorToast(message);
         }
         return;
+      } else {
+        sprayDetailsModel = SprayDetailsModel.fromJson(res);
+        hideLoader();
+        Get.to(PaintInvoiceScreen(
+          historyId: id,
+        ));
+        notifyListeners();
       }
-      sprayDetailsModel = SprayDetailsModel.fromJson(res);
-      hideLoader();
-      Get.to(PaintInvoiceScreen(
-        historyId: id,
-      ));
-      notifyListeners();
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
@@ -785,17 +1004,19 @@ class ServiceProvider with ChangeNotifier {
           ErrorToast(message);
         }
         return;
+      } else {
+        Get.close(2);
+        SuccessToast(res['message']);
+        notifyListeners();
       }
-      Get.close(2);
-      SuccessToast(res['message']);
-      notifyListeners();
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
     }
   }
 
-  Future<void> getRepairTransactions({bool isLoading = true}) async {
+  Future<void> getRepairTransactions(
+      {bool isLoading = true, required AccountProvider account}) async {
     try {
       if (isLoading) showLoader();
       var res = await ServiceRepo().getRepairTransactions();
@@ -812,9 +1033,11 @@ class ServiceProvider with ChangeNotifier {
           ErrorToast(message);
         }
         return;
+      } else {
+        repairTransactions = RepairTransactions.fromJson(res);
+        await account.getUserBalance();
+        notifyListeners();
       }
-      repairTransactions = RepairTransactions.fromJson(res);
-      notifyListeners();
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
@@ -822,7 +1045,8 @@ class ServiceProvider with ChangeNotifier {
   }
 
   Future<void> buyRepaires(Map<String, dynamic> data,
-      {required VoidCallback callback}) async {
+      {required VoidCallback callback,
+      required AccountProvider account}) async {
     try {
       showLoader();
       var res = await ServiceRepo().buyRepaires(data);
@@ -839,12 +1063,13 @@ class ServiceProvider with ChangeNotifier {
           ErrorToast(message);
         }
         return;
+      } else {
+        await getRepairTransactions(account: account);
+        callback();
+        Get.back();
+        SuccessToast(res['message']);
+        notifyListeners();
       }
-      await getRepairTransactions();
-      callback();
-      Get.back();
-      SuccessToast(res['message']);
-      notifyListeners();
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
@@ -867,11 +1092,12 @@ class ServiceProvider with ChangeNotifier {
           ErrorToast(message);
         }
         return;
+      } else {
+        await getSprayHistory(isLoading: false);
+        hideLoader();
+        SuccessToast(res['message']);
+        notifyListeners();
       }
-      await getSprayHistory(isLoading: false);
-      hideLoader();
-      SuccessToast(res['message']);
-      notifyListeners();
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
@@ -896,16 +1122,17 @@ class ServiceProvider with ChangeNotifier {
           ErrorToast(message);
         }
         return;
-      }
-      // convert res["content_base64"] to file
-      final bytes = base64Decode(res["content_base64"]);
-      final dir = await getTemporaryDirectory();
-      final file = File('${dir.path}/${res["file_name"]}');
-      await file.writeAsBytes(bytes);
+      } else {
+        // convert res["content_base64"] to file
+        final bytes = base64Decode(res["content_base64"]);
+        final dir = await getTemporaryDirectory();
+        final file = File('${dir.path}/${res["file_name"]}');
+        await file.writeAsBytes(bytes);
 
       // var xFile = XFile(res);
       Share.shareXFiles([XFile(file.path)], text: 'Transaction Receipt');
       notifyListeners();
+      }
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
@@ -929,17 +1156,19 @@ class ServiceProvider with ChangeNotifier {
           ErrorToast(message);
         }
         return;
+      } else {
+        sprayHistoryModel = SprayHistoryModel.fromJson(res);
+        hideLoader();
+        notifyListeners();
       }
-      sprayHistoryModel = SprayHistoryModel.fromJson(res);
-      if (isLoading) hideLoader();
-      notifyListeners();
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
     }
   }
 
-  Future<void> getScriptTransactions({bool isLoading = true}) async {
+  Future<void> getScriptTransactions(
+      {bool isLoading = true, required AccountProvider account}) async {
     try {
       if (isLoading) showLoader();
 
@@ -956,18 +1185,20 @@ class ServiceProvider with ChangeNotifier {
           ErrorToast(message);
         }
         return;
+      } else {
+        scriptTransactionsModel = ScripTransactions.fromJson(res);
+        await account.getUserBalance();
+        hideLoader();
+        notifyListeners();
       }
-     
-      scriptTransactionsModel = ScripTransactions.fromJson(res);
-      if (isLoading) hideLoader();
-      notifyListeners();
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
     }
   }
 
-  Future<void> getCarsTransactions({bool isLoading = true}) async {
+  Future<void> getCarsTransactions(
+      {bool isLoading = true, required AccountProvider account}) async {
     try {
       if (isLoading) showLoader();
 
@@ -985,10 +1216,12 @@ class ServiceProvider with ChangeNotifier {
           ErrorToast(message);
         }
         return;
+      } else {
+        carTransactions = CarTransactions.fromJson(res);
+        await account.getUserBalance();
+        hideLoader();
+        notifyListeners();
       }
-      carTransactions = CarTransactions.fromJson(res);
-      if (isLoading) hideLoader();
-      notifyListeners();
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
@@ -1011,10 +1244,11 @@ class ServiceProvider with ChangeNotifier {
           ErrorToast(message);
         }
         return;
+      } else {
+        colorPaintModel = ColorPaintModel.fromJson(res);
+        hideLoader();
+        notifyListeners();
       }
-      colorPaintModel = ColorPaintModel.fromJson(res);
-      hideLoader();
-      notifyListeners();
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());

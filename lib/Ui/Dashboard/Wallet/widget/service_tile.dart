@@ -39,12 +39,9 @@ class ServiceTile extends StatelessWidget {
             ),
             CircleAvatar(
               radius: 20,
-              // padding: const EdgeInsets.all(13),
-      
               backgroundColor: !themeProvider.isDarkMode()
                   ? MyColor.mainWhiteColor
                   : MyColor.dark01Color,
-      
               child: Transform.translate(
                 offset: Offset(0, isTransform ? 5 : 0),
                 child: ClipRRect(

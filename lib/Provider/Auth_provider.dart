@@ -329,13 +329,15 @@ class AuthProvider with ChangeNotifier {
             }
             updateAuthToken('');
             notifyListeners();
-            
-            // todo check if the user has Set Pin
+            if(account?.userModel?.user?.enabledPin != '0'){
+              Get.offAll(BottomNav());
+            }else{
             Get.to(
               SetPinLogin(
                 isFromAuth: true,
               ),
             );
+            }
             if (value['message'] != null && value['message'] != '') {
               SuccessToast(value['message']);
             } else {

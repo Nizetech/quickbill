@@ -30,6 +30,7 @@ class ApiRoute {
   static String getBanks = 'get-banks';
   static String readNotification = 'read-news';
   static String getPromo = 'get-promos';
+  static String deleteAccount = 'delete-account';
   static String getReferrals = 'get-referrals';
   static String getNetworkProviders = 'get-network-providers';
   static String creditDeposit = 'create-deposit';
@@ -72,4 +73,10 @@ class ApiRoute {
   static String payRepairVehicle = 'services/auto-repair/pay';
   static String domainList = 'services/domain-name/list';
   static String cableTransactions = 'services/cable-landing';
+  static String electricityTransactions = 'services/electricity-landing';
+  static String cableMerchant = 'services/cable/merchant';
+  static String electricityMerchant = 'services/electricity/merchant';
+  static String cableVariations = 'services/get-variationCodes';
+  static String buyCable = 'services/buy-cable';
+  static String buyElectricity = 'services/buy-electricity';
 }

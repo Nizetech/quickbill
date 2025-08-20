@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,6 +20,7 @@ import 'package:jost_pay_wallet/Models/referral_count.dart';
 import 'package:jost_pay_wallet/Models/social_boost_history_model.dart';
 import 'package:jost_pay_wallet/Models/transactions.dart';
 import 'package:jost_pay_wallet/Models/user_model.dart';
+import 'package:jost_pay_wallet/Ui/Authentication/SignInScreen.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyDataSuccess.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/pending_purchase.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/payment_details.dart';
@@ -830,6 +833,44 @@ class AccountProvider with ChangeNotifier {
         } else {
           if (isLoading) hideLoader();
           promoModel = PromoModel.fromJson(value);
+        }
+        notifyListeners();
+      });
+    } catch (e) {
+      // log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
+  // delete account
+  Future<void> deleteAccount() async {
+    try {
+     showLoader(
+        text: 'Account Deletion...',
+      );
+      AccountRepo().deleteAccount().then((value) {
+       
+        if (value['status'] == false || value['result'] == false) {
+         hideLoader();
+          if (value['message'].runtimeType == String) {
+            ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';
+            });
+            ErrorToast(message);
+          }
+        } else {
+          box.clear();
+          box.deleteAll([
+            kAccessToken,
+            isPinEnabled,
+            kExistingUser,
+          ]);
+          log("clearing HIVE.........");
+          hideLoader();
+          Get.offAll(SignInScreen());
         }
         notifyListeners();
       });

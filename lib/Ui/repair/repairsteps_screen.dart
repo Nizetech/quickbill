@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/service_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/repair/Widget/section_chip.dart';
@@ -193,6 +194,8 @@ class _RepairstepsScreenState extends State<RepairstepsScreen> {
                                               model.skipRepair(
                                                   repairID: widget.repairId,
                                                   workId: item.id!,
+                                                account: context
+                                                    .read<AccountProvider>(),
                                                   callback: () {
                                                     calculateTotal(model);
                                                 },

@@ -38,7 +38,9 @@ class _SplashScreenState extends State<SplashScreen> {
       token = await box.get(kAccessToken, defaultValue: '');
       isExistingUser = await box.get(kExistingUser, defaultValue: false);
       pinEnabled = box.get(isPinEnabled, defaultValue: "");
-      setState(() {});
+      if (mounted) {
+        setState(() {});
+      }
     });
   }
 

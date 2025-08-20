@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/service_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/widget/balance_action_card.dart';
@@ -28,9 +29,10 @@ class _CarHistoryState extends State<CarHistory> {
     var model = Provider.of<ServiceProvider>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (model.carTransactions == null) {
-        model.getCarsTransactions();
+        model.getCarsTransactions(account: context.read<AccountProvider>());
       } else {
-        model.getCarsTransactions(isLoading: false);
+        model.getCarsTransactions(
+            isLoading: false, account: context.read<AccountProvider>());
       }
     });
   }
@@ -117,7 +119,8 @@ class _CarHistoryState extends State<CarHistory> {
                   Expanded(
                     child: RefreshIndicator(
                       onRefresh: () async {
-                        await model.getCarsTransactions();
+                        await model.getCarsTransactions(
+                            account: context.read<AccountProvider>());
                       },
                       child: ListView.builder(
                           itemCount:

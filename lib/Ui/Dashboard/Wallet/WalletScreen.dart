@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -13,10 +14,12 @@ import 'package:jost_pay_wallet/Ui/Dashboard/AddFunds.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/AlarmScreen.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyAirtime.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/data_history.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/banner.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/history_card.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/profile_image.dart';
 import 'package:jost_pay_wallet/Ui/Domain/domain_screen.dart';
 import 'package:jost_pay_wallet/Ui/Paint/paint_history.dart';
+import 'package:jost_pay_wallet/Ui/cable/cable_history.dart';
 import 'package:jost_pay_wallet/Ui/car/car_history.dart';
 import 'package:jost_pay_wallet/Ui/repair/repairdetail_screen.dart';
 import 'package:jost_pay_wallet/Ui/pay4me/pay4me_history.dart';
@@ -24,7 +27,7 @@ import 'package:jost_pay_wallet/Ui/promotions/social_boost_history.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
-import 'package:jost_pay_wallet/common/timer.dart';
+import 'package:jost_pay_wallet/common/delete_banner.dart';
 import 'package:provider/provider.dart';
 import 'dart:core';
 
@@ -89,12 +92,12 @@ class _WalletScreenState extends State<WalletScreen> {
 
   @override
   Widget build(BuildContext context) {
-    accountProvider = Provider.of<AccountProvider>(context, listen: true);
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     final dashProvider = Provider.of<DashboardProvider>(context, listen: true);
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Consumer<AccountProvider>(builder: (context, model, _) {
+        log('${model.userModel?.toJson()}');
         return RefreshIndicator(
           onRefresh: () async {
             await refreshAll();
@@ -452,7 +455,8 @@ class _WalletScreenState extends State<WalletScreen> {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                  
-                                                    const PayForMeHistory())),
+                                                    // const PayForMeHistory()
+                                                    CableHistory())),
                                         child: Container(
                                           width: 54,
                                           height: 50,
@@ -475,7 +479,9 @@ class _WalletScreenState extends State<WalletScreen> {
                                 const SizedBox(height: 8),
                                 Row(
                                   children: [
-                                    Text('Pay4me',
+                                    Text(
+                                        // 'Pay4me',
+                                        'Cable',
                                         style: MyStyle.tx12Black.copyWith(
                                             color: Theme.of(context)
                                                 .colorScheme
@@ -537,12 +543,16 @@ class _WalletScreenState extends State<WalletScreen> {
                     ],
                   ),
                 ),
-                DeleteBanner(),
-                // Visibility(
-                //     visible: dashProvider.promotionBanner,
-                //     child: BannerAds(
-                //       dashProvider: dashProvider,
-                //     )),
+                if (accountProvider.userModel?.user?.createdAt != null &&
+                    accountProvider.userModel?.user?.isActive == false)
+                  DeleteBanner(
+                      date: accountProvider.userModel!.user!.createdAt!)
+                else
+                  Visibility(
+                      visible: dashProvider.promotionBanner,
+                      child: BannerAds(
+                        dashProvider: dashProvider,
+                      )),
                 //?
                 //! Here is the services section
                 Expanded(
@@ -600,7 +610,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                       ],
                                     ),
                                     const SizedBox(
-                                      height: 24,
+                                      height: 10,
                                     ),
                                     Row(
                                       children: [
@@ -647,7 +657,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                       ],
                                     ),
                                     const SizedBox(
-                                      height: 24,
+                                      height: 10,
                                     ),
                                     Row(
                                       children: [
@@ -698,7 +708,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                         ),
                                       ),
                                       const SizedBox(
-                                        height: 24,
+                                        height: 10,
                                       ),
                                       Row(
                                         children: [
@@ -750,7 +760,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                       ],
                                     ),
                                     const SizedBox(
-                                      height: 24,
+                                      height: 10,
                                     ),
                                     Row(
                                       children: [
@@ -801,7 +811,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                         ],
                                       ),
                                       const SizedBox(
-                                        height: 24,
+                                        height: 10,
                                       ),
                                       Row(
                                         children: [
@@ -848,7 +858,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                         ],
                                       ),
                                       const SizedBox(
-                                        height: 24,
+                                        height: 10,
                                       ),
                                       Row(
                                         children: [
@@ -889,7 +899,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                           ],
                                         ),
                                         const SizedBox(
-                                          height: 24,
+                                          height: 10,
                                         ),
                                         Row(
                                           children: [
@@ -936,7 +946,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                         ],
                                       ),
                                       const SizedBox(
-                                        height: 24,
+                                        height: 10,
                                       ),
                                       Row(
                                         children: [

@@ -35,8 +35,10 @@ class User {
   String? phoneNumber;
   String? country;
   String? useGoogleAuth;
+  bool? isActive;
   bool? idVerified;
   dynamic enabledPin;
+  String? createdAt;
 
   User({
     this.email,
@@ -45,8 +47,10 @@ class User {
     this.phoneNumber,
     this.country,
     this.useGoogleAuth,
+    this.isActive,
     this.idVerified,
     this.enabledPin,
+    this.createdAt,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -56,8 +60,10 @@ class User {
         phoneNumber: json["phone_number"],
         country: json["country"],
         useGoogleAuth: json["use_google_auth"],
+        isActive: json["active"],
         idVerified: json["id_verified"],
         enabledPin: json["enable_pin"],
+        createdAt: json["created_at"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -67,7 +73,9 @@ class User {
         "phone_number": phoneNumber,
         "country": country,
         "use_google_auth": useGoogleAuth,
+        "active": isActive,
         "id_verified": idVerified,
         "enable_pin": enabledPin,
+        "created_at": createdAt,
       };
 }

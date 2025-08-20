@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/service_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Domain/widget/dot.dart';
@@ -23,9 +24,10 @@ class _RepairdetailScreenState extends State<RepairdetailScreen> {
     final model = Provider.of<ServiceProvider>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (model.repairTransactions == null) {
-        model.getRepairTransactions();
+        model.getRepairTransactions(account: context.read<AccountProvider>());
       } else {
-        model.getRepairTransactions(isLoading: false);
+        model.getRepairTransactions(
+            isLoading: false, account: context.read<AccountProvider>());
       }
     });
   }
@@ -164,7 +166,8 @@ class _RepairdetailScreenState extends State<RepairdetailScreen> {
                   Expanded(
                     child: RefreshIndicator(
                       onRefresh: () async {
-                        await model.getRepairTransactions();
+                        await model.getRepairTransactions(
+                            account: context.read<AccountProvider>());
                       },
                       child: ListView.separated(
                         shrinkWrap: true,

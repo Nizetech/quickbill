@@ -24,7 +24,7 @@ class _CardetailScreenState extends State<CardetailScreen> {
   void initState() {
     super.initState();
     final model = Provider.of<ServiceProvider>(context, listen: false);
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
         mainImg = model.carDetailsModel!.car!.carImage!;
         images = model.carDetailsModel!.car!.galleries!.split(',');

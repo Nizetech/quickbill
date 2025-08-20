@@ -23,7 +23,7 @@ class _DepositDetailsState extends State<DepositDetails> {
   @override
   void initState() {
     final model = Provider.of<AccountProvider>(context, listen: false);
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       model.getBanks();
     });
     super.initState();

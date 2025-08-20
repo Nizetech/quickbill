@@ -128,20 +128,32 @@ class _CustomTextFieldState extends State<CustomTextField> {
 class UnderlineTextfield extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
+  final bool isEnabled;
+  final FocusNode? focusNode;
   const UnderlineTextfield(
-      {super.key, required this.controller, required this.hintText});
+      {
+    super.key,
+    required this.controller,
+    required this.hintText,
+    this.isEnabled = true,
+    this.focusNode,
+  });
 
   @override
   Widget build(BuildContext context) {
     final themedata = Theme.of(context).colorScheme;
     return TextFormField(
+      enabled: isEnabled,
       controller: controller,
+      
       keyboardType: TextInputType.number,
+      onTapOutside: (_) => FocusScope.of(context).unfocus(),
       style: TextStyle(
         fontSize: 14,
         color: themedata.tertiary,
         fontFamily: 'SF Pro Rounded',
       ),
+      focusNode: focusNode,
       decoration: InputDecoration(
         hintText: hintText,
         hintStyle: TextStyle(

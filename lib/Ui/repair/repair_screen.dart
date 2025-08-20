@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/service_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/repair/Widget/notice_banner.dart';
@@ -584,7 +585,10 @@ class _RepairScreenState extends State<RepairScreen> {
                                     "agent_contact_name": agentName.text,
                                   };
                                   // return;
-                                  model.buyRepaires(data, callback: () {
+                                    model.buyRepaires(data,
+                                        account:
+                                            context.read<AccountProvider>(),
+                                        callback: () {
                                     repairOption.clear();
                                     date.clear();
                                     status.clear();

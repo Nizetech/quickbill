@@ -1,13 +1,14 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/service_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/widget/balance_action_card.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/receipt_script.dart';
 import 'package:jost_pay_wallet/Ui/cable/buy_cable_bills.dart';
-import 'package:jost_pay_wallet/Ui/giftCard/buy_gift_card_screen.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
@@ -30,9 +31,10 @@ class _CableHistoryState extends State<CableHistory> {
     var model = Provider.of<ServiceProvider>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (model.cableTransactionModel == null) {
-        model.getCableTransactions();
+        model.getCableTransactions(account: context.read<AccountProvider>());
       } else {
-        model.getCableTransactions(isLoading: false);
+        model.getCableTransactions(
+            isLoading: false, account: context.read<AccountProvider>());
       }
     });
   }
@@ -41,6 +43,7 @@ class _CableHistoryState extends State<CableHistory> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     final themedata = Theme.of(context).colorScheme;
+
     return Scaffold(
       body: Consumer<ServiceProvider>(builder: (context, model, _) {
         return SafeArea(
@@ -119,7 +122,8 @@ class _CableHistoryState extends State<CableHistory> {
                   Expanded(
                     child: RefreshIndicator(
                       onRefresh: () async {
-                        await model.getCableTransactions();
+                        await model.getCableTransactions(
+                            account: context.read<AccountProvider>());
                       },
                       child: ListView.builder(
                           itemCount:
@@ -167,7 +171,9 @@ class _CableHistoryState extends State<CableHistory> {
                                               MainAxisAlignment.start,
                                           children: [
                                             Text(
-                                              item.package ?? "",
+                                              item.networkName
+                                                      ?.capitalizeFirst ??
+                                                  "",
                                               maxLines: 1,
                                               style: MyStyle.tx12Black.copyWith(
                                                   overflow:

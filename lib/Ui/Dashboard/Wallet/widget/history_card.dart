@@ -57,19 +57,19 @@ class HistoryCard extends StatelessWidget {
       }
     }
 
-    bool isValid(Datum transaction) {
-      return isSpecialTransactionService(transaction) &&
-              transaction.status == '0' ||
-          transaction.type == Type.SPRAY &&
-              transaction.status != '2' &&
-              //     transaction.type == Type.AUTOREPAIR &&
-              //     transaction.status != '2' ||
-              // transaction.type == Type.AUTOREPAIR && transaction.status != '2' ||
-          transaction.apiStatus != null &&
-              transaction.apiStatus!.contains('pending') ||
-          transaction.type == Type.SOCIALBOOST &&
-              !transaction.apiStatus!.toLowerCase().contains('success');
-    }
+    // bool isValid(Datum transaction) {
+    //   return isSpecialTransactionService(transaction) &&
+    //           transaction.status == '0' ||
+    //       transaction.type == Type.SPRAY &&
+    //           transaction.status != '2' &&
+    //           //     transaction.type == Type.AUTOREPAIR &&
+    //           //     transaction.status != '2' ||
+    //           // transaction.type == Type.AUTOREPAIR && transaction.status != '2' ||
+    //       transaction.apiStatus != null &&
+    //           transaction.apiStatus!.contains('pending') ||
+    //       transaction.type == Type.SOCIALBOOST &&
+    //           !transaction.apiStatus!.toLowerCase().contains('success');
+    // }
 
     String getOperator(Datum transaction) {
       String operator = transaction.details!
@@ -137,6 +137,13 @@ class HistoryCard extends StatelessWidget {
                                           ? transaction.details!
                                               .split(' link: ')[1]
                                               .toString()
+                                              : (transaction.type ==
+                                                          Type.ELECTRICITY ||
+                                                      transaction.type ==
+                                                          Type.CABLE)
+                                                  ? transaction.details!
+                                                      .split(' ID: ')[1]
+                                                      .toString()
                                           : transaction
                                               .type!.name.capitalizeFirst!
                       : transaction.details!,

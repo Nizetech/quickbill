@@ -99,10 +99,7 @@ class _OtpScreenState extends State<OtpScreen> {
                         TextSpan(
                           text:
                               "If you don't see it in your inbox, please check your spam or junk folder.",
-                          style: MyStyle.tx16Green.copyWith(
-                            color: Colors.red,
-                            fontSize: 14,
-                          ),
+                            style: MyStyle.tx16Gray
                         ),
                       ],
                     ),

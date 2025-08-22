@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jost_pay_wallet/constants/api_constants.dart';
@@ -45,7 +44,6 @@ class AuthRepo {
       }
       return response;
     } catch (e) {
-      log('Errrrr');
       hideLoader();
       print('Error: $e');
       return {};

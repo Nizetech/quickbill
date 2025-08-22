@@ -18,6 +18,7 @@ import 'package:jost_pay_wallet/Models/domain_list.dart';
 import 'package:jost_pay_wallet/Models/electricity_history.dart';
 import 'package:jost_pay_wallet/Models/gift_card_model.dart';
 import 'package:jost_pay_wallet/Models/paymentOption.dart';
+import 'package:jost_pay_wallet/Models/receipt_model.dart';
 import 'package:jost_pay_wallet/Models/repair_details.dart';
 import 'package:jost_pay_wallet/Models/repair_transaction.dart';
 import 'package:jost_pay_wallet/Models/script_details.dart';
@@ -68,6 +69,7 @@ class ServiceProvider with ChangeNotifier {
   MerchantModel? merchantModel;
   ElectricityHistoryModel? electricityHistoryModel;
   CableVariations? cableVariationsModel;
+  ReceiptModel? receiptModel;
 
   String base64Image = '';
 
@@ -646,6 +648,35 @@ class ServiceProvider with ChangeNotifier {
     }
   }
 
+  Future<void> getReceipt(Map<String, dynamic> data,
+      {required VoidCallback callback}) async {
+    try {
+      showLoader();
+      var res = await ServiceRepo().getReceipt(data);
+      if (res['status'] == false || res['result'] == false) {
+        hideLoader();
+        if (res['message'].runtimeType == String) {
+          ErrorToast(res['message']);
+        } else {
+          String message = '';
+          res['message'].forEach((key, value) {
+            message += '$value';
+          });
+          ErrorToast(message);
+        }
+        return;
+      } else {
+        receiptModel = ReceiptModel.fromJson(res);
+        hideLoader();
+        callback();
+        notifyListeners();
+      }
+    } catch (e) {
+      log('Error: $e');
+      ErrorToast(e.toString());
+    }
+  }
+
   Future<void> buyGiftCard(Map<String, dynamic> data) async {
     try {
       showLoader();
@@ -676,11 +707,14 @@ class ServiceProvider with ChangeNotifier {
     }
   }
 
-  Future<void> buyCable(Map<String, dynamic> data) async {
+  Future<void> buyCable(
+    Map<String, dynamic> data, {
+    bool isShowmax = false,
+  }) async {
     try {
       showLoader();
       var res = await ServiceRepo().buyCable(data);
-
+      log('res: $res');
       if (res['status'] == false || res['result'] == false) {
         hideLoader();
         if (res['message'].runtimeType == String) {
@@ -702,12 +736,15 @@ class ServiceProvider with ChangeNotifier {
         Get.to(CableElectricitySuccessScreen(
           isCable: true,
           isPending: true,
+          isShowmax: isShowmax,
         ));
         notifyListeners();
       } else {
         hideLoader();
         Get.to(CableElectricitySuccessScreen(
           isCable: true,
+          isShowmax: isShowmax,
+          data: res['data'],
         ));
         notifyListeners();
       }
@@ -746,14 +783,10 @@ class ServiceProvider with ChangeNotifier {
         ));
         notifyListeners();
       } else {
-        Map<String, dynamic> result = {
-          'token': res['data']['token'],
-          'unit': res['data']['units'],
-        };
         hideLoader();
         Get.to(CableElectricitySuccessScreen(
           isCable: false,
-          data: result,
+          data: res,
         ));
         notifyListeners();
       }

@@ -36,7 +36,6 @@ class _SetPinLoginState extends State<SetPinLogin> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     final isDark = themeProvider.isDarkMode();
-    log("isFromAuth: ${widget.isFromAuth}");
     return Scaffold(
       backgroundColor:
           isDark && !widget.isFromAuth ? MyColor.dark02Color : Colors.white,

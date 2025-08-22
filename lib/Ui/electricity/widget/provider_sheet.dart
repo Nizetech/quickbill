@@ -62,14 +62,24 @@ void showElectricityProviderSheet({
                         vertical: 10,
                         horizontal: 15,
                       ),
-                      child: Text(
-                        provider['name'],
-                        style: MyStyle.tx12Black.copyWith(
-                          fontWeight: FontWeight.w400,
-                          color: themeProvider.isDarkMode()
-                              ? MyColor.mainWhiteColor
-                              : MyColor.dark01Color,
-                        ),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            provider['img'],
+                            width: 20,
+                            height: 20,
+                          ),
+                          const SizedBox(width: 10),
+                          Text(
+                            provider['name'],
+                            style: MyStyle.tx12Black.copyWith(
+                              fontWeight: FontWeight.w400,
+                              color: themeProvider.isDarkMode()
+                                  ? MyColor.mainWhiteColor
+                                  : MyColor.dark01Color,
+                            ),
+                          ),
+                        ],
                       ),
                     ));
               },

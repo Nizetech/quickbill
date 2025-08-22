@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jost_pay_wallet/Provider/auth_provider.dart';
-import 'package:jost_pay_wallet/Ui/Authentication/OtpScreen.dart';
 import 'package:jost_pay_wallet/Ui/Authentication/SignUpScreen.dart';
 import 'package:jost_pay_wallet/Ui/Authentication/forget_password.dart';
 import 'package:jost_pay_wallet/Values/NewColor.dart';
@@ -52,19 +51,6 @@ class _SignInScreenState extends State<SignInScreen> {
     } else {
       // Form is invalid, no action needed here since warnings are shown automatically
     }
-  }
-
-  loginAccount() async {
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (context) => OtpScreen(
-                  email: _emailController.text,
-        ),
-      ),
-    );
-    // Navigator.pushReplacement(context,
-    //     MaterialPageRoute(builder: (context) => const DashboardScreen()));
   }
 
   final box = Hive.box(kAppName);

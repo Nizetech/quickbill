@@ -42,12 +42,10 @@ class SuccessScreen extends StatelessWidget {
             ),
           ),
           child: Column(
-            // mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
                 height: Get.height * .33,
               ),
-              // Image.asset('assets/images/Explode.png'),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 17, vertical: 5),
                 decoration: BoxDecoration(
@@ -64,6 +62,7 @@ class SuccessScreen extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
+              
               Text(
                 title,
                 textAlign: TextAlign.center,

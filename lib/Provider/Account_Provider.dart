@@ -96,6 +96,11 @@ class AccountProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void setUserModel(Map<String, dynamic> data) {
+    userModel = UserModel.fromJson(data);
+    notifyListeners();
+  }
+
   // toggle 2Fa
   Future<dynamic> toogle2Fa(int useGoogleAuth,
       {bool showMessage = false, AccountProvider? account}) async {
@@ -120,11 +125,12 @@ class AccountProvider with ChangeNotifier {
   }
 
   // get User Profile
-  Future<void> getUserProfile({bool isLoading = true}) async {
+  Future<Map<String, dynamic>> getUserProfile({bool isLoading = true}) async {
     try {
       if (isLoading) showLoader();
-      AccountRepo().getProfile().then((value) {
-        //
+      Map<String, dynamic> res = {};
+      await AccountRepo().getProfile().then((value) {
+        res = value;
         if (isLoading) hideLoader();
         if (value['status'] == false || value['result'] == false) {
           if (value['message'].runtimeType == String) {
@@ -143,9 +149,12 @@ class AccountProvider with ChangeNotifier {
         }
         notifyListeners();
       });
+      log('res UserProfile:==> ${res}');
+      return res;
     } catch (e) {
       // log('Error: $e');
       ErrorToast(e.toString());
+      return {};
     }
   }
 

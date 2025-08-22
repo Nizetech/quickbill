@@ -248,7 +248,7 @@ class AccountRepo {
   }
 
   Future<Map<String, dynamic>> getBalance() async {
-    String token = await box.get(kAccessToken);
+    String token = await box.get(kAccessToken) ?? '';
     try {
       final response = await client.post(ApiRoute.getBalance, requestHeaders: {
         'Authorization': token,

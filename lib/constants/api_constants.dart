@@ -55,6 +55,7 @@ class ApiRoute {
   static String getScriptDetails = 'marketplace/get-script';
   static String scriptTransactions = 'marketplace/scripts-landing';
   static String carsTransactions = 'marketplace/cars-landing';
+  static String receipt = 'marketplace/receipt';
   static String buyScript = 'marketplace/buy-script';
   static String getScript = 'marketplace/scripts';
   static String buyCar = 'marketplace/buy-car';

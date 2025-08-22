@@ -10,12 +10,9 @@ import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/service_tile.dart';
 import 'package:jost_pay_wallet/Ui/Domain/domain_screen.dart';
 import 'package:jost_pay_wallet/Ui/Paint/paint_history.dart';
 import 'package:jost_pay_wallet/Ui/Scripts/script_history.dart';
-import 'package:jost_pay_wallet/Ui/cable/cable_history.dart';
-import 'package:jost_pay_wallet/Ui/car/car_history.dart';
 import 'package:jost_pay_wallet/Ui/electricity/electricity_history.dart';
 import 'package:jost_pay_wallet/Ui/repair/repairdetail_screen.dart';
 import 'package:jost_pay_wallet/Ui/giftCard/gift_card_history.dart';
-import 'package:jost_pay_wallet/Ui/pay4me/pay4me_history.dart';
 import 'package:jost_pay_wallet/Ui/promotions/social_boost_history.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
@@ -114,7 +111,6 @@ class _ServicesState extends State<Services> {
                       const SizedBox(
                         height: 24,
                       ),
-                      if (Platform.isAndroid) ...[
 
                       SizedBox(
                         width: double.infinity, // Full width of the screen
@@ -149,7 +145,7 @@ class _ServicesState extends State<Services> {
                         height: 27,
                       ),
                         Text(
-                        'Finance',
+                        'Utilities & Digital',
                         style: MyStyle.tx18Black.copyWith(
                             fontWeight: FontWeight.w400,
                             color: themedata.tertiary),
@@ -160,25 +156,41 @@ class _ServicesState extends State<Services> {
                       Row(
                         children: [
                           ServiceTile(
-                        
-                            icon: 'assets/images/money.svg',
-                            title: 'Try Pay4me',
-                            page: const PayForMeHistory(),
+                            icon: 'assets/images/electricity.svg',
+                            title: 'Electricity Token',
+                            page: const ElectricityHistory(),
                           ),
                      
+                          
                           const Spacer(),
+                          if (Platform.isAndroid)
                           ServiceTile(
                             icon: 'assets/images/giftcard.svg',
                             title: 'Buy Gift Card',
                             page: const GiftCardHistory(),
-                          ),
-                  
+                            )
+                          else
+                            ServiceTile(
+                              icon: 'assets/images/cable.svg',
+                              title: 'Buy Cable Tv',
+                              page: const GiftCardHistory(),
+                            )
                         ],
                       ),
+                      if (Platform.isAndroid) ...[
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        ServiceTile(
+                          icon: 'assets/images/cable.svg',
+                          title: 'Buy Cable Tv',
+                          page: const GiftCardHistory(),
+                        ),
+                      ],
                       const SizedBox(
                         height: 24,
                         ),
-                      ],
+                    
                       SizedBox(
                         width: double.infinity, // Full width of the screen
                         height: 4, // Adjust height as needed
@@ -236,48 +248,19 @@ class _ServicesState extends State<Services> {
                             title: 'Try Social Boost',
                             page: const SocialBoostHistory(),
                             )
-                          else
-                         
-                            ServiceTile(
-                              icon: 'assets/images/money.svg',
-                              // title: 'Try Pay4me',
-                              title: 'Cable Bills',
-                              page: const CableHistory(),
-                              // const PayForMeHistory(),
-                            ),
+                       
                         ],
                       ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          ServiceTile(
-                            icon: 'assets/images/money.svg',
-                            title: 'Electricity',
-                            page: const ElectricityHistory(),
-                          ),
-                          const Spacer(),
-                          if (Platform.isAndroid)
-                            ServiceTile(
-                              icon: 'assets/images/money.svg',
-                              // title: 'Try Pay4me',
-                              title: 'Cable Bills',
-                              page: const CableHistory(),
-                              // const PayForMeHistory(),
-                            ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 23,
-                      ),
+                  
                       if (Platform.isAndroid)
-
-                      ServiceTile(
-                        icon: 'assets/images/script.svg',
-                        title: 'Buy Scripts',
-                        page: ScriptHistory(),
-                      ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: ServiceTile(
+                            icon: 'assets/images/script.svg',
+                            title: 'Buy Scripts',
+                            page: ScriptHistory(),
+                          ),
+                        ),
                       const SizedBox(
                         height: 24,
                       ),
@@ -335,228 +318,17 @@ class _ServicesState extends State<Services> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 23),
-                      ServiceTile(
-                        icon: 'assets/images/car.svg',
-                        title: 'Buy Cars',
-                        page: CarHistory(),
-                        // const CarsellScreen(),
-                      ),
+                      // const SizedBox(height: 10),
+                      // ServiceTile(
+                      //   icon: 'assets/images/car.svg',
+                      //   title: 'Buy Cars',
+                      //   page: CarHistory(),
+                      //   // const CarsellScreen(),
+                      // ),
                  
                       const SizedBox(
                         height: 27,
                       ),
-                      // const SizedBox(
-                      //   height: 24,
-                      // ),
-                      // SizedBox(
-                      //   width: double.infinity, // Full width of the screen
-                      //   height: 4, // Adjust height as needed
-                      //   child: Stack(
-                      //     children: [
-                      //       // Bottom border
-                      //       Positioned(
-                      //         bottom: 0,
-                      //         left: 0,
-                      //         right: 0,
-                      //         child: DottedBorder(
-                      //           color: MyColor.borderColor,
-                      //           strokeWidth: 1,
-                      //           dashPattern: const [
-                      //             6,
-                      //             3
-                      //           ], // Dash pattern: 6 units line, 3 units space
-                      //           customPath: (size) => Path()
-                      //             ..moveTo(0, 0)
-                      //             ..lineTo(size.width, 0),
-                      //           child: Container(
-                      //             height:
-                      //                 0, // The container for the border can have a height of 0
-                      //           ),
-                      //         ),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
-                      // const SizedBox(
-                      //   height: 20,
-                      // ),
-                      // Row(
-                      //   children: [
-                      //     Column(
-                      //       crossAxisAlignment: CrossAxisAlignment.start,
-                      //       children: [
-                      //         Align(
-                      //           alignment: Alignment.centerLeft,
-                      //           child: Text(
-                      //             'Cable Bills',
-                      //             style: MyStyle.tx18Black
-                      //                 .copyWith(fontWeight: FontWeight.w400),
-                      //           ),
-                      //         ),
-                      //         const SizedBox(
-                      //           height: 20,
-                      //         ),
-                      //         InkWell(
-                      //             onTap: () => Navigator.pushReplacement(
-                      //                 context,
-                      //                 MaterialPageRoute(
-                      //                     builder: (context) =>
-                      //                         const CableBills())),
-                      //             child: Container(
-                      //               width: 155,
-                      //               height: 110,
-                      //               decoration: BoxDecoration(
-                      //                      color: themedata.secondary
-                      // .withValues(alpha: 0.6),
-                      //                   borderRadius:
-                      //                       BorderRadius.circular(13.5)),
-                      //               child: Column(
-                      //                 crossAxisAlignment:
-                      //                     CrossAxisAlignment.center,
-                      //                 mainAxisAlignment:
-                      //                     MainAxisAlignment.center,
-                      //                 children: [
-                      //                   const SizedBox(
-                      //                     height: 12,
-                      //                   ),
-                      //                   Container(
-                      //                     height: 41,
-                      //                     width: 41,
-                      //                     // padding: const EdgeInsets.all(13),
-                      //                     alignment: Alignment.center,
-                      //                     decoration: const BoxDecoration(
-                      //                color: themedata.secondary,
-                      //                         shape: BoxShape.circle),
-                      //                     child: Transform.translate(
-                      //                       offset: const Offset(0, 0),
-                      //                       child: Image.asset(
-                      //                         "assets/images/tv-01.png",
-                      //                         height: 24,
-                      //                         width: 24,
-                      //                       ),
-                      //                     ),
-                      //                   ),
-                      //                   const SizedBox(
-                      //                     height: 4,
-                      //                   ),
-                      //                   const Text(
-                      //                     'Cable TV',
-                      //                     style: MyStyle.tx9Green,
-                      //                   ),
-                      //                   const SizedBox(
-                      //                     height: 4,
-                      //                   ),
-                      //                   Center(
-                      //                     child: Container(
-                      //                       width: 52,
-                      //                       height: 20,
-                      //                       alignment: Alignment.center,
-                      //                       decoration: BoxDecoration(
-                      //                  color: themedata.secondary,
-                      //                           borderRadius:
-                      //                               BorderRadius.circular(4)),
-                      //                       child: const Text(
-                      //                         'Buy Now',
-                      //                         style: MyStyle.tx9Green,
-                      //                       ),
-                      //                     ),
-                      //                   )
-                      //                 ],
-                      //               ),
-                      //             )),
-                      //       ],
-                      //     ),
-                      //     const Spacer(),
-                      //     Column(
-                      //       crossAxisAlignment: CrossAxisAlignment.start,
-                      //       children: [
-                      //         Align(
-                      //           alignment: Alignment.centerLeft,
-                      //           child: Text(
-                      //             'Electricity',
-                      //             style: MyStyle.tx18Black
-                      //                 .copyWith(fontWeight: FontWeight.w400),
-                      //           ),
-                      //         ),
-                      //         const SizedBox(
-                      //           height: 20,
-                      //         ),
-                      //         InkWell(
-                      //           onTap: () => Navigator.pushReplacement(
-                      //               context,
-                      //               MaterialPageRoute(
-                      //                   builder: (context) =>
-                      //                       const Electricity())),
-                      //           child: Container(
-                      //             width: 155,
-                      //             height: 110,
-                      //             decoration: BoxDecoration(
-                      //                    color: themedata.secondary
-                      // .withValues(alpha: 0.6),
-                      //                 borderRadius:
-                      //                     BorderRadius.circular(13.5)),
-                      //             child: Column(
-                      //               crossAxisAlignment:
-                      //                   CrossAxisAlignment.center,
-                      //               mainAxisAlignment: MainAxisAlignment.center,
-                      //               children: [
-                      //                 const SizedBox(
-                      //                   height: 12,
-                      //                 ),
-                      //                 Container(
-                      //                   height: 41,
-                      //                   width: 41,
-                      //                   // padding: const EdgeInsets.all(13),
-                      //                   alignment: Alignment.center,
-                      //                   decoration: const BoxDecoration(
-                      //              color: themedata.secondary,
-                      //                       shape: BoxShape.circle),
-                      //                   child: Transform.translate(
-                      //                     offset: const Offset(0, 10),
-                      //                     child: Image.asset(
-                      //                       "assets/images/dashboard/electric-tower-02.png",
-                      //                       height: 24,
-                      //                       width: 24,
-                      //                     ),
-                      //                   ),
-                      //                 ),
-                      //                 const SizedBox(
-                      //                   height: 4,
-                      //                 ),
-                      //                 const Text(
-                      //                   'Electricity',
-                      //                   style: MyStyle.tx9Green,
-                      //                 ),
-                      //                 const SizedBox(
-                      //                   height: 4,
-                      //                 ),
-                      //                 Center(
-                      //                   child: Container(
-                      //                     width: 52,
-                      //                     height: 20,
-                      //                     alignment: Alignment.center,
-                      //                     decoration: BoxDecoration(
-                      //                color: themedata.secondary,
-                      //                         borderRadius:
-                      //                             BorderRadius.circular(4)),
-                      //                     child: const Text(
-                      //                       'Buy Now',
-                      //                       style: MyStyle.tx9Green,
-                      //                     ),
-                      //                   ),
-                      //                 )
-                      //               ],
-                      //             ),
-                      //           ),
-                      //         ),
-                      //       ],
-                      //     ),
-                      //   ],
-                      // ),
-                      // const SizedBox(
-                      //   height: 24,
-                      // ),
                     ],
                   ),
                 ))

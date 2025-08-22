@@ -73,8 +73,7 @@ class AuthProvider with ChangeNotifier {
     try {
       // setLoading(true);
       showLoader();
-       await AuthRepo().login(data).then((value) {
-       
+    await AuthRepo().login(data).then((value) {
         // setLoading(false);
         hideLoader();
         if (value.isNotEmpty) {
@@ -90,6 +89,7 @@ class AuthProvider with ChangeNotifier {
             }
             return;
           } else {
+            
             updateAuthToken(value['token']);
             if (data['email'] == 'donnpus@yahoo.com' &&
                 data['password'] == 'ASdflkj123?') {
@@ -118,7 +118,6 @@ class AuthProvider with ChangeNotifier {
      
     } catch (e) {
       log('Error: $e');
-      // setLoading(false);
       ErrorToast(e.toString());
     }
   }
@@ -292,6 +291,7 @@ class AuthProvider with ChangeNotifier {
       AccountProvider? account,
       DashboardProvider? dashProvider}) async {
     try {
+      // return false;
       showLoader();
       AuthRepo()
           .verifyOTP(
@@ -300,7 +300,7 @@ class AuthProvider with ChangeNotifier {
               is2fa: is2fa,
               isEnable2fa: isEnable2fa)
           .then((value) async {
-       
+       log('Login Data:==> ${value}');
         // setLoading(false);
         hideLoader();
         if (value.isEmpty) return false;
@@ -317,7 +317,7 @@ class AuthProvider with ChangeNotifier {
         } else {
           if (isForgetPass || isEnable2fa) {
             if (isEnable2fa) {
-              await account!.getUserProfile();
+              await account!.getUserProfile(isLoading: false);
               Get.back();
               SuccessToast(value['message']);
             }
@@ -329,7 +329,9 @@ class AuthProvider with ChangeNotifier {
             }
             updateAuthToken('');
             notifyListeners();
-            if(account?.userModel?.user?.enabledPin != '0'){
+            account?.getUserProfile().then((value) {
+              String enabledPin = value['user']['enable_pin'].toString();
+            if(enabledPin == '1' || enabledPin != 'null'){
               Get.offAll(BottomNav());
             }else{
             Get.to(
@@ -338,6 +340,7 @@ class AuthProvider with ChangeNotifier {
               ),
             );
             }
+            });
             if (value['message'] != null && value['message'] != '') {
               SuccessToast(value['message']);
             } else {

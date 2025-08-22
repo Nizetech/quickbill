@@ -24,6 +24,15 @@ class CableSummaryScreen extends StatefulWidget {
 }
 
 class _CableSummaryScreenState extends State<CableSummaryScreen> {
+  num totalAmount = 0;
+  @override
+  void initState() {
+    super.initState();
+    totalAmount = num.parse(widget.data['amount']);
+    setState(() {
+      totalAmount += 100;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
@@ -66,13 +75,22 @@ class _CableSummaryScreenState extends State<CableSummaryScreen> {
                     children: [
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.asset(
-                            widget.data['img'],
-                            height: 85.r,
-                            width: 85.r,
-                            fit: BoxFit.cover,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: MyColor.borderColor,
+                              width: 1,
+                            ),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.asset(
+                              widget.data['img'],
+                              height: 85.r,
+                              width: 85.r,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       ),
@@ -102,23 +120,43 @@ class _CableSummaryScreenState extends State<CableSummaryScreen> {
                           ),
                         ],
                       ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      Row(
-                        children: [
-                          const Text(
-                            'Customer Name',
-                            style: MyStyle.tx12Grey,
+                     
+                      if (!widget.data['showmax'])
+                        Padding(
+                          padding: const EdgeInsets.only(top: 12),
+                          child: Row(
+                            children: [
+                              const Text(
+                                'Customer Name',
+                                style: MyStyle.tx12Grey,
+                              ),
+                              const Spacer(),
+                              Text(
+                                widget.data['cableMerchant'],
+                                style: MyStyle.tx12Black.copyWith(
+                                    color: themedata.tertiary,
+                                    fontFamily: 'SF Pro Rounded'),
+                              ),
+                            ],
                           ),
-                          const Spacer(),
-                          Text(
-                            widget.data['cableMerchant'],
-                            style: MyStyle.tx12Black.copyWith(
-                                color: themedata.tertiary,
-                                fontFamily: 'SF Pro Rounded'),
-                          ),
-                        ],
+                        ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 12),
+                        child: Row(
+                          children: [
+                            const Text(
+                              'Convenience Fee',
+                              style: MyStyle.tx12Grey,
+                            ),
+                            const Spacer(),
+                            Text(
+                              "NGN 100",
+                              style: MyStyle.tx12Black.copyWith(
+                                  color: themedata.tertiary,
+                                  fontFamily: 'SF Pro Rounded'),
+                            ),
+                          ],
+                        ),
                       ),
                       const SizedBox(
                         height: 12,
@@ -202,7 +240,7 @@ class _CableSummaryScreenState extends State<CableSummaryScreen> {
                           Text(
                             '${Utils.naira} ${formatNumber(
                               num.parse(
-                                widget.data['amount'],
+                                totalAmount.toString(),
                               ),
                             )}',
                             style: MyStyle.tx14Black.copyWith(
@@ -234,9 +272,12 @@ class _CableSummaryScreenState extends State<CableSummaryScreen> {
                         "card": widget.data['card'],
                         "phone": widget.data['phone'],
                         "package": widget.data['package'],
-                        'amount': widget.data['amount'],
+                        'amount': totalAmount.toString(),
                       };
-                      model.buyCable(data);
+                      model.buyCable(
+                        data,
+                        isShowmax: widget.data['showmax'],
+                      );
                     },
                     child: Text(
                       "Confirm",

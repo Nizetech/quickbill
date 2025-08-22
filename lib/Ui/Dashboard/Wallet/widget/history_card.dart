@@ -1,3 +1,4 @@
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,6 +31,7 @@ class HistoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log('transaction:==> ${transaction.toJson()}');
     Color getStatus(Datum transaction) {
       if (transaction.type == Type.SPRAY && transaction.status == '2') {
         return MyColor.dark01GreenColor;

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jost_pay_wallet/constants/api_constants.dart';
 import 'package:jost_pay_wallet/constants/constants.dart';
@@ -8,7 +7,6 @@ import 'package:jost_pay_wallet/utils/network_clients.dart';
 class ServiceRepo {
   final client = NetworkClient();
   final box = Hive.box(kAppName);
-
 
   Future<Map<String, dynamic>> getCarTypes() async {
     String token = await box.get(kAccessToken);
@@ -437,6 +435,20 @@ class ServiceRepo {
     try {
       final response =
           await client.post(ApiRoute.buyCable, body: data, requestHeaders: {
+        'Authorization': token,
+      });
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
+  Future<Map<String, dynamic>> getReceipt(Map<String, dynamic> data) async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response =
+          await client.post(ApiRoute.receipt, body: data, requestHeaders: {
         'Authorization': token,
       });
       return response;

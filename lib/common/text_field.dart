@@ -130,6 +130,7 @@ class UnderlineTextfield extends StatelessWidget {
   final String hintText;
   final bool isEnabled;
   final FocusNode? focusNode;
+  final Function(String)? onChanged;
   const UnderlineTextfield(
       {
     super.key,
@@ -137,6 +138,7 @@ class UnderlineTextfield extends StatelessWidget {
     required this.hintText,
     this.isEnabled = true,
     this.focusNode,
+    this.onChanged,
   });
 
   @override
@@ -145,7 +147,7 @@ class UnderlineTextfield extends StatelessWidget {
     return TextFormField(
       enabled: isEnabled,
       controller: controller,
-      
+      onChanged: onChanged,
       keyboardType: TextInputType.number,
       onTapOutside: (_) => FocusScope.of(context).unfocus(),
       style: TextStyle(

@@ -58,7 +58,7 @@ class OnboardingScreen extends StatelessWidget {
                   height: 3,
                 ),
                 const Text(
-                  "Buy airtime, data, car repairs, auto painting, hosting, domain & SSL, car sales & more—all on Jostpay.",
+                  "Buy airtime, data, electricity tokens, cable TV, car repairs & painting, domains, hosting, and much more conveniently on JostPay",
                   style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w400,

@@ -88,50 +88,62 @@ class _BuyElectricityState extends State<BuyElectricity> {
     {
       'serviceId': 'ikeja-electric',
       'name': 'Ikeja Electric',
+      'img': 'assets/images/ikeja.png',
     },
     {
       'serviceId': 'kano-electric',
       'name': 'Kano Electric',
+      'img': 'assets/images/kano.png',
     },
     {
       'serviceId': 'eko-electric',
       'name': 'Eko Electric',
+      'img': 'assets/images/eko.png',
     },
     {
       'serviceId': 'portharcourt-electric',
       'name': 'P.Harcourt Electric',
+      'img': 'assets/images/pharcort.png',
     },
     {
       'serviceId': 'jos-electric',
       'name': 'Jos Electric',
+      'img': 'assets/images/jos.png',
     },
     {
       'serviceId': 'ibadan-electric',
       'name': 'Ibadan Electric',
+      'img': 'assets/images/ibadan.png',
     },
     {
       'serviceId': 'kaduna-electric',
       'name': 'Kaduna Electric',
+      'img': 'assets/images/kaduna.png',
     },
     {
       'serviceId': 'abuja-electric',
       'name': 'Abuja Electric',
+      'img': 'assets/images/abuja.png',
     },
     {
       'serviceId': 'enugu-electric',
       'name': 'Enugu Electric',
+      'img': 'assets/images/enugu.png',
     },
     {
       'serviceId': 'benin-electric',
       'name': 'Benin Electric',
+      'img': 'assets/images/benin.png',
     },
     {
       'serviceId': 'aba-electric',
       'name': 'Aba Electric',
+      'img': 'assets/images/aba.png'
     },
     {
       'serviceId': 'yola-electric',
       'name': 'Yola Electric',
+      'img': 'assets/images/yola.png',
     },
   ];
 
@@ -239,7 +251,19 @@ class _BuyElectricityState extends State<BuyElectricity> {
                                         : MyColor.grey01Color,
                                   ),
                                   child: Row(
+
                                     children: [
+                                      if (selectedService.isNotEmpty)
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(right: 10),
+                                          child: Image.asset(
+                                            selectedService['img'] ?? '',
+                                            width: 20,
+                                            height: 20,
+                                          ),
+                                        ),
+                                     
                                       Text(
                                         selectedService['name'] ??
                                             'Please select package',
@@ -261,7 +285,7 @@ class _BuyElectricityState extends State<BuyElectricity> {
                               ),
                             ),
                             SizedBox(
-                              width: 10,
+                              width: 10
                             ),
                             PopupMenuButton(
                               itemBuilder: (context) => meterTypes.map((e) {
@@ -364,6 +388,11 @@ class _BuyElectricityState extends State<BuyElectricity> {
                                 child: UnderlineTextfield(
                                     controller: _controller,
                                     isEnabled: selectedService.isNotEmpty,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        cableMerchant = '';
+                                      });
+                                    },
                                     focusNode: _focusNode,
                                     hintText: 'Enter Meter Number'),
                               ),
@@ -438,6 +467,12 @@ class _BuyElectricityState extends State<BuyElectricity> {
                               } else {
                                 if (num.parse(amount.text) > model.balance!) {
                                   ErrorToast('Insufficient balance');
+                                } else if (selectedMeterType == 0 &&
+                                    num.parse(amount.text) < 2000) {
+                                  ErrorToast('Minimum amount is 2000');
+                                } else if (selectedMeterType == 1 &&
+                                    num.parse(amount.text) < 5000) {
+                                  ErrorToast('Minimum amount is 5000');
                                 } else {
                                   Get.to(ElectricitySummaryScreen(
                                     data: {
@@ -448,6 +483,7 @@ class _BuyElectricityState extends State<BuyElectricity> {
                                       'amount': amount.text,
                                       'merchant': cableMerchant,
                                       'meter_number': _controller.text,
+                                      'img': selectedService['img'],
                                       'meter_type':
                                           meterTypes[selectedMeterType],
                                     },

@@ -20,10 +20,8 @@ import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/profile_image.dart';
 import 'package:jost_pay_wallet/Ui/Domain/domain_screen.dart';
 import 'package:jost_pay_wallet/Ui/Paint/paint_history.dart';
 import 'package:jost_pay_wallet/Ui/cable/cable_history.dart';
-import 'package:jost_pay_wallet/Ui/car/car_history.dart';
+import 'package:jost_pay_wallet/Ui/electricity/electricity_history.dart';
 import 'package:jost_pay_wallet/Ui/repair/repairdetail_screen.dart';
-import 'package:jost_pay_wallet/Ui/pay4me/pay4me_history.dart';
-import 'package:jost_pay_wallet/Ui/promotions/social_boost_history.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
@@ -97,7 +95,8 @@ class _WalletScreenState extends State<WalletScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Consumer<AccountProvider>(builder: (context, model, _) {
-        log('${model.userModel?.toJson()}');
+        log('user==> ${model.userModel?.toJson()}');
+        log('user==> ${model.userModel?.user?.enabledPin.runtimeType}');
         return RefreshIndicator(
           onRefresh: () async {
             await refreshAll();
@@ -239,6 +238,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                           child: Container(
                                             width: 13,
                                             height: 13,
+                                            alignment: Alignment.center,
                                             decoration: BoxDecoration(
                                               color: MyColor.redColor,
                                               shape: BoxShape.circle,
@@ -456,10 +456,11 @@ class _WalletScreenState extends State<WalletScreen> {
                                                 builder: (context) =>
                                                  
                                                     // const PayForMeHistory()
-                                                    CableHistory())),
+                                                    ElectricityHistory())),
                                         child: Container(
                                           width: 54,
                                           height: 50,
+                                          padding: const EdgeInsets.all(10),
                                           decoration: BoxDecoration(
                                             border: Border.all(
                                               color: MyColor.greenColor,
@@ -468,10 +469,9 @@ class _WalletScreenState extends State<WalletScreen> {
                                             borderRadius:
                                                 BorderRadius.circular(12.3),
                                           ),
-                                          child: Image.asset(
-                                            'assets/images/dashboard/bitcoin-03.png',
-                                            width: 23,
-                                            height: 23,
+                                          child: SvgPicture.asset(
+                                            'assets/images/electricity.svg',
+                                          
                                           ),
                                         ))
                                   ],
@@ -481,7 +481,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                   children: [
                                     Text(
                                         // 'Pay4me',
-                                        'Cable',
+                                        'Electricity',
                                         style: MyStyle.tx12Black.copyWith(
                                             color: Theme.of(context)
                                                 .colorScheme
@@ -499,11 +499,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                     GestureDetector(
                                       onTap: () =>
                                           dashProvider.changeBottomIndex(1),
-                                      // Navigator.push(
-                                      //     context,
-                                      //     MaterialPageRoute(
-                                      //         builder: (context) =>
-                                      //             const Services())),
+                                    
                                       child: Container(
                                         width: 54,
                                         height: 50,
@@ -677,8 +673,8 @@ class _WalletScreenState extends State<WalletScreen> {
                                     MaterialPageRoute(
                                     builder: (context) {
                                       return Platform.isIOS
-                                          ? CarHistory()
-                                          : SocialBoostHistory();
+                                          ? ElectricityHistory()
+                                          : CableHistory();
                                     },
                                   ),
                                 ),
@@ -695,12 +691,12 @@ class _WalletScreenState extends State<WalletScreen> {
                                           borderRadius:
                                               BorderRadius.circular(14),
                                           boxShadow: const [
-                                            MyStyle.widgetShadow,
+                                            MyStyle.widgetShadow
                                           ],
                                         ),
                                         child: SvgPicture.asset(
                                           Platform.isIOS
-                                              ? 'assets/images/car.svg'
+                                              ? 'assets/images/electricity.svg'
                                               :
                                           'assets/images/svg/socialBoost.svg',
                                           height: 33.r,
@@ -714,7 +710,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                         children: [
                                           Text(
                                               Platform.isIOS
-                                                  ? "Buy Car"
+                                                  ? "Electricity "
                                                   : 'Social Boost',
                                               style: MyStyle.tx12Black.copyWith(
                                                   color: Theme.of(context)
@@ -736,7 +732,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      const PayForMeHistory())),
+                                                      const CableHistory())),
                                           child: Container(
                                             width: 61,
                                             height: 56.5,
@@ -751,7 +747,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                               ],
                                             ),
                                             child: SvgPicture.asset(
-                                              'assets/images/svg/payment.svg',
+                                              'assets/images/cable.svg',
                                               height: 33.r,
                                               width: 33.r,
                                             ),
@@ -764,11 +760,14 @@ class _WalletScreenState extends State<WalletScreen> {
                                     ),
                                     Row(
                                       children: [
-                                        Text('Pay4me',
+                                        Text(
+                                          'Cable Tv',
                                             style: MyStyle.tx12Black.copyWith(
                                                 color: Theme.of(context)
                                                     .colorScheme
-                                                    .tertiary))
+                                                .tertiary,
+                                          ),
+                                        )
                                       ],
                                     )
                                   ],

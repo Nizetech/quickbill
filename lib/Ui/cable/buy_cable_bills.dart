@@ -44,23 +44,33 @@ class _BuyCableBillsState extends State<BuyCableBills> {
   @override
   void initState() {
     super.initState();
-    _controller.addListener(_onTyping);
+    var model = Provider.of<AccountProvider>(context, listen: false);
+    phone.text = model.userModel?.user?.phoneNumber?.replaceAll('+', '') ?? '';
+    _controller.addListener(() {
+      _onTyping();
+    });
   }
 
   void _onTyping() {
+    bool isShowmax = selectedItem == 3;
+    if (isShowmax) {
+      return;
+    } else {
     if (_typingTimer != null && _typingTimer!.isActive ||
         _controller.text.isEmpty) {
       cableMerchant = '';
       _typingTimer!.cancel();
     }
     _typingTimer = Timer(Duration(seconds: 3), () {
-      resolveMeterNumber();
+        resolveCardNumber();
     });
+    }
   }
 
-  void resolveMeterNumber() async {
+  void resolveCardNumber() async {
     final model = Provider.of<ServiceProvider>(context, listen: false);
     if (_controller.text.isEmpty ||
+        phone.text.isEmpty ||
         selectedItem == -1 ||
         _controller.text.length < 10) {
       return;
@@ -205,10 +215,22 @@ class _BuyCableBillsState extends State<BuyCableBills> {
                                             setState(
                                               () {
                                                 selectedItem = index;
+                                                _controller.clear();
+                                                amount.clear();
+                                                selectedPlan = null;
                                                 selectedServiceId =
                                                     item['serviceId'];
                                                 selectedPlan = null;
                                                 cableMerchant = '';
+                                                if (selectedItem != 3) {
+                                                  phone.text = model.userModel
+                                                          ?.user?.phoneNumber
+                                                          ?.replaceAll(
+                                                              '+', '') ??
+                                                      '';
+                                                } else {
+                                                  phone.clear();
+                                                }
                                               },
                                             ),
                                             service.getCableVariations(
@@ -439,7 +461,7 @@ class _BuyCableBillsState extends State<BuyCableBills> {
                             onPressed: () {
                               if (amount.text.isEmpty ||
                                   phone.text.isEmpty ||
-                                  cableMerchant.isEmpty) {
+                                  selectedItem != 3 && cableMerchant.isEmpty) {
                                 ErrorToast('Please fill all fields');
                               } else if (selectedItem == -1) {
                                 ErrorToast('Please select network');
@@ -456,6 +478,7 @@ class _BuyCableBillsState extends State<BuyCableBills> {
                                       'name': selectedPlan!.name,
                                       'phone': phone.text,
                                       'amount': amount.text,
+                                      'showmax': selectedItem == 3,
                                       'cableMerchant': cableMerchant,
                                       'card': _controller.text,
                                       'package': selectedPlan!.name,

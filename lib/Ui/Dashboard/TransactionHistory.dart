@@ -134,13 +134,9 @@ class _TransactionhistoryState extends State<Transactionhistory> {
                                 itemCount: value.length,
                                 padding: const EdgeInsets.all(0),
                                 shrinkWrap: true,
-                                // reverse: true,
                                 physics: const NeverScrollableScrollPhysics(),
                                 itemBuilder: (context, index) {
                                   Datum transaction = value[index];
-                                  // TransactionModel transaction =
-                                  //     TransactionModel.fromJson(data);
-
                                   return HistoryCard(transaction: transaction);
                                 },
                               ),

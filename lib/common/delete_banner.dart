@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:jost_pay_wallet/Ui/kyc/kyc_verification.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 
@@ -22,18 +24,10 @@ class _DeleteBannerState extends State<DeleteBanner> {
   @override
   void initState() {
     super.initState();
-    // final account = Provider.of<AccountProvider>(context, listen: false);
-    // Initialize the timer logic after the widget is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
       DateTime baseDate = DateTime.parse(widget.date);
       targetDate = baseDate.add(const Duration(days: 14));
       _updateTimeLeft();
-      if (isElapsed) {
-        //todo uncomment this
-        log("Delete Account.........");
-        // account.deleteAccount();
-        // Get.to(SignInScreen());
-      }
       _startTimer();
     });
   }
@@ -124,25 +118,30 @@ class _DeleteBannerState extends State<DeleteBanner> {
                 ),
               ),
               SizedBox(width: 5),
-              Container(
-                height: 52,
-                alignment: Alignment.center,
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                decoration: BoxDecoration(
-                  color: Color(0xff097B09),
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border(
-                    right: BorderSide(
-                      color: Colors.white,
-                      width: 1,
+              GestureDetector(
+                onTap: () {
+                  Get.to(KycVerification());
+                },
+                child: Container(
+                  height: 52,
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  decoration: BoxDecoration(
+                    color: Color(0xff097B09),
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border(
+                      right: BorderSide(
+                        color: Colors.white,
+                        width: 1,
+                      ),
                     ),
                   ),
-                ),
-                child: Text(
-                  'Activate Now',
-                  style: MyStyle.tx12Black.copyWith(
-                    color: MyColor.mainWhiteColor,
-                    fontWeight: FontWeight.w600,
+                  child: Text(
+                    'Activate Now',
+                    style: MyStyle.tx12Black.copyWith(
+                      color: MyColor.mainWhiteColor,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ),

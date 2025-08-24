@@ -1,17 +1,19 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Models/transactions.dart';
+import 'package:jost_pay_wallet/Provider/service_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyAirtimeConfirm.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyData.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/receipt_script.dart';
 import 'package:jost_pay_wallet/Ui/Paint/paint_history.dart';
 import 'package:jost_pay_wallet/Ui/Scripts/script_history.dart';
+import 'package:jost_pay_wallet/Ui/cable/cable_history.dart';
 import 'package:jost_pay_wallet/Ui/car/car_history.dart';
+import 'package:jost_pay_wallet/Ui/electricity/electricity_history.dart';
 import 'package:jost_pay_wallet/Ui/repair/repairdetail_screen.dart';
 import 'package:jost_pay_wallet/Ui/giftCard/gift_card_history.dart';
 import 'package:jost_pay_wallet/Ui/pay4me/pay4me_history.dart';
@@ -31,7 +33,6 @@ class HistoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    log('transaction:==> ${transaction.toJson()}');
     Color getStatus(Datum transaction) {
       if (transaction.type == Type.SPRAY && transaction.status == '2') {
         return MyColor.dark01GreenColor;
@@ -49,7 +50,6 @@ class HistoryCard extends StatelessWidget {
       }
     }
 
-
     bool isSpecialTransactionService(Datum transaction) {
       if (transaction.type == Type.PAY4_ME ||
           transaction.type == Type.GIFTCARD) {
@@ -59,19 +59,9 @@ class HistoryCard extends StatelessWidget {
       }
     }
 
-    // bool isValid(Datum transaction) {
-    //   return isSpecialTransactionService(transaction) &&
-    //           transaction.status == '0' ||
-    //       transaction.type == Type.SPRAY &&
-    //           transaction.status != '2' &&
-    //           //     transaction.type == Type.AUTOREPAIR &&
-    //           //     transaction.status != '2' ||
-    //           // transaction.type == Type.AUTOREPAIR && transaction.status != '2' ||
-    //       transaction.apiStatus != null &&
-    //           transaction.apiStatus!.contains('pending') ||
-    //       transaction.type == Type.SOCIALBOOST &&
-    //           !transaction.apiStatus!.toLowerCase().contains('success');
-    // }
+    String getPhone(Datum transaction) {
+      return transaction.details!.split(' Phone: ')[1].split(',')[0].toString();
+    }
 
     String getOperator(Datum transaction) {
       String operator = transaction.details!
@@ -83,16 +73,10 @@ class HistoryCard extends StatelessWidget {
       return operator;
     }
 
-    String getPhone(Datum transaction) {
-      return transaction.details!.split(' Phone: ')[1].split(',')[0].toString();
-    }
-
-    // String getDataPlan(Datum transaction) {
-    //   return transaction.details!.split(' Plan: ')[1].split(',')[0].toString();
-    // }
 
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     final themedata = Theme.of(context).colorScheme;
+    final model = context.read<ServiceProvider>();
     return Row(
       children: [
         Container(
@@ -125,20 +109,20 @@ class HistoryCard extends StatelessWidget {
                           ? transaction.details!.split(' name: ')[1].toString()
                           : transaction.type == Type.AUTOREPAIR
                               ? "AutoRepair - ${transaction.details}"
-                          : transaction.type == Type.SOCIALBOOST
-                              ? transaction.details!
-                                  .split(' name: ')[1]
-                                  .toString()
-                              : transaction.type == Type.GIFTCARD
+                              : transaction.type == Type.SOCIALBOOST
                                   ? transaction.details!
-                                  : transaction.type == Type.MOTORS
+                                      .split(' name: ')[1]
+                                      .toString()
+                                  : transaction.type == Type.GIFTCARD
                                       ? transaction.details!
-                                          .split(' name: ')[1]
-                                          .toString()
-                                      : transaction.type == Type.PAY4_ME
+                                      : transaction.type == Type.MOTORS
                                           ? transaction.details!
-                                              .split(' link: ')[1]
+                                              .split(' name: ')[1]
                                               .toString()
+                                          : transaction.type == Type.PAY4_ME
+                                              ? transaction.details!
+                                                  .split(' link: ')[1]
+                                                  .toString()
                                               : (transaction.type ==
                                                           Type.ELECTRICITY ||
                                                       transaction.type ==
@@ -146,8 +130,8 @@ class HistoryCard extends StatelessWidget {
                                                   ? transaction.details!
                                                       .split(' ID: ')[1]
                                                       .toString()
-                                          : transaction
-                                              .type!.name.capitalizeFirst!
+                                                  : transaction.type!.name
+                                                      .capitalizeFirst!
                       : transaction.details!,
                   maxLines: 1,
                   style: MyStyle.tx12Black.copyWith(
@@ -256,6 +240,10 @@ class HistoryCard extends StatelessWidget {
                         Get.to(SocialBoostHistory());
                       } else if (transaction.type == Type.SPRAY) {
                         Get.to(PaintHistory());
+                      } else if (transaction.type == Type.ELECTRICITY) {
+                        Get.to(ElectricityHistory());
+                      } else if (transaction.type == Type.CABLE) {
+                        Get.to(CableHistory());
                       } else if (transaction.type == Type.MOTORS) {
                         Get.to(CarHistory());
                       } else {
@@ -263,7 +251,7 @@ class HistoryCard extends StatelessWidget {
                       }
                     },
                     child: Padding(
-                        padding: EdgeInsets.only(left: 5.w),
+                      padding: EdgeInsets.only(left: 5.w),
                       child: SvgPicture.asset('assets/images/refresh.svg'),
                     ),
                   ),
@@ -283,34 +271,18 @@ class HistoryCard extends StatelessWidget {
                         child: SvgPicture.asset('assets/images/pending.svg'))
                     : CircleAvatar(
                         radius: 7,
-                        backgroundColor:
-                            //  transaction.type == Type.AUTOREPAIR &&
-                            //         transaction.status != '2'
-                            //     ? MyColor.redColor
-                            //     :
-                            getStatus(transaction),
+                        backgroundColor: getStatus(transaction),
                         child: Icon(
-                          // transaction.type == Type.AUTOREPAIR &&
-                          //         transaction.status != '2'
-                          //     ?
-                          // Icons.close
-                          // :
-                          getStatus(transaction) ==
-                                          MyColor.dark01GreenColor ||
-                                      isSpecialTransactionService(
-                                              transaction) &&
+                          getStatus(transaction) == MyColor.dark01GreenColor ||
+                                  isSpecialTransactionService(transaction) &&
                                       transaction.status == '1'
-                              //     ||
-                              // transaction.type == Type.AUTOREPAIR &&
-                              //     transaction.status == '2'
-                                  ? Icons.done
-                                  : Icons.close,
+                              ? Icons.done
+                              : Icons.close,
                           size: 10,
                           color: Colors.white,
                         ),
                       ),
                 SizedBox(width: 5.w),
-
                 GestureDetector(
                   onTap: () {
                     if ((transaction.apiStatus != null &&
@@ -323,28 +295,31 @@ class HistoryCard extends StatelessWidget {
                       ErrorToast(
                           'No receipt available yet. Your order has not been completed.');
                     } else {
-                      Get.to(ReceiptScreen(
-                          status: '1',
-                        serviceDetails: transaction.type == Type.DATA
-                              ? "Data - ${getPhone(transaction)}"
-                              : transaction.type == Type.AIRTIME
-                                ? "Airtime"
-                                  : transaction.type != null
-                                      ? transaction.type!.name.capitalizeFirst!
-                                      : transaction.details!,
-                        referenceNo: transaction.reference!,
-                        amount: transaction.amount!,
-                        description: transaction.type == Type.DATA ||
-                                transaction.type == Type.AIRTIME
-                            ? '${getOperator(transaction).toUpperCase()} - ${transaction.type!.name.capitalizeFirst!}'
-                            : transaction.details!,
-                        date: transaction.transDate!.toString(),
-                        ),
-                      );
+                      if (transaction.type == Type.ELECTRICITY ||
+                          transaction.type == Type.CABLE) {
+                        model.getReceipt({
+                          'id': transaction.id,
+                          'type': transaction.type == Type.ELECTRICITY
+                              ? 'electricity'
+                              : 'cable',
+                        }, callback: () {
+                          viewReceipt(
+                            transaction: transaction,
+                            getPhone: getPhone,
+                            getOperator: getOperator,
+                          );
+                        });
+                      } else {
+                        viewReceipt(
+                          transaction: transaction,
+                          getPhone: getPhone,
+                          getOperator: getOperator,
+                        );
+                      }
+                  
                     }
                   },
                   child: Container(
-                   
                       decoration: BoxDecoration(
                           color: themedata.secondary,
                           borderRadius: BorderRadius.circular(15)),
@@ -367,12 +342,39 @@ class HistoryCard extends StatelessWidget {
                         ),
                       )),
                 ),
-              
               ],
             )
           ],
         ),
       ],
+    );
+  }
+
+  void viewReceipt({
+    required Datum transaction,
+    required String Function(Datum transaction) getPhone,
+    required String Function(Datum transaction) getOperator,
+  }) {
+    Get.to(
+      ReceiptScreen(
+        status: '1',
+        isElectricity: transaction.type == Type.ELECTRICITY,
+        isCable: transaction.type == Type.CABLE,
+        serviceDetails: transaction.type == Type.DATA
+            ? "Data - ${getPhone(transaction)}"
+            : transaction.type == Type.AIRTIME
+                ? "Airtime"
+                : transaction.type != null
+                    ? transaction.type!.name.capitalizeFirst!
+                    : transaction.details!,
+        referenceNo: transaction.reference!,
+        amount: transaction.amount!,
+        description: transaction.type == Type.DATA ||
+                transaction.type == Type.AIRTIME
+            ? '${getOperator(transaction).toUpperCase()} - ${transaction.type!.name.capitalizeFirst!}'
+            : transaction.details!,
+        date: transaction.transDate!.toString(),
+      ),
     );
   }
 }

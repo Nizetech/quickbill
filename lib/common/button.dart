@@ -13,6 +13,8 @@ class CustomButton extends StatelessWidget {
   final double? radius;
   final Color? bgColor;
   final Color? textColor;
+  final FontWeight? fontWeight;
+
   const CustomButton(
       {super.key,
       this.isLoading = false,
@@ -20,17 +22,20 @@ class CustomButton extends StatelessWidget {
       this.bgColor,
       this.textColor,
       required this.text,
-      required this.onTap});
+    required this.onTap,
+    this.fontWeight,
+  });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
+      height: 50,
       child: TextButton(
         onPressed: isLoading ? null : onTap,
         style: TextButton.styleFrom(
           backgroundColor: bgColor ?? MyColor.greenColor,
-          padding: const EdgeInsets.symmetric(vertical: 14),
+          padding: EdgeInsets.zero,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(radius ?? 10),
           ),
@@ -44,12 +49,15 @@ class CustomButton extends StatelessWidget {
             : Text(
                 text,
                 style: NewStyle.btnTx16SplashBlue
-                    .copyWith(color: textColor ?? NewColor.mainWhiteColor),
+                    .copyWith(
+                    color: textColor ?? NewColor.mainWhiteColor,
+                    fontWeight: fontWeight ?? FontWeight.w700),
               ),
       ),
     );
   }
 }
+
 
 class BackBtn extends StatelessWidget {
   final VoidCallback? onTap;

@@ -243,7 +243,13 @@ class _ElectricityHistoryState extends State<ElectricityHistory> {
                                                   ErrorToast(
                                                       'No receipt available yet. Your order has not been completed.');
                                                 } else {
+                                                  model.getReceipt({
+                                                    'id': item.id,
+                                                    'type': 'electricity',
+                                                  }, callback: () {
+                                                  
                                                   Get.to(ReceiptScreen(
+                                                      isElectricity: true,
                                                     status: item.status!,
                                                     serviceDetails: item
                                                             .discoName
@@ -256,6 +262,7 @@ class _ElectricityHistoryState extends State<ElectricityHistory> {
                                                     amount: item.amount!,
                                                     date: item.updatedAt!,
                                                   ));
+                                                  });
                                                 }
                                               },
                                             ),

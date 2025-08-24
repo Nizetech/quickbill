@@ -10,6 +10,7 @@ import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/service_tile.dart';
 import 'package:jost_pay_wallet/Ui/Domain/domain_screen.dart';
 import 'package:jost_pay_wallet/Ui/Paint/paint_history.dart';
 import 'package:jost_pay_wallet/Ui/Scripts/script_history.dart';
+import 'package:jost_pay_wallet/Ui/cable/cable_history.dart';
 import 'package:jost_pay_wallet/Ui/electricity/electricity_history.dart';
 import 'package:jost_pay_wallet/Ui/repair/repairdetail_screen.dart';
 import 'package:jost_pay_wallet/Ui/giftCard/gift_card_history.dart';
@@ -173,7 +174,7 @@ class _ServicesState extends State<Services> {
                             ServiceTile(
                               icon: 'assets/images/cable.svg',
                               title: 'Buy Cable Tv',
-                              page: const GiftCardHistory(),
+                              page: const CableHistory(),
                             )
                         ],
                       ),
@@ -184,7 +185,7 @@ class _ServicesState extends State<Services> {
                         ServiceTile(
                           icon: 'assets/images/cable.svg',
                           title: 'Buy Cable Tv',
-                          page: const GiftCardHistory(),
+                          page: const CableHistory(),
                         ),
                       ],
                       const SizedBox(

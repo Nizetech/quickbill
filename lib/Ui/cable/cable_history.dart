@@ -198,14 +198,13 @@ class _CableHistoryState extends State<CableHistory> {
                                               formatDateTime(
                                                 DateTime.parse(item.updatedAt!),
                                               ),
-                                              //  dateFormat.format(item.createdAt!),
                                               style: MyStyle.tx12Black.copyWith(
                                                 color: themeProvider
                                                         .isDarkMode()
                                                     ? const Color(0XFFCBD2EB)
                                                     : const Color(0xff30333A),
                                               ),
-                                            )
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -247,7 +246,7 @@ class _CableHistoryState extends State<CableHistory> {
                                                     serviceDetails:
                                                         item.package ?? "",
                                                     description:
-                                                        "${item.networkName!.capitalizeFirst} ",
+                                                        "${item.networkName!.capitalizeFirst} - ${item.package} - ${item.smartCard}",
                                                     referenceNo:
                                                         item.reference!,
                                                     amount: item.amount!,

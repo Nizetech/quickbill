@@ -10,9 +10,8 @@ import 'package:jost_pay_wallet/common/button.dart';
 import 'package:jost_pay_wallet/common/text_field.dart';
 import 'package:jost_pay_wallet/common/upgrader.dart';
 import 'package:jost_pay_wallet/utils/toast.dart';
-// import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
-// import 'package:csc_picker/csc_picker.dart';
+
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});

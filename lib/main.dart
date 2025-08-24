@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,9 +15,18 @@ import 'package:provider/provider.dart';
 import 'Provider/account_provider.dart';
 import 'Provider/DashboardProvider.dart';
 import 'Provider/InternetProvider.dart';
-
+/// Getting available cameras for testing.
+@visibleForTesting
+List<CameraDescription> get cameras => _cameras;
+List<CameraDescription> _cameras = <CameraDescription>[];
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  try {
+    WidgetsFlutterBinding.ensureInitialized();
+    _cameras = await availableCameras();
+  } on CameraException catch (e) {
+    print(e.code);
+    print(e.description);
+  }
   await ScreenUtil.ensureScreenSize();
   startKeepAlive();
   SystemChrome.setPreferredOrientations(

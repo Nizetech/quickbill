@@ -15,7 +15,7 @@ class MyColor {
   static Color outlineDasheColor = const Color(0xffAAAAAA);
   // static const Color greenColor = Color(0xFF00c26d);
   static const Color blueColor = Color(0xFF1c7efc);
-  static const Color backgroundColor = Color(0xFF141416);
+  static const Color backgroundColor = Color(0xFF0D0D0D);
   static const Color whiteColor = Color(0xFFe6e7e9);
   static const Color mainWhiteColor = Color(0xFFFFFFFF);
   static const Color orange01Color = Color(0xFFde8e38);

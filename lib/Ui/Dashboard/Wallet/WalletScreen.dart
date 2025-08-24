@@ -95,8 +95,6 @@ class _WalletScreenState extends State<WalletScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Consumer<AccountProvider>(builder: (context, model, _) {
-        log('user==> ${model.userModel?.toJson()}');
-        log('user==> ${model.userModel?.user?.enabledPin.runtimeType}');
         return RefreshIndicator(
           onRefresh: () async {
             await refreshAll();
@@ -180,11 +178,7 @@ class _WalletScreenState extends State<WalletScreen> {
                               children: [
                                 GestureDetector(
                                   onTap: () {
-                                    // Navigator.push(
-                                    //     context,
-                                    //     MaterialPageRoute(
-                                    //         builder: (context) =>
-                                    //             const SupportScreen()));
+                                  
                                     dashProvider.changeBottomIndex(9);
                                   },
                                   child: SvgPicture.asset(
@@ -269,7 +263,7 @@ class _WalletScreenState extends State<WalletScreen> {
                       Container(
                         padding: const EdgeInsets.only(left: 24.0, right: 12.0),
                         decoration: BoxDecoration(
-                            // color: MyColor.lightGreenColor,
+                       
                             color: Theme.of(context).colorScheme.secondary,
                             border: Border.all(
                                 color: themeProvider.isDarkMode()
@@ -306,7 +300,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                   child: Container(
                                     height: 41,
                                     width: 41,
-                                    // padding: const EdgeInsets.all(13),
+                                
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(
                                         color: Theme.of(context)
@@ -539,18 +533,20 @@ class _WalletScreenState extends State<WalletScreen> {
                     ],
                   ),
                 ),
-                if (accountProvider.userModel?.user?.createdAt != null &&
-                    accountProvider.userModel?.user?.isActive == false)
+                if (accountProvider.userModel?.user?.createdAt != null
+                    // &&
+                    //     accountProvider.userModel?.user?.isActive == false
+                    )
                   DeleteBanner(
-                      date: accountProvider.userModel!.user!.createdAt!)
-                else
-                  Visibility(
-                      visible: dashProvider.promotionBanner,
-                      child: BannerAds(
-                        dashProvider: dashProvider,
-                      )),
-                //?
-                //! Here is the services section
+                      date: accountProvider.userModel!.user!.createdAt!),
+                // else
+                //   Visibility(
+                //       visible: dashProvider.promotionBanner,
+                //       child: BannerAds(
+                //         dashProvider: dashProvider,
+                //       )),
+             
+
                 Expanded(
                   child: SingleChildScrollView(
                     child: Padding(

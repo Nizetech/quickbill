@@ -7,6 +7,7 @@ import 'package:jost_pay_wallet/Ui/kyc/widget/preview_image.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 class FaceDetection extends StatefulWidget {
   const FaceDetection({super.key});
@@ -25,6 +26,13 @@ class _FaceDetectionState extends State<FaceDetection>
       length: 3,
       vsync: this,
     );
+  }
+
+  XFile? imageFile;
+  void onImageCaptured(XFile image) {
+    setState(() {
+      imageFile = image;
+    });
   }
 
   @override
@@ -73,9 +81,17 @@ class _FaceDetectionState extends State<FaceDetection>
             child: TabBarView(
               controller: tabController,
               children: [
-                CaptureImage(),
-                PreviewImage(),
-                CaptureSuccess(),
+                CaptureImage(
+                  onImageCaptured: onImageCaptured,
+                  tabController: tabController,
+                ),
+                PreviewImage(
+                  imagePath: imageFile?.path ?? '',
+                  tabController: tabController,
+                ),
+                CaptureSuccess(
+                  imagePath: imageFile?.path ?? '',
+                ),
               ],
             ),
           )

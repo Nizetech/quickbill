@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
+import 'package:jost_pay_wallet/Ui/kyc/start_face_detection.dart';
 import 'package:jost_pay_wallet/Ui/kyc/widget/info_wrap.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
@@ -97,7 +98,9 @@ class _VerifyImageState extends State<VerifyImage> {
                 child: CustomButton(
                   text: "Submit",
                   radius: 60,
-                  onTap: () {},
+                  onTap: () {
+                    Get.to(() => const StartFaceDetection());
+                  },
                 ),
               ),
               const SizedBox(height: 10),

@@ -1,17 +1,29 @@
+import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
+import 'dart:typed_data';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:image/image.dart' as img;
+import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Ui/kyc/widget/info_wrap.dart';
-import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/common/button.dart';
 import 'package:jost_pay_wallet/main.dart';
+import 'package:provider/provider.dart';
 
 class CaptureImage extends StatefulWidget {
-  const CaptureImage({super.key});
+  final Function(XFile) onImageCaptured;
+  final TabController tabController;
+  const CaptureImage({
+    super.key,
+    required this.onImageCaptured,
+    required this.tabController,
+  });
 
   @override
   State<CaptureImage> createState() => _CaptureImageState();
@@ -21,11 +33,13 @@ class _CaptureImageState extends State<CaptureImage> {
   late CameraController _cameraController;
   XFile? imageFile;
   late Future<void> _initializeCameraControllerFuture;
+  final AudioPlayer _audioPlayer = AudioPlayer();
 
   @override
   void initState() {
     super.initState();
     _initializeCameraControllerFuture = _initializeCameraController();
+    
   }
 
   Future<void> _initializeCameraController() async {
@@ -90,32 +104,81 @@ class _CaptureImageState extends State<CaptureImage> {
     try {
       final XFile file = await _cameraController.takePicture();
       log('Picture taken: ${file.path}');
-      return file;
+      
+      // Play camera shutter sound
+      // await _playCameraSound();
+
+      // Process the image to correct front camera inversion
+      final correctedFile = await _correctImageOrientation(file);
+      return correctedFile ?? file;
     } on CameraException catch (e) {
       log(e.toString());
       return null;
     }
   }
 
+  Future<XFile?> _correctImageOrientation(XFile originalFile) async {
+    try {
+      // Read the original image file
+      final File imageFile = File(originalFile.path);
+      final Uint8List imageBytes = await imageFile.readAsBytes();
+
+      // Decode the image
+      final img.Image? originalImage = img.decodeImage(imageBytes);
+      if (originalImage == null) {
+        log('Failed to decode image');
+        return originalFile;
+      }
+
+      // Flip the image horizontally to correct front camera mirroring
+      final img.Image flippedImage = img.flipHorizontal(originalImage);
+
+      // Encode the flipped image as JPEG
+      final List<int> flippedBytes = img.encodeJpg(flippedImage, quality: 90);
+
+      // Create a new file path for the corrected image
+      final String correctedPath =
+          originalFile.path.replaceAll('.jpg', '_corrected.jpg');
+
+      // Write the corrected image
+      final File correctedFile = File(correctedPath);
+      await correctedFile.writeAsBytes(flippedBytes);
+
+      log('Image orientation corrected and saved to: $correctedPath');
+
+      // Return the corrected file
+      return XFile(correctedPath);
+    } catch (e) {
+      log('Error correcting image orientation: $e');
+      return originalFile; // Return original file if correction fails
+    }
+  }
+
+  Future<void> _playCameraSound() async {
+    // Play a camera shutter sound effect
+    await _audioPlayer.play(AssetSource('assets/images/camera-13695.mp3'));
+  }
+  
+
   @override
   void dispose() {
     _cameraController.dispose();
+    _audioPlayer.dispose();
     super.dispose();
+  }
+
+  Future<String> fileToBase64(File file) async {
+    final bytes = await file.readAsBytes();
+    return base64Encode(bytes);
   }
 
   @override
   Widget build(BuildContext context) {
     final themedata = Theme.of(context).colorScheme;
+    final account = Provider.of<AccountProvider>(context, listen: false);
     return Column(
       children: [
-        // Container(
-        //   height: Get.height * 0.3,
-        //   width: Get.width * 0.7,
-        //   decoration: BoxDecoration(
-        //     color: MyColor.grey01Color,
-        //     borderRadius: BorderRadius.circular(10),
-        //   ),
-        // ),
+       
         if (!_cameraController.value.isInitialized)
           const Center(child: CircularProgressIndicator()),
         if (_cameraController.value.isInitialized)
@@ -130,7 +193,10 @@ class _CaptureImageState extends State<CaptureImage> {
                       width: Get.width * 0.7,
                       child: AspectRatio(
                         aspectRatio: _cameraController.value.aspectRatio,
-                        child: CameraPreview(_cameraController),
+                        child: Transform.scale(
+                          scaleX: -1.0,
+                          child: CameraPreview(_cameraController),
+                        ),
                       ),
                     ),
                   ),
@@ -191,10 +257,13 @@ class _CaptureImageState extends State<CaptureImage> {
           radius: 60,
           onTap: () async {
             imageFile = await takePicture();
-            setState(() {});
-            log(
-              imageFile.toString(),
-            );
+            if (imageFile != null) {
+              account.addKycData({
+                'face_image': await fileToBase64(File(imageFile!.path)),
+              });
+              widget.onImageCaptured(imageFile!);
+              widget.tabController.animateTo(1);
+            }
           },
         )
       ],

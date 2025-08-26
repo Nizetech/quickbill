@@ -1,14 +1,22 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/NewStyle.dart';
 import 'package:jost_pay_wallet/common/button.dart';
+import 'package:provider/provider.dart';
 
 class PreviewImage extends StatelessWidget {
-  const PreviewImage({super.key});
+  final String imagePath;
+  final TabController tabController;
+  const PreviewImage(
+      {super.key, required this.imagePath, required this.tabController});
 
   @override
   Widget build(BuildContext context) {
+    final account = Provider.of<AccountProvider>(context, listen: false);
     return Column(
       children: [
         Container(
@@ -16,6 +24,10 @@ class PreviewImage extends StatelessWidget {
           width: Get.width * 0.7,
           decoration: BoxDecoration(
             color: MyColor.grey02Color,
+            image: DecorationImage(
+              image: FileImage(File(imagePath)),
+              fit: BoxFit.fill,
+            ),
             borderRadius: BorderRadius.circular(10),
           ),
         ),
@@ -25,14 +37,21 @@ class PreviewImage extends StatelessWidget {
           child: CustomButton(
             text: "Submit",
             radius: 60,
-            onTap: () {},
+            onTap: () {
+              account.verifyKyc(callback: () {
+                tabController.animateTo(2);
+              });
+              tabController.animateTo(2);
+            },
           ),
         ),
         const SizedBox(height: 10),
         SizedBox(
           width: double.infinity,
           child: OutlinedButton(
-            onPressed: () {},
+            onPressed: () {
+              tabController.animateTo(0);
+            },
             style: OutlinedButton.styleFrom(
               backgroundColor: Colors.transparent,
               side: BorderSide(color: MyColor.greenColor),

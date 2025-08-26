@@ -441,7 +441,7 @@ class AuthProvider with ChangeNotifier {
         // setLoading(false);
         hideLoader();
         if (value.isEmpty) return;
-        if (value['status'] == false || value['result'] == false) {
+            if (value['status'] == false || value['result'] == false) {
           if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
           } else {

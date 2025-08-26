@@ -34,7 +34,7 @@ class StartFaceDetection extends StatelessWidget {
                           MyStyle.tx18Black.copyWith(color: themedata.tertiary),
                     ),
                   ),
-                  const Spacer(), // Adds flexible space after the text
+                  const Spacer(),
                 ],
               ),
               const SizedBox(height: 30),

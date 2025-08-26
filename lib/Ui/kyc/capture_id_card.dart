@@ -16,14 +16,17 @@ class CaptureIdCard extends StatefulWidget {
 }
 
 class _CaptureIdCardState extends State<CaptureIdCard> {
-  late CameraController _cameraController;
+  CameraController? _cameraController;
   XFile? imageFile;
   late Future<void> _initializeCameraControllerFuture;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await _cameraController?.initialize();
     _initializeCameraControllerFuture = _initializeCameraController();
+    });
   }
 
   Future<void> _initializeCameraController() async {
@@ -34,19 +37,19 @@ class _CaptureIdCardState extends State<CaptureIdCard> {
     );
     //request camera permission
 
-    await _cameraController.initialize();
+    await _cameraController?.initialize();
     // set front camera
     // await _cameraController.setLensDirection(LensDirection.front);
     setState(() {});
   }
 
   Future<void> setFlashMode(FlashMode mode) async {
-    if (!_cameraController.value.isInitialized) {
+    if (!_cameraController!.value.isInitialized) {
       return;
     }
 
     try {
-      await _cameraController.setFlashMode(mode);
+      await _cameraController!.setFlashMode(mode);
     } on CameraException catch (e) {
       log(e.toString());
       rethrow;
@@ -58,31 +61,31 @@ class _CaptureIdCardState extends State<CaptureIdCard> {
     final CameraController? cameraController = _cameraController;
 
     // App state changed before we got the chance to initialize.
-    if (cameraController == null || !cameraController.value.isInitialized) {
+    if (cameraController == null || !cameraController!.value.isInitialized) {
       return;
     }
 
     if (state == AppLifecycleState.inactive) {
-      cameraController.dispose();
+      cameraController!.dispose();
     } else if (state == AppLifecycleState.resumed) {
       _initializeCameraController();
     }
   }
 
   Future<XFile?> takePicture() async {
-    if (!_cameraController.value.isInitialized) {
+    if (!_cameraController!.value.isInitialized) {
       log('Error: select a camera first.');
       return null;
     }
 
-    if (_cameraController.value.isTakingPicture) {
+    if (_cameraController!.value.isTakingPicture) {
       log('A capture is already pending, do nothing.');
       // A capture is already pending, do nothing.
       return null;
     }
 
     try {
-      final XFile file = await _cameraController.takePicture();
+      final XFile file = await _cameraController!.takePicture();
       log('Picture taken: ${file.path}');
       return file;
     } on CameraException catch (e) {
@@ -93,7 +96,7 @@ class _CaptureIdCardState extends State<CaptureIdCard> {
 
   @override
   void dispose() {
-    _cameraController.dispose();
+    _cameraController!.dispose();
     super.dispose();
   }
 
@@ -105,19 +108,20 @@ class _CaptureIdCardState extends State<CaptureIdCard> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: [
+          if (_cameraController!.value.isInitialized)
           IconButton(
             onPressed: () async {
               await setFlashMode(
-                _cameraController.value.flashMode == FlashMode.off
+                  _cameraController!.value.flashMode == FlashMode.off
                     ? FlashMode.torch
                     : FlashMode.off,
               );
               setState(() {});
             },
             icon: Icon(
-              _cameraController.value.flashMode == FlashMode.off
+                _cameraController!.value.flashMode == FlashMode.off
                   ? Icons.flash_off
-                  : _cameraController.value.flashMode == FlashMode.auto
+                    : _cameraController!.value.flashMode == FlashMode.auto
                       ? Icons.flash_auto
                       : Icons.flash_on,
             ),
@@ -141,9 +145,9 @@ class _CaptureIdCardState extends State<CaptureIdCard> {
                 ),
               ),
               Spacer(flex: 2),
-              if (!_cameraController.value.isInitialized)
+              if (!_cameraController!.value.isInitialized)
                 const Center(child: CircularProgressIndicator()),
-              if (_cameraController.value.isInitialized)
+              if (_cameraController!.value.isInitialized)
                 Column(
                   children: [
                     Stack(
@@ -154,8 +158,8 @@ class _CaptureIdCardState extends State<CaptureIdCard> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(12),
                             child: AspectRatio(
-                              aspectRatio: _cameraController.value.aspectRatio,
-                              child: CameraPreview(_cameraController),
+                              aspectRatio: _cameraController!.value.aspectRatio,
+                              child: CameraPreview(_cameraController!),
                             ),
                           ),
                         ),
@@ -181,7 +185,7 @@ class _CaptureIdCardState extends State<CaptureIdCard> {
                         );
                         if (imageFile != null) {
                           // if flash is on, then take picture
-                          if (_cameraController.value.flashMode ==
+                          if (_cameraController!.value.flashMode ==
                               FlashMode.torch) {
                             // off flash
                             await setFlashMode(FlashMode.off);

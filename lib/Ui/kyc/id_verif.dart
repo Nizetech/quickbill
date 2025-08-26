@@ -2,6 +2,7 @@ import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/kyc/id_verif_info.dart';
 import 'package:jost_pay_wallet/Ui/kyc/widget/info_wrap.dart';
@@ -46,6 +47,7 @@ class _IdVerificationState extends State<IdVerification> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     final themedata = Theme.of(context).colorScheme;
+    final account = Provider.of<AccountProvider>(context, listen: false);
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -281,7 +283,19 @@ class _IdVerificationState extends State<IdVerification> {
                       const SizedBox(height: 30),
                       CustomButton(
                         text: 'Continue',
-                        onTap: () => Get.to(() => const IdVerificationInfo()),
+                        onTap: () {
+                          account.addKycData({
+                            'national_id': selectedIndex == 0
+                                ? 'national_id'
+                                : selectedIndex == 1
+                                    ? 'passport'
+                                    : selectedIndex == 2
+                                        ? 'driver_license'
+                                        : 'voter_card',
+                            'country': selectedCountry,
+                          });
+                          Get.to(() => const IdVerificationInfo());
+                        },
                         radius: 60,
                       ),
                       const SizedBox(height: 30),

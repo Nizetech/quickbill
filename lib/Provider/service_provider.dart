@@ -87,7 +87,7 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().getCarTypes();
-      if (res['status'] == false || res['result'] == false) {
+      if (res['status'] == false || res['result'] == false) { 
         hideLoader();
         if (res['message'].runtimeType == String) {
           ErrorToast(res['message']);

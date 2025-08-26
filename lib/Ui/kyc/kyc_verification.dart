@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
+import 'package:jost_pay_wallet/Ui/kyc/personal_info_verif.dart';
 import 'package:jost_pay_wallet/Ui/kyc/widget/info_wrap.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
@@ -234,11 +235,11 @@ class _KycVerificationState extends State<KycVerification> {
                                   bgColor: themeProvider.isDarkMode()
                                       ? Color(0xff162A16)
                                       : MyColor.lightGreenColor,
-                                  // fontWeight: FontWeight.w500,
                                   onTap: () => Get.to(
-                                    () =>
-                                        // const IdVerification()
-                                        const StartFaceDetection(),
+                                    () => PersonalInfoVerif(
+                                      isBasic: data['level'] == 'Entry Level',
+                                    ),
+                                   
                                   ),
                                   radius: 40,
                                 )

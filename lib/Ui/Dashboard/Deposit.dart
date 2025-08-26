@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/bank_transfer.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/deposit_details.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/balance_card.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
@@ -21,24 +22,25 @@ class _DepositState extends State<Deposit> {
   final List<Map<String, dynamic>> depositMethods = [
     {
       'image': 'assets/images/bank_i.png',
-      'title': 'Add Manually',
-      'detail': 'Funds should be received within 24 hours of payment',
+      'title': 'Bank Transfer',
+      'detail': 'Deposit: 0% fee | Credit in 24hrs',
     },
-    // {
-    //   'image': 'assets/images/bank_i.png',
-    //   'title': 'Bank Transfer',
-    //   'detail': 'Funds should be received after 2 mins of payment',
-    // },
+    {
+      'image': 'assets/images/bank-3.png',
+      'title': 'Add via Card',
+      'detail': 'Funds should be received after 2 mins of payment',
+    },
+    {
+      'image': 'assets/images/ussd.png',
+      'title': 'Add Manually',
+      'detail': 'Deposit: 0% fee | Credit in 24hrs',
+    },
     // {
     //   'image': 'assets/images/ussd.png',
     //   'title': 'USSD',
     //   'detail': 'Funds should be received after 2 mins of payment',
     // },
-    // {
-    //   'image': 'assets/images/bank-3.png',
-    //   'title': 'Bank Transfer',
-    //   'detail': 'Funds should be received after 2 mins of payment',
-    // },
+   
     // {
     //   'image': 'assets/images/tether.png',
     //   'title': 'USDT',
@@ -155,9 +157,13 @@ class _DepositState extends State<Deposit> {
                                     // Adding the button
                                     GestureDetector(
                                       onTap: () {
-                                        Get.to(DepositDetails(
-                                          title: depositMethods[i]['title'],
-                                        ));
+                                        if (i == 0) {
+                                          _showAmountInputDialog(context);
+                                        } else {
+                                          Get.to(DepositDetails(
+                                            title: depositMethods[i]['title'],
+                                          ));
+                                        }
                                       },
                                       child: Container(
                                         height: 36,
@@ -194,6 +200,51 @@ class _DepositState extends State<Deposit> {
           ),
         ),
       ),
+    );
+  }
+
+  void _showAmountInputDialog(BuildContext context) {
+    final TextEditingController amountController = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Enter Amount'),
+          content: TextField(
+            controller: amountController,
+            keyboardType: TextInputType.number,
+            decoration: const InputDecoration(
+              hintText: 'Enter amount',
+              border: OutlineInputBorder(),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Deposit'),
+              onPressed: () {
+                final amount = double.tryParse(amountController.text);
+                if (amount != null && amount > 0) {
+                  Navigator.of(context).pop();
+                  Get.to(BankTransferScreen(amount: amount));
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Please enter a valid amount'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

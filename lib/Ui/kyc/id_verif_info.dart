@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/kyc/capture_id_card.dart';
 import 'package:jost_pay_wallet/Ui/kyc/widget/info_wrap.dart';
@@ -14,6 +15,7 @@ class IdVerificationInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     final themedata = Theme.of(context).colorScheme;
+    final account = Provider.of<AccountProvider>(context, listen: false);
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -63,7 +65,9 @@ class IdVerificationInfo extends StatelessWidget {
               CustomButton(
                 radius: 60,
                 text: 'Continue',
-                onTap: () => Get.to(() => const CaptureIdCard()),
+                onTap: () {
+                  Get.to(() => const CaptureIdCard());
+                },
               ),
               const SizedBox(height: 30),
             ],

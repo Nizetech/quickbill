@@ -15,6 +15,9 @@ class ApiRoute {
   static String updatePin = 'pin-update';
   static String pinLogin = 'pin-login';
   static String updatePinLogin = 'pin-update';
+  static String kycVerify = 'verification/verify';
+  static String getVerificationDetails = 'verification';
+  static String verifyImageUpload = 'verification/verify-image-upload';
 
   // Dashboard
   static String userProfile = 'get-user-profile';

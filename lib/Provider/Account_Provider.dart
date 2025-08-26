@@ -57,6 +57,18 @@ class AccountProvider with ChangeNotifier {
   TransactionModel? get dashBoardHistory => _dashBoardHistory;
   String get profileImage => _profileImage;
   Map<dynamic, List> get transGroupByData => _transGroupByData;
+  Map<String, dynamic> kycData = {};
+
+  void clearKycData() {
+    kycData.clear();
+    notifyListeners();
+  }
+
+  void addKycData(Map<String, dynamic> data) {
+    kycData.addAll(data);
+    log('kycData:==> ${kycData}');
+    notifyListeners();
+  }
 
   void setDataPlanModelToNull() {
     dataPlansModel = null;
@@ -149,7 +161,6 @@ class AccountProvider with ChangeNotifier {
         }
         notifyListeners();
       });
-      log('res UserProfile:==> ${res}');
       return res;
     } catch (e) {
       // log('Error: $e');
@@ -603,7 +614,7 @@ class AccountProvider with ChangeNotifier {
       showLoader();
       AccountRepo().buyData(data).then((value) async {
         hideLoader();
-        if (value['result'] == null || value['result'] == false) {
+        if (value['result'] == null || value['result'] != true) {
           if (value['message'].toString().toLowerCase().contains('failed')) {
             Get.to(PendingFailedPurchase(
               isData: true,
@@ -731,6 +742,66 @@ class AccountProvider with ChangeNotifier {
     }
   }
 
+  Future<void> verifyKyc({ required VoidCallback callback,}) async {
+    try {
+      showLoader();
+      AccountRepo().verifyKyc(kycData).then((value) {
+        hideLoader();
+          if (value['status']   == false || value['result'] == false) {
+          if (value['message'].runtimeType == String) {
+            ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';    
+            });
+            ErrorToast(message);
+          }
+        } else {
+          hideLoader();
+          callback();
+        }
+        notifyListeners();
+      });
+      hideLoader();
+      notifyListeners();
+    } catch (e) {
+      // log('Error: $e');
+      hideLoader();
+      ErrorToast(e.toString());
+    }
+  }
+
+  Future<void> verifyImageUpload({ required VoidCallback callback,}) async {
+    try {
+      showLoader();
+      AccountRepo().verifyKyc(kycData).then((value) {
+        hideLoader();
+            if (value['status'] == false || value['result'] == false) {
+          if (value['message'].runtimeType == String) {
+            ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';    
+            });
+            ErrorToast(message);
+          }
+        } else {
+          hideLoader();
+          callback();
+        }
+        notifyListeners();
+      });
+      hideLoader();
+      notifyListeners();
+    } catch (e) {
+      // log('Error: $e');
+      hideLoader();
+      ErrorToast(e.toString());
+    }
+  }
+
   // get Transaction History
   Future<void> getTrasactions({bool isLoading = true}) async {
     try {
@@ -828,7 +899,7 @@ class AccountProvider with ChangeNotifier {
       if (isLoading) showLoader();
       AccountRepo().getPromotion().then((value) {
        
-        if (value['status'] == false || value['result'] == false) {
+          if (value['status'] == false || value['result'] == false) {
           if (isLoading) hideLoader();
           if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
@@ -859,7 +930,7 @@ class AccountProvider with ChangeNotifier {
       );
       AccountRepo().deleteAccount().then((value) {
        
-        if (value['status'] == false || value['result'] == false) {
+          if (value['status'] == false || value['result'] == false) {
          hideLoader();
           if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);

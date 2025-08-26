@@ -219,6 +219,41 @@ class AccountRepo {
     }
   }
 
+  Future<Map<String, dynamic>> verifyKyc(Map<String, dynamic> data) async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response = await client.post(
+        ApiRoute.kycVerify,
+        requestHeaders: {
+          'Authorization': token,
+        },
+        body: data,
+      );
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
+  Future<Map<String, dynamic>> verifyImageUpload(
+      Map<String, dynamic> data) async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response = await client.post(
+        ApiRoute.verifyImageUpload,
+        requestHeaders: {
+          'Authorization': token,
+        },
+        body: data,
+      );
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
   Future<Map<String, dynamic>> deleteAccount() async {
     String token = await box.get(kAccessToken);
     try {

@@ -1,10 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/common/button.dart';
 
 class CaptureSuccess extends StatelessWidget {
-  const CaptureSuccess({super.key});
+  final String imagePath;
+  const CaptureSuccess({super.key, required this.imagePath});
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +19,14 @@ class CaptureSuccess extends StatelessWidget {
             CircleAvatar(
               radius: 110,
               backgroundColor: Theme.of(context).colorScheme.tertiary,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(200),
+                child: Image.file(
+                  File(imagePath),
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
             Positioned(
               top: 30,

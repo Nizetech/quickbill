@@ -18,6 +18,7 @@ class ApiRoute {
   static String kycVerify = 'verification/verify';
   static String getVerificationDetails = 'verification';
   static String verifyImageUpload = 'verification/verify-image-upload';
+  static String createVirtual = '/deposit/fidelity';
 
   // Dashboard
   static String userProfile = 'get-user-profile';
@@ -37,6 +38,7 @@ class ApiRoute {
   static String getReferrals = 'get-referrals';
   static String getNetworkProviders = 'get-network-providers';
   static String creditDeposit = 'create-deposit';
+  static String cardBankTransfer = 'deposits/create-payment';
 
   // Services
   static String buyAirtime = 'buy-airtime';

@@ -24,3 +24,25 @@ class InfoWrap extends StatelessWidget {
     );
   }
 }
+class InfoWrap2 extends StatelessWidget {
+  final Widget child;
+  const InfoWrap2({super.key, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color:
+            themeProvider.isDarkMode() ? Color(0xff241D11) : Color(0xffFDF5E7),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: Color(0xffF3A218),
+        ),
+      ),
+      child: child,
+    );
+  }
+}

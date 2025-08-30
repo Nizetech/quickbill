@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/receipt_script.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/activate_virtual_account.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/balance_card.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/virtual_number.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
@@ -22,32 +25,6 @@ class AddFunds extends StatefulWidget {
 }
 
 class _AddFundsState extends State<AddFunds> {
-  final List<Map<String, dynamic>> data = [
-    {
-      'type': 'Bank Transfer',
-      'amount': 'N 26,000.00',
-      'date': 'June 30th, 11: 37',
-      'status': 'Successful'
-    },
-    {
-      'type': 'USDT',
-      'amount': '0.005433467',
-      'date': 'June 30th, 11: 37',
-      'status': 'Successful'
-    },
-    {
-      'type': 'Card',
-      'amount': '0.005433467',
-      'date': 'June 30th, 11: 37',
-      'status': 'Refunded'
-    },
-    {
-      'type': 'USDT',
-      'amount': '0.005433467',
-      'date': 'June 30th, 11: 37',
-      'status': 'Successful'
-    },
-  ];
 
   @override
   void initState() {
@@ -106,7 +83,8 @@ class _AddFundsState extends State<AddFunds> {
                         Transform.translate(
                           offset: const Offset(-26, 0),
                           child: Text(
-                            'Wallet Activation',
+                            'Add Funds',
+                            // 'Wallet Activation',
                             style: MyStyle.tx18Black
                                 .copyWith(color: themedata.tertiary),
                           ),
@@ -153,155 +131,9 @@ class _AddFundsState extends State<AddFunds> {
                           const SizedBox(
                             height: 20,
                           ),
-                          // Container(
-                          //     decoration: BoxDecoration(
-                          //       color: !themeProvider.isDarkMode()
-                          //           ? Color(0xfffCFCFC)
-                          //           : Color(0xff171717),
-                          //       border: Border.all(
-                          //           color: themeProvider.isDarkMode()
-                          //               ? MyColor.borderDarkColor
-                          //               : MyColor.borderColor,
-                          //           width: 0.5),
-                          //       borderRadius: BorderRadius.circular(10),
-                          //     ),
-                          //     child: Column(
-                          //       children: [
-                          //         Padding(
-                          //           padding: const EdgeInsets.fromLTRB(
-                          //               20, 30, 20, 10),
-                          //           child: Row(
-                          //             mainAxisAlignment:
-                          //                 MainAxisAlignment.spaceBetween,
-                          //             children: [
-                          //               Container(
-                          //                 height: 78,
-                          //                 width: 78,
-                          //                 padding: EdgeInsets.all(20),
-                          //                 decoration: BoxDecoration(
-                          //                   shape: BoxShape.circle,
-                          //                   color: !themeProvider.isDarkMode()
-                          //                       ? Colors.white
-                          //                       : Colors.black,
-                          //                   border: Border.all(
-                          //                       color: themeProvider
-                          //                               .isDarkMode()
-                          //                           ? MyColor.borderDarkColor
-                          //                           : MyColor.whiteColor,
-                          //                       width: 0.5),
-                          //                 ),
-                          //                 child: Image.asset(
-                          //                   'assets/images/fidelity.png',
-                          //                 ),
-                          //               ),
-                          //               Container(
-                          //                 height: 78,
-                          //                 width: 78,
-                          //                 padding: EdgeInsets.all(20),
-                          //                 decoration: BoxDecoration(
-                          //                   shape: BoxShape.circle,
-                          //                   color: !themeProvider.isDarkMode()
-                          //                       ? Colors.white
-                          //                       : Colors.black,
-                          //                   border: Border.all(
-                          //                       color: themeProvider
-                          //                               .isDarkMode()
-                          //                           ? MyColor.borderDarkColor
-                          //                           : MyColor.borderColor,
-                          //                       width: 0.5),
-                          //                 ),
-                          //                 child: Image.asset(
-                          //                     'assets/images/wema.png'),
-                          //               )
-                          //             ],
-                          //           ),
-                          //         ),
-                          //         Container(
-                          //           padding: EdgeInsets.all(10),
-                          //           decoration: BoxDecoration(
-                          //             borderRadius: BorderRadius.vertical(
-                          //               bottom: Radius.circular(10),
-                          //             ),
-                          //             color: !themeProvider.isDarkMode()
-                          //                 ? Colors.white
-                          //                 : Colors.black,
-                          //             border: Border.all(
-                          //                 color: themeProvider.isDarkMode()
-                          //                     ? MyColor.borderDarkColor
-                          //                     : MyColor.borderColor,
-                          //                 width: 0.5),
-                          //           ),
-                          //           child: Row(
-                          //             children: [
-                          //               Image.asset('assets/images/lock.png',
-                          //                   height: 20,
-                          //                   width: 20,
-                          //                   color: themeProvider.isDarkMode()
-                          //                       ? Colors.white
-                          //                       : Colors.black),
-                          //               SizedBox(width: 10),
-                          //               Expanded(
-                          //                 child: Text(
-                          //                   'Wallet are managed & Powered by your preferred bank',
-                          //                   style: MyStyle.tx12White.copyWith(
-                          //                       fontSize: 12,
-                          //                       color: themedata.tertiary),
-                          //                 ),
-                          //               ),
-                          //             ],
-                          //           ),
-                          //         )
-                          //       ],
-                          //     )),
-                          // const SizedBox(
-                          //   height: 20,
-                          // ),
-                          // Row(
-                          //   children: [
-                          //     Container(
-                          //       decoration: BoxDecoration(
-                          //           borderRadius: BorderRadius.circular(10),
-                          //           border: Border.all(
-                          //               color: themeProvider.isDarkMode()
-                          //                   ? MyColor.borderDarkColor
-                          //                   : MyColor.borderColor,
-                          //               width: 0.5)),
-                          //       child: Padding(
-                          //         padding: const EdgeInsets.all(8),
-                          //         child: Row(
-                          //           children: [
-                          //             Image.asset(
-                          //               'assets/images/filter-icon.png',
-                          //               width: 16,
-                          //               height: 16,
-                          //               color: themeProvider.isDarkMode()
-                          //                   ? const Color(0XFFCBD2EB)
-                          //                   : const Color(0xff30333A),
-                          //             ),
-                          //             const SizedBox(
-                          //               width: 10,
-                          //             ),
-                          //             Text(
-                          //               'Filters',
-                          //               style: MyStyle.tx12Black.copyWith(
-                          //                   color: themeProvider.isDarkMode()
-                          //                       ? const Color(0XFFCBD2EB)
-                          //                       : const Color(0xff30333A)),
-                          //             )
-                          //           ],
-                          //         ),
-                          //       ),
-                          //     ),
-                          //     const Spacer(),
-                          //     Text(
-                          //       'View all',
-                          //       style: MyStyle.tx12Black.copyWith(
-                          //           color: themeProvider.isDarkMode()
-                          //               ? const Color(0XFFCBD2EB)
-                          //               : const Color(0xff30333A)),
-                          //     )
-                          //   ],
-                          // ),
+                          account.userModel?.user?.virtualAccount != false
+                              ? VirtualNumber()
+                              : ActivateVirtualAccount(),
 
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -311,11 +143,11 @@ class _AddFundsState extends State<AddFunds> {
                                 style: MyStyle.tx14Black
                                     .copyWith(color: themedata.tertiary),
                               ),
-                              Text(
-                                'View all',
-                                style: MyStyle.tx14Black
-                                    .copyWith(color: themedata.tertiary),
-                              ),
+                              // Text(
+                              //   'View all',
+                              //   style: MyStyle.tx14Black
+                              //       .copyWith(color: themedata.tertiary),
+                              // ),
                             ],
                           ),
                           const SizedBox(

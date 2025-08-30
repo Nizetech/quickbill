@@ -280,6 +280,7 @@ class _IdVerificationState extends State<IdVerification> {
                           ),
                         ),
                       ),
+                      
                       const SizedBox(height: 30),
                       CustomButton(
                         text: 'Continue',

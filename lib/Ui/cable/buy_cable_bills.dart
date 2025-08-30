@@ -58,8 +58,10 @@ class _BuyCableBillsState extends State<BuyCableBills> {
     } else {
     if (_typingTimer != null && _typingTimer!.isActive ||
         _controller.text.isEmpty) {
-      cableMerchant = '';
-      _typingTimer!.cancel();
+        setState(() {
+          cableMerchant = '';
+        });
+        _typingTimer?.cancel();
     }
     _typingTimer = Timer(Duration(seconds: 3), () {
         resolveCardNumber();

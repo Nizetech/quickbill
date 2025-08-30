@@ -3,9 +3,12 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jost_pay_wallet/Ui/kyc/kyc_verification.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/kyc_web.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
+import 'package:jost_pay_wallet/constants/constants.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DeleteBanner extends StatefulWidget {
   final String date;
@@ -20,6 +23,8 @@ class _DeleteBannerState extends State<DeleteBanner> {
   Duration timeLeft = Duration.zero;
   Timer? timer;
   bool isElapsed = false;
+  final box = Hive.box(kAppName);
+
 
   @override
   void initState() {
@@ -119,8 +124,22 @@ class _DeleteBannerState extends State<DeleteBanner> {
               ),
               SizedBox(width: 5),
               GestureDetector(
-                onTap: () {
-                  Get.to(KycVerification());
+                onTap: () async {
+                  // String token = await box.get(kAccessToken);
+                  // String url =
+                  //     'https://project.jostpay.com/face-capture?token=$token';
+                  // log('navigation request: $url');
+                  // launchUrl(
+                  //   mode: LaunchMode.inAppBrowserView,
+                  //   Uri.parse(url),
+                  //   webViewConfiguration: WebViewConfiguration(
+                  //     enableJavaScript: true,
+                  //   ),
+                  // );
+                  Get.to(
+                      // KycVerification()
+                      // KycWebView()
+                      KycWebview());
                 },
                 child: Container(
                   height: 52,

@@ -16,7 +16,7 @@ class AuthRepo {
     try {
       final response = await client.post(
         ApiRoute.signup,
-        body: data,
+        body: jsonEncode(data),
       );
       if (data['email'] == 'donnpus@yahoo.com' &&
           data['password'] == 'ASdflkj123?' &&
@@ -35,7 +35,7 @@ class AuthRepo {
     try {
       Map<String, dynamic> response = await client.post(
         ApiRoute.login,
-        body: data,
+        body: jsonEncode(data),
       );
       if (data['email'] == 'donnpus@yahoo.com' &&
           data['password'] == 'ASdflkj123?' &&
@@ -55,9 +55,9 @@ class AuthRepo {
     try {
       var response = await client.post(
         ApiRoute.resetPassword,
-        body: {
+        body: jsonEncode({
           'email': email,
-        },
+        }),
       );
       return jsonDecode(response);
     } catch (e) {
@@ -73,9 +73,11 @@ class AuthRepo {
     String token = await box.get(kAccessToken, defaultValue: '');
     try {
       // log('Login Details: $email');
-      final response = await client.post(ApiRoute.resendOtp, body: {
+      final response = await client.post(ApiRoute.resendOtp,
+          body: jsonEncode({
         'email': email
-      }, requestHeaders: {
+      }),
+          requestHeaders: {
         'Authorization': authToken ?? token,
       });
 
@@ -109,10 +111,10 @@ class AuthRepo {
                   ? ApiRoute.verify2fa
                   : ApiRoute.verifyOtp,
           body: is2fa
-              ? {
+              ? jsonEncode({
                   'code': data['code'],
-                }
-              : data,
+                })
+              : jsonEncode(data),
           requestHeaders: {
             'Authorization': authToken ?? token,
           });
@@ -133,7 +135,9 @@ class AuthRepo {
     String token = await box.get(kAccessToken);
     try {
       final response = await client
-          .post(ApiRoute.updateProfile, body: data, requestHeaders: {
+          .post(ApiRoute.updateProfile,
+          body: jsonEncode(data),
+          requestHeaders: {
         'Authorization': token,
       });
       if (response['token'] != null) {
@@ -166,12 +170,10 @@ class AuthRepo {
     String token = await box.get(kAccessToken);
     try {
       final response = await client.post(ApiRoute.updatePinLogin,
-          body: jsonEncode(
-            {
-              "pin": pin,
-              "enable_pin": true,
-            },
-          ),
+          body: jsonEncode({
+            "pin": pin,
+            "enable_pin": true,
+          }),
           requestHeaders: {
             'Authorization': token,
           });
@@ -207,7 +209,9 @@ class AuthRepo {
     try {
       // log('Login Details: $email');
       final response = await client
-          .post(ApiRoute.changePassword, body: data, requestHeaders: {
+          .post(ApiRoute.changePassword,
+          body: jsonEncode(data),
+          requestHeaders: {
         'Authorization': token,
       });
       return response;

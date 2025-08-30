@@ -44,13 +44,17 @@ class _BuyElectricityState extends State<BuyElectricity> {
   void initState() {
     super.initState();
     _controller.addListener(_onTyping);
+    final account = Provider.of<AccountProvider>(context, listen: false);
+    phone.text = account.userModel?.user?.phoneNumber ?? '';
   }
 
   void _onTyping() {
     if (_typingTimer != null && _typingTimer!.isActive ||
         _controller.text.isEmpty) {
-      cableMerchant = '';
-      _typingTimer!.cancel();
+      setState(() {
+        cableMerchant = '';
+      });
+      _typingTimer?.cancel();
     }
     _typingTimer = Timer(Duration(seconds: 3), () {
       resolveMeterNumber();
@@ -154,6 +158,7 @@ class _BuyElectricityState extends State<BuyElectricity> {
   int selectedMeterType = 0;
   final phone = TextEditingController();
   final amount = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);

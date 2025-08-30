@@ -82,7 +82,8 @@ class _OtpScreenState extends State<OtpScreen> {
                   children: [
                     Text('We send a code to ', style: MyStyle.tx16Gray),
                     Text(
-                      truncateEmail(widget.email),
+                            widget.email,
+                            // truncateEmail(widget.email),
                       style: MyStyle.tx16Green,
                     )
                   ],

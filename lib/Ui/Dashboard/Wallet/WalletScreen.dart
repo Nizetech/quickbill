@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -14,6 +13,7 @@ import 'package:jost_pay_wallet/Ui/Dashboard/AddFunds.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/AlarmScreen.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyAirtime.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/data_history.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/kyc_web.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/banner.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/history_card.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/profile_image.dart';
@@ -352,11 +352,17 @@ class _WalletScreenState extends State<WalletScreen> {
                                 children: [
                                   InkWell(
                                     onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const AddFunds()));
+                                      if (accountProvider
+                                                  .userModel?.user?.createdAt !=
+                                              null &&
+                                          accountProvider
+                                                  .userModel?.user?.isActive ==
+                                              false) {
+                                        Get.to(() => const KycWebview());
+                                      } else {
+                                        Get.to(() => const AddFunds());
+                                      }
+                                    
                                     },
                                     borderRadius: BorderRadius.circular(
                                         12.3), // Optional: to match the container's border radius
@@ -534,19 +540,19 @@ class _WalletScreenState extends State<WalletScreen> {
                   ),
                 ),
                 if (accountProvider.userModel?.user?.createdAt != null
-                    // &&
-                    //     accountProvider.userModel?.user?.isActive == false
+                    &&
+                    accountProvider.userModel?.user?.isActive == false
                     )
                   DeleteBanner(
-                      date: accountProvider.userModel!.user!.createdAt!),
-                // else
-                //   Visibility(
-                //       visible: dashProvider.promotionBanner,
-                //       child: BannerAds(
-                //         dashProvider: dashProvider,
-                //       )),
-             
-
+                    date: accountProvider.userModel!.user!.createdAt!,
+                  )
+                else
+                  Visibility(
+                    visible: dashProvider.promotionBanner,
+                    child: BannerAds(
+                      dashProvider: dashProvider,
+                    ),
+                  ),
                 Expanded(
                   child: SingleChildScrollView(
                     child: Padding(
@@ -561,7 +567,9 @@ class _WalletScreenState extends State<WalletScreen> {
                                     color:
                                         Theme.of(context).colorScheme.tertiary,
                                     fontSize: 18,
-                                    fontWeight: FontWeight.w600)),
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                           ),
                           const SizedBox(
                             height: 20,

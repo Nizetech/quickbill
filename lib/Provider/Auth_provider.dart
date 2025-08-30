@@ -332,6 +332,7 @@ class AuthProvider with ChangeNotifier {
             account?.getUserProfile().then((value) {
               String enabledPin = value['user']['enable_pin'].toString();
             if(enabledPin == '1' || enabledPin != 'null'){
+              dashProvider?.changeBottomIndex(0);
               Get.offAll(BottomNav());
             }else{
             Get.to(
@@ -352,6 +353,7 @@ class AuthProvider with ChangeNotifier {
     } catch (e) {
       log('Error: $e');
       // setLoading(false);
+      hideLoader();
       ErrorToast(e.toString());
       return false;
     }
@@ -392,8 +394,10 @@ class AuthProvider with ChangeNotifier {
       });
     } catch (e) {
       log('Error: $e');
-      // setLoading(false);
+      hideLoader();
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -427,8 +431,10 @@ class AuthProvider with ChangeNotifier {
       });
     } catch (e) {
       log('Error: $e');
-      // setLoading(false);
+      hideLoader();
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -463,8 +469,10 @@ class AuthProvider with ChangeNotifier {
       });
     } catch (e) {
       log('Error: $e');
-      // setLoading(false);
+      hideLoader();
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 }

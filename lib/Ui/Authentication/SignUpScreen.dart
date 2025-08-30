@@ -335,25 +335,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                   const SizedBox(height: 30),
-                  Text.rich(TextSpan(
-                    text: 'By signing up, your are consenting to our ',
-                    style: MyStyle.tx14Black.copyWith(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                    ),
-                    children: [
-                      TextSpan(
-                        text: 'Terms & Conditions',
-                        style: MyStyle.tx14Black.copyWith(
-                          fontSize: 13,
-                        ),
-                      ),
-                      TextSpan(
-                        text: ' and product updates',
-                      ),
-                    ],
-                  )),
-                  const SizedBox(height: 10),
+                  // Text.rich(TextSpan(
+                  //   text: 'By signing up, your are consenting to our ',
+                  //   style: MyStyle.tx14Black.copyWith(
+                  //     fontSize: 12,
+                  //     fontWeight: FontWeight.w400,
+                  //   ),
+                  //   children: [
+                  //     TextSpan(
+                  //       text: 'Terms & Conditions',
+                  //       style: MyStyle.tx14Black.copyWith(
+                  //         fontSize: 13,
+                  //       ),
+                  //     ),
+                  //     TextSpan(
+                  //       text: ' and product updates',
+                  //     ),
+                  //   ],
+                  // )),
+                  // const SizedBox(height: 10),
                   CustomButton(
                       text: 'Sign Up',
                       isLoading: model.isLoading,
@@ -361,7 +361,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         _validateForm(model);
                       }),
                   Column(children: [
-                    const SizedBox(height: 17),
+                    const SizedBox(height: 5),
                     if (!model.isLoading)
                       Row(
                           mainAxisAlignment: MainAxisAlignment.center,

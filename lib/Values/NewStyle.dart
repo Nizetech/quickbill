@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/NewColor.dart';
 
 class NewStyle {
@@ -39,22 +40,22 @@ class NewStyle {
     fillColor: Colors.white, // Background color
     border: OutlineInputBorder(
       borderSide: const BorderSide(
-        color: NewColor.borderColor,
-        width: 1.38,
+        color: Color(0xffE9EBF8),
+        width: 1.2,
       ),
       borderRadius: BorderRadius.circular(10),
     ),
     focusedBorder: OutlineInputBorder(
-      borderSide: const BorderSide(
-        color: NewColor.borderColor,
-        width: 1.38,
+      borderSide: BorderSide(
+        color: MyColor.greenColor,
+        width: 1.2,
       ),
       borderRadius: BorderRadius.circular(10),
     ),
     enabledBorder: OutlineInputBorder(
       borderSide: const BorderSide(
-        color: NewColor.borderColor,
-        width: 1.38,
+        color: Color(0xffE9EBF8),
+        width: 1.2,
       ),
       borderRadius: BorderRadius.circular(10),
     ),

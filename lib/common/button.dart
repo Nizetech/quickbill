@@ -11,6 +11,7 @@ class CustomButton extends StatelessWidget {
   final String text;
   final VoidCallback onTap;
   final double? radius;
+  final double? fontSize;
   final Color? bgColor;
   final Color? textColor;
   final FontWeight? fontWeight;
@@ -24,6 +25,7 @@ class CustomButton extends StatelessWidget {
       required this.text,
     required this.onTap,
     this.fontWeight,
+    this.fontSize,
   });
 
   @override
@@ -48,10 +50,10 @@ class CustomButton extends StatelessWidget {
                 ))
             : Text(
                 text,
-                style: NewStyle.btnTx16SplashBlue
-                    .copyWith(
+                style: NewStyle.btnTx16SplashBlue.copyWith(
                     color: textColor ?? NewColor.mainWhiteColor,
-                    fontWeight: fontWeight ?? FontWeight.w700),
+                    fontWeight: fontWeight ?? FontWeight.w700,
+                    fontSize: fontSize ?? 16),
               ),
       ),
     );

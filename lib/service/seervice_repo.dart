@@ -141,10 +141,12 @@ class ServiceRepo {
     String token = await box.get(kAccessToken);
     try {
       final response = await client
-          .post(ApiRoute.cableMerchant, body: data, requestHeaders: {
+          .post(ApiRoute.cableMerchant,
+          body: jsonEncode(data),
+          requestHeaders: {
         'Authorization': token,
       });
-      return jsonDecode(response);
+      return response;
     } catch (e) {
       print('Error: $e');
       return {};
@@ -156,10 +158,13 @@ class ServiceRepo {
     String token = await box.get(kAccessToken);
     try {
       final response = await client
-          .post(ApiRoute.electricityMerchant, body: data, requestHeaders: {
+          .post(ApiRoute.electricityMerchant,
+          body: jsonEncode(data),
+          requestHeaders: {
         'Authorization': token,
       });
-      return jsonDecode(response);
+      print('Merchant Response:==> $response');
+      return response;
     } catch (e) {
       print('Error: $e');
       return {};
@@ -169,12 +174,14 @@ class ServiceRepo {
   Future<Map<String, dynamic>> getCableVariations(String serviceId) async {
     String token = await box.get(kAccessToken);
     try {
-      final response = await client.post(ApiRoute.cableVariations, body: {
+      final response = await client.post(ApiRoute.cableVariations,
+          body: jsonEncode({
         "service_id": serviceId,
-      }, requestHeaders: {
+          }),
+          requestHeaders: {
         'Authorization': token,
       });
-      return jsonDecode(response);
+      return response;
     } catch (e) {
       print('Error: $e');
       return {};
@@ -184,9 +191,11 @@ class ServiceRepo {
   Future<Map<String, dynamic>> getGiftCard(String code) async {
     String token = await box.get(kAccessToken);
     try {
-      final response = await client.post(ApiRoute.getGiftCard, body: {
-        "country_code": code,
-      }, requestHeaders: {
+      final response = await client.post(ApiRoute.getGiftCard,
+          body: jsonEncode({
+            "country_code": code,
+          }),
+          requestHeaders: {
         'Authorization': token,
       });
       return response;
@@ -199,9 +208,11 @@ class ServiceRepo {
   Future<Map<String, dynamic>> getCard(String cardId) async {
     String token = await box.get(kAccessToken);
     try {
-      final response = await client.post(ApiRoute.getCard, body: {
+      final response = await client.post(ApiRoute.getCard,
+          body: jsonEncode({
         "gift_id": cardId,
-      }, requestHeaders: {
+          }),
+          requestHeaders: {
         'Authorization': token,
       });
       return response;
@@ -214,9 +225,11 @@ class ServiceRepo {
   Future<Map<String, dynamic>> getSocialServices(int id) async {
     String token = await box.get(kAccessToken);
     try {
-      final response = await client.post(ApiRoute.getSocialServices, body: {
+      final response = await client.post(ApiRoute.getSocialServices,
+          body: jsonEncode({
         "section_id": id
-      }, requestHeaders: {
+      }),
+          requestHeaders: {
         'Authorization': token,
       });
       return response;
@@ -406,7 +419,9 @@ class ServiceRepo {
     String token = await box.get(kAccessToken);
     try {
       final response = await client
-          .post(ApiRoute.buySocialBoost, body: data, requestHeaders: {
+          .post(ApiRoute.buySocialBoost,
+          body: jsonEncode(data),
+          requestHeaders: {
         'Authorization': token,
       });
       return response;
@@ -420,7 +435,8 @@ class ServiceRepo {
     String token = await box.get(kAccessToken);
     try {
       final response =
-          await client.post(ApiRoute.buyGiftCard, body: data, requestHeaders: {
+          await client
+          .post(ApiRoute.buyGiftCard, body: jsonEncode(data), requestHeaders: {
         'Authorization': token,
       });
       return response;
@@ -434,7 +450,8 @@ class ServiceRepo {
     String token = await box.get(kAccessToken);
     try {
       final response =
-          await client.post(ApiRoute.buyCable, body: data, requestHeaders: {
+          await client
+          .post(ApiRoute.buyCable, body: jsonEncode(data), requestHeaders: {
         'Authorization': token,
       });
       return response;
@@ -448,7 +465,8 @@ class ServiceRepo {
     String token = await box.get(kAccessToken);
     try {
       final response =
-          await client.post(ApiRoute.receipt, body: data, requestHeaders: {
+          await client
+          .post(ApiRoute.receipt, body: jsonEncode(data), requestHeaders: {
         'Authorization': token,
       });
       return response;
@@ -462,7 +480,9 @@ class ServiceRepo {
     String token = await box.get(kAccessToken);
     try {
       final response = await client
-          .post(ApiRoute.buyElectricity, body: data, requestHeaders: {
+          .post(ApiRoute.buyElectricity,
+          body: jsonEncode(data),
+          requestHeaders: {
         'Authorization': token,
       });
       return response;
@@ -476,7 +496,8 @@ class ServiceRepo {
     String token = await box.get(kAccessToken);
     try {
       final response =
-          await client.post(ApiRoute.buyPay4Me, body: data, requestHeaders: {
+          await client
+          .post(ApiRoute.buyPay4Me, body: jsonEncode(data), requestHeaders: {
         'Authorization': token,
       });
       return response;

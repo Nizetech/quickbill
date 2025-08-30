@@ -130,14 +130,16 @@ class AccountProvider with ChangeNotifier {
       }
       return qrcode;
     } catch (e) {
-      // log('Error: $e');
+      hideLoader();
       ErrorToast(e.toString());
-      return null;
+    } finally {
+      hideLoader();
+     
     }
   }
 
   // get User Profile
-  Future<Map<String, dynamic>> getUserProfile({bool isLoading = true}) async {
+  Future<Map<String, dynamic>> getUserProfile({bool isLoading = true, VoidCallback? onSuccess}) async {
     try {
       if (isLoading) showLoader();
       Map<String, dynamic> res = {};
@@ -158,13 +160,18 @@ class AccountProvider with ChangeNotifier {
           userModel = UserModel.fromJson(value);
           box.put(isPinEnabled, userModel?.user?.enabledPin);
           if (isLoading) hideLoader();
+          if (onSuccess != null) {
+            onSuccess();
+          }
         }
         notifyListeners();
       });
       return res;
     } catch (e) {
-      // log('Error: $e');
+      hideLoader();
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
       return {};
     }
   }
@@ -199,8 +206,71 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      // log('Error: $e');
+      hideLoader();
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
+    }
+  }
+
+  Future<void> createVirtualAccount(
+    {required Map<String, dynamic> data, required VoidCallback onSuccess}) async {
+    try {
+      showLoader();
+      AccountRepo().createVirtualAccount(data).then((value) {
+        //
+        hideLoader();
+        if (value['status'] == false || value['result'] == false) {
+          if (value['message'].runtimeType == String) {
+            ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';
+            });
+            ErrorToast(message);
+          }
+        } else {
+          hideLoader();
+          onSuccess();
+        }
+        notifyListeners();
+      });
+    } catch (e) {
+      hideLoader();
+      ErrorToast(e.toString());
+    } finally {
+      hideLoader();
+    }
+  }
+
+  Future<void> cardBankTransfer({required String amount,required Function(String) onSuccess}) async {
+    try {
+      showLoader();
+      AccountRepo().cardBankTransfer(amount).then((value) {
+        //
+        hideLoader();
+        if (value['status'] == false || value['result'] == false) {
+          if (value['message'].runtimeType == String) {
+            ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';
+            });
+            ErrorToast(message);
+          }
+        } else {
+          hideLoader();
+          onSuccess(value['checkout_url']);
+        }
+        notifyListeners();
+      });
+    } catch (e) {
+      hideLoader();
+      ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -267,8 +337,10 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      // log('Error: $e');
+        hideLoader();
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -302,8 +374,10 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      // log('Error: $e');
+      hideLoader();
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -364,8 +438,10 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      // log('Error: $e');
+      hideLoader();
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -425,8 +501,10 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      // log('Error: $e');
+      hideLoader();
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -454,8 +532,10 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      // log('Error: $e');
+      hideLoader();
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -487,8 +567,10 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      // log('Error: $e');
+        hideLoader();
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -516,8 +598,10 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      // log('Error: $e');
+      hideLoader();
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -544,8 +628,10 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      // log('Error: $e');
+      hideLoader();
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -602,8 +688,10 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      // log('Error: $e');
+      hideLoader();
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -662,8 +750,10 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      // log('Error: $e');
+      hideLoader();
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -691,6 +781,8 @@ class AccountProvider with ChangeNotifier {
     } catch (e) {
       // log('Error: $e');
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -705,8 +797,10 @@ class AccountProvider with ChangeNotifier {
       });
       notifyListeners();
     } catch (e) {
-      // log('Error: $e');
+      hideLoader();
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -736,9 +830,11 @@ class AccountProvider with ChangeNotifier {
       setLoading(false);
       notifyListeners();
     } catch (e) {
-      // log('Error: $e');
-      setLoading(false);
+        hideLoader();
+   
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -766,9 +862,10 @@ class AccountProvider with ChangeNotifier {
       hideLoader();
       notifyListeners();
     } catch (e) {
-      // log('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -828,9 +925,10 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      // log('Error: $e');
-      // setLoading(false);
+      hideLoader();
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -858,8 +956,10 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      // log('Error: $e');
+      hideLoader();
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -888,8 +988,10 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      // log('Error: $e');
+      hideLoader();
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -917,8 +1019,10 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      // log('Error: $e');
+        hideLoader();
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -955,8 +1059,10 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      // log('Error: $e');
+      hideLoader();
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 }

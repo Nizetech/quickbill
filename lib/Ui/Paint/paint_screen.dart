@@ -442,6 +442,7 @@ class _PaintScreenState extends State<PaintScreen> {
                           enabled: false,
                         ),
                       ),
+                      
                       const SizedBox(
                         height: 16,
                       ),
@@ -486,6 +487,7 @@ class _PaintScreenState extends State<PaintScreen> {
                           enabled: false,
                         ),
                       ),
+                     
                       const SizedBox(
                         height: 16,
                       ),

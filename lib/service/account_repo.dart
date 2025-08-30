@@ -69,9 +69,11 @@ class AccountRepo {
   Future<Map<String, dynamic>> getDepositInvoice(String bankID) async {
     String token = await box.get(kAccessToken);
     try {
-      final response = await client.post(ApiRoute.getInvoice, body: {
+      final response = await client.post(ApiRoute.getInvoice,
+          body: jsonEncode({
         "bank_id": int.parse(bankID),
-      }, requestHeaders: {
+          }),
+          requestHeaders: {
         'Authorization': token,
       });
       return response;
@@ -117,7 +119,7 @@ class AccountRepo {
         requestHeaders: {
           'Authorization': token,
         },
-        body: {"use_google_auth": useGoogleAuth},
+        body: jsonEncode({"use_google_auth": useGoogleAuth}),
       );
       return response;
     } catch (e) {
@@ -135,7 +137,7 @@ class AccountRepo {
         requestHeaders: {
           'Authorization': token,
         },
-        body: {"network_name": network},
+        body: jsonEncode({"network_name": network}),
       );
     
       return response;
@@ -156,10 +158,10 @@ class AccountRepo {
         requestHeaders: {
           'Authorization': token,
         },
-        body: {
+        body: jsonEncode({
           "type": type,
           if (filter != null) ...filter,
-        },
+        }),
       );
       return response;
     } catch (e) {
@@ -176,9 +178,28 @@ class AccountRepo {
         requestHeaders: {
           'Authorization': token,
         },
-        body: {
+        body: jsonEncode({
           "type": 'deposit',
+        }),
+      );
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
+  Future<dynamic> cardBankTransfer(String amount) async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response = await client.post(
+        ApiRoute.cardBankTransfer,
+        requestHeaders: {
+          'Authorization': token,
         },
+        body: jsonEncode({
+          "amount": int.parse(double.parse(amount).ceil().toString()),
+        }),
       );
       return response;
     } catch (e) {
@@ -195,7 +216,7 @@ class AccountRepo {
         requestHeaders: {
           'Authorization': token,
         },
-        body: {"id": 0},
+        body: jsonEncode({"id": 0}),
       );
     
       return response;
@@ -236,6 +257,24 @@ class AccountRepo {
     }
   }
 
+  Future<Map<String, dynamic>> createVirtualAccount(
+      Map<String, dynamic> data) async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response = await client.post(
+        ApiRoute.createVirtual,
+        requestHeaders: {
+          'Authorization': token,
+        },
+        body: jsonEncode(data),
+      );
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
   Future<Map<String, dynamic>> verifyImageUpload(
       Map<String, dynamic> data) async {
     String token = await box.get(kAccessToken);
@@ -245,7 +284,7 @@ class AccountRepo {
         requestHeaders: {
           'Authorization': token,
         },
-        body: data,
+        body: jsonEncode(data),
       );
       return response;
     } catch (e) {
@@ -298,9 +337,11 @@ class AccountRepo {
   Future<Map<String, dynamic>> getTransactions() async {
     String token = await box.get(kAccessToken);
     try {
-      final response = await client.post(ApiRoute.getTransactions, body: {
+      final response = await client.post(ApiRoute.getTransactions,
+          body: jsonEncode({
         "type": "all"
-      }, requestHeaders: {
+      }),
+          requestHeaders: {
         'Authorization': token,
       });
       return response;
@@ -314,7 +355,8 @@ class AccountRepo {
     String token = await box.get(kAccessToken);
     try {
       final response =
-          await client.post(ApiRoute.buyAirtime, body: data, requestHeaders: {
+          await client
+          .post(ApiRoute.buyAirtime, body: jsonEncode(data), requestHeaders: {
         'Authorization': token,
       });
       return response;
@@ -328,7 +370,8 @@ class AccountRepo {
     String token = await box.get(kAccessToken);
     try {
       final response =
-          await client.post(ApiRoute.buyData, body: data, requestHeaders: {
+          await client
+          .post(ApiRoute.buyData, body: jsonEncode(data), requestHeaders: {
         'Authorization': token,
       });
       return response;
@@ -342,7 +385,9 @@ class AccountRepo {
     String token = await box.get(kAccessToken);
     try {
       final response = await client
-          .post(ApiRoute.creditDeposit, body: data, requestHeaders: {
+          .post(ApiRoute.creditDeposit,
+          body: jsonEncode(data),
+          requestHeaders: {
         'Authorization': token,
       });
       //  log('Response: $response');

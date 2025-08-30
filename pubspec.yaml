@@ -52,7 +52,10 @@ dependencies:
   camera: ^0.11.2
   image: ^4.1.7
   audioplayers: ^5.2.1
-
+  country_state_picker: ^0.0.5
+  glassmorphism_widgets: ^0.2.2
+  #<<<< web view
+  flutter_inappwebview: ^6.1.5   
 
   flutter_widget_from_html: ^0.16.0
   #web view
@@ -86,7 +89,6 @@ flutter:
     - assets/
     - assets/images/
     - assets/images/dashboard/
-    - assets/images/splash/
     - assets/images/svg/
     - assets/sounds/
 

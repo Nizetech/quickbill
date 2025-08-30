@@ -87,7 +87,7 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().getCarTypes();
-      if (res['status'] == false || res['result'] == false) { 
+      if (res['status'] == false || res['result'] == false) {
         hideLoader();
         if (res['message'].runtimeType == String) {
           ErrorToast(res['message']);
@@ -106,6 +106,7 @@ class ServiceProvider with ChangeNotifier {
       }
     } catch (e) {
       log('Error: $e');
+      hideLoader();
       ErrorToast(e.toString());
     }
   }
@@ -134,6 +135,8 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -161,6 +164,8 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -190,6 +195,8 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -219,6 +226,8 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -240,7 +249,9 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
-    }
+    } finally {
+      hideLoader();
+    } 
   }
 
   Future<void> getElectricityMerchant(Map<String, dynamic> data,
@@ -248,6 +259,7 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().getElectricityMerchant(data);
+      log('res: $res');
       if (res['res'] != null &&
           res['res']['content'].toString().contains('error')) {
         hideLoader();
@@ -260,7 +272,10 @@ class ServiceProvider with ChangeNotifier {
       notifyListeners();
     } catch (e) {
       log('Error: $e');
+      hideLoader();
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -287,6 +302,7 @@ class ServiceProvider with ChangeNotifier {
       }
     } catch (e) {
       log('Error: $e');
+      hideLoader();
       ErrorToast(e.toString());
     }
   }
@@ -315,6 +331,8 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -341,6 +359,7 @@ class ServiceProvider with ChangeNotifier {
       }
     } catch (e) {
       log('Error: $e');
+      hideLoader();
       ErrorToast(e.toString());
     }
   }
@@ -349,7 +368,7 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().getCarDetails(id);
-    
+
       if (res['status'] == false || res['result'] == false) {
         hideLoader();
         if (res['message'].runtimeType == String) {
@@ -371,6 +390,8 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -394,11 +415,12 @@ class ServiceProvider with ChangeNotifier {
       } else {
         await getRepairTransactions(isLoading: false, account: account);
         hideLoader();
-      SuccessToast(res['message']);
+        SuccessToast(res['message']);
         notifyListeners();
       }
     } catch (e) {
       log('Error: $e');
+      hideLoader();
       ErrorToast(e.toString());
     }
   }
@@ -408,7 +430,7 @@ class ServiceProvider with ChangeNotifier {
     try {
       if (isLoading) showLoader();
       var res = await ServiceRepo().getRepairDetails(id);
-    
+
       if (res['status'] == false || res['result'] == false) {
         if (isLoading) hideLoader();
         if (res['message'].runtimeType == String) {
@@ -430,6 +452,8 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -438,7 +462,7 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().shareRepairInvoice(id);
-     
+
       hideLoader();
       if (res['status'] == false || res['result'] == false) {
         if (res['message'].runtimeType == String) {
@@ -462,20 +486,23 @@ class ServiceProvider with ChangeNotifier {
       }
     } catch (e) {
       log('Error: $e');
+      hideLoader();
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
-  Future<void> skipRepair(
-      {required String repairID,
-      required String workId,
+  Future<void> skipRepair({
+    required String repairID,
+    required String workId,
     required VoidCallback callback,
     required AccountProvider account,
   }) async {
     try {
       showLoader();
       var res = await ServiceRepo().skipRepair(workId);
-    
+
       if (res['status'] == false || res['result'] == false) {
         hideLoader();
         if (res['message'].runtimeType == String) {
@@ -497,6 +524,7 @@ class ServiceProvider with ChangeNotifier {
       }
     } catch (e) {
       log('Error: $e');
+      hideLoader();
       ErrorToast(e.toString());
     }
   }
@@ -505,7 +533,7 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().getScriptDetails(id);
-    
+
       if (res['status'] == false || res['result'] == false) {
         hideLoader();
         if (res['message'].runtimeType == String) {
@@ -534,7 +562,7 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().buyCar(data);
-    
+
       if (res['status'] == false || res['result'] == false) {
         hideLoader();
         if (res['message'].runtimeType == String) {
@@ -566,7 +594,7 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().bookInspection(data);
-    
+
       if (res['status'] == false || res['result'] == false) {
         hideLoader();
         if (res['message'].runtimeType == String) {
@@ -587,7 +615,10 @@ class ServiceProvider with ChangeNotifier {
       }
     } catch (e) {
       log('Error: $e');
+      hideLoader();
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -595,7 +626,7 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().buyScript(id);
-    
+
       if (res['status'] == false || res['result'] == false) {
         hideLoader();
         if (res['message'].runtimeType == String) {
@@ -617,7 +648,10 @@ class ServiceProvider with ChangeNotifier {
       }
     } catch (e) {
       log('Error: $e');
+      hideLoader();
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -644,7 +678,10 @@ class ServiceProvider with ChangeNotifier {
       }
     } catch (e) {
       log('Error: $e');
+      hideLoader();
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -673,7 +710,10 @@ class ServiceProvider with ChangeNotifier {
       }
     } catch (e) {
       log('Error: $e');
+      hideLoader();
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -681,7 +721,7 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().buyGiftCard(data);
-    
+
       if (res['status'] == false || res['result'] == false) {
         hideLoader();
         if (res['message'].runtimeType == String) {
@@ -703,7 +743,10 @@ class ServiceProvider with ChangeNotifier {
       }
     } catch (e) {
       log('Error: $e');
+      hideLoader();
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -750,7 +793,10 @@ class ServiceProvider with ChangeNotifier {
       }
     } catch (e) {
       log('Error: $e');
+      hideLoader();
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -792,7 +838,10 @@ class ServiceProvider with ChangeNotifier {
       }
     } catch (e) {
       log('Error: $e');
+      hideLoader();
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -847,6 +896,7 @@ class ServiceProvider with ChangeNotifier {
       }
     } catch (e) {
       log('Error: $e');
+      hideLoader();
       ErrorToast(e.toString());
     }
   }
@@ -874,6 +924,7 @@ class ServiceProvider with ChangeNotifier {
       }
     } catch (e) {
       log('Error: $e');
+      hideLoader();
       ErrorToast(e.toString());
     }
   }
@@ -901,6 +952,7 @@ class ServiceProvider with ChangeNotifier {
       }
     } catch (e) {
       log('Error: $e');
+      hideLoader();
       ErrorToast(e.toString());
     }
   }
@@ -929,6 +981,7 @@ class ServiceProvider with ChangeNotifier {
       }
     } catch (e) {
       log('Error: $e');
+      hideLoader();
       ErrorToast(e.toString());
     }
   }
@@ -958,6 +1011,7 @@ class ServiceProvider with ChangeNotifier {
       }
     } catch (e) {
       log('Error: $e');
+      hideLoader();
       ErrorToast(e.toString());
     }
   }
@@ -987,7 +1041,10 @@ class ServiceProvider with ChangeNotifier {
       }
     } catch (e) {
       log('Error: $e');
+      hideLoader();
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -1018,6 +1075,8 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -1045,6 +1104,8 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -1053,7 +1114,7 @@ class ServiceProvider with ChangeNotifier {
     try {
       if (isLoading) showLoader();
       var res = await ServiceRepo().getRepairTransactions();
-     
+
       if (isLoading) hideLoader();
       if (res['status'] == false || res['result'] == false) {
         if (res['message'].runtimeType == String) {
@@ -1074,6 +1135,8 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -1106,6 +1169,8 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -1133,7 +1198,10 @@ class ServiceProvider with ChangeNotifier {
       }
     } catch (e) {
       log('Error: $e');
+      hideLoader();
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -1142,7 +1210,7 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().getPdfReceipt(id);
-     
+
       hideLoader();
       if (res['status'] == false || res['result'] == false) {
         if (res['message'].runtimeType == String) {
@@ -1162,13 +1230,15 @@ class ServiceProvider with ChangeNotifier {
         final file = File('${dir.path}/${res["file_name"]}');
         await file.writeAsBytes(bytes);
 
-      // var xFile = XFile(res);
-      Share.shareXFiles([XFile(file.path)], text: 'Transaction Receipt');
-      notifyListeners();
+        // var xFile = XFile(res);
+        Share.shareXFiles([XFile(file.path)], text: 'Transaction Receipt');
+        notifyListeners();
       }
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -1197,6 +1267,8 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -1227,6 +1299,8 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -1236,7 +1310,7 @@ class ServiceProvider with ChangeNotifier {
       if (isLoading) showLoader();
 
       var res = await ServiceRepo().getCarsTransactions();
-     
+
       if (res['status'] == false || res['result'] == false) {
         if (isLoading) hideLoader();
         if (res['message'].runtimeType == String) {
@@ -1258,6 +1332,8 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 
@@ -1285,6 +1361,8 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
+    } finally {
+      hideLoader();
     }
   }
 }

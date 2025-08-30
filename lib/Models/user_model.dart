@@ -29,6 +29,7 @@ class UserModel {
 }
 
 class User {
+  String? id;
   String? email;
   String? firstName;
   String? lastName;
@@ -36,11 +37,13 @@ class User {
   String? country;
   String? useGoogleAuth;
   bool? isActive;
+  dynamic virtualAccount;
   bool? idVerified;
   dynamic enabledPin;
   String? createdAt;
 
   User({
+    this.id,
     this.email,
     this.firstName,
     this.lastName,
@@ -48,12 +51,14 @@ class User {
     this.country,
     this.useGoogleAuth,
     this.isActive,
+    this.virtualAccount,
     this.idVerified,
     this.enabledPin,
     this.createdAt,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
+        id: json["id"],
         email: json["email"],
         firstName: json["first_name"],
         lastName: json["last_name"],
@@ -61,12 +66,14 @@ class User {
         country: json["country"],
         useGoogleAuth: json["use_google_auth"],
         isActive: json["active"],
+        virtualAccount: json["account_number"],
         idVerified: json["id_verified"],
         enabledPin: json["enable_pin"],
         createdAt: json["created_at"],
       );
 
   Map<String, dynamic> toJson() => {
+        "id": id,
         "email": email,
         "first_name": firstName,
         "last_name": lastName,
@@ -74,6 +81,7 @@ class User {
         "country": country,
         "use_google_auth": useGoogleAuth,
         "active": isActive,
+        "account_number": virtualAccount,
         "id_verified": idVerified,
         "enable_pin": enabledPin,
         "created_at": createdAt,

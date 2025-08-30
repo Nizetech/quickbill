@@ -8,6 +8,7 @@ import 'package:jost_pay_wallet/Ui/Authentication/SignInScreen.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/HelpSupport.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Settings/ProfileScreen.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Settings/Rewards/reward_screen.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/kyc_web.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/profile_image.dart';
 import 'package:jost_pay_wallet/Ui/Static/AccountSetting.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
@@ -150,170 +151,43 @@ class _SettingScreenState extends State<SettingScreen> {
                         ),
                       ),
                       const SizedBox(height: 8),
-
-                      Container(
-                        padding: const EdgeInsets.only(top: 8, bottom: 8),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => RewardScreen(),
-                                ));
-                          },
-                          child: Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    color: Theme.of(context)
-                                        .scaffoldBackgroundColor),
-                                child: Image.asset(
-                                  "assets/images/gift.png",
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              Text("Referral Code",
-                                  style: MyStyle.tx14Black.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    color: themeProvider.isDarkMode()
-                                        ? const Color(0XFFCBD2EB)
-                                        : const Color(0xff30333A),
-                                  )),
-                              const Spacer(),
-                              Image.asset(
-                                "assets/images/right.png",
-                                fit: BoxFit.cover,
-                              ),
-                            ],
-                          ),
-                        ),
+                      _buildSettingCard(
+                        image: "assets/images/gift.png",
+                        onTap: () {
+                          Get.to(() => const RewardScreen());
+                        },
+                        themeProvider: themeProvider,
+                        title: "Referral Code",
                       ),
-                      const SizedBox(height: 16),
+                      _buildSettingCard(
+                        icon: Icons.verified_user_outlined,
+                        onTap: () {
+                          Get.to(() => const KycWebview());
+                        },
+                        themeProvider: themeProvider,
+                        title: "KYC Verification",
+                      ),
                       Container(
                           height: 0.5,
                           decoration:
                               const BoxDecoration(color: Color(0xFFF3F4F6))),
                       const SizedBox(height: 16),
-                      Container(
-                        padding: const EdgeInsets.only(top: 8, bottom: 8),
-                        child: InkWell(
-                          onTap: () {
-                            dashProvider.changeBottomIndex(5);
-                          },
-                          child: Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    color: Theme.of(context)
-                                        .scaffoldBackgroundColor),
-                                child: Image.asset(
-                                  "assets/images/google-doc.png",
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              Text("Terms",
-                                  style: MyStyle.tx14Black.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    color: themeProvider.isDarkMode()
-                                        ? const Color(0XFFCBD2EB)
-                                        : const Color(0xff30333A),
-                                  )),
-                              const Spacer(),
-                              Image.asset(
-                                "assets/images/right.png",
-                                fit: BoxFit.cover,
-                              ),
-                            ],
-                          ),
-                        ),
+                      _buildSettingCard(
+                        image: "assets/images/google-doc.png",
+                        onTap: () {
+                          dashProvider.changeBottomIndex(5);
+                        },
+                        themeProvider: themeProvider,
+                        title: "Terms",
                       ),
-                      // const SizedBox(
-                      //   height: 8,
-                      // ),
-                      Container(
-                        padding: const EdgeInsets.only(top: 8, bottom: 8),
-                        child: InkWell(
-                          onTap: () => dashProvider.changeBottomIndex(6),
-                          child: Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    color: Theme.of(context)
-                                        .scaffoldBackgroundColor),
-                                child: Image.asset(
-                                  "assets/images/document-attachment.png",
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              Text("Privacy",
-                                  style: MyStyle.tx14Black.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    color: themeProvider.isDarkMode()
-                                        ? const Color(0XFFCBD2EB)
-                                        : const Color(0xff30333A),
-                                  )),
-                              const Spacer(),
-                              Image.asset(
-                                "assets/images/right.png",
-                                fit: BoxFit.cover,
-                              ),
-                            ],
-                          ),
-                        ),
+                      _buildSettingCard(
+                        image: "assets/images/settings-02.png",
+                        onTap: () {
+                          Get.to(() => const Accountsetting());
+                        },
+                        themeProvider: themeProvider,
+                        title: "Settings",
                       ),
-                      // const SizedBox(
-                      //   height: 8,
-                      // ),
-                      Container(
-                        padding: const EdgeInsets.only(top: 8, bottom: 8),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const Accountsetting(),
-                                ));
-                          },
-                          child: Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    color: Theme.of(context)
-                                        .scaffoldBackgroundColor),
-                                child: Image.asset(
-                                  "assets/images/settings-02.png",
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              Text("Settings",
-                                  style: MyStyle.tx14Black.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    color: themeProvider.isDarkMode()
-                                        ? const Color(0XFFCBD2EB)
-                                        : const Color(0xff30333A),
-                                  )),
-                              const Spacer(),
-                              Image.asset(
-                                "assets/images/right.png",
-                                fit: BoxFit.cover,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
                       Container(
                           height: 0.5,
                           decoration:
@@ -415,7 +289,6 @@ class _SettingScreenState extends State<SettingScreen> {
                                 MaterialPageRoute(
                                   builder: (context) => const SignInScreen(),
                                 ));
-                            dashProvider.changeBottomIndex(0);
                           },
                           child: Row(
                             children: [
@@ -453,6 +326,50 @@ class _SettingScreenState extends State<SettingScreen> {
           ),
         );
       }),
+    );
+  }
+
+  Widget _buildSettingCard({
+    String? image,
+    required VoidCallback onTap,
+    IconData? icon,
+    required ThemeProvider themeProvider,
+    required String title,
+  }) {
+    return Container(
+      padding: const EdgeInsets.only(top: 8, bottom: 8),
+      child: InkWell(
+        onTap: onTap,
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: Theme.of(context).scaffoldBackgroundColor),
+              child: icon != null
+                  ? Icon(icon, color: MyColor.grey)
+                  : Image.asset(
+                      image ?? "",
+                      fit: BoxFit.cover,
+                    ),
+            ),
+            const SizedBox(width: 16),
+            Text(title,
+                style: MyStyle.tx14Black.copyWith(
+                  fontWeight: FontWeight.w500,
+                  color: themeProvider.isDarkMode()
+                      ? const Color(0XFFCBD2EB)
+                      : const Color(0xff30333A),
+                )),
+            const Spacer(),
+            Image.asset(
+              "assets/images/right.png",
+              fit: BoxFit.cover,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

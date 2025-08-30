@@ -50,8 +50,10 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
       backgroundColor:
           themeProvider.isDarkMode() ? MyColor.dark02Color : Color(0xffF4F4F4),
       body: Consumer<ServiceProvider>(builder: (context, model, child) {
-        electricityDesc =
-            "Electricity: ${model.receiptModel?.info?.title}, Token: ${model.receiptModel?.info?.token}, Units: ${model.receiptModel?.info?.unit}, ${!model.receiptModel!.info!.customerName!.contains('N/A') ? "Customer Name: ${model.receiptModel?.info?.customerName}," : ''} ${model.receiptModel?.info?.kct1 != 'N/A' ? "KCT1: ${model.receiptModel?.info?.kct1}," : ''} ${model.receiptModel?.info?.kct2 != 'N/A' ? "KCT2: ${model.receiptModel?.info?.kct2}," : ''}";
+        if (widget.isElectricity) {
+          electricityDesc =
+              "Electricity: ${model.receiptModel?.info?.title}, Token: ${model.receiptModel?.info?.token}, Units: ${model.receiptModel?.info?.unit}, ${model.receiptModel?.info?.customerName?.contains('N/A') ?? false ? "Customer Name: ${model.receiptModel?.info?.customerName}," : ''} ${model.receiptModel?.info?.kct1 != 'N/A' ? "KCT1: ${model.receiptModel?.info?.kct1}," : ''} ${model.receiptModel?.info?.kct2 != 'N/A' ? "KCT2: ${model.receiptModel?.info?.kct2}," : ''}";
+        }
         return SingleChildScrollView(
           padding: EdgeInsets.all(20),
           child:

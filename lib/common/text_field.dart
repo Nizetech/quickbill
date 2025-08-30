@@ -3,6 +3,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
+import 'package:jost_pay_wallet/Values/NewColor.dart';
+import 'package:jost_pay_wallet/Values/NewStyle.dart';
 import 'package:provider/provider.dart';
 
 class CustomTextField extends StatefulWidget {
@@ -69,10 +71,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
         filled: true,
         fillColor:
             widget.isAuth || !isDark ? Colors.white : MyColor.dark02Color,
-        hintStyle: MyStyle.tx14Black.copyWith(
-          color: Colors.grey,
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
+        hintStyle: TextStyle(
+            fontSize: 12, // Font size
+            color: NewColor.inputHintColor,
+            fontFamily: 'Inter' // Font color
         ),
         enabled: false,
         enabledBorder: _buildEnabledBorder(isDark, widget.isAuth),
@@ -106,7 +108,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       ),
       style: MyStyle.tx14Black.copyWith(
         color: widget.isAuth ? MyColor.blackColor : themedata.tertiary,
-        fontSize: 14,
+        fontSize: 13,
         fontWeight: FontWeight.w400,
         fontFamily: 'SF Pro Rounded',
       ),
@@ -151,7 +153,7 @@ class UnderlineTextfield extends StatelessWidget {
       keyboardType: TextInputType.number,
       onTapOutside: (_) => FocusScope.of(context).unfocus(),
       style: TextStyle(
-        fontSize: 14,
+        fontSize: 13,
         color: themedata.tertiary,
         fontFamily: 'SF Pro Rounded',
       ),

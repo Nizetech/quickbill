@@ -13,7 +13,8 @@ import 'package:provider/provider.dart';
 
 class DepositDetails extends StatefulWidget {
   final String title;
-  const DepositDetails({super.key, required this.title});
+  final bool isCard;
+  const DepositDetails({super.key, required this.title, this.isCard = false});
 
   @override
   State<DepositDetails> createState() => _DepositDetailsState();

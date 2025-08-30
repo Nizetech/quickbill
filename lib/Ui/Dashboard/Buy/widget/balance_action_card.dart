@@ -1,7 +1,9 @@
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/kyc_web.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
@@ -58,7 +60,12 @@ class BalanceActionCard extends StatelessWidget {
           ),
           if (showBtn)
           TextButton(
-            onPressed: onTap,
+              onPressed: model.userModel?.user?.createdAt != null &&
+                      model.userModel?.user?.isActive == false
+                  ? () {
+                      Get.to(() => const KycWebview());
+                    }
+                  : onTap,
             style: TextButton.styleFrom(
               backgroundColor: MyColor.greenColor,
                 padding:

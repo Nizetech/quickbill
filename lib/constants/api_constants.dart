@@ -85,4 +85,8 @@ class ApiRoute {
   static String cableVariations = 'services/get-variationCodes';
   static String buyCable = 'services/buy-cable';
   static String buyElectricity = 'services/buy-electricity';
+  static String airtimeServiceDetail = 'services/airtime';
+  static String dataServiceDetail = 'services/data';
+  static String cableServiceDetail = 'services/cable';
+  static String electricityServiceDetail = 'services/electricity';
 }

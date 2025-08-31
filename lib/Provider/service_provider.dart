@@ -249,8 +249,6 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
     } 
   }
 

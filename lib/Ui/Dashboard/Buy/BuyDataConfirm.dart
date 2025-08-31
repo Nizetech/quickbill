@@ -18,12 +18,13 @@ class BuyDataConfirm extends StatefulWidget {
   final Network network;
   final String phone;
   final Plan plan;
-
+final bool saveDetails;
   const BuyDataConfirm(
       {super.key,
       required this.network,
       required this.phone,
-      required this.plan});
+      required this.plan,
+      required this.saveDetails});
 
   @override
   State<BuyDataConfirm> createState() => _BuyDataConfirmState();
@@ -141,42 +142,6 @@ class _BuyDataConfirmState extends State<BuyDataConfirm> {
                       const SizedBox(
                         height: 12,
                       ),
-                      // Row(
-                      //   children: [
-                      //     const Text(
-                      //       'Expiry Date',
-                      //       style: MyStyle.tx12Grey,
-                      //     ),
-                      //     const Spacer(),
-                      //     Text(
-                      //       '1 day',
-                      //       style: MyStyle.tx12Black.copyWith(
-                      //           color: themedata.tertiary,
-                      //           fontFamily: 'SF Pro Rounded'),
-                      //     ),
-                      //   ],
-                      // ),
-                      // const SizedBox(
-                      //   height: 12,
-                      // ),
-                      // Row(
-                      //   children: [
-                      //     const Text(
-                      //       'Carrier',
-                      //       style: MyStyle.tx12Grey,
-                      //     ),
-                      //     const Spacer(),
-                      //     Text(
-                      //       'MTN Direct Top-up (Prepaid)',
-                      //       style: MyStyle.tx12Black.copyWith(
-                      //           color: themedata.tertiary,
-                      //           fontFamily: 'SF Pro Rounded'),
-                      //     ),
-                      //   ],
-                      // ),
-                      // const SizedBox(
-                      //   height: 12,
-                      // ),
                       Row(
                         children: [
                           const Text(
@@ -267,6 +232,7 @@ class _BuyDataConfirmState extends State<BuyDataConfirm> {
                         "phone": widget.phone,
                         "data_type": "SME",
                         "plan_id": widget.plan.planId,
+                          'details': widget.saveDetails ? 1 : 0,
                         },
                         amount: widget.plan.price.toString(),
                         plan: widget.plan.name!,

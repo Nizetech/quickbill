@@ -17,11 +17,13 @@ class Buyairtimeconfirmdetail extends StatefulWidget {
   final Network selectedNetwork;
   final String amount;
   final String number;
+  final bool saveDetails;
   const Buyairtimeconfirmdetail(
       {super.key,
       required this.selectedNetwork,
       required this.amount,
     required this.number,
+    required this.saveDetails,
   });
 
   @override
@@ -245,6 +247,7 @@ class _BuyairtimeconfirmdetailState extends State<Buyairtimeconfirmdetail> {
                             widget.selectedNetwork.network!.toLowerCase(),
                         'phone': widget.number,
                         'amount': widget.amount,
+                        'details': widget.saveDetails ? 1 : 0,
                       });
                     },
                     child: Text(

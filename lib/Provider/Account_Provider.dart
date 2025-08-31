@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 
 import 'package:collection/collection.dart';
@@ -6,10 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jost_pay_wallet/Models/airtime_history.dart';
+import 'package:jost_pay_wallet/Models/airtime_service_details.dart';
 import 'package:jost_pay_wallet/Models/banks_model.dart';
+import 'package:jost_pay_wallet/Models/cable_service_details.dart';
 import 'package:jost_pay_wallet/Models/data_history_model.dart';
 import 'package:jost_pay_wallet/Models/data_plans_model.dart';
+import 'package:jost_pay_wallet/Models/data_service_details.dart';
 import 'package:jost_pay_wallet/Models/deposit_history_model.dart';
+import 'package:jost_pay_wallet/Models/elect_service_details.dart';
 import 'package:jost_pay_wallet/Models/giftcard_history.dart';
 import 'package:jost_pay_wallet/Models/invoice_model.dart';
 import 'package:jost_pay_wallet/Models/network_provider.dart';
@@ -47,6 +50,10 @@ class AccountProvider with ChangeNotifier {
   List<BanksModel> banksModel = [];
   InvoiceModel? invoiceModel;
   DepositHistoryModel? depositHistoryModel;
+  AirtimeServiceModel? airtimeServiceModel;
+  DataServiceModel? dataServiceModel;
+  CableServiceModel? cableServiceModel;
+  ElectServiceModel? electServiceModel;
 
   dynamic qrcode;
   TransactionModel? _dashBoardHistory;
@@ -132,14 +139,12 @@ class AccountProvider with ChangeNotifier {
     } catch (e) {
       hideLoader();
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-     
-    }
+    } 
   }
 
   // get User Profile
-  Future<Map<String, dynamic>> getUserProfile({bool isLoading = true, VoidCallback? onSuccess}) async {
+  Future<Map<String, dynamic>> getUserProfile(
+      {bool isLoading = true, VoidCallback? onSuccess}) async {
     try {
       if (isLoading) showLoader();
       Map<String, dynamic> res = {};
@@ -208,13 +213,12 @@ class AccountProvider with ChangeNotifier {
     } catch (e) {
       hideLoader();
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   Future<void> createVirtualAccount(
-    {required Map<String, dynamic> data, required VoidCallback onSuccess}) async {
+      {required Map<String, dynamic> data,
+      required VoidCallback onSuccess}) async {
     try {
       showLoader();
       AccountRepo().createVirtualAccount(data).then((value) {
@@ -239,12 +243,11 @@ class AccountProvider with ChangeNotifier {
     } catch (e) {
       hideLoader();
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
-  Future<void> cardBankTransfer({required String amount,required Function(String) onSuccess}) async {
+  Future<void> cardBankTransfer(
+      {required String amount, required Function(String) onSuccess}) async {
     try {
       showLoader();
       AccountRepo().cardBankTransfer(amount).then((value) {
@@ -269,9 +272,7 @@ class AccountProvider with ChangeNotifier {
     } catch (e) {
       hideLoader();
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   // get User Profile
@@ -284,7 +285,6 @@ class AccountProvider with ChangeNotifier {
       AccountRepo()
           .getServiceHistory('airtime', filter: filter)
           .then((value) async {
-       
         if (isLoading) hideLoader();
         if (value['status'] == false || value['result'] == false) {
           if (value['message'].runtimeType == String) {
@@ -318,7 +318,6 @@ class AccountProvider with ChangeNotifier {
       AccountRepo()
           .getServiceHistory('data', filter: filter)
           .then((value) async {
-       
         if (isLoading) hideLoader();
         if (value['status'] == false || value['result'] == false) {
           if (value['message'].runtimeType == String) {
@@ -337,11 +336,9 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-        hideLoader();
-      ErrorToast(e.toString());
-    } finally {
       hideLoader();
-    }
+      ErrorToast(e.toString());
+    } 
   }
 
   // get Airtime History
@@ -354,7 +351,6 @@ class AccountProvider with ChangeNotifier {
       AccountRepo()
           .getServiceHistory('pay4me', filter: filter)
           .then((value) async {
-       
         if (isLoading) hideLoader();
         if (value['status'] == false || value['result'] == false) {
           if (value['message'].runtimeType == String) {
@@ -376,9 +372,7 @@ class AccountProvider with ChangeNotifier {
     } catch (e) {
       hideLoader();
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   // get User Profile
@@ -391,7 +385,6 @@ class AccountProvider with ChangeNotifier {
       AccountRepo()
           .getServiceHistory('giftcard', filter: filter)
           .then((value) async {
-       
         if (isLoading) hideLoader();
         if (value['status'] == false || value['result'] == false) {
           if (value['message'].runtimeType == String) {
@@ -420,7 +413,6 @@ class AccountProvider with ChangeNotifier {
     try {
       if (isLoading) showLoader();
       AccountRepo().getDepositHistory().then((value) async {
-       
         if (isLoading) hideLoader();
         if (value['status'] == false || value['result'] == false) {
           if (value['message'].runtimeType == String) {
@@ -440,9 +432,7 @@ class AccountProvider with ChangeNotifier {
     } catch (e) {
       hideLoader();
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   Future<void> createDeposit(Map<String, dynamic> data) async {
@@ -450,7 +440,7 @@ class AccountProvider with ChangeNotifier {
       showLoader();
       AccountRepo().createDeposit(data).then((value) async {
         hideLoader();
-       
+
         if (value['status'] == false || value['result'] == false) {
           if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
@@ -482,7 +472,6 @@ class AccountProvider with ChangeNotifier {
       AccountRepo()
           .getServiceHistory('social', filter: filter)
           .then((value) async {
-       
         if (isLoading) hideLoader();
         if (value['status'] == false || value['result'] == false) {
           if (value['message'].runtimeType == String) {
@@ -503,16 +492,13 @@ class AccountProvider with ChangeNotifier {
     } catch (e) {
       hideLoader();
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   Future<void> getBanks({bool isLoading = true}) async {
     try {
       if (isLoading) showLoader();
       AccountRepo().getBanks().then((value) async {
-       
         if (isLoading) hideLoader();
         if (value['status'] == false || value['result'] == false) {
           if (value['message'].runtimeType == String) {
@@ -534,9 +520,7 @@ class AccountProvider with ChangeNotifier {
     } catch (e) {
       hideLoader();
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   // get Network Provider
@@ -545,7 +529,6 @@ class AccountProvider with ChangeNotifier {
     try {
       if (isLoading) showLoader();
       AccountRepo().getNetworkProviders().then((value) {
-       
         if (isLoading) hideLoader();
         if (value['status'] == false || value['result'] == false) {
           if (value['message'].runtimeType == String) {
@@ -567,11 +550,9 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-        hideLoader();
-      ErrorToast(e.toString());
-    } finally {
       hideLoader();
-    }
+      ErrorToast(e.toString());
+    } 
   }
 
   // get Profile Image
@@ -579,7 +560,6 @@ class AccountProvider with ChangeNotifier {
     try {
       if (isLoading) showLoader();
       AccountRepo().getProfileImage().then((value) {
-       
         if (isLoading) hideLoader();
         if (value['status'] == false || value['result'] == false) {
           if (value['message'].runtimeType == String) {
@@ -600,9 +580,7 @@ class AccountProvider with ChangeNotifier {
     } catch (e) {
       hideLoader();
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   // update Profile Image
@@ -630,15 +608,15 @@ class AccountProvider with ChangeNotifier {
     } catch (e) {
       hideLoader();
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   // buy Airtime
   Future<void> buyAirtime(Map<String, dynamic> data) async {
     try {
       showLoader();
+      log("Loading.....");
+      // return;
       AccountRepo().buyAirtime(data).then((value) async {
         hideLoader();
         if (value['result'] == null || value['result'] == false) {
@@ -647,23 +625,26 @@ class AccountProvider with ChangeNotifier {
               isData: true,
               isFailed: true,
             ));
-          } 
+          }
           // else {
           //   Get.to(InvalidPurchase(
           //     isData: false,
           //   ));
           // }
-            if (value['message'].runtimeType == String) {
+          if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
           } else {
             String message = '';
-            value['message'].forEach((key, value) {
-              message += '$value';
-            });
-            ErrorToast(message);
+            if (value['message'] == null) {
+              ErrorToast('Something went wrong');
+            } else {
+              value['message'].forEach((key, value) {
+                message += '$value';
+              });
+              ErrorToast(message);
+            }
           }
         } else {
-        
           if (value['message'].toString().toLowerCase().contains('pending')) {
             Get.to(PendingFailedPurchase(
               isData: true,
@@ -690,9 +671,7 @@ class AccountProvider with ChangeNotifier {
     } catch (e) {
       hideLoader();
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   // buy Data
@@ -709,7 +688,7 @@ class AccountProvider with ChangeNotifier {
               isFailed: true,
             ));
           }
-            if (value['message'].runtimeType == String) {
+          if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
           } else {
             String message = '';
@@ -731,7 +710,6 @@ class AccountProvider with ChangeNotifier {
               plan: plan,
               phone: data['phone'],
               amount: amount,
-              
             ));
           } else if (value['result'] == true &&
               value['message'].toString().toLowerCase().contains('fail')) {
@@ -752,16 +730,13 @@ class AccountProvider with ChangeNotifier {
     } catch (e) {
       hideLoader();
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   // get Notification
   Future<void> getNotification() async {
     try {
       AccountRepo().getNotification().then((value) {
-       
         if (value['status'] == false || value['result'] == false) {
           if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
@@ -781,9 +756,7 @@ class AccountProvider with ChangeNotifier {
     } catch (e) {
       // log('Error: $e');
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   // get Notification
@@ -799,9 +772,7 @@ class AccountProvider with ChangeNotifier {
     } catch (e) {
       hideLoader();
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   // get User Balance
@@ -809,7 +780,6 @@ class AccountProvider with ChangeNotifier {
     try {
       setLoading(true);
       AccountRepo().getBalance().then((value) {
-       
         setLoading(false);
         if (value['status'] == false || value['result'] == false) {
           if (value['message'].runtimeType == String) {
@@ -830,26 +800,26 @@ class AccountProvider with ChangeNotifier {
       setLoading(false);
       notifyListeners();
     } catch (e) {
-        hideLoader();
-   
-      ErrorToast(e.toString());
-    } finally {
       hideLoader();
-    }
+
+      ErrorToast(e.toString());
+    } 
   }
 
-  Future<void> verifyKyc({ required VoidCallback callback,}) async {
+  Future<void> verifyKyc({
+    required VoidCallback callback,
+  }) async {
     try {
       showLoader();
       AccountRepo().verifyKyc(kycData).then((value) {
         hideLoader();
-          if (value['status']   == false || value['result'] == false) {
+        if (value['status'] == false || value['result'] == false) {
           if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
           } else {
             String message = '';
             value['message'].forEach((key, value) {
-              message += '$value';    
+              message += '$value';
             });
             ErrorToast(message);
           }
@@ -864,23 +834,23 @@ class AccountProvider with ChangeNotifier {
     } catch (e) {
       hideLoader();
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
-  Future<void> verifyImageUpload({ required VoidCallback callback,}) async {
+  Future<void> verifyImageUpload({
+    required VoidCallback callback,
+  }) async {
     try {
       showLoader();
       AccountRepo().verifyKyc(kycData).then((value) {
         hideLoader();
-            if (value['status'] == false || value['result'] == false) {
+        if (value['status'] == false || value['result'] == false) {
           if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
           } else {
             String message = '';
             value['message'].forEach((key, value) {
-              message += '$value';    
+              message += '$value';
             });
             ErrorToast(message);
           }
@@ -904,7 +874,6 @@ class AccountProvider with ChangeNotifier {
     try {
       if (isLoading) showLoader();
       AccountRepo().getTransactions().then((value) {
-       
         if (value['status'] == false || value['result'] == false) {
           if (isLoading) hideLoader();
           if (value['message'].runtimeType == String) {
@@ -927,9 +896,117 @@ class AccountProvider with ChangeNotifier {
     } catch (e) {
       hideLoader();
       ErrorToast(e.toString());
-    } finally {
+    } 
+  }
+
+
+  Future<void> getAirtimeServiceDetail() async {
+       showLoader();
+    try {
+      AccountRepo().getAirtimeServiceDetail().then((value) {
+        if (value['status'] == false || value['result'] == false) {
+         hideLoader();
+          if (value['message'].runtimeType == String) {
+            ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';
+            });
+            ErrorToast(message);
+          }
+        } else {
+         hideLoader();
+          airtimeServiceModel = AirtimeServiceModel.fromJson(value);
+        }
+        notifyListeners();
+      });
+    } catch (e) {
       hideLoader();
-    }
+      ErrorToast(e.toString());
+    } 
+  }
+
+  Future<void> getDataServiceDetail() async {
+    try {
+      showLoader();
+      AccountRepo().getDataServiceDetail().then((value) {
+        if (value['status'] == false || value['result'] == false) {
+          hideLoader();
+          if (value['message'].runtimeType == String) {
+            ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';
+            });
+            ErrorToast(message);
+          }
+        } else {
+          hideLoader();
+          dataServiceModel = DataServiceModel.fromJson(value);
+        }
+        notifyListeners();
+      });
+    } catch (e) {
+      hideLoader();
+      ErrorToast(e.toString());
+    } 
+  }
+
+  Future<void> getCableServiceDetail() async { 
+    try {
+      showLoader();
+      AccountRepo().getCableServiceDetail().then((value) {
+        if (value['status'] == false || value['result'] == false) {
+          hideLoader();
+          if (value['message'].runtimeType == String) {
+            ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';
+            });
+            ErrorToast(message);
+          }
+        } else {
+          hideLoader();
+          cableServiceModel = CableServiceModel.fromJson(value);
+        }
+        notifyListeners();
+      });
+    } catch (e) {
+      hideLoader();
+      ErrorToast(e.toString());
+    } 
+  }
+
+
+  Future<void> getElectServiceDetail() async { 
+    try {
+      showLoader();
+      AccountRepo().getElectricityServiceDetail().then((value) {
+        if (value['status'] == false || value['result'] == false) {
+          hideLoader();
+          if (value['message'].runtimeType == String) {
+            ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';
+            });
+            ErrorToast(message);
+          }
+        } else {
+          hideLoader();
+          electServiceModel = ElectServiceModel.fromJson(value);
+        }
+        notifyListeners();
+      });
+    } catch (e) {
+      hideLoader();
+      ErrorToast(e.toString());
+    } 
   }
 
   // get Refferal History
@@ -937,7 +1014,6 @@ class AccountProvider with ChangeNotifier {
     try {
       if (isLoading) showLoader();
       AccountRepo().getReferral().then((value) {
-       
         if (value['status'] == false || value['result'] == false) {
           if (isLoading) hideLoader();
           if (value['message'].runtimeType == String) {
@@ -958,9 +1034,7 @@ class AccountProvider with ChangeNotifier {
     } catch (e) {
       hideLoader();
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   // get Data plans
@@ -969,7 +1043,6 @@ class AccountProvider with ChangeNotifier {
     try {
       if (isLoading) showLoader();
       AccountRepo().getDataPlans(network).then((value) {
-       
         if (value['status'] == false || value['result'] == false) {
           if (isLoading) hideLoader();
           if (value['message'].runtimeType == String) {
@@ -990,9 +1063,7 @@ class AccountProvider with ChangeNotifier {
     } catch (e) {
       hideLoader();
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   // get Promotion
@@ -1000,8 +1071,7 @@ class AccountProvider with ChangeNotifier {
     try {
       if (isLoading) showLoader();
       AccountRepo().getPromotion().then((value) {
-       
-          if (value['status'] == false || value['result'] == false) {
+        if (value['status'] == false || value['result'] == false) {
           if (isLoading) hideLoader();
           if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
@@ -1019,23 +1089,20 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-        hideLoader();
-      ErrorToast(e.toString());
-    } finally {
       hideLoader();
-    }
+      ErrorToast(e.toString());
+    } 
   }
 
   // delete account
   Future<void> deleteAccount() async {
     try {
-     showLoader(
+      showLoader(
         text: 'Account Deletion...',
       );
       AccountRepo().deleteAccount().then((value) {
-       
-          if (value['status'] == false || value['result'] == false) {
-         hideLoader();
+        if (value['status'] == false || value['result'] == false) {
+          hideLoader();
           if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
           } else {
@@ -1061,8 +1128,6 @@ class AccountProvider with ChangeNotifier {
     } catch (e) {
       hideLoader();
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 }

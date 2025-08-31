@@ -71,10 +71,8 @@ class AuthProvider with ChangeNotifier {
 
   Future<void> login(Map<String, dynamic> data) async {
     try {
-      // setLoading(true);
       showLoader();
     await AuthRepo().login(data).then((value) {
-        // setLoading(false);
         hideLoader();
         if (value.isNotEmpty) {
           if (value['status'] == false || value['result'] == false) {
@@ -207,7 +205,6 @@ class AuthProvider with ChangeNotifier {
     try {
       showLoader();
        await AuthRepo().pinLogin(pin).then((value) async {
-       
         hideLoader();
         if (value.isNotEmpty) {
           if (value['status'] == false || value['result'] == false) {
@@ -396,9 +393,7 @@ class AuthProvider with ChangeNotifier {
       log('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   Future<void> forgetPassword(String email) async {
@@ -433,9 +428,7 @@ class AuthProvider with ChangeNotifier {
       log('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   Future<void> changePassword(Map<String, dynamic> data) async {
@@ -471,8 +464,6 @@ class AuthProvider with ChangeNotifier {
       log('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 }

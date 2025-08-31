@@ -14,8 +14,10 @@ import 'package:provider/provider.dart';
 
 class ElectricitySummaryScreen extends StatefulWidget {
   final Map<String, dynamic> data;
+  final bool saveDetails;
   const ElectricitySummaryScreen({
     super.key,
+    required this.saveDetails,
     required this.data,
   });
 
@@ -279,6 +281,7 @@ class _ElectricitySummaryScreenState extends State<ElectricitySummaryScreen> {
                         "amount": widget.data['amount'],
                         "number": widget.data['meter_number'],
                         "phone": widget.data['phone'],
+                        "details": widget.saveDetails ? 1 : 0,
                       };
                       model.buyElectricity(data);
                     },

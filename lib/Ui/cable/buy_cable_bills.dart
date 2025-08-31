@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -40,11 +41,15 @@ class _BuyCableBillsState extends State<BuyCableBills> {
   Network? selectedNetwork;
   Timer? _typingTimer;
   String cableMerchant = '';
+  bool saveDetails = false;
 
   @override
   void initState() {
     super.initState();
     var model = Provider.of<AccountProvider>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      model.getCableServiceDetail();
+    });
     phone.text = model.userModel?.user?.phoneNumber?.replaceAll('+', '') ?? '';
     _controller.addListener(() {
       _onTyping();
@@ -56,16 +61,16 @@ class _BuyCableBillsState extends State<BuyCableBills> {
     if (isShowmax) {
       return;
     } else {
-    if (_typingTimer != null && _typingTimer!.isActive ||
-        _controller.text.isEmpty) {
+      if (_typingTimer != null && _typingTimer!.isActive ||
+          _controller.text.isEmpty) {
         setState(() {
           cableMerchant = '';
         });
         _typingTimer?.cancel();
-    }
-    _typingTimer = Timer(Duration(seconds: 3), () {
+      }
+      _typingTimer = Timer(Duration(seconds: 3), () {
         resolveCardNumber();
-    });
+      });
     }
   }
 
@@ -322,21 +327,59 @@ class _BuyCableBillsState extends State<BuyCableBills> {
                             ),
                             Expanded(
                               child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    bottom: BorderSide(
-                                      color: themeProvider.isDarkMode()
-                                          ? MyColor.borderDarkColor
-                                          : MyColor.borderColor,
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                      bottom: BorderSide(
+                                        color: themeProvider.isDarkMode()
+                                            ? MyColor.borderDarkColor
+                                            : MyColor.borderColor,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                child: UnderlineTextfield(
+                                  child: UnderlineTextfield(
                                     controller: _controller,
-                                    isEnabled: selectedItem != -1,
-                                    focusNode: _focusNode,
-                                    hintText: 'Enter IUC /Smart Card Number'),
-                              ),
+                                    hintText: 'Enter IUC /Smart Card Number',
+                                    suffixIcon: PopupMenuButton(
+                                      color: themedata.secondary,
+                                      constraints: const BoxConstraints(
+                                        maxHeight: 150,
+                                      ),
+                                      itemBuilder: (context) => [
+                                        ...model.cableServiceModel!.details!
+                                            .map((e) => PopupMenuItem(
+                                                  value: e.id,
+                                                  onTap: () {
+                                                    _controller.text =
+                                                        e.smartCard ?? '';
+                                                    phone.text = e.phone ?? '';
+                                                    int index = services
+                                                        .indexWhere((element) =>
+                                                            element['name']
+                                                                .toString()
+                                                                .toLowerCase() ==
+                                                            e.networkName!
+                                                                .toLowerCase());
+                                                    setState(() {
+                                                      selectedItem = index;
+                                                    });
+                                                    log('selectedItem: $selectedItem');
+                                                    resolveCardNumber();
+                                                  },
+                                                  child: Text(
+                                                    '${e.networkName} - ${e.smartCard}',
+                                                    style: MyStyle.tx12Black
+                                                        .copyWith(
+                                                      color: themedata.tertiary,
+                                                    ),
+                                                  ),
+                                                )),
+                                      ],
+                                      child: Icon(
+                                        Icons.bookmark_outline_rounded,
+                                        color: MyColor.greenColor,
+                                      ),
+                                    ),
+                                  )),
                             ),
                           ],
                         ),
@@ -385,7 +428,6 @@ class _BuyCableBillsState extends State<BuyCableBills> {
                           ),
                         ),
                         const SizedBox(height: 10),
-
                         GestureDetector(
                           onTap: service.cableVariationsModel != null &&
                                   selectedItem != -1
@@ -397,7 +439,6 @@ class _BuyCableBillsState extends State<BuyCableBills> {
                                         amount.text =
                                             plan.variationAmount.toString();
                                       });
-                                      log('selectedPlan: ${selectedPlan?.toJson()}');
                                     },
                                     service: service,
                                     context: context,
@@ -449,6 +490,32 @@ class _BuyCableBillsState extends State<BuyCableBills> {
                           controller: amount,
                           enabled: false,
                         ),
+                        const SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Text(
+                              'Save details for next purchase',
+                              style: MyStyle.tx12Black.copyWith(
+                                color: themedata.tertiary,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            const Spacer(),
+                            Transform.scale(
+                              scale: 0.8,
+                              child: CupertinoSwitch(
+                                value: saveDetails,
+                                activeColor: MyColor.greenColor,
+                                onChanged: (value) {
+                                  setState(() {
+                                    saveDetails = value;
+                                  });
+                                  print('saveDetails: $saveDetails');
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
                         const SizedBox(height: 40),
                         SizedBox(
                           width: double.infinity,
@@ -472,6 +539,7 @@ class _BuyCableBillsState extends State<BuyCableBills> {
                                   ErrorToast('Insufficient balance');
                                 } else {
                                   Get.to(CableSummaryScreen(
+                                    saveDetails: saveDetails,
                                     data: {
                                       'id': selectedPlan!.variationCode,
                                       'img': services[selectedItem]['img'],

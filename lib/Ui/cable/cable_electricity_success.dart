@@ -40,14 +40,19 @@ class _CableElectricitySuccessScreenState
   Widget build(BuildContext context) {
     log('widget.data:==> ${widget.data} =>${widget.isShowmax}');
     final model = Provider.of<ServiceProvider>(context, listen: false);
-    return widget.isPending
+    return widget.isPending || widget.data?.isEmpty == true
         ? PendingScreen(
             title: widget.isCable
                 ? "Cable subscription is being processed please wait "
                 : "Electricity subscription is being processed please wait",
             onTap: () {
-              model.getCableTransactions(
-                  isLoading: false, account: context.read<AccountProvider>());
+              if (widget.isCable) {
+                model.getCableTransactions(
+                    isLoading: false, account: context.read<AccountProvider>());
+              } else {
+                model.getElectricityTransactions(
+                    isLoading: false, account: context.read<AccountProvider>());
+              }
               Get.close(3);
             },
          
@@ -62,9 +67,15 @@ class _CableElectricitySuccessScreenState
                 subtitle:
                     "Cable subscriptions are usually completed within minutes to hours.",
                 onTap: () {
-                  model.getCableTransactions(
-                      isLoading: false,
-                      account: context.read<AccountProvider>());
+                  if (widget.isCable) {
+                    model.getCableTransactions(
+                        isLoading: false,
+                        account: context.read<AccountProvider>());
+                  } else {
+                    model.getElectricityTransactions(
+                        isLoading: false,
+                        account: context.read<AccountProvider>());
+                  }
                   Get.close(3);
                 },
               );

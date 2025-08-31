@@ -9,6 +9,7 @@ import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/common/button.dart';
 import 'package:jost_pay_wallet/constants/constants.dart';
+import 'package:jost_pay_wallet/utils/toast.dart';
 import 'package:provider/provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -75,6 +76,11 @@ class _KycWebviewState extends State<KycWebview> {
               //get message from webview
               onConsoleMessage: (controller, message) {
                 log('message:==> ${message.message}');
+                if (message.message.contains('Uncaught ReferenceError')) {
+                  Get.back();
+                  SuccessToast(
+                      'Your KYC Verification has been submitted successfully');
+                }
               },
               onNavigationResponse: (controller, response) async {
                 log('navigation response: ${response.response?.url}');

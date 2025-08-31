@@ -1,5 +1,6 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
@@ -38,6 +39,7 @@ class _BuyAirtimeConfirmState extends State<BuyAirtimeConfirm> {
       FlutterNativeContactPicker();
   int selectedItem = -1;
   bool permissionDenied = false;
+  bool saveDetails = false;
 
   Network? selectedNetwork;
   Future _pickContacts() async {
@@ -58,6 +60,7 @@ class _BuyAirtimeConfirmState extends State<BuyAirtimeConfirm> {
     super.initState();
     var model = Provider.of<AccountProvider>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      model.getAirtimeServiceDetail();
       if (model.networkProviderModel == null) {
         model.getNetworkProviders(callback: () {
           loadInitData();
@@ -312,7 +315,35 @@ class _BuyAirtimeConfirmState extends State<BuyAirtimeConfirm> {
                                 ),
                                   child: UnderlineTextfield(
                                       controller: _controller,
-                                      hintText: 'Enter Mobile number') 
+                                    hintText: 'Enter Mobile number',
+                                    suffixIcon: PopupMenuButton(
+                                      color: themedata.secondary,
+                                      constraints: const BoxConstraints(
+                                        maxHeight: 150,
+                                      ),
+                                      itemBuilder: (context) => [
+                                        ...model.airtimeServiceModel!.details!
+                                            .map((e) => PopupMenuItem(
+                                                  value: e.id,
+                                                  onTap: () {
+                                                    _controller.text =
+                                                        e.phone ?? '';
+                                                  },
+                                                  child: Text(
+                                                    e.phone ?? '',
+                                                    style: MyStyle.tx12Black
+                                                        .copyWith(
+                                                      color: themedata.tertiary,
+                                                    ),
+                                                  ),
+                                                )),
+                                      ],
+                                      child: Icon(
+                                        Icons.bookmark_outline_rounded,
+                                        color: MyColor.greenColor,
+                                      ),
+                                    ),
+                                  ) 
                               ),
                             ),
                             const SizedBox(width: 16),
@@ -351,6 +382,33 @@ class _BuyAirtimeConfirmState extends State<BuyAirtimeConfirm> {
                             ],
                           ),
                         ),
+                        const SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Text(
+                              'Save details for next purchase',
+                              style: MyStyle.tx12Black.copyWith(
+                                color: themedata.tertiary,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            const Spacer(),
+                            Transform.scale(
+                              scale: 0.8,
+                              child: CupertinoSwitch(
+                                value: saveDetails,
+                                activeColor: MyColor.greenColor,
+                                onChanged: (value) {
+                                  setState(() {
+                                    saveDetails = value;
+                                  });
+                                  print('saveDetails: $saveDetails');
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      
                         const SizedBox(height: 40),
                         SizedBox(
                           width: double.infinity,
@@ -377,6 +435,7 @@ class _BuyAirtimeConfirmState extends State<BuyAirtimeConfirm> {
                                   selectedNetwork: selectedNetwork!,
                                   number: _controller.text,
                                   amount: _amount.text,
+                                    saveDetails: saveDetails,
                                 ));
                                 }
                               }

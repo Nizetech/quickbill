@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
@@ -39,12 +40,16 @@ class _BuyElectricityState extends State<BuyElectricity> {
   Map<String, dynamic> selectedService = {};
   Timer? _typingTimer;
   String cableMerchant = '';
+  bool saveDetails = false;
 
   @override
   void initState() {
     super.initState();
-    _controller.addListener(_onTyping);
     final account = Provider.of<AccountProvider>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      account.getElectServiceDetail();
+    });
+    _controller.addListener(_onTyping);
     phone.text = account.userModel?.user?.phoneNumber ?? '';
   }
 
@@ -392,15 +397,53 @@ class _BuyElectricityState extends State<BuyElectricity> {
                                 ),
                                 child: UnderlineTextfield(
                                     controller: _controller,
-                                    isEnabled: selectedService.isNotEmpty,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        cableMerchant = '';
-                                      });
-                                    },
-                                    focusNode: _focusNode,
-                                    hintText: 'Enter Meter Number'),
-                              ),
+                                    hintText: 'Enter IUC /Smart Card Number',
+                                    suffixIcon: PopupMenuButton(
+                                      color: themedata.secondary,
+                                      constraints: const BoxConstraints(
+                                        maxHeight: 150,
+                                      ),
+                                      itemBuilder: (context) => [
+                                        ...model.electServiceModel!.details!
+                                            .map((e) => PopupMenuItem(
+                                                  value: e.id,
+                                                  onTap: () {
+                                                    _controller.text =
+                                                        e.meterNumber ?? '';
+                                                    phone.text = e.phone ?? '';
+                                                    selectedMeterType =
+                                                        e.meterType == 'Prepaid'
+                                                            ? 0
+                                                            : 1;
+                                                    int index = services
+                                                        .indexWhere((element) =>
+                                                            element['serviceId']
+                                                                .toString()
+                                                                .toLowerCase() ==
+                                                            e.discoName!
+                                                                .toLowerCase());
+                                                    setState(() {
+                                                      selectedService =
+                                                          services[index];
+                                                    });
+                                                    // log('selectedItem: $selectedItem');
+                                                    // resolveCardNumber();
+                                                  },
+                                                  child: Text(
+                                                    '${e.discoType} - ${e.meterNumber}',
+                                                    style: MyStyle.tx12Black
+                                                        .copyWith(
+                                                      color: themedata.tertiary,
+                                                    ),
+                                                  ),
+                                                )),
+                                      ],
+                                      child: Icon(
+                                        Icons.bookmark_outline_rounded,
+                                        color: MyColor.greenColor,
+                                      ),
+                                    ),
+                                  )),
                             ),
                           ],
                         ),
@@ -437,6 +480,7 @@ class _BuyElectricityState extends State<BuyElectricity> {
                         CustomTextField(
                           text: 'Enter Phone Number',
                           controller: phone,
+                          keyboardType: TextInputType.number,
                         ),
                         const SizedBox(
                           height: 10,
@@ -452,6 +496,33 @@ class _BuyElectricityState extends State<BuyElectricity> {
                         CustomTextField(
                           text: 'Enter Amount',
                           controller: amount,
+                          keyboardType: TextInputType.number,
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Text(
+                              'Save details for next purchase',
+                              style: MyStyle.tx12Black.copyWith(
+                                color: themedata.tertiary,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            const Spacer(),
+                            Transform.scale(
+                              scale: 0.8,
+                              child: CupertinoSwitch(
+                                value: saveDetails,
+                                activeColor: MyColor.greenColor,
+                                onChanged: (value) {
+                                  setState(() {
+                                    saveDetails = value;
+                                  });
+                                  print('saveDetails: $saveDetails');
+                                },
+                              ),
+                            ),
+                          ],
                         ),
                         const SizedBox(height: 40),
                         SizedBox(
@@ -480,6 +551,7 @@ class _BuyElectricityState extends State<BuyElectricity> {
                                   ErrorToast('Minimum amount is 5000');
                                 } else {
                                   Get.to(ElectricitySummaryScreen(
+                                    saveDetails: saveDetails,
                                     data: {
                                       'service_id':
                                           selectedService['serviceId'],

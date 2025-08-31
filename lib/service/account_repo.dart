@@ -351,6 +351,62 @@ class AccountRepo {
     }
   }
 
+  Future<Map<String, dynamic>> getAirtimeServiceDetail() async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response =
+          await client.get(ApiRoute.airtimeServiceDetail, requestHeaders: {
+        'Authorization': token,
+      });
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
+  Future<Map<String, dynamic>> getDataServiceDetail() async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response =
+          await client.get(ApiRoute.dataServiceDetail, requestHeaders: {
+        'Authorization': token,
+      });
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
+  Future<Map<String, dynamic>> getCableServiceDetail() async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response =
+          await client.get(ApiRoute.cableServiceDetail, requestHeaders: {
+        'Authorization': token,
+      });
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
+  Future<Map<String, dynamic>> getElectricityServiceDetail() async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response =
+          await client.get(ApiRoute.electricityServiceDetail, requestHeaders: {
+        'Authorization': token,
+      });
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
   Future<Map<String, dynamic>> buyAirtime(Map<String, dynamic> data) async {
     String token = await box.get(kAccessToken);
     try {

@@ -24,7 +24,7 @@ class _CableBillsState extends State<CableBills> {
   final List<String> _packageItems = ['Package', 'Package1', 'Package2', 'Package3'];
   int selectedDay = 0;
   String _selectedItem = 'Yanga';
-  String _selectedPackageItem = '';
+  String selectedPackageItem = '';
 
   final List<Map<String,dynamic>> data = [
     {
@@ -330,7 +330,7 @@ class _CableBillsState extends State<CableBills> {
                 iconSize: 24,
                 onChanged: (String? newValue) {
                   setState(() {
-                    _selectedPackageItem =
+                    selectedPackageItem =
                         newValue ?? ''; // Update the selected item
                   });
                 },

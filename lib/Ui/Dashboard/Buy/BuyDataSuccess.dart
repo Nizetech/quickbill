@@ -34,7 +34,7 @@ class _BuyDataSuccessState extends State<BuyDataSuccess> {
       onTap: () {
                   if (widget.isData) {
                     model.getDataHistory(isLoading: false);
-                    Get.close(2);
+          Get.close(3);
                   } else {
                     model.getAirtimeHistory(isLoading: false);
                     Get.close(3);

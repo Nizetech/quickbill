@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
@@ -13,6 +14,7 @@ import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/utils.dart';
+import 'package:jost_pay_wallet/common/text_field.dart';
 import 'package:jost_pay_wallet/utils/data.dart';
 import 'package:jost_pay_wallet/utils/toast.dart';
 import 'package:provider/provider.dart';
@@ -30,157 +32,11 @@ class BuyData extends StatefulWidget {
 
 class _BuyDataState extends State<BuyData> {
   final TextEditingController _controller = TextEditingController();
-  final List<String> dayItems = [
-    'Daily',
-    'Daily',
-    'Night',
-    'Weekend',
-    'Weekly',
-    'Monthly',
-    'Yearly'
-  ];
+  bool saveDetails = false;
   int selectedDay = 0;
 
   int selectedItem = -1;
   String selectedBundle = '';
-
-  // void _showBottomSheet(BuildContext context, {bool? isDarkMode}) {
-  //   final themedata = Theme.of(context).colorScheme;
-  //   // final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
-  //   showModalBottomSheet(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return Container(
-  //         width: double.infinity,
-  //         height: 600,
-  //         decoration:
-  //             BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor),
-  //         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
-  //         child: Column(
-  //           children: [
-  //             Container(
-  //               padding: const EdgeInsets.only(bottom: 10),
-  //               decoration: BoxDecoration(
-  //                   border: Border(
-  //                       bottom: BorderSide(
-  //                           color: isDarkMode ?? false
-  //                               ? MyColor.borderDarkColor
-  //                               : MyColor.borderColor,
-  //                           width: 1))),
-  //               child: Row(
-  //                 children: [
-  //                   Text(
-  //                     selectedBundle == '' ? 'Select a Bundle' : selectedBundle,
-  //                     style: MyStyle.tx12Grey,
-  //                   ),
-  //                   const Spacer(),
-  //                   GestureDetector(
-  //                     onTap: () => Navigator.pop(context),
-  //                     child: Container(
-  //                       height: 35,
-  //                       width: 35,
-  //                       // padding: const EdgeInsets.all(13),
-  //                       alignment: Alignment.center,
-  //                       decoration: BoxDecoration(
-  //                           color: themedata.secondary, shape: BoxShape.circle),
-  //                       child: const Icon(Icons.close),
-  //                     ),
-  //                   ),
-  //                 ],
-  //               ),
-  //             ),
-  //             const SizedBox(
-  //               height: 12,
-  //             ),
-  //             Expanded(
-  //                 child: SingleChildScrollView(
-  //               child: Column(
-  //                 children: [
-  //                   for (int i = 0; i < 10; i++) ...[
-  //                     Row(
-  //                       children: [
-  //                         for (int j = 0; j < 3; j++) ...[
-  //                           InkWell(
-  //                             onTap: () => {
-  //                               setState(() {
-  //                                 selectedBundle = '1GB(1 day)';
-  //                               })
-  //                             },
-  //                             child: GestureDetector(
-  //                               onTap: () {},
-  //                               // =>
-  //                               //  Navigator.pushReplacement(
-  //                               //     context,
-  //                               //     MaterialPageRoute(
-  //                               //         builder: (context) =>
-  //                               //             const BuyDataConfirm())),
-  //                               child: Container(
-  //                                 width: 100,
-  //                                 height: 78,
-  //                                 alignment: Alignment.center,
-  //                                 decoration: BoxDecoration(
-  //                                     color: themedata.secondary
-  //                                         .withValues(alpha: 0.3),
-  //                                     borderRadius: BorderRadius.circular(8)),
-  //                                 child: Column(
-  //                                   children: [
-  //                                     const Spacer(),
-  //                                     Text(
-  //                                       '1GB(1 day)',
-  //                                       style: MyStyle.tx12Black.copyWith(
-  //                                         fontWeight: FontWeight.w600,
-  //                                         color: themedata.tertiary,
-  //                                       ),
-  //                                     ),
-  //                                     const SizedBox(
-  //                                       height: 4,
-  //                                     ),
-  //                                     const Text(
-  //                                       'N50',
-  //                                       style: MyStyle.tx12Grey,
-  //                                     ),
-  //                                     const SizedBox(
-  //                                       height: 4,
-  //                                     ),
-  //                                     Container(
-  //                                       width: 72,
-  //                                       alignment: Alignment.center,
-  //                                       decoration: BoxDecoration(
-  //                                           color: themedata.secondary,
-  //                                           borderRadius:
-  //                                               BorderRadius.circular(6)),
-  //                                       child: Text(
-  //                                         '5% off',
-  //                                         style: MyStyle.tx12Black.copyWith(
-  //                                             color: MyColor.greenColor),
-  //                                       ),
-  //                                     ),
-  //                                     const Spacer(),
-  //                                   ],
-  //                                 ),
-  //                               ),
-  //                             ),
-  //                           ),
-  //                           const Spacer(),
-  //                         ]
-  //                       ],
-  //                     ),
-  //                     const SizedBox(
-  //                       height: 12,
-  //                     )
-  //                   ]
-  //                 ],
-  //               ),
-  //             ))
-  //           ],
-  //         ),
-  //       );
-  //     },
-  //     shape: const RoundedRectangleBorder(
-  //       borderRadius: BorderRadius.zero, // Set all corners to 0 radius
-  //     ),
-  //   );
-  // }
 
   final FlutterNativeContactPicker _contactPicker =
       FlutterNativeContactPicker();
@@ -189,8 +45,8 @@ class _BuyDataState extends State<BuyData> {
   @override
   void initState() {
     var model = Provider.of<AccountProvider>(context, listen: false);
-
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      model.getDataServiceDetail();
       if (model.networkProviderModel == null) {
         await model.getNetworkProviders(callback: () {
           loadInitData();
@@ -234,26 +90,6 @@ class _BuyDataState extends State<BuyData> {
       });
     }
   }
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   final model = Provider.of<AccountProvider>(context, listen: false);
-  //   WidgetsBinding.instance.addPostFrameCallback((_) async {
-  //     model.setDataPlanModelToNull();
-  //     if (model.networkProviderModel == null) {
-  //       await model.getNetworkProviders();
-  //       model.getDataPlans(
-  //           network: model.networkProviderModel!.networks!.first.network!
-  //               .toLowerCase());
-  //     } else {
-  //       await model.getNetworkProviders(isLoading: false);
-  //     }
-  //     // setState(() {
-  //     //   selectedNetwork = model.networkProviderModel!.networks![selectedItem];
-  //     // });
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -474,38 +310,48 @@ class _BuyDataState extends State<BuyData> {
                             // Expanded TextFormField for mobile number input
                             Expanded(
                               child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    bottom: BorderSide(
-                                      color: themeProvider.isDarkMode()
-                                          ? MyColor.borderDarkColor
-                                          : MyColor.borderColor,
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                      bottom: BorderSide(
+                                        color: themeProvider.isDarkMode()
+                                            ? MyColor.borderDarkColor
+                                            : MyColor.borderColor,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                child: TextFormField(
-                                  style: TextStyle(
-                                    fontSize: 14.sp,
-                                    color: themedata.tertiary,
-                                    fontFamily: 'SF Pro Rounded',
-                                  ),
-                                  keyboardType: TextInputType.number,
-                                  controller: _controller,
-                                  decoration: const InputDecoration(
+                                  child: UnderlineTextfield(
+                                    controller: _controller,
                                     hintText: 'Enter Mobile number',
-                                    hintStyle: TextStyle(
-                                      fontSize: 12,
-                                      color: Color(0xFF999999),
-                                      fontFamily: 'SF Pro Rounded',
+                                    suffixIcon: PopupMenuButton(
+                                      color: themedata.secondary,
+                                      constraints: const BoxConstraints(
+                                        maxHeight: 150,
+                                      ),
+                                      itemBuilder: (context) => [
+                                        ...model.dataServiceModel!.details!
+                                            .map((e) => PopupMenuItem(
+                                                  value: e.id,
+                                                  onTap: () {
+                                                    _controller.text =
+                                                        e.phone ?? '';
+                                                  },
+                                                  child: Text(
+                                                    e.phone ?? '',
+                                                    style: MyStyle.tx12Black
+                                                        .copyWith(
+                                                      color: themedata.tertiary,
+                                                    ),
+                                                  ),
+                                                )),
+                                      ],
+                                      child: Icon(
+                                        Icons.bookmark_outline_rounded,
+                                        color: MyColor.greenColor,
+                                      ),
                                     ),
-                                    border: InputBorder
-                                        .none, // No border for the TextFormField
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 10), // Adjust as needed
-                                  ),
-                                ),
-                              ),
+                                  )),
                             ),
+                           
                             const SizedBox(
                                 width:
                                     16), // Space between the TextFormField and the "Choose Contact" text
@@ -521,35 +367,34 @@ class _BuyDataState extends State<BuyData> {
                             )
                           ],
                         ),
-                        const SizedBox(height: 48),
-                        // Align(
-                        //   alignment: Alignment.centerLeft,
-                        //   child: Row(
-                        //     children: [
-                        //       for (int i = 0; i < dayItems.length; i++) ...[
-                        //         GestureDetector(
-                        //           onTap: () => {
-                        //             setState(() {
-                        //               selectedDay = i;
-                        //             })
-                        //           },
-                        //           child: Text(
-                        //             dayItems[i],
-                        //             style: MyStyle.tx12Grey.copyWith(
-                        //                 color: i == selectedDay
-                        //                     ? MyColor.greenColor
-                        //                     : MyColor.greyColor,
-                        //                 fontWeight: FontWeight.w500),
-                        //           ),
-                        //         ),
-                        //         if (i != dayItems.length - 1) const Spacer(),
-                        //       ]
-                        //     ],
-                        //   ),
-                        // ),
-                        // const SizedBox(
-                        //   height: 8,
-                        // ),
+                     
+                        const SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Text(
+                              'Save details for next purchase',
+                              style: MyStyle.tx12Black.copyWith(
+                                color: themedata.tertiary,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            const Spacer(),
+                            Transform.scale(
+                              scale: 0.8,
+                              child: CupertinoSwitch(
+                                value: saveDetails,
+                                activeColor: MyColor.greenColor,
+                                onChanged: (value) {
+                                  setState(() {
+                                    saveDetails = value;
+                                  });
+                                  print('saveDetails: $saveDetails');
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 40),
                         if (model.dataPlansModel != null)
                           Container(
                             width: double.infinity,
@@ -590,11 +435,12 @@ class _BuyDataState extends State<BuyData> {
                                                   ErrorToast(
                                                       'Insufficient balance');
                                                 } else {  
-                                                  Navigator.pushReplacement(
+                                                Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
                                                       builder: (context) =>
                                                           BuyDataConfirm(
+                                                      saveDetails: saveDetails,
                                                         plan: plan,
                                                         phone: _controller.text,
                                                         network:
@@ -656,61 +502,8 @@ class _BuyDataState extends State<BuyData> {
                                             ),
                                           );
                                         },
-                                      ))
-
-                                  // InkWell(
-                                  //   onTap: () => _showBottomSheet(context,
-                                  //       isDarkMode:
-                                  //           themeProvider.isDarkMode()),
-                                  //   child: Container(
-                                  //     padding: EdgeInsets.all(10),
-                                  //     // width: 100,
-                                  //     height: 78,
-                                  //     alignment: Alignment.center,
-                                  //     decoration: BoxDecoration(
-                                  //         color: MyColor.greenColor,
-                                  //         borderRadius:
-                                  //             BorderRadius.circular(8)),
-                                  //     child: Column(
-                                  //       children: [
-
-                                  //         const Text(
-                                  //           '50% off',
-                                  //           style: MyStyle.tx16White,
-                                  //         ),
-                                  //         const SizedBox(
-                                  //           height: 10,
-                                  //         ),
-                                  //         Row(
-                                  //           crossAxisAlignment:
-                                  //               CrossAxisAlignment.center,
-                                  //           mainAxisAlignment:
-                                  //               MainAxisAlignment.center,
-                                  //           children: [
-                                  //             Text(
-                                  //               'See other plans',
-                                  //               style: MyStyle.tx12GreenUnder
-                                  //                   .copyWith(
-                                  //                       color: Colors.white,
-                                  //                       fontSize: 9,
-                                  //                       decoration:
-                                  //                           TextDecoration
-                                  //                               .underline,
-                                  //                       decorationColor:
-                                  //                           Colors.white),
-                                  //             ),
-                                  //             const SizedBox(
-                                  //               width: 2,
-                                  //             ),
-                                  //             Image.asset(
-                                  //                 'assets/images/arrow-tr.png')
-                                  //           ],
-                                  //         ),
-                                  //         const Spacer(),
-                                  //       ],
-                                  //     ),
-                                  //   ),
-                                  // ),
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),

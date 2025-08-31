@@ -14,9 +14,11 @@ import 'package:provider/provider.dart';
 
 class CableSummaryScreen extends StatefulWidget {
   final Map<String, dynamic> data;
+  final bool saveDetails;
   const CableSummaryScreen({
     super.key,
     required this.data,
+    required this.saveDetails,
   });
 
   @override
@@ -273,6 +275,7 @@ class _CableSummaryScreenState extends State<CableSummaryScreen> {
                         "phone": widget.data['phone'],
                         "package": widget.data['package'],
                         'amount': totalAmount.toString(),
+                        'details': widget.saveDetails ? 1 : 0,
                       };
                       model.buyCable(
                         data,

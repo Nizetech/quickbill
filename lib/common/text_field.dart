@@ -4,7 +4,6 @@ import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/NewColor.dart';
-import 'package:jost_pay_wallet/Values/NewStyle.dart';
 import 'package:provider/provider.dart';
 
 class CustomTextField extends StatefulWidget {
@@ -133,6 +132,7 @@ class UnderlineTextfield extends StatelessWidget {
   final bool isEnabled;
   final FocusNode? focusNode;
   final Function(String)? onChanged;
+  final Widget? suffixIcon;
   const UnderlineTextfield(
       {
     super.key,
@@ -141,6 +141,7 @@ class UnderlineTextfield extends StatelessWidget {
     this.isEnabled = true,
     this.focusNode,
     this.onChanged,
+    this.suffixIcon,
   });
 
   @override
@@ -158,8 +159,10 @@ class UnderlineTextfield extends StatelessWidget {
         fontFamily: 'SF Pro Rounded',
       ),
       focusNode: focusNode,
+      
       decoration: InputDecoration(
         hintText: hintText,
+        suffixIcon: suffixIcon,
         hintStyle: TextStyle(
           fontSize: 12,
           color: Color(0xFF999999),

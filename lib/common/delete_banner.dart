@@ -8,7 +8,6 @@ import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/kyc_web.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/constants/constants.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class DeleteBanner extends StatefulWidget {
   final String date;

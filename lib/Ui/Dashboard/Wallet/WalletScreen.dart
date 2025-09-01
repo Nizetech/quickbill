@@ -21,6 +21,7 @@ import 'package:jost_pay_wallet/Ui/Domain/domain_screen.dart';
 import 'package:jost_pay_wallet/Ui/Paint/paint_history.dart';
 import 'package:jost_pay_wallet/Ui/cable/cable_history.dart';
 import 'package:jost_pay_wallet/Ui/electricity/electricity_history.dart';
+import 'package:jost_pay_wallet/Ui/promotions/social_boost_history.dart';
 import 'package:jost_pay_wallet/Ui/repair/repairdetail_screen.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
@@ -678,7 +679,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                     builder: (context) {
                                       return Platform.isIOS
                                           ? ElectricityHistory()
-                                          : CableHistory();
+                                          : SocialBoostHistory();
                                     },
                                   ),
                                 ),

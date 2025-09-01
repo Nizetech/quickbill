@@ -363,7 +363,8 @@ class _BuyCableBillsState extends State<BuyCableBills> {
                                                       selectedItem = index;
                                                     });
                                                     log('selectedItem: $selectedItem');
-                                                    resolveCardNumber();
+                                                    service.getCableVariations(
+                                                        e.networkName!);
                                                   },
                                                   child: Text(
                                                     '${e.networkName} - ${e.smartCard}',
@@ -375,7 +376,7 @@ class _BuyCableBillsState extends State<BuyCableBills> {
                                                 )),
                                       ],
                                       child: Icon(
-                                        Icons.bookmark_outline_rounded,
+                                        Icons.history,
                                         color: MyColor.greenColor,
                                       ),
                                     ),

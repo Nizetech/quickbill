@@ -397,7 +397,7 @@ class _BuyElectricityState extends State<BuyElectricity> {
                                 ),
                                 child: UnderlineTextfield(
                                     controller: _controller,
-                                    hintText: 'Enter IUC /Smart Card Number',
+                                    hintText: 'Enter Meter Number',
                                     suffixIcon: PopupMenuButton(
                                       color: themedata.secondary,
                                       constraints: const BoxConstraints(

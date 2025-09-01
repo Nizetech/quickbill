@@ -59,7 +59,7 @@ class _CableElectricitySuccessScreenState
           )
         : widget.isShowmax || !widget.isCable
             ? CableElectSuccessScreen(
-                data: widget.data!,
+                data: widget.data ?? {},
                 isCable: widget.isShowmax,
               )
             : SuccessScreen(
@@ -96,7 +96,16 @@ class CableElectSuccessScreen extends StatelessWidget {
     final model = Provider.of<ServiceProvider>(context, listen: false);
     final themedata = Theme.of(context).colorScheme;
     log('data here:==> ${data['total_amount']}');
-    return Scaffold(
+    return data.isEmpty
+        ? PendingScreen(
+            title: "Cable subscription is being processed please wait ",
+            onTap: () {
+              model.getCableTransactions(
+                  isLoading: false, account: context.read<AccountProvider>());
+              Get.close(3);
+            },
+          )
+        : Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 20),

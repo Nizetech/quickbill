@@ -5,6 +5,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Deposit.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/kyc_web.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/receipt_script.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/activate_virtual_account.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/balance_card.dart';
@@ -48,10 +50,10 @@ class _AddFundsState extends State<AddFunds> {
         return SafeArea(
           child: Padding(
             padding: const EdgeInsets.only(
-              top: 10, // Top padding
-              left: 24.0, // Left padding
-              right: 24.0,
-            ), // Padding around the widget
+              top: 10,
+              left: 24,
+              right: 24,
+            ), 
             child: Column(
               children: [
                 Container(
@@ -106,27 +108,75 @@ class _AddFundsState extends State<AddFunds> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10),
-                            decoration: BoxDecoration(
-                              color: MyColor.greenColor.withValues(alpha: 0.1),
-                              border: Border.all(
-                                  color: MyColor.greenColor, width: 0.5),
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Text(
-                                'Choose a bank to enable deposits and access to jostPay Services',
-                                textAlign: TextAlign.center,
-                                style: MyStyle.tx16Gray.copyWith(
-                                  color: MyColor.greenColor,
-                                )),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          BalanceCard(
-                            hasAddFund: true,
+                          Row(
+                            children: [
+                              Expanded(
+                                child: BalanceCard(
+                                  hasAddFund: true,
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              Expanded(
+                                child: GestureDetector(
+                                    onTap: () {
+                                      if (account.userModel?.user?.createdAt !=
+                                              null &&
+                                          account.userModel?.user?.isActive ==
+                                              false) {
+                                        Get.to(() => const KycWebview());
+                                      } else {
+                                        Get.to(
+                                          Deposit(),
+                                        );
+                                      }
+                                    },
+                                    child:
+                                  Container(
+                                      height: 125,
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        color: themeProvider.isDarkMode()
+                                            ? Color(0XFF1D361D)
+                                            : Color(0xffDAEBDA),
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              SizedBox(width: 10),
+                                              CircleAvatar(
+                                                radius: 20,
+                                                backgroundColor: Colors.white
+                                                    .withValues(alpha: .08),
+                                                child: SvgPicture.asset(
+                                                  'assets/images/trend_up.svg',
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                              Spacer(),
+                                              Image.asset(
+                                                'assets/images/vector.png',
+                                                height: 60,
+                                              ),
+                                            ],
+                                          ),
+                                          Spacer(),
+                                          Text(
+                                            'Explore other options',
+                                            style: MyStyle.tx16Black.copyWith(
+                                                decoration:
+                                                    TextDecoration.underline,
+                                                decorationColor:
+                                                    MyColor.greenColor,
+                                                color: MyColor.greenColor),
+                                          ),
+                                          SizedBox(height: 5),
+                                        ],
+                                      ),
+                                    )),
+                              ),
+                            ],
                           ),
                           const SizedBox(
                             height: 20,
@@ -134,7 +184,6 @@ class _AddFundsState extends State<AddFunds> {
                           account.userModel?.user?.virtualAccount != false
                               ? VirtualNumber()
                               : ActivateVirtualAccount(),
-
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [

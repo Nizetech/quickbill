@@ -287,7 +287,7 @@ class _DepositState extends State<Deposit> {
         return AlertDialog(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           title: Text(
-            'Enter Amount',
+            'Amount to Deposit',
             style: MyStyle.tx16Black.copyWith(color: themedata.tertiary),
           ),
           content: CustomTextField(

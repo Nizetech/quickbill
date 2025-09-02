@@ -32,7 +32,7 @@ class BuyData extends StatefulWidget {
 
 class _BuyDataState extends State<BuyData> {
   final TextEditingController _controller = TextEditingController();
-  bool saveDetails = false;
+  bool saveDetails = true;
   int selectedDay = 0;
 
   int selectedItem = -1;
@@ -322,48 +322,74 @@ class _BuyDataState extends State<BuyData> {
                                   child: UnderlineTextfield(
                                     controller: _controller,
                                     hintText: 'Enter Mobile number',
-                                    suffixIcon: PopupMenuButton(
-                                      color: themedata.secondary,
-                                      constraints: const BoxConstraints(
-                                        maxHeight: 150,
-                                      ),
-                                      itemBuilder: (context) => [
-                                        ...model.dataServiceModel!.details!
-                                            .map((e) => PopupMenuItem(
-                                                  value: e.id,
-                                                  onTap: () {
-                                                    _controller.text =
-                                                        e.phone ?? '';
-                                                  },
-                                                  child: Text(
-                                                    e.phone ?? '',
-                                                    style: MyStyle.tx12Black
-                                                        .copyWith(
-                                                      color: themedata.tertiary,
-                                                    ),
-                                                  ),
-                                                )),
-                                      ],
-                                      child: Icon(
-                                        Icons.bookmark_outline_rounded,
-                                        color: MyColor.greenColor,
-                                      ),
-                                    ),
+                                 
                                   )),
                             ),
-                           
+
+                            const SizedBox(width: 16),
+                            PopupMenuButton(
+                              color: themedata.secondary,
+                              constraints: const BoxConstraints(
+                                maxHeight: 150,
+                              ),
+                              itemBuilder: (context) => [
+                                ...model.dataServiceModel!.details!.map(
+                                  (e) => PopupMenuItem(
+                                    value: e,
+                                    onTap: () {
+                                      _controller.text = e.phone ?? '';
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          "${e.phone} - ${e.networkName}",
+                                          style: MyStyle.tx12Black.copyWith(
+                                            color: themedata.tertiary,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        GestureDetector(
+                                          onTap: () {
+                                            model.removeHistory(
+                                              {
+                                                'id': "data",
+                                                "phone": e.phone,
+                                                "network": e.networkName,
+                                              },
+                                              callback: () async {
+                                                Get.back();
+                                                await model
+                                                    .getDataServiceDetail();
+                                              },
+                                            );
+                                          },
+                                          child: Icon(
+                                            Icons.delete_outline,
+                                            color: MyColor.redColor,
+                                            size: 16,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                              child: Icon(
+                                Icons.history,
+                                color: MyColor.greenColor,
+                              ),
+                            ),
                             const SizedBox(
                                 width:
-                                    16), // Space between the TextFormField and the "Choose Contact" text
-                            // "Choose Contact" text
+                                    10),
                             GestureDetector(
                               onTap: () async {
                                 await _pickContacts();
                               },
-                              child: const Text(
-                                'Choose Contact',
-                                style: MyStyle.tx12GreenUnder,
-                              ),
+                                child: Icon(
+                                  Icons.contact_page_outlined,
+                                  color: MyColor.greenColor,
+                                )
                             )
                           ],
                         ),

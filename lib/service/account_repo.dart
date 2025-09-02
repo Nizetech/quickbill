@@ -351,11 +351,12 @@ class AccountRepo {
     }
   }
 
-  Future<Map<String, dynamic>> getAirtimeServiceDetail() async {
+  Future<Map<String, dynamic>> getHistory(Map<String, dynamic> data) async {
     String token = await box.get(kAccessToken);
     try {
       final response =
-          await client.get(ApiRoute.airtimeServiceDetail, requestHeaders: {
+          await client
+          .post(ApiRoute.getHistory, body: jsonEncode(data), requestHeaders: {
         'Authorization': token,
       });
       return response;
@@ -365,39 +366,13 @@ class AccountRepo {
     }
   }
 
-  Future<Map<String, dynamic>> getDataServiceDetail() async {
+  Future<Map<String, dynamic>> removeHistory(Map<String, dynamic> data) async {
     String token = await box.get(kAccessToken);
     try {
       final response =
-          await client.get(ApiRoute.dataServiceDetail, requestHeaders: {
-        'Authorization': token,
-      });
-      return response;
-    } catch (e) {
-      print('Error: $e');
-      return {};
-    }
-  }
-
-  Future<Map<String, dynamic>> getCableServiceDetail() async {
-    String token = await box.get(kAccessToken);
-    try {
-      final response =
-          await client.get(ApiRoute.cableServiceDetail, requestHeaders: {
-        'Authorization': token,
-      });
-      return response;
-    } catch (e) {
-      print('Error: $e');
-      return {};
-    }
-  }
-
-  Future<Map<String, dynamic>> getElectricityServiceDetail() async {
-    String token = await box.get(kAccessToken);
-    try {
-      final response =
-          await client.get(ApiRoute.electricityServiceDetail, requestHeaders: {
+          await client.post(ApiRoute.removeHistory,
+          body: jsonEncode(data),
+          requestHeaders: {
         'Authorization': token,
       });
       return response;

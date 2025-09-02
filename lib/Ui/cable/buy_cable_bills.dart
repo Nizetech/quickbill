@@ -41,7 +41,7 @@ class _BuyCableBillsState extends State<BuyCableBills> {
   Network? selectedNetwork;
   Timer? _typingTimer;
   String cableMerchant = '';
-  bool saveDetails = false;
+  bool saveDetails = true;
 
   @override
   void initState() {
@@ -79,7 +79,8 @@ class _BuyCableBillsState extends State<BuyCableBills> {
     if (_controller.text.isEmpty ||
         phone.text.isEmpty ||
         selectedItem == -1 ||
-        _controller.text.length < 10) {
+        _controller.text.length < 10 ||
+        selectedItem == 3) {
       return;
     } else {
       Map<String, dynamic> data = {
@@ -347,7 +348,7 @@ class _BuyCableBillsState extends State<BuyCableBills> {
                                       itemBuilder: (context) => [
                                         ...model.cableServiceModel!.details!
                                             .map((e) => PopupMenuItem(
-                                                  value: e.id,
+                                            value: e,
                                                   onTap: () {
                                                     _controller.text =
                                                         e.smartCard ?? '';
@@ -361,19 +362,56 @@ class _BuyCableBillsState extends State<BuyCableBills> {
                                                                 .toLowerCase());
                                                     setState(() {
                                                       selectedItem = index;
+                                                selectedServiceId =
+                                                    services[index]
+                                                        ['serviceId'];
                                                     });
-                                                    log('selectedItem: $selectedItem');
+
+                                              log('selectedItem: $selectedItem, selectedServiceId: $selectedServiceId');
+                                                    // return;  
                                                     service.getCableVariations(
-                                                        e.networkName!);
+                                                  selectedServiceId);
+                                                            
                                                   },
-                                                  child: Text(
-                                                    '${e.networkName} - ${e.smartCard}',
-                                                    style: MyStyle.tx12Black
-                                                        .copyWith(
-                                                      color: themedata.tertiary,
-                                                    ),
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  '${e.networkName} - ${e.smartCard}',
+                                                  style: MyStyle.tx12Black
+                                                      .copyWith(
+                                                    color: themedata.tertiary,
                                                   ),
-                                                )),
+                                                ),
+                                                const SizedBox(width: 10),
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    model.removeHistory(
+                                                      {
+                                                        'id': "cable",
+                                                        "network_name":
+                                                            e.networkName,
+                                                        "phone": e.phone,
+                                                        "smart_card":
+                                                            e.smartCard,
+                                                        "package": e.package,
+                                                      },
+                                                      callback: () async {
+                                                        Get.back();
+                                                        await model
+                                                            .getCableServiceDetail();
+                                                      },
+                                                    );
+                                                  },
+                                                  child: Icon(
+                                                    Icons.delete_outline,
+                                                    color: MyColor.redColor,
+                                                    size: 16,
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
                                       ],
                                       child: Icon(
                                         Icons.history,

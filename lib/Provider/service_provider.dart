@@ -620,10 +620,10 @@ class ServiceProvider with ChangeNotifier {
     }
   }
 
-  Future<void> buyScript(String id) async {
+  Future<void> buyScript(Map<String, dynamic> data) async {
     try {
       showLoader();
-      var res = await ServiceRepo().buyScript(id);
+      var res = await ServiceRepo().buyScript(data);
 
       if (res['status'] == false || res['result'] == false) {
         hideLoader();
@@ -778,6 +778,7 @@ class ServiceProvider with ChangeNotifier {
           isCable: true,
           isPending: true,
           isShowmax: isShowmax,
+          amount: data['amount'],
         ));
         notifyListeners();
       } else {
@@ -785,6 +786,7 @@ class ServiceProvider with ChangeNotifier {
         Get.to(CableElectricitySuccessScreen(
           isCable: true,
           isShowmax: isShowmax,
+          amount: data['amount'], 
           data: res['data'],
         ));
         notifyListeners();
@@ -824,6 +826,7 @@ class ServiceProvider with ChangeNotifier {
         Get.to(CableElectricitySuccessScreen(
           isCable: false,
           isPending: true,
+          amount: data['amount'],
         ));
         notifyListeners();
       } else {
@@ -831,6 +834,7 @@ class ServiceProvider with ChangeNotifier {
         Get.to(CableElectricitySuccessScreen(
           isCable: false,
           data: res,
+          amount: data['amount'],
         ));
         notifyListeners();
       }

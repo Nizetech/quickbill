@@ -903,7 +903,9 @@ class AccountProvider with ChangeNotifier {
   Future<void> getAirtimeServiceDetail() async {
        showLoader();
     try {
-      AccountRepo().getAirtimeServiceDetail().then((value) {
+      AccountRepo().getHistory({
+        "id":"airtime"
+      }).then((value) {
         if (value['status'] == false || value['result'] == false) {
          hideLoader();
           if (value['message'].runtimeType == String) {
@@ -930,7 +932,9 @@ class AccountProvider with ChangeNotifier {
   Future<void> getDataServiceDetail() async {
     try {
       showLoader();
-      AccountRepo().getDataServiceDetail().then((value) {
+      AccountRepo().getHistory({
+        "id":"data"
+      }).then((value) {
         if (value['status'] == false || value['result'] == false) {
           hideLoader();
           if (value['message'].runtimeType == String) {
@@ -957,7 +961,9 @@ class AccountProvider with ChangeNotifier {
   Future<void> getCableServiceDetail() async { 
     try {
       showLoader();
-      AccountRepo().getCableServiceDetail().then((value) {
+      AccountRepo().getHistory({
+        "id":"cable"
+      }).then((value) {
         if (value['status'] == false || value['result'] == false) {
           hideLoader();
           if (value['message'].runtimeType == String) {
@@ -985,7 +991,9 @@ class AccountProvider with ChangeNotifier {
   Future<void> getElectServiceDetail() async { 
     try {
       showLoader();
-      AccountRepo().getElectricityServiceDetail().then((value) {
+      AccountRepo().getHistory({
+        "id":"electricity"
+      }).then((value) {
         if (value['status'] == false || value['result'] == false) {
           hideLoader();
           if (value['message'].runtimeType == String) {
@@ -1000,6 +1008,33 @@ class AccountProvider with ChangeNotifier {
         } else {
           hideLoader();
           electServiceModel = ElectServiceModel.fromJson(value);
+        }
+        notifyListeners();
+      });
+    } catch (e) {
+      hideLoader();
+      ErrorToast(e.toString());
+    } 
+  }
+
+  Future<void> removeHistory(Map<String, dynamic> data, {required VoidCallback callback}) async { 
+    try {
+      showLoader();
+      AccountRepo().removeHistory(data).then((value) {
+        if (value['status'] == false || value['result'] == false) {
+          hideLoader();
+          if (value['message'].runtimeType == String) {
+            ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';
+            });
+            ErrorToast(message);
+          }
+        } else {
+          hideLoader();
+          callback();
         }
         notifyListeners();
       });

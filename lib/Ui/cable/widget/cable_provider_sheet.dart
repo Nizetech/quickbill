@@ -55,6 +55,7 @@ void showCableProviderSheet({
               itemBuilder: (context, index) {
                 Plan plan = service.cableVariationsModel!.plans[index];
                 return GestureDetector(
+                    behavior: HitTestBehavior.opaque,
                     onTap: () {
                       onPlanSelected(plan);
                       Get.back();

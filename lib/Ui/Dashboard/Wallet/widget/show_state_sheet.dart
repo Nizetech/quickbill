@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/states.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 
-void showElectricityProviderSheet({
-  required Function(Map<String, dynamic> provider) onProviderSelected,
-  required List<Map<String, dynamic>> providers,
+void showStateSheet({
+  required Function(String) onStateSelected,
   required BuildContext context,
   required ThemeProvider themeProvider,
 }) {
@@ -33,7 +33,7 @@ void showElectricityProviderSheet({
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            'Select Service',
+            'Select State',
             style: MyStyle.tx18Black.copyWith(
               fontWeight: FontWeight.w600,
               color: themeProvider.isDarkMode()
@@ -44,18 +44,17 @@ void showElectricityProviderSheet({
           const SizedBox(height: 10),
           Expanded(
             child: ListView.separated(
-              itemCount: providers.length,
+              itemCount: states.length,
               separatorBuilder: (context, index) => Divider(
                 color: themeProvider.isDarkMode()
                     ? MyColor.borderDarkColor
                     : MyColor.borderColor,
               ),
               itemBuilder: (context, index) {
-                Map<String, dynamic> provider = providers[index];
                 return GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
-                      onProviderSelected(provider);
+                      onStateSelected(states[index]);
                       Get.back();
                     },
                     child: Container(
@@ -63,24 +62,14 @@ void showElectricityProviderSheet({
                         vertical: 10,
                         horizontal: 15,
                       ),
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            provider['img'],
-                            width: 20,
-                            height: 20,
-                          ),
-                          const SizedBox(width: 10),
-                          Text(
-                            provider['name'],
-                            style: MyStyle.tx12Black.copyWith(
-                              fontWeight: FontWeight.w400,
-                              color: themeProvider.isDarkMode()
-                                  ? MyColor.mainWhiteColor
-                                  : MyColor.dark01Color,
-                            ),
-                          ),
-                        ],
+                      child: Text(
+                        states[index],
+                        style: MyStyle.tx12Black.copyWith(
+                          fontWeight: FontWeight.w400,
+                          color: themeProvider.isDarkMode()
+                              ? MyColor.mainWhiteColor
+                              : MyColor.dark01Color,
+                        ),
                       ),
                     ));
               },

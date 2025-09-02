@@ -40,7 +40,7 @@ class _BuyElectricityState extends State<BuyElectricity> {
   Map<String, dynamic> selectedService = {};
   Timer? _typingTimer;
   String cableMerchant = '';
-  bool saveDetails = false;
+  bool saveDetails = true;
 
   @override
   void initState() {
@@ -406,11 +406,10 @@ class _BuyElectricityState extends State<BuyElectricity> {
                                       itemBuilder: (context) => [
                                         ...model.electServiceModel!.details!
                                             .map((e) => PopupMenuItem(
-                                                  value: e.id,
+                                                  value: e,
                                                   onTap: () {
                                                     _controller.text =
                                                         e.meterNumber ?? '';
-                                                    phone.text = e.phone ?? '';
                                                     selectedMeterType =
                                                         e.meterType == 'Prepaid'
                                                             ? 0
@@ -426,20 +425,57 @@ class _BuyElectricityState extends State<BuyElectricity> {
                                                       selectedService =
                                                           services[index];
                                                     });
-                                                    // log('selectedItem: $selectedItem');
-                                                    // resolveCardNumber();
+                                                
                                                   },
-                                                  child: Text(
-                                                    '${e.discoType} - ${e.meterNumber}',
-                                                    style: MyStyle.tx12Black
-                                                        .copyWith(
-                                                      color: themedata.tertiary,
-                                                    ),
+                                                  child: Row(
+                                                    children: [
+                                                      Text(
+                                                        '${e.discoName!.capitalizeFirst} - ${e.meterNumber}',
+                                                        style: MyStyle.tx12Black
+                                                            .copyWith(
+                                                          color: themedata
+                                                              .tertiary,
+                                                        ),
+                                                      ),
+                                                      const SizedBox(width: 10),
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          model.removeHistory(
+                                                            {
+                                                              'id':
+                                                                  "electricity",
+                                                              "meter_number":
+                                                                  e.meterNumber,
+                                                              "disco_name":
+                                                                  e.discoName,
+                                                              "meter_type":
+                                                                  e.meterType,
+                                                              "customer_name": e
+                                                                  .customerName,
+                                                              "address":
+                                                                  e.address,
+                                                            },
+                                                            callback: () async {
+                                                              Get.back();
+                                                              await model
+                                                                  .getElectServiceDetail();
+                                                            },
+                                                          );
+                                                          log('e: $e');
+                                                        },
+                                                        child: Icon(
+                                                          Icons.delete_outline,
+                                                          color:
+                                                              MyColor.redColor,
+                                                          size: 16,
+                                                        ),
+                                                      )
+                                                    ],
                                                   ),
                                                 )),
                                       ],
                                       child: Icon(
-                                        Icons.bookmark_outline_rounded,
+                                        Icons.history,
                                         color: MyColor.greenColor,
                                       ),
                                     ),

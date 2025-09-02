@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/service_provider.dart';
+import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
@@ -21,12 +23,14 @@ class CableElectricitySuccessScreen extends StatefulWidget {
   final bool isPending;
   final Map<String, dynamic>? data;
   final bool isShowmax;
+  final String amount;
   const CableElectricitySuccessScreen({
     super.key,
     this.isCable = true,
     this.isPending = false,
     this.data,
     this.isShowmax = false,
+    required this.amount,
   });
 
   @override
@@ -61,6 +65,7 @@ class _CableElectricitySuccessScreenState
             ? CableElectSuccessScreen(
                 data: widget.data ?? {},
                 isCable: widget.isShowmax,
+                amount: widget.amount,
               )
             : SuccessScreen(
                 title: "Cable subscription placed successfully",
@@ -85,17 +90,19 @@ class _CableElectricitySuccessScreenState
 class CableElectSuccessScreen extends StatelessWidget {
   final Map<String, dynamic> data;
   final bool isCable;
+  final String amount;
   const CableElectSuccessScreen({
     super.key,
     required this.data,
     required this.isCable,
+    required this.amount,
   });
 
   @override
   Widget build(BuildContext context) {
     final model = Provider.of<ServiceProvider>(context, listen: false);
     final themedata = Theme.of(context).colorScheme;
-    log('data here:==> ${data['total_amount']}');
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     return data.isEmpty
         ? PendingScreen(
             title: "Cable subscription is being processed please wait ",
@@ -166,7 +173,10 @@ class CableElectSuccessScreen extends StatelessWidget {
                           GestureDetector(
                             onTap: () {
                               Clipboard.setData(ClipboardData(
-                                  text: data['data']['token'].split(': ')[1]));
+                                        text: data['data']['token']
+                                            .split(': ')[1],
+                                      ),
+                                    );
                               Fluttertoast.showToast(
                                   msg: "Copied to clipboard");
                             },
@@ -208,7 +218,7 @@ class CableElectSuccessScreen extends StatelessWidget {
               _buildInfo(
                   title: 'Amount',
                   value:
-                      "${Utils.naira} ${formatNumber(num.parse(isCable ? data['content']['transactions']['total_amount'].toString() : data['data']['content']['transactions']['amount'].toString()))}",
+                            "${Utils.naira} ${formatNumber(num.parse(amount))}",
                   themedata: themedata),
               if (!isCable) ...[
                 _buildInfo(
@@ -245,6 +255,17 @@ class CableElectSuccessScreen extends StatelessWidget {
                     value: data['data']['kct2'] ?? 'N/A',
                     themedata: themedata),
               ],
+                    SizedBox(height: 20),
+                    GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: Platform.isAndroid
+                          ? () => launchWeb(Utils.playStoreLink)
+                          : () => launchWeb(Utils.appleLink),
+                      child: Image.asset(themeProvider.isDarkMode()
+                          ? 'assets/images/dark_rate.png'
+                          : 'assets/images/light_rate.png'),
+                    ),
+                    SizedBox(height: 30),
               SizedBox(height: 20),
               CustomButton(
                 text: 'Buy More',

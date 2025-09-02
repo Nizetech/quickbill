@@ -27,6 +27,12 @@ class ElectricitySummaryScreen extends StatefulWidget {
 }
 
 class _ElectricitySummaryScreenState extends State<ElectricitySummaryScreen> {
+  num totalAmount = 0;
+  @override
+  void initState() {
+    super.initState();
+    totalAmount = num.parse(widget.data['amount']) + 100;
+  }
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
@@ -192,6 +198,25 @@ class _ElectricitySummaryScreenState extends State<ElectricitySummaryScreen> {
                       Row(
                         children: [
                           const Text(
+                            'Convenience Fee',
+                            style: MyStyle.tx12Grey,
+                          ),
+                          const Spacer(),
+                          Text(
+                            "NGN 100",
+                            style: MyStyle.tx12Black.copyWith(
+                                color: themedata.tertiary,
+                                fontFamily: 'SF Pro Rounded'),
+                          ),
+                        ],
+                      ),
+                     
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      Row(
+                        children: [
+                          const Text(
                             'Payment method',
                             style: MyStyle.tx12Grey,
                           ),
@@ -248,11 +273,7 @@ class _ElectricitySummaryScreenState extends State<ElectricitySummaryScreen> {
                           ),
                           const Spacer(),
                           Text(
-                            '${Utils.naira} ${formatNumber(
-                              num.parse(
-                                widget.data['amount'],
-                              ),
-                            )}',
+                            '${Utils.naira} ${formatNumber(totalAmount)}',
                             style: MyStyle.tx14Black.copyWith(
                                 fontWeight: FontWeight.w600,
                                 color: themedata.tertiary,
@@ -278,7 +299,7 @@ class _ElectricitySummaryScreenState extends State<ElectricitySummaryScreen> {
                       Map<String, dynamic> data = {
                         'type': widget.data['meter_type'],
                         "service_id": widget.data['service_id'],
-                        "amount": widget.data['amount'],
+                        "amount": totalAmount,
                         "number": widget.data['meter_number'],
                         "phone": widget.data['phone'],
                         "details": widget.saveDetails ? 1 : 0,

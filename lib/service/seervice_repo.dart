@@ -372,11 +372,11 @@ class ServiceRepo {
     }
   }
 
-  Future<Map<String, dynamic>> buyScript(String id) async {
+  Future<Map<String, dynamic>> buyScript(Map<String, dynamic> data) async {
     String token = await box.get(kAccessToken);
     try {
       final response = await client.post(ApiRoute.buyScript,
-          body: jsonEncode({"script_id": int.parse(id)}),
+          body: jsonEncode(data),
           requestHeaders: {
             'Authorization': token,
           });

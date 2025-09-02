@@ -1,10 +1,10 @@
 import 'dart:developer';
 
-import 'package:country_state_picker/country_state_picker.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/show_state_sheet.dart';
 import 'package:jost_pay_wallet/Values/NewStyle.dart';
 import 'package:flutter/material.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
@@ -44,9 +44,9 @@ class _VirtualAccountCreationState extends State<VirtualAccountCreation> {
   final _addressLine2Controller = TextEditingController();
   final _cityController = TextEditingController();
   final _genderController = TextEditingController();
+  final _countryController = TextEditingController();
+  final _stateController = TextEditingController();
   String selectedCountryCode = '234';
-  String selectedCountry = '';
-  String selectedState = '';
 
   List<String> title = [
     'Mr',
@@ -69,8 +69,7 @@ class _VirtualAccountCreationState extends State<VirtualAccountCreation> {
       "address1": _addressLine1Controller.text.trim(),
       "address2": _addressLine2Controller.text.trim(),
       "city": _cityController.text.trim(),
-      "state": selectedState,
-      // "country": selectedCountry.toUpperCase(),
+      "state": _stateController.text.trim(),
       "birthday": _dateController.text.trim(),
       "title": _titleController.text.trim(),
       "gender": _genderController.text.trim(),
@@ -79,10 +78,7 @@ class _VirtualAccountCreationState extends State<VirtualAccountCreation> {
     if (_formKey.currentState?.validate() != true) {
       return;
     }
-    if (selectedCountry.isEmpty) {
-      ErrorToast('Please select a country');
-      return;
-    } else if (selectedState.isEmpty) {
+    if (_stateController.text.trim().isEmpty) {
       ErrorToast('Please select a state');
       return;
     } else if (_titleController.text.trim().isEmpty) {
@@ -115,6 +111,7 @@ class _VirtualAccountCreationState extends State<VirtualAccountCreation> {
     _lastName.text = account.userModel?.user?.lastName ?? '';
     _emailController.text = account.userModel?.user?.email ?? '';
     _phoneNumberController.text = account.userModel?.user?.phoneNumber ?? '';
+    _countryController.text = 'Nigeria';
   }
 
   @override
@@ -157,7 +154,6 @@ class _VirtualAccountCreationState extends State<VirtualAccountCreation> {
                   Expanded(
                     child: SingleChildScrollView(
                       child: Column(
-                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Form(
@@ -392,47 +388,44 @@ class _VirtualAccountCreationState extends State<VirtualAccountCreation> {
                                   ),
                                 ),
                                 const SizedBox(height: 14),
-                                CountryStatePicker(
-                                  hintTextStyle: TextStyle(
-                                    fontSize: 13,
-                                  ),
-                                  dropdownColor: themeProvider.isDarkMode()
-                                      ? const Color(0XFF33353C)
-                                      : MyColor.textFieldFillColor,
-                                  itemTextStyle: TextStyle(
-                                    color: themedata.tertiary,
-                                  ),
-                                  countryLabel: Text(
-                                    'Country',
-                                    style: NewStyle.tx14SplashWhite.copyWith(
-                                        color: themedata.tertiary,
-                                        fontWeight: FontWeight.w700,
-                                        height: 2),
-                                  ),
-                                  stateLabel: Text(
-                                    'State',
-                                    style: NewStyle.tx14SplashWhite.copyWith(
-                                        color: themedata.tertiary,
-                                        fontWeight: FontWeight.w700,
-                                        height: 2),
-                                  ),
-                                  onCountryChanged: (ct) => setState(() {
-                                    selectedCountry = ct;
-                                  }),
-                                  onStateChanged: (st) => setState(() {
-                                    selectedState = st;
-                                  }),
-                                  inputDecoration: InputDecoration(
-                                    enabledBorder: _buildEnabledBorder(
-                                        themeProvider.isDarkMode()),
-                                    focusedBorder: _buildEnabledBorder(
-                                        themeProvider.isDarkMode()),
-                                    border: _buildEnabledBorder(
-                                        themeProvider.isDarkMode()),
-                                    hintText: 'Select Country',
-                                    hintStyle: TextStyle(
+                                Text(
+                                  'Country',
+                                  style: NewStyle.tx14SplashWhite.copyWith(
                                       color: themedata.tertiary,
-                                    ),
+                                      fontWeight: FontWeight.w700,
+                                      height: 2),
+                                ),
+                                CustomTextField(
+                                  text: "",
+                                  controller: _countryController,
+                                  suffixIcon: Icons.expand_more,
+                                  enabled: false,
+                                ),
+                                const SizedBox(height: 14),
+                                Text(
+                                  'State',
+                                  style: NewStyle.tx14SplashWhite.copyWith(
+                                      color: themedata.tertiary,
+                                      fontWeight: FontWeight.w700,
+                                      height: 2),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    showStateSheet(
+                                      onStateSelected: (state) {
+                                        setState(() {
+                                          _stateController.text = state;
+                                        });
+                                      },
+                                      context: context,
+                                      themeProvider: themeProvider,
+                                    );
+                                  },
+                                  child: CustomTextField(
+                                    text: "Select State",
+                                    controller: _stateController,
+                                    suffixIcon: Icons.expand_more,
+                                    enabled: false,
                                   ),
                                 ),
                                 const SizedBox(height: 14),
@@ -478,13 +471,13 @@ class _VirtualAccountCreationState extends State<VirtualAccountCreation> {
     );
   }
 
-  OutlineInputBorder _buildEnabledBorder(bool isDark) {
-    return OutlineInputBorder(
-      borderRadius: BorderRadius.circular(8),
-      borderSide: BorderSide(
-        width: 1.2,
-        color: !isDark ? const Color(0xffE9EBF8) : const Color(0xff1B1B1B),
-      ),
-    );
-  }
+  // OutlineInputBorder _buildEnabledBorder(bool isDark) {
+  //   return OutlineInputBorder(
+  //     borderRadius: BorderRadius.circular(8),
+  //     borderSide: BorderSide(
+  //       width: 1.2,
+  //       color: !isDark ? const Color(0xffE9EBF8) : const Color(0xff1B1B1B),
+  //     ),
+  //   );
+  // }
 }

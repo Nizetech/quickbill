@@ -238,8 +238,13 @@ class _BuyAirtimeState extends State<BuyAirtime> {
                                             ),
                                             StatusViewReceipt(
                                               status: item.apiStatus!,
+                                              isRefunded:
+                                                  item.apiStatus == 'refunded',
                                               onTap: () {
-                                                if (item.status != '1' ||
+                                                if (item.status != '1' &&
+                                                        item.apiStatus !=
+                                                            'refunded' ||
+                                                    
                                                     item.apiStatus!
                                                         .toLowerCase()
                                                         .contains('pending')) {

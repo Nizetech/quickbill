@@ -66,9 +66,9 @@ class _HelpsupportState extends State<Helpsupport> {
                           style: MyStyle.tx18Black
                               .copyWith(color: themedata.tertiary),
                         ),
-                        const SizedBox(
-                          height: 24,
-                        ),
+                        // const SizedBox(
+                        //   height: 24,
+                        // ),
                         Container(
                           width: double.infinity,
                           padding: const EdgeInsets.only(
@@ -97,71 +97,67 @@ class _HelpsupportState extends State<Helpsupport> {
                                     width: 20,
                                   ),
                                   Expanded(
-                                    // Wrap the Container with Expanded
-                                    child: Container(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Text('Customer Support',
-                                              style: MyStyle.tx22Green.copyWith(
-                                                  color: themedata.tertiary)),
-                                          Text('AVG.Response time: 2mins',
-                                              style: MyStyle.tx12Black.copyWith(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        // Text(
+                                        //     'Average Response Time: 1 business day',
+                                        //     style: MyStyle.tx22Green.copyWith(
+                                        //         color: themedata.tertiary)),
+                                        Text(
+                                            'Average Response Time: 1 business day',
+                                            style: MyStyle.tx12Black.copyWith(
+                                                color: themeProvider
+                                                        .isDarkMode()
+                                                    ? const Color(0XFFCBD2EB)
+                                                    : const Color(0xff30333A))),
+                                        const SizedBox(
+                                          height: 12,
+                                        ),
+                                        SizedBox(
+                                          width: double
+                                              .infinity, // Full width of the screen
+                                          height: 4, // Adjust height as needed
+                                          child: Stack(
+                                            children: [
+                                              // Bottom border
+                                              Positioned(
+                                                bottom: 0,
+                                                left: 0,
+                                                right: 0,
+                                                child: DottedBorder(
                                                   color: themeProvider
                                                           .isDarkMode()
-                                                      ? const Color(0XFFCBD2EB)
-                                                      : const Color(
-                                                          0xff30333A))),
-                                          const SizedBox(
-                                            height: 12,
-                                          ),
-                                          SizedBox(
-                                            width: double
-                                                .infinity, // Full width of the screen
-                                            height:
-                                                4, // Adjust height as needed
-                                            child: Stack(
-                                              children: [
-                                                // Bottom border
-                                                Positioned(
-                                                  bottom: 0,
-                                                  left: 0,
-                                                  right: 0,
-                                                  child: DottedBorder(
-                                                    color: themeProvider
-                                                            .isDarkMode()
-                                                        ? MyColor
-                                                            .borderDarkColor
-                                                        : MyColor.borderColor,
-                                                    strokeWidth: 1,
-                                                    dashPattern: const [
-                                                      6,
-                                                      3
-                                                    ], // Dash pattern: 6 units line, 3 units space
-                                                    customPath: (size) => Path()
-                                                      ..moveTo(0, 0)
-                                                      ..lineTo(size.width, 0),
-                                                    child: Container(
-                                                      height:
-                                                          0, // The container for the border can have a height of 0
-                                                    ),
+                                                      ? MyColor.borderDarkColor
+                                                      : MyColor.borderColor,
+                                                  strokeWidth: 1,
+                                                  dashPattern: const [
+                                                    6,
+                                                    3
+                                                  ], // Dash pattern: 6 units line, 3 units space
+                                                  customPath: (size) => Path()
+                                                    ..moveTo(0, 0)
+                                                    ..lineTo(size.width, 0),
+                                                  child: Container(
+                                                    height:
+                                                        0, // The container for the border can have a height of 0
                                                   ),
                                                 ),
-                                              ],
-                                            ),
+                                              ),
+                                            ],
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ],
                               ),
-                              const SizedBox(
-                                height: 12,
-                              ),
+                              // const SizedBox(
+                              //   height: 12,
+                              // ),
                               InkWell(
                                 onTap: () {
                                   Get.back();
@@ -172,9 +168,11 @@ class _HelpsupportState extends State<Helpsupport> {
                                     const SizedBox(
                                       width: 106,
                                     ),
-                                    const Text(
-                                      'Live chat Faster replies',
-                                      style: MyStyle.tx12Green,
+                                    Expanded(
+                                      child: const Text(
+                                        'WhatsApp Chat - Usually less than 1 business day',
+                                        style: MyStyle.tx12Green,
+                                      ),
                                     ),
                                     Image.asset(
                                       'assets/images/arrow-right-g.png',
@@ -211,8 +209,50 @@ class _HelpsupportState extends State<Helpsupport> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
+                              //? Email Support
+                              // InkWell(
+                              //   onTap: () => openEmail('info@jostpay.com'),
+                              //   child: Row(
+                              //     crossAxisAlignment: CrossAxisAlignment.start,
+                              //     mainAxisAlignment: MainAxisAlignment.start,
+                              //     children: [
+                              //       Container(
+                              //         width: 42,
+                              //         height: 42,
+                              //         decoration: BoxDecoration(
+                              //             color: themedata.secondary
+                              //                 .withValues(alpha: 0.8),
+                              //             borderRadius:
+                              //                 BorderRadius.circular(12.3)),
+                              //         child: Image.asset(
+                              //             'assets/images/google.png'),
+                              //       ),
+                              //       const SizedBox(width: 16),
+                              //       Column(
+                              //         crossAxisAlignment:
+                              //             CrossAxisAlignment.start,
+                              //         mainAxisAlignment:
+                              //             MainAxisAlignment.start,
+                              //         children: [
+                              //           Text(
+                              //             'Support Ticket',
+                              //             style: MyStyle.tx16Black.copyWith(
+                              //                 color: themedata.tertiary),
+                              //           ),
+                              //           const Text(
+                              //             'Please provide a concise description\nof the problem you are experiencing\nto Help@Jostpay.com',
+                              //             style: MyStyle.tx12Grey,
+                              //           )
+                              //         ],
+                              //       )
+                              //     ],
+                              //   ),
+                              // ),
+                              // const SizedBox(
+                              //   height: 20,
+                              // ),
                               InkWell(
-                                onTap: () => openEmail('info@jostpay.com'),
+                                onTap: () => openWhatsApp('08037878487'),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -224,48 +264,8 @@ class _HelpsupportState extends State<Helpsupport> {
                                           color: themedata.secondary
                                               .withValues(alpha: 0.8),
                                           borderRadius:
-                                              BorderRadius.circular(12.3)),
-                                      child: Image.asset(
-                                          'assets/images/google.png'),
-                                    ),
-                                    const SizedBox(width: 16),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Support Ticket',
-                                          style: MyStyle.tx16Black.copyWith(
-                                              color: themedata.tertiary),
-                                        ),
-                                        const Text(
-                                          'Please provide a concise description\nof the problem you are experiencing\nto Help@Jostpay.com',
-                                          style: MyStyle.tx12Grey,
-                                        )
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              InkWell(
-                                onTap: () => openWhatsApp('09035899595'),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      width: 42,
-                                      height: 42,
-                                      decoration: BoxDecoration(
-                                          color: themedata.secondary
-                                              .withValues(alpha: 0.8),
-                                          borderRadius:
-                                              BorderRadius.circular(12.3)),
+                                            BorderRadius.circular(12.3),
+                                      ),
                                       child: Image.asset(
                                           'assets/images/whatsapp.png'),
                                     ),
@@ -326,7 +326,7 @@ class _HelpsupportState extends State<Helpsupport> {
                                 height: 10,
                               ),
                               const Text(
-                                "You can log in to your account from the Home page navigate to my Profile, click edit my info you will be prompt to a page where you can edit your email.",
+                                "Your email address is unique to your JostPay account and is used for login and account identification. For this reason, it cannot be changed. If you’ve lost access, please contact our support for help.",
                                 style: MyStyle.tx14Grey,
                               )
                             ],

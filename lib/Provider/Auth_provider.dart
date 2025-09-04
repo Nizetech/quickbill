@@ -8,6 +8,7 @@ import 'package:jost_pay_wallet/Ui/Authentication/OtpScreen.dart';
 import 'package:jost_pay_wallet/Ui/Authentication/SignInScreen.dart';
 import 'package:jost_pay_wallet/Ui/Static/set_pin_login.dart';
 import 'package:jost_pay_wallet/bottom_nav.dart';
+import 'package:jost_pay_wallet/service/account_repo.dart';
 import 'package:jost_pay_wallet/service/auth_repo.dart';
 import 'package:jost_pay_wallet/utils/loader.dart';
 import 'package:jost_pay_wallet/utils/toast.dart';
@@ -31,7 +32,7 @@ class AuthProvider with ChangeNotifier {
       // setLoading(true);
       showLoader();
       AuthRepo().register(data).then((value) {
-     
+        log('Create Account Value: $value');
         setLoading(false);
         if (value['status'] == false || value['result'] == false) {
           hideLoader();
@@ -72,7 +73,7 @@ class AuthProvider with ChangeNotifier {
   Future<void> login(Map<String, dynamic> data) async {
     try {
       showLoader();
-    await AuthRepo().login(data).then((value) {
+      await AuthRepo().login(data).then((value) {
         hideLoader();
         if (value.isNotEmpty) {
           if (value['status'] == false || value['result'] == false) {
@@ -87,7 +88,6 @@ class AuthProvider with ChangeNotifier {
             }
             return;
           } else {
-            
             updateAuthToken(value['token']);
             if (data['email'] == 'donnpus@yahoo.com' &&
                 data['password'] == 'ASdflkj123?') {
@@ -113,7 +113,6 @@ class AuthProvider with ChangeNotifier {
           return;
         }
       });
-     
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
@@ -123,8 +122,7 @@ class AuthProvider with ChangeNotifier {
   Future<void> deActivateAccount() async {
     try {
       showLoader();
-       await AuthRepo().deActivateAccount().then((value) {
-       
+      await AuthRepo().deActivateAccount().then((value) {
         hideLoader();
         if (value.isNotEmpty) {
           if (value['status'] == false || value['result'] == false) {
@@ -150,18 +148,17 @@ class AuthProvider with ChangeNotifier {
           return;
         }
       });
-     
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
     }
   }
 
-  Future<void> updatePinLogin(String pin, AccountProvider account, {bool? isFromAuth}) async {
+  Future<void> updatePinLogin(String pin, AccountProvider account,
+      {bool? isFromAuth}) async {
     try {
       showLoader();
       await AuthRepo().updatePinLogin(pin).then((value) async {
-       
         hideLoader();
         if (value.isNotEmpty) {
           if (value['status'] == false || value['result'] == false) {
@@ -179,8 +176,8 @@ class AuthProvider with ChangeNotifier {
             await account.getUserProfile();
             if (isFromAuth != null) {
               Get.offAll(BottomNav());
-            }else{
-            Get.close(2);
+            } else {
+              Get.close(2);
             }
             if (value['message'] != null && value['message'] != '') {
               SuccessToast(value['message']);
@@ -192,7 +189,6 @@ class AuthProvider with ChangeNotifier {
           return;
         }
       });
-     
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
@@ -204,7 +200,7 @@ class AuthProvider with ChangeNotifier {
   ) async {
     try {
       showLoader();
-       await AuthRepo().pinLogin(pin).then((value) async {
+      await AuthRepo().pinLogin(pin).then((value) async {
         hideLoader();
         if (value.isNotEmpty) {
           if (value['status'] == false || value['result'] == false) {
@@ -230,7 +226,6 @@ class AuthProvider with ChangeNotifier {
           return;
         }
       });
-     
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
@@ -243,7 +238,6 @@ class AuthProvider with ChangeNotifier {
       // setLoading(true);
       showLoader();
       AuthRepo().resendOTP(email, authToken: authToken).then((value) {
-       
         hideLoader();
         // setLoading(false);
         if (value.isEmpty) return;
@@ -297,7 +291,7 @@ class AuthProvider with ChangeNotifier {
               is2fa: is2fa,
               isEnable2fa: isEnable2fa)
           .then((value) async {
-       log('Login Data:==> ${value}');
+        log('Login Data:==> ${value}');
         // setLoading(false);
         hideLoader();
         if (value.isEmpty) return false;
@@ -322,29 +316,33 @@ class AuthProvider with ChangeNotifier {
           } else {
             if (dashProvider != null && account != null) {
               dashProvider.changeBottomIndex(0);
-              await account.getUserProfile();
-            }
-            updateAuthToken('');
-            notifyListeners();
-            account?.getUserProfile().then((value) {
-              String enabledPin = value['user']['enable_pin'].toString();
-            if(enabledPin == '1' || enabledPin != 'null'){
-              dashProvider?.changeBottomIndex(0);
-              Get.offAll(BottomNav());
-            }else{
-            Get.to(
-              SetPinLogin(
-                isFromAuth: true,
-              ),
-            );
-            }
-            });
-            if (value['message'] != null && value['message'] != '') {
-              SuccessToast(value['message']);
+              var data = await AccountRepo().getProfile();
+              updateAuthToken('');
+              notifyListeners();
+              log('data: $data');
+              if (data['user'] != null) {
+                
+                if ( data['user']['enable_pin'] != '1' ||  data['user']['enable_pin'] == 'null' ||   data['user']['enable_pin'] == null) {
+                  Get.to(
+                    SetPinLogin(
+                      isFromAuth: true,
+                    ),
+                  );
+                } else {
+                  Get.offAll(BottomNav());
+                      // Get.offAll(BottomNav());
+                }
+              }
+              if (value['message'] != null && value['message'] != '') {
+                SuccessToast(value['message']);
+              } else {
+                SuccessToast('Login Successful');
+              }
             } else {
-              SuccessToast('Login Successful');
+              log('account is null');
             }
           }
+          // }
         }
       });
     } catch (e) {
@@ -363,7 +361,6 @@ class AuthProvider with ChangeNotifier {
       // setLoading(true);
       showLoader();
       AuthRepo().updateProfile(data).then((value) async {
-       
         // setLoading(false);
         hideLoader();
         if (value.isEmpty) return;
@@ -393,7 +390,7 @@ class AuthProvider with ChangeNotifier {
       log('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
-    } 
+    }
   }
 
   Future<void> forgetPassword(String email) async {
@@ -401,7 +398,6 @@ class AuthProvider with ChangeNotifier {
       // setLoading(true);
       showLoader();
       AuthRepo().forgetPassword(email).then((value) async {
-       
         // setLoading(false);
         hideLoader();
         if (value.isEmpty) return;
@@ -428,7 +424,7 @@ class AuthProvider with ChangeNotifier {
       log('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
-    } 
+    }
   }
 
   Future<void> changePassword(Map<String, dynamic> data) async {
@@ -436,11 +432,10 @@ class AuthProvider with ChangeNotifier {
       // setLoading(true);
       showLoader();
       AuthRepo().changePassword(data).then((value) {
-       
         // setLoading(false);
         hideLoader();
         if (value.isEmpty) return;
-            if (value['status'] == false || value['result'] == false) {
+        if (value['status'] == false || value['result'] == false) {
           if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
           } else {
@@ -464,6 +459,6 @@ class AuthProvider with ChangeNotifier {
       log('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
-    } 
+    }
   }
 }

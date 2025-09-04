@@ -63,7 +63,9 @@ class BalanceCard extends StatelessWidget {
                 GestureDetector(
                   onTap: () {
                     if (account.userModel?.user?.createdAt != null &&
-                        account.userModel?.user?.isActive == false) {
+                        // account.userModel?.user?.isActive == false ||
+                        account.userModel?.user?.basicVerified == false &&
+                        account.userModel?.user?.idVerified == false) {
                       Get.to(() => const KycWebview());
                     } else {
                       Get.to(Deposit());

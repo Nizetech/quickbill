@@ -1,3 +1,4 @@
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -45,6 +46,8 @@ class HistoryCard extends StatelessWidget {
         return MyColor.dark01GreenColor;
       } else if (transaction.status == 'pending') {
         return MyColor.orange01Color;
+      } else if (transaction.apiStatus == 'refunded') {
+        return MyColor.purpleColor;
       } else {
         return MyColor.redColor;
       }
@@ -72,11 +75,38 @@ class HistoryCard extends StatelessWidget {
           .capitalizeFirst!;
       return operator;
     }
-
+    String refundedDesc(Datum transaction) {
+      if (transaction.type == Type.DATA) {
+        return 'Data | Refunded';
+      } else if (transaction.type == Type.AIRTIME) {
+        return 'Airtime | Refunded';
+      } else if (transaction.type == Type.SCRIPT) {
+        return 'Script | Refunded';
+      } else if (transaction.type == Type.GIFTCARD) {
+        return 'Gift Card | Refunded';
+      } else if (transaction.type == Type.PAY4_ME) {
+        return 'Pay4Me | Refunded';
+      } else if (transaction.type == Type.SOCIALBOOST) {
+        return 'Social Boost | Refunded';
+      } else if (transaction.type == Type.MOTORS) {
+        return 'Motors | Refunded';
+      } else if (transaction.type == Type.AUTOREPAIR) {
+        return 'Auto Repair | Refunded';
+      } else if (transaction.type == Type.SPRAY) {
+        return 'Spray | Refunded';
+      } else if (transaction.type == Type.ELECTRICITY) {
+        return 'Electricity | Refunded';
+      } else if (transaction.type == Type.CABLE) {
+        return 'Cable | Refunded';
+      } else {
+        return '${transaction.type!.name.capitalizeFirst!} | Refunded';
+      }
+    }
 
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     final themedata = Theme.of(context).colorScheme;
     final model = context.read<ServiceProvider>();
+    // log('transaction:==> ${transaction.toJson()}');
     return Row(
       children: [
         Container(
@@ -104,6 +134,9 @@ class HistoryCard extends StatelessWidget {
               if (transaction.type != Type.DATA &&
                   transaction.type != Type.AIRTIME)
                 Text(
+                  transaction.apiStatus == 'refunded'
+                      ? refundedDesc(transaction)
+                      :   
                   transaction.type != null
                       ? transaction.type == Type.SCRIPT
                           ? transaction.details!.split(' name: ')[1].toString()
@@ -135,16 +168,20 @@ class HistoryCard extends StatelessWidget {
                       : transaction.details!,
                   maxLines: 1,
                   style: MyStyle.tx12Black.copyWith(
-                      fontWeight: FontWeight.w400,
-                      overflow: TextOverflow.ellipsis,
-                      fontSize: 12.sp,
-                      color: themeProvider.isDarkMode()
-                          ? const Color(0XFFCBD2EB)
-                          : const Color(0xff30333A)),
+                    fontWeight: FontWeight.w400,
+                    overflow: TextOverflow.ellipsis,
+                    fontSize: 12.sp,
+                    color: themeProvider.isDarkMode()
+                        ? const Color(0XFFCBD2EB)
+                        : const Color(0xff30333A),
+                  ),
                 ),
               if (transaction.type == Type.DATA ||
                   transaction.type == Type.AIRTIME)
                 Text(
+                  transaction.apiStatus == 'refunded'
+                      ? refundedDesc(transaction)
+                      :   
                   transaction.type == Type.DATA
                       ? transaction.details!.split(' Plan: ')[1].split(',')[1]
                       : '${getPhone(transaction)} - ${getOperator(transaction).toUpperCase()}',
@@ -185,7 +222,7 @@ class HistoryCard extends StatelessWidget {
               //                       : 'assets/images/svg/copy.svg',
               //                 ),
               //               ),
-              //             ),
+              //             ), 
               SizedBox(height: 5.h),
               Text(
                 formatDateTime(transaction.transDate!),
@@ -195,7 +232,8 @@ class HistoryCard extends StatelessWidget {
                     fontStyle: FontStyle.italic,
                     color: themeProvider.isDarkMode()
                         ? const Color(0XFFCBD2EB)
-                        : const Color(0xff30333A)),
+                      : const Color(0xff30333A),
+                ),
               ),
             ],
           ),
@@ -260,31 +298,51 @@ class HistoryCard extends StatelessWidget {
             const SizedBox(height: 5),
             Row(
               children: [
-                transaction.apiStatus != null &&
-                            transaction.apiStatus!.contains('pending') ||
-                        isSpecialTransactionService(transaction) &&
-                            transaction.status == '0' ||
-                        getStatus(transaction) == MyColor.orange01Color
+                transaction.apiStatus == 'refunded'
                     ? CircleAvatar(
                         radius: 7,
-                        backgroundColor: MyColor.pending,
-                        child: SvgPicture.asset('assets/images/pending.svg'))
-                    : CircleAvatar(
-                        radius: 7,
-                        backgroundColor: getStatus(transaction),
+                        backgroundColor: MyColor.purpleColor,
                         child: Icon(
-                          getStatus(transaction) == MyColor.dark01GreenColor ||
-                                  isSpecialTransactionService(transaction) &&
-                                      transaction.status == '1'
-                              ? Icons.done
-                              : Icons.close,
+                          Icons.check,
                           size: 10,
                           color: Colors.white,
                         ),
-                      ),
+                      )
+                    :
+                    //? This is For Pending Transactions
+                    // transaction.apiStatus != null &&
+                    //             transaction.apiStatus!.contains('pending') ||
+                    //         isSpecialTransactionService(transaction) &&
+                    //             transaction.status == '0' ||
+                    //         getStatus(transaction) == MyColor.orange01Color
+                    //? ===>>> END OF PENDING TRANSACTIONS
+                    getStatus(transaction) == MyColor.dark01GreenColor ||
+                                  isSpecialTransactionService(transaction) &&
+                                transaction.status == '1' 
+                        ? CircleAvatar(
+                            radius: 7,
+                            backgroundColor: getStatus(transaction),
+                            child: Icon(
+                              Icons.done,
+                          size: 10,
+                          color: Colors.white,
+                        ),
+                          )
+                        : CircleAvatar(
+                            radius: 7,
+                            backgroundColor: MyColor.pending,
+                            child:
+                                SvgPicture.asset('assets/images/pending.svg')),
                 SizedBox(width: 5.w),
                 GestureDetector(
                   onTap: () {
+                    if (transaction.apiStatus == 'refunded') {
+                      viewReceipt(
+                        transaction: transaction,
+                        getPhone: getPhone,
+                        getOperator: getOperator,
+                      );
+                    } else
                     if ((transaction.apiStatus != null &&
                             transaction.apiStatus!.contains('pending')) ||
                         getStatus(transaction) != MyColor.dark01GreenColor ||
@@ -316,7 +374,6 @@ class HistoryCard extends StatelessWidget {
                           getOperator: getOperator,
                         );
                       }
-                  
                     }
                   },
                   child: Container(

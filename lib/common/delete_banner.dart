@@ -91,7 +91,7 @@ class _DeleteBannerState extends State<DeleteBanner> {
       child: Column(
         children: [
           Text(
-            'Important: You have the following time frame left to activate your bank wallet, or your account will be permanently deleted.',
+            "Verify your account within the timeframe to keep it active. It’ll activate automatically.",
             style: MyStyle.tx16Black.copyWith(
               color: Colors.white,
               fontWeight: FontWeight.w600,

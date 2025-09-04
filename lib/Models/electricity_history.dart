@@ -12,7 +12,7 @@ String electricityHistoryModelToJson(ElectricityHistoryModel data) =>
 
 class ElectricityHistoryModel {
   String? fromDate;
-  String? toDate;
+  ToDate? toDate;
   List<Transaction>? transactions;
 
   ElectricityHistoryModel({
@@ -24,7 +24,8 @@ class ElectricityHistoryModel {
   factory ElectricityHistoryModel.fromJson(Map<String, dynamic> json) =>
       ElectricityHistoryModel(
         fromDate: json["from_date"],
-        toDate: json["to_date"],
+        toDate:
+            json["to_date"] == null ? null : ToDate.fromJson(json["to_date"]),
         transactions: json["transactions"] == null
             ? []
             : List<Transaction>.from(
@@ -33,10 +34,34 @@ class ElectricityHistoryModel {
 
   Map<String, dynamic> toJson() => {
         "from_date": fromDate,
-        "to_date": toDate,
+        "to_date": toDate?.toJson(),
         "transactions": transactions == null
             ? []
             : List<dynamic>.from(transactions!.map((x) => x.toJson())),
+      };
+}
+
+class ToDate {
+  String? date;
+  int? timezoneType;
+  String? timezone;
+
+  ToDate({
+    this.date,
+    this.timezoneType,
+    this.timezone,
+  });
+
+  factory ToDate.fromJson(Map<String, dynamic> json) => ToDate(
+        date: json["date"],
+        timezoneType: json["timezone_type"],
+        timezone: json["timezone"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "date": date,
+        "timezone_type": timezoneType,
+        "timezone": timezone,
       };
 }
 
@@ -66,6 +91,7 @@ class Transaction {
   String? kct1;
   String? kct2;
   String? unit;
+  String? details;
 
   Transaction({
     this.id,
@@ -93,6 +119,7 @@ class Transaction {
     this.kct1,
     this.kct2,
     this.unit,
+    this.details,
   });
 
   factory Transaction.fromJson(Map<String, dynamic> json) => Transaction(
@@ -121,6 +148,7 @@ class Transaction {
         kct1: json["kct1"],
         kct2: json["kct2"],
         unit: json["unit"],
+        details: json["details"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -149,5 +177,6 @@ class Transaction {
         "kct1": kct1,
         "kct2": kct2,
         "unit": unit,
+        "details": details,
       };
 }

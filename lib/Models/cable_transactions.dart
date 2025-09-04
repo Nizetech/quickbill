@@ -12,7 +12,7 @@ String cableTransactionModelToJson(CableTransactionModel data) =>
 
 class CableTransactionModel {
   String? fromDate;
-  String? toDate;
+  ToDate? toDate;
   List<Transaction>? transactions;
 
   CableTransactionModel({
@@ -24,7 +24,8 @@ class CableTransactionModel {
   factory CableTransactionModel.fromJson(Map<String, dynamic> json) =>
       CableTransactionModel(
         fromDate: json["from_date"],
-        toDate: json["to_date"],
+        toDate:
+            json["to_date"] == null ? null : ToDate.fromJson(json["to_date"]),
         transactions: json["transactions"] == null
             ? []
             : List<Transaction>.from(
@@ -33,10 +34,34 @@ class CableTransactionModel {
 
   Map<String, dynamic> toJson() => {
         "from_date": fromDate,
-        "to_date": toDate,
+        "to_date": toDate?.toJson(),
         "transactions": transactions == null
             ? []
             : List<dynamic>.from(transactions!.map((x) => x.toJson())),
+      };
+}
+
+class ToDate {
+  String? date;
+  int? timezoneType;
+  String? timezone;
+
+  ToDate({
+    this.date,
+    this.timezoneType,
+    this.timezone,
+  });
+
+  factory ToDate.fromJson(Map<String, dynamic> json) => ToDate(
+        date: json["date"],
+        timezoneType: json["timezone_type"],
+        timezone: json["timezone"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "date": date,
+        "timezone_type": timezoneType,
+        "timezone": timezone,
       };
 }
 
@@ -60,6 +85,7 @@ class Transaction {
   String? smartCard;
   String? purchasedCode;
   String? package;
+  String? details;
 
   Transaction({
     this.id,
@@ -81,6 +107,7 @@ class Transaction {
     this.smartCard,
     this.purchasedCode,
     this.package,
+    this.details,
   });
 
   factory Transaction.fromJson(Map<String, dynamic> json) => Transaction(
@@ -103,6 +130,7 @@ class Transaction {
         smartCard: json["smart_card"],
         purchasedCode: json["purchased_code"],
         package: json["package"],
+        details: json["details"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -125,5 +153,6 @@ class Transaction {
         "smart_card": smartCard,
         "purchased_code": purchasedCode,
         "package": package,
+        "details": details,
       };
 }

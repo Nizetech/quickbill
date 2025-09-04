@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
+import 'package:jost_pay_wallet/Provider/service_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/bank_werbview.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
@@ -11,6 +12,7 @@ import 'package:jost_pay_wallet/Values/NewColor.dart';
 import 'package:jost_pay_wallet/Values/NewStyle.dart';
 import 'package:jost_pay_wallet/Values/utils.dart';
 import 'package:jost_pay_wallet/constants/constants.dart';
+import 'package:jost_pay_wallet/utils/toast.dart';
 import 'package:provider/provider.dart';
 
 class CardFundSummary extends StatefulWidget {
@@ -44,7 +46,8 @@ class _CardFundSummaryState extends State<CardFundSummary> {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final themedata = Theme.of(context).colorScheme;
     return Scaffold(
-      body: Consumer<AccountProvider>(builder: (context, model, _) {
+      body: Consumer2<AccountProvider, ServiceProvider>(
+          builder: (context, model, service, _) {
         return Column(
           children: [
             SafeArea(
@@ -67,9 +70,7 @@ class _CardFundSummaryState extends State<CardFundSummary> {
                         Transform.translate(
                           offset: const Offset(-20, 0),
                           child: Text(
-                            widget.isCard
-                                ? 'Card Fund Transfer'
-                                : 'Bank Fund Transfer',
+                            widget.isCard ? 'Card Transfer' : 'Bank Transfer',
                             style: MyStyle.tx18Black.copyWith(
                               color: themedata.tertiary,
                             ),
@@ -92,7 +93,7 @@ class _CardFundSummaryState extends State<CardFundSummary> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Card Fund Summary',
+                            'Deposit Summary',
                             style: MyStyle.tx14Black.copyWith(
                                 color: themedata.tertiary,
                                 fontFamily: 'Roboto'),
@@ -227,17 +228,25 @@ class _CardFundSummaryState extends State<CardFundSummary> {
                           ),
                         ),
                         onPressed: () async {
-                          if (widget.isCard) {
-                            model.cardBankTransfer(
-                                amount: widget.amount,
-                                onSuccess: (value) {
-                                  Get.to(BankWebview(url: value, isCard: true));
-                                });
+                          if (model.userModel?.user?.basicVerified == false &&
+                              num.parse(widget.amount) > 20000) {
+                            ErrorToast(
+                                'You need to verify your account to deposit more than 20,000');
+                            return;
                           } else {
-                            String token = await box.get(kAccessToken);
-                            String url =
-                                'https://project.jostpay.com/deposit-fidelity?token=$token&&amount=${widget.amount}';
-                            Get.to(BankWebview(url: url));
+                            if (widget.isCard) {
+                              model.cardBankTransfer(
+                                  amount: widget.amount,
+                                  onSuccess: (value) {
+                                    Get.to(
+                                        BankWebview(url: value, isCard: true));
+                                  });
+                            } else {
+                              String token = await box.get(kAccessToken);
+                              String url =
+                                  'https://project.jostpay.com/deposit-fidelity?token=$token&&amount=${widget.amount}';
+                              Get.to(BankWebview(url: url));
+                            }
                           }
                         },
                         child: Text(

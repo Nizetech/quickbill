@@ -233,8 +233,12 @@ class _SocialBoostHistoryState extends State<SocialBoostHistory> {
                                             ),
                                             StatusViewReceipt(
                                                 status: item.apiStatus!,
+                                                isRefunded: item.apiStatus ==
+                                                    'refunded',
                                                 onTap: () {
-                                                  if (!item.apiStatus!
+                                                  if (item.apiStatus !=
+                                                          'refunded' &&
+                                                      !item.apiStatus!
                                                       .toLowerCase()
                                                           .contains(
                                                               'success') &&

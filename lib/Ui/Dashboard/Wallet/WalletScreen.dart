@@ -542,7 +542,9 @@ class _WalletScreenState extends State<WalletScreen> {
                 ),
                 if (accountProvider.userModel?.user?.createdAt != null
                     &&
-                    accountProvider.userModel?.user?.isActive == false
+                    // accountProvider.userModel?.user?.isActive == false ||
+                    accountProvider.userModel?.user?.idVerified == false &&
+                    accountProvider.userModel?.user?.basicVerified == false
                     )
                   DeleteBanner(
                     date: accountProvider.userModel!.user!.createdAt!,

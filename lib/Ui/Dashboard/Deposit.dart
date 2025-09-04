@@ -9,6 +9,7 @@ import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/balance_card.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/common/button.dart';
 import 'package:jost_pay_wallet/common/text_field.dart';
+import 'package:jost_pay_wallet/utils/toast.dart';
 import 'package:provider/provider.dart';
 
 import '../../Values/MyColor.dart';
@@ -96,9 +97,17 @@ class _DepositState extends State<Deposit> {
                           detail:
                               'Get a virtual account. Deposit appear almost immediately.',
                           fee: '0.5375%',
-                          onTap: () => Get.to(
-                            const VirtualAccountCreation(),
-                          ),
+                          onTap: () {
+                            if (model.userModel?.user?.idVerified == false) {
+                              ErrorToast(
+                                  'You need to verify your account to create a virtual account');
+                              return;
+                            } else {
+                              Get.to(
+                                const VirtualAccountCreation(),
+                              );
+                            }
+                          },
                         ),
                         SizedBox(height: 10),
                       ],

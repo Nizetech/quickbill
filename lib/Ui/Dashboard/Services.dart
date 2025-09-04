@@ -161,8 +161,6 @@ class _ServicesState extends State<Services> {
                             title: 'Electricity Token',
                             page: const ElectricityHistory(),
                           ),
-                     
-                          
                           const Spacer(),
                           if (Platform.isAndroid)
                           ServiceTile(
@@ -182,10 +180,23 @@ class _ServicesState extends State<Services> {
                         const SizedBox(
                           height: 10,
                         ),
-                        ServiceTile(
-                          icon: 'assets/images/cable.svg',
-                          title: 'Buy Cable Tv',
-                          page: const CableHistory(),
+                        Row(
+                          children: [
+                            ServiceTile(
+                              icon: 'assets/images/cable.svg',
+                              title: 'Buy Cable Tv',
+                              page: const CableHistory(),
+                            ),
+                            const Spacer(),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 10),
+                              child: ServiceTile(
+                                icon: 'assets/images/script.svg',
+                                title: 'Buy Scripts',
+                                page: ScriptHistory(),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                       const SizedBox(
@@ -249,19 +260,9 @@ class _ServicesState extends State<Services> {
                             title: 'Try Social Boost',
                             page: const SocialBoostHistory(),
                             )
-                       
                         ],
                       ),
-                  
-                      if (Platform.isAndroid)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: ServiceTile(
-                            icon: 'assets/images/script.svg',
-                            title: 'Buy Scripts',
-                            page: ScriptHistory(),
-                          ),
-                        ),
+                    
                       const SizedBox(
                         height: 24,
                       ),
@@ -326,7 +327,6 @@ class _ServicesState extends State<Services> {
                       //   page: CarHistory(),
                       //   // const CarsellScreen(),
                       // ),
-                 
                       const SizedBox(
                         height: 27,
                       ),

@@ -46,6 +46,7 @@ class _OtpScreenState extends State<OtpScreen> {
           child: Padding(
             padding: EdgeInsets.only(top: 70, right: 16.w, left: 16.w),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 InkWell(
                   onTap: () {
@@ -76,17 +77,32 @@ class _OtpScreenState extends State<OtpScreen> {
                         'Enter your Google Authenticator code to verify your identity',
                         style: MyStyle.tx14Black,
                       )
-                    :
-                Row(
-                  children: [
-                    Text('We send a code to ', style: MyStyle.tx16Gray),
-                    Text(
-                            widget.email,
-                            // truncateEmail(widget.email),
-                      style: MyStyle.tx16Green,
-                    )
-                  ],
-                ),
+                    : Text.rich(
+                        TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'We send a code to ',
+                              style: MyStyle.tx16Gray,
+                            ),
+                            TextSpan(
+                              text: widget.email,
+                              style: MyStyle.tx16Green,
+                            ),
+                          ],
+                        ),
+                      ),
+                // Row(
+                //   children: [
+                //     Text('We send a code to ', style: MyStyle.tx16Gray),
+                //           Expanded(
+                //             child: Text(
+                //               widget.email,
+                //               // truncateEmail(widget.email),
+                //               style: MyStyle.tx16Green,
+                //             ),
+                //     )
+                //   ],
+                // ),
                 if (!widget.is2Fa)
 
                   Text.rich(
@@ -140,19 +156,21 @@ class _OtpScreenState extends State<OtpScreen> {
                 ),
                 const SizedBox(height: 14),
                 if (!widget.is2Fa)
-                TextButton(
-                  onPressed: () {
-                      model.resendOtp(
-                        widget.email,
-                        authToken: model.authToken,
-                      );
-                    setState(() {
-                      clearText = true;
-                    });
-                  },
-                  child: Text("Resend Code",
-                      style: MyStyle.tx16Green
-                          .copyWith(fontSize: 16, fontWeight: FontWeight.w500)),
+                  Center(
+                    child: TextButton(
+                      onPressed: () {
+                        model.resendOtp(
+                          widget.email,
+                          authToken: model.authToken,
+                        );
+                        setState(() {
+                          clearText = true;
+                        });
+                      },
+                      child: Text("Resend Code",
+                          style: MyStyle.tx16Green.copyWith(
+                              fontSize: 16, fontWeight: FontWeight.w500)),
+                    ),
                 ),
                 const SizedBox(height: 28),
                 isLoading == true

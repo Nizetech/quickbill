@@ -299,7 +299,7 @@ class _ElectricitySummaryScreenState extends State<ElectricitySummaryScreen> {
                       Map<String, dynamic> data = {
                         'type': widget.data['meter_type'],
                         "service_id": widget.data['service_id'],
-                        "amount": totalAmount,
+                        "amount": widget.data['amount'],
                         "number": widget.data['meter_number'],
                         "phone": widget.data['phone'],
                         "details": widget.saveDetails ? 1 : 0,

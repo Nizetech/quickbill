@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 
 import 'package:hive_flutter/hive_flutter.dart';
@@ -16,6 +17,7 @@ class AccountRepo {
       final response = await client.post(ApiRoute.userProfile, requestHeaders: {
         'Authorization': token,
       });
+      log('profile response: $response,${response.runtimeType}');
       return response;
     } catch (e) {
       print('Error: $e');

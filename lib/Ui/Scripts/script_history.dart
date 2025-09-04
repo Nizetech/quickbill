@@ -232,6 +232,7 @@ class _ScriptHistoryState extends State<ScriptHistory> {
                                             ),
                                             StatusViewReceipt(
                                               status: '1',
+                                                isRefunded: false,
                                               onTap: () {
                                                   // if (item.status != '1') {
                                                   //   ErrorToast(

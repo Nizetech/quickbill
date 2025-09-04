@@ -229,9 +229,12 @@ class _ElectricityHistoryState extends State<ElectricityHistory> {
                                             ),
                                             StatusViewReceipt(
                                               status: item.status!,
-                                              isServices: true,
+                                              isRefunded:
+                                                  item.apiStatus == 'refunded',
                                               onTap: () {
-                                                if (item.status != '1' ||
+                                                if (item.status != '1' &&
+                                                        item.apiStatus !=
+                                                            'refunded' ||
                                                     !item.apiStatus!
                                                             .toLowerCase()
                                                             .contains(

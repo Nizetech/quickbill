@@ -65,8 +65,6 @@ static Dio createDio() {
         queryParameters: queryParameters,
         cancelToken: cancelToken,
         onReceiveProgress: onReceiveProgress,
-        
-
         //! TODO uncomment this line when you want to use auth header
         options: Options(headers: {..._getAuthHeader, ...requestHeaders}),
       );
@@ -94,7 +92,7 @@ static Dio createDio() {
       Url : $uri
     BODY : $body  
       Params : $queryParameters,
-      Headers : $requestHeaders
+      Headers : ${{..._getAuthHeader, ...requestHeaders}}
       """);
     try {
       final response = await _dio.post(

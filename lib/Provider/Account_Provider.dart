@@ -188,7 +188,7 @@ class AccountProvider with ChangeNotifier {
       AccountRepo().getDepositInvoice(bankID).then((value) {
         //
         hideLoader();
-        if (value['status'] == false || value['result'] == false) {
+        if (value['status'] == false || value['result'] == false ) {
           if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
           } else {
@@ -224,7 +224,7 @@ class AccountProvider with ChangeNotifier {
       AccountRepo().createVirtualAccount(data).then((value) {
         //
         hideLoader();
-        if (value['status'] == false || value['result'] == false) {
+        if (value['status'] == false || value['result'] == false ) {
           if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
           } else {
@@ -253,7 +253,7 @@ class AccountProvider with ChangeNotifier {
       AccountRepo().cardBankTransfer(amount).then((value) {
         //
         hideLoader();
-        if (value['status'] == false || value['result'] == false) {
+        if (value['status'] == false || value['result'] == false ) {
           if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
           } else {
@@ -319,7 +319,7 @@ class AccountProvider with ChangeNotifier {
           .getServiceHistory('data', filter: filter)
           .then((value) async {
         if (isLoading) hideLoader();
-        if (value['status'] == false || value['result'] == false) {
+        if (value['status'] == false || value['result'] == false ) {
           if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
           } else {
@@ -352,7 +352,7 @@ class AccountProvider with ChangeNotifier {
           .getServiceHistory('pay4me', filter: filter)
           .then((value) async {
         if (isLoading) hideLoader();
-        if (value['status'] == false || value['result'] == false) {
+        if (value['status'] == false || value['result'] == false ) {
           if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
           } else {
@@ -414,7 +414,7 @@ class AccountProvider with ChangeNotifier {
       if (isLoading) showLoader();
       AccountRepo().getDepositHistory().then((value) async {
         if (isLoading) hideLoader();
-        if (value['status'] == false || value['result'] == false) {
+        if (value['status'] == false || value['result'] == false ) {
           if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
           } else {
@@ -441,7 +441,7 @@ class AccountProvider with ChangeNotifier {
       AccountRepo().createDeposit(data).then((value) async {
         hideLoader();
 
-        if (value['status'] == false || value['result'] == false) {
+        if (value['status'] == false || value['result'] == false ) {
           if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
           } else {
@@ -500,7 +500,7 @@ class AccountProvider with ChangeNotifier {
       if (isLoading) showLoader();
       AccountRepo().getBanks().then((value) async {
         if (isLoading) hideLoader();
-        if (value['status'] == false || value['result'] == false) {
+          if (value['status'] == false || value['result'] == false) {
           if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
           } else {
@@ -645,7 +645,8 @@ class AccountProvider with ChangeNotifier {
             }
           }
         } else {
-          if (value['message'].toString().toLowerCase().contains('pending')) {
+          if (value == {} ||
+              value['message'].toString().toLowerCase().contains('pending')) {
             Get.to(PendingFailedPurchase(
               isData: true,
             ));
@@ -680,8 +681,9 @@ class AccountProvider with ChangeNotifier {
     try {
       showLoader();
       AccountRepo().buyData(data).then((value) async {
+        log("Data value:===> $value");
         hideLoader();
-        if (value['result'] == null || value['result'] != true) {
+          if (value['result'] == null || value['result'] != true ) {
           if (value['message'].toString().toLowerCase().contains('failed')) {
             Get.to(PendingFailedPurchase(
               isData: true,
@@ -703,7 +705,8 @@ class AccountProvider with ChangeNotifier {
           //   ));
           // }
         } else {
-          if (value['result'] == true &&
+          if (value =={}||
+            value['result'] == true &&
               value['message'].toString().toLowerCase().contains('pending')) {
             Get.to(PendingFailedPurchase(
               isData: true,
@@ -781,7 +784,7 @@ class AccountProvider with ChangeNotifier {
       setLoading(true);
       AccountRepo().getBalance().then((value) {
         setLoading(false);
-        if (value['status'] == false || value['result'] == false) {
+        if (value['status'] == false || value['result'] == false ) {
           if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
           } else {
@@ -813,7 +816,7 @@ class AccountProvider with ChangeNotifier {
       showLoader();
       AccountRepo().verifyKyc(kycData).then((value) {
         hideLoader();
-        if (value['status'] == false || value['result'] == false) {
+        if (value['status'] == false || value['result'] == false ) {
           if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
           } else {
@@ -844,7 +847,7 @@ class AccountProvider with ChangeNotifier {
       showLoader();
       AccountRepo().verifyKyc(kycData).then((value) {
         hideLoader();
-        if (value['status'] == false || value['result'] == false) {
+        if (value['status'] == false || value['result'] == false ) {
           if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
           } else {
@@ -874,7 +877,7 @@ class AccountProvider with ChangeNotifier {
     try {
       if (isLoading) showLoader();
       AccountRepo().getTransactions().then((value) {
-        if (value['status'] == false || value['result'] == false) {
+          if (value['status'] == false || value['result'] == false ) {
           if (isLoading) hideLoader();
           if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
@@ -906,7 +909,7 @@ class AccountProvider with ChangeNotifier {
       AccountRepo().getHistory({
         "id":"airtime"
       }).then((value) {
-        if (value['status'] == false || value['result'] == false) {
+          if (value['status'] == false || value['result'] == false ) {
          hideLoader();
           if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
@@ -935,7 +938,7 @@ class AccountProvider with ChangeNotifier {
       AccountRepo().getHistory({
         "id":"data"
       }).then((value) {
-        if (value['status'] == false || value['result'] == false) {
+          if (value['status'] == false || value['result'] == false ) {
           hideLoader();
           if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
@@ -964,7 +967,7 @@ class AccountProvider with ChangeNotifier {
       AccountRepo().getHistory({
         "id":"cable"
       }).then((value) {
-        if (value['status'] == false || value['result'] == false) {
+          if (value['status'] == false || value['result'] == false ) {
           hideLoader();
           if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
@@ -994,7 +997,7 @@ class AccountProvider with ChangeNotifier {
       AccountRepo().getHistory({
         "id":"electricity"
       }).then((value) {
-        if (value['status'] == false || value['result'] == false) {
+          if (value['status'] == false || value['result'] == false ) {
           hideLoader();
           if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
@@ -1021,7 +1024,7 @@ class AccountProvider with ChangeNotifier {
     try {
       showLoader();
       AccountRepo().removeHistory(data).then((value) {
-        if (value['status'] == false || value['result'] == false) {
+          if (value['status'] == false || value['result'] == false ) {
           hideLoader();
           if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
@@ -1049,7 +1052,7 @@ class AccountProvider with ChangeNotifier {
     try {
       if (isLoading) showLoader();
       AccountRepo().getReferral().then((value) {
-        if (value['status'] == false || value['result'] == false) {
+          if (value['status'] == false || value['result'] == false ) {
           if (isLoading) hideLoader();
           if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
@@ -1078,7 +1081,7 @@ class AccountProvider with ChangeNotifier {
     try {
       if (isLoading) showLoader();
       AccountRepo().getDataPlans(network).then((value) {
-        if (value['status'] == false || value['result'] == false) {
+          if (value['status'] == false || value['result'] == false ) {
           if (isLoading) hideLoader();
           if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
@@ -1106,7 +1109,7 @@ class AccountProvider with ChangeNotifier {
     try {
       if (isLoading) showLoader();
       AccountRepo().getPromotion().then((value) {
-        if (value['status'] == false || value['result'] == false) {
+          if (value['status'] == false || value['result'] == false ) {
           if (isLoading) hideLoader();
           if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
@@ -1136,7 +1139,7 @@ class AccountProvider with ChangeNotifier {
         text: 'Account Deletion...',
       );
       AccountRepo().deleteAccount().then((value) {
-        if (value['status'] == false || value['result'] == false) {
+            if (value['status'] == false || value['result'] == false ) {
           hideLoader();
           if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);

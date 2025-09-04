@@ -230,6 +230,7 @@ class _CarHistoryState extends State<CarHistory> {
                                             ),
                                             StatusViewReceipt(
                                               status: '1',
+                                              isRefunded: false,
                                               onTap: () {
                                                 Get.to(ReceiptScreen(
                                                   status: '1',

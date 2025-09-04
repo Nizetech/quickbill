@@ -53,7 +53,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ErrorToast("Password does not match");
         return;
       } else {
-        // log("${_emailController.text.trim()}, ${_passwordController.text.trim()}, ${_firstName.text.trim()}, ${_lastName.text.trim()}, ${selectedCountry}, ${_referalCode.text.trim()}, ${_phoneNumberController.text.trim()}, ${_confirmPasswordController.text.trim()}");
+        print(
+            "${_emailController.text.trim()}, ${_passwordController.text.trim()}, ${_firstName.text.trim()}, ${_lastName.text.trim()}, ${selectedCountry}, ${_referalCode.text.trim()}, ${_phoneNumberController.text.trim()}, ${_confirmPasswordController.text.trim()}");
         // return;
         model.createAccount({
           "email": _emailController.text.trim(),

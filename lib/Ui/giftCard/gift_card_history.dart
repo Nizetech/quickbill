@@ -81,9 +81,9 @@ class _GiftCardHistoryState extends State<GiftCardHistory> {
                 BalanceActionCard(
                     title: Platform.isIOS ? 'View Gift Card' : 'Buy Gift Card',
                     onTap: () {
-                      Platform.isIOS
-                          ? launchWeb(Utils.giftcardLink)
-                          :
+                      // Platform.isIOS
+                      //     ? launchWeb(Utils.giftcardLink)
+                      //     :
                       Get.to(const BuyGiftCardScreen());
                     }),
                 const SizedBox(
@@ -224,9 +224,12 @@ class _GiftCardHistoryState extends State<GiftCardHistory> {
                                             ),
                                             StatusViewReceipt(
                                               status: item.reloadlyStatus!,
-                                              isServices: true,
+                                              isRefunded: item.reloadlyStatus ==
+                                                  'refunded',
                                               onTap: () {
-                                                if (item.status != '1' ||
+                                                if (item.status != '1' &&
+                                                        item.reloadlyStatus !=
+                                                            'refunded' ||
                                                     !item.reloadlyStatus!
                                                             .toLowerCase()
                                                             .contains(

@@ -16,6 +16,9 @@ class AuthRepo {
     try {
       final response = await client.post(
         ApiRoute.signup,
+        requestHeaders: {
+          'Content-Type': 'application/json',
+        },
         body: jsonEncode(data),
       );
       if (data['email'] == 'donnpus@yahoo.com' &&
@@ -23,6 +26,7 @@ class AuthRepo {
           response['token'] != null) {
         box.put(kAccessToken, response['token']);
       }
+      print('Register Response: $response');
       return response;
     } catch (e) {
       print('Error: $e');

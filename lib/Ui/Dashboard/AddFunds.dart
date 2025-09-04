@@ -121,7 +121,12 @@ class _AddFundsState extends State<AddFunds> {
                                     onTap: () {
                                       if (account.userModel?.user?.createdAt !=
                                               null &&
-                                          account.userModel?.user?.isActive ==
+                                          // account.userModel?.user?.isActive ==
+                                          //     false &&
+                                          account.userModel?.user
+                                                  ?.basicVerified ==
+                                              false &&
+                                          account.userModel?.user?.idVerified ==
                                               false) {
                                         Get.to(() => const KycWebview());
                                       } else {
@@ -241,7 +246,7 @@ class _AddFundsState extends State<AddFunds> {
                                               child: SvgPicture.asset(
                                                   'assets/images/svg/deposit.svg'),
                                             ),
-                                            const SizedBox(
+                                            const SizedBox( 
                                               width: 6,
                                             ),
                                             Expanded(
@@ -330,6 +335,7 @@ class _AddFundsState extends State<AddFunds> {
                                                   ),
                                                   StatusViewReceipt(
                                                     status: item.status!,
+                                                    isRefunded: false,
                                                     onTap: () {
                                                       if (item.status!
                                                               .toLowerCase()

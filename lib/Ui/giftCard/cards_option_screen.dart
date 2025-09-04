@@ -66,16 +66,18 @@ class _CardsOptionScreenState extends State<CardsOptionScreen> {
                             : MyColor.dark01Color,
                       ),
                     ),
-                    const Spacer(),
-                    Transform.translate(
-                      offset: const Offset(-20, 0),
+                    // const Spacer(),
+                    const SizedBox(width: 20),
+                    Expanded(
                       child: Text(
                         model.cardModel!.product!.productName!,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: MyStyle.tx18Black
                             .copyWith(color: themedata.tertiary),
                       ),
                     ),
-                    const Spacer(), // Adds flexible space after the text
+                    // const Spacer(), // Adds flexible space after the text
                   ],
                 ),
                 Expanded(

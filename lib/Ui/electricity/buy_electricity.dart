@@ -428,6 +428,9 @@ class _BuyElectricityState extends State<BuyElectricity> {
                                                 
                                                   },
                                                   child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
                                                     children: [
                                                       Text(
                                                         '${e.discoName!.capitalizeFirst} - ${e.meterNumber}',
@@ -463,11 +466,24 @@ class _BuyElectricityState extends State<BuyElectricity> {
                                                           );
                                                           log('e: $e');
                                                         },
-                                                        child: Icon(
-                                                          Icons.delete_outline,
-                                                          color:
-                                                              MyColor.redColor,
-                                                          size: 16,
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  left: 10),
+                                                          child: CircleAvatar(
+                                                            radius: 16,
+                                                            backgroundColor:
+                                                                MyColor
+                                                                    .redColor,
+                                                            child: Icon(
+                                                              Icons
+                                                                  .delete_outline,
+                                                              color: MyColor
+                                                                  .whiteColor,
+                                                              size: 16,
+                                                            ),
+                                                          ),
                                                         ),
                                                       )
                                                     ],

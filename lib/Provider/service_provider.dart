@@ -135,9 +135,7 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   Future<void> getSocialSections({bool isLoading = true}) async {
@@ -164,9 +162,7 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   Future<void> getCableTransactions(
@@ -194,10 +190,9 @@ class ServiceProvider with ChangeNotifier {
       }
     } catch (e) {
       log('Error: $e');
-      ErrorToast(e.toString());
-    } finally {
       hideLoader();
-    }
+      ErrorToast(e.toString());
+    } 
   }
 
   Future<void> getElectricityTransactions(
@@ -205,6 +200,7 @@ class ServiceProvider with ChangeNotifier {
     try {
       if (isLoading) showLoader();
       var res = await ServiceRepo().getElectricityTransactions();
+      log('res:==> $res');
       if (res['status'] == false || res['result'] == false) {
         if (isLoading) hideLoader();
         if (res['message'].runtimeType == String) {
@@ -225,10 +221,9 @@ class ServiceProvider with ChangeNotifier {
       }
     } catch (e) {
       log('Error: $e');
-      ErrorToast(e.toString());
-    } finally {
       hideLoader();
-    }
+      ErrorToast(e.toString());
+    } 
   }
 
   Future<void> getCableMerchant(Map<String, dynamic> data,
@@ -272,9 +267,7 @@ class ServiceProvider with ChangeNotifier {
       log('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   Future<void> getCarListing({bool isLoading = true}) async {
@@ -329,9 +322,7 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   Future<void> getScripts({bool isLoading = true}) async {
@@ -388,9 +379,7 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   Future<void> payRepairVehicle(String id,
@@ -450,9 +439,7 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   // shareRepairInvoice
@@ -486,9 +473,7 @@ class ServiceProvider with ChangeNotifier {
       log('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   Future<void> skipRepair({
@@ -615,9 +600,7 @@ class ServiceProvider with ChangeNotifier {
       log('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   Future<void> buyScript(Map<String, dynamic> data) async {
@@ -648,9 +631,7 @@ class ServiceProvider with ChangeNotifier {
       log('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   Future<void> getGiftCard(String code) async {
@@ -678,9 +659,7 @@ class ServiceProvider with ChangeNotifier {
       log('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   Future<void> getReceipt(Map<String, dynamic> data,
@@ -710,9 +689,7 @@ class ServiceProvider with ChangeNotifier {
       log('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   Future<void> buyGiftCard(Map<String, dynamic> data) async {
@@ -743,9 +720,7 @@ class ServiceProvider with ChangeNotifier {
       log('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   Future<void> buyCable(
@@ -772,7 +747,7 @@ class ServiceProvider with ChangeNotifier {
         hideLoader();
         ErrorToast(res['message']);
         return;
-      } else if (res['result'] == 'pending') {
+      } else if (res['result'] == 'pending' || res == {}) {
         hideLoader();
         Get.to(CableElectricitySuccessScreen(
           isCable: true,
@@ -795,16 +770,14 @@ class ServiceProvider with ChangeNotifier {
       log('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   Future<void> buyElectricity(Map<String, dynamic> data) async {
     try {
       showLoader();
       var res = await ServiceRepo().buyElectricity(data);
-
+      log('res:===> $res');
       if (res['status'] == false || res['result'] == false) {
         hideLoader();
         if (res['message'].runtimeType == String) {
@@ -821,7 +794,7 @@ class ServiceProvider with ChangeNotifier {
         hideLoader();
         ErrorToast(res['message']);
         return;
-      } else if (res['result'] == 'pending') {
+      } else if (res['result'] == 'pending' || res == {}) {
         hideLoader();
         Get.to(CableElectricitySuccessScreen(
           isCable: false,
@@ -842,9 +815,7 @@ class ServiceProvider with ChangeNotifier {
       log('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   Future<void> buyPay4Me(Map<String, dynamic> data) async {
@@ -1045,9 +1016,7 @@ class ServiceProvider with ChangeNotifier {
       log('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   Future<void> sprayDetails(int id) async {
@@ -1077,9 +1046,7 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   Future<void> getSprayDetails(Map<String, dynamic> data) async {
@@ -1106,9 +1073,7 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   Future<void> getRepairTransactions(
@@ -1137,9 +1102,7 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   Future<void> buyRepaires(Map<String, dynamic> data,
@@ -1171,9 +1134,7 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   Future<void> payPending(int id) async {
@@ -1202,9 +1163,7 @@ class ServiceProvider with ChangeNotifier {
       log('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   // get pdf
@@ -1239,9 +1198,7 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   Future<void> getSprayHistory({bool isLoading = true}) async {
@@ -1269,9 +1226,7 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   Future<void> getScriptTransactions(
@@ -1301,9 +1256,7 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   Future<void> getCarsTransactions(
@@ -1334,9 +1287,7 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 
   Future<void> getColorPaint() async {
@@ -1363,8 +1314,6 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       log('Error: $e');
       ErrorToast(e.toString());
-    } finally {
-      hideLoader();
-    }
+    } 
   }
 }

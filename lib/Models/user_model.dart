@@ -39,6 +39,7 @@ class User {
   bool? isActive;
   dynamic virtualAccount;
   bool? idVerified;
+  bool? basicVerified;
   dynamic enabledPin;
   String? createdAt;
 
@@ -53,6 +54,7 @@ class User {
     this.isActive,
     this.virtualAccount,
     this.idVerified,
+    this.basicVerified,
     this.enabledPin,
     this.createdAt,
   });
@@ -68,6 +70,7 @@ class User {
         isActive: json["active"],
         virtualAccount: json["account_number"],
         idVerified: json["id_verified"],
+        basicVerified: json["basic_verify"],
         enabledPin: json["enable_pin"],
         createdAt: json["created_at"],
       );
@@ -83,6 +86,7 @@ class User {
         "active": isActive,
         "account_number": virtualAccount,
         "id_verified": idVerified,
+        "basic_verify": basicVerified,
         "enable_pin": enabledPin,
         "created_at": createdAt,
       };

@@ -227,9 +227,13 @@ class _CableHistoryState extends State<CableHistory> {
                                             ),
                                             StatusViewReceipt(
                                               status: item.status!,
-                                              isServices: true,
+                                              isServices:
+                                                  item.apiStatus == 'refunded',
+                                              isRefunded: false,
                                               onTap: () {
-                                                if (item.status != '1' ||
+                                                if (item.status != '1' &&
+                                                        item.apiStatus !=
+                                                            'refunded' ||
                                                     !item.apiStatus!
                                                             .toLowerCase()
                                                             .contains(

@@ -7,13 +7,16 @@ class StatusViewReceipt extends StatelessWidget {
   final String status;
   final VoidCallback onTap;
   final bool isServices;
+  final bool isRefunded;
   final bool isSocial;
   const StatusViewReceipt(
       {super.key,
       required this.status,
       required this.onTap,
+    required this.isRefunded,
       this.isSocial = false,
-      this.isServices = false});
+    this.isServices = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -35,23 +38,23 @@ class StatusViewReceipt extends StatelessWidget {
               status.contains('pending') ||
                   isServices && status == '0' ||
                   status.contains('processing') ||
-                  status.contains('waiting')
+                  status.contains('waiting') ||
+                  isFailed(status)
               ? MyColor.pending
-              : isFailed(status)
-                  ? Colors.red
+              :
+              // ? Colors.red
+              // :
+              isRefunded
+                  ? MyColor.purpleColor
                   : MyColor.dark01GreenColor,
           child: status.contains('pending') ||
                   isServices && status == '0' ||
                   status.contains('processing') ||
-                  status.contains('waiting')
+                  status.contains('waiting') ||
+                  isFailed(status)
               ? SvgPicture.asset('assets/images/pending.svg')
               : Icon(
-                  // status != '0' && !status.contains('pending') ||
-                  //         status != '0' && !status.contains('fail') ||
-                  //         status.toString().contains('cancel')
-                  !isFailed(status)
-                      ? Icons.done
-                      : Icons.close,
+                  Icons.done,
                   size: 10,
                   color: Colors.white,
                 ),

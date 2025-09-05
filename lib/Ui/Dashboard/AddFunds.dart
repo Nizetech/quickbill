@@ -354,6 +354,7 @@ class _AddFundsState extends State<AddFunds> {
                                                       } else {
                                                         Get.to(ReceiptScreen(
                                                           status: item.status!,
+                                                          isDeposit: true,
                                                           serviceDetails:
                                                               'Data',
                                                           description:

@@ -619,7 +619,7 @@ class AccountProvider with ChangeNotifier {
       // return;
       AccountRepo().buyAirtime(data).then((value) async {
         hideLoader();
-        if (value['result'] == null || value['result'] == false) {
+        if (value['result'] == null || value['result'] == false || value['result'] == 'failed') {
           if (value['message'].toString().toLowerCase().contains('fail')) {
             Get.to(PendingFailedPurchase(
               isData: true,
@@ -646,19 +646,22 @@ class AccountProvider with ChangeNotifier {
           }
         } else {
           if (value == {} ||
-              value['message'].toString().toLowerCase().contains('pending')) {
+              value['message'].toString().toLowerCase().contains('pending')||
+              value['message'].toString().toLowerCase().contains('failed') ) {
             Get.to(PendingFailedPurchase(
               isData: true,
             ));
-          } else if (value['message']
-              .toString()
-              .toLowerCase()
-              .contains('failed')) {
-            Get.to(PendingFailedPurchase(
-              isData: true,
-              isFailed: true,
-            ));
-          } else {
+          } 
+          // else if (value['message']
+          //     .toString()
+          //     .toLowerCase()
+          //     .contains('failed')) {
+          //   Get.to(PendingFailedPurchase(
+          //     isData: true,
+          //     isFailed: true,
+          //   ));
+          // }
+           else {
             Get.to(BuyDataSuccess(
               isData: false,
               amount: data['amount'],
@@ -683,11 +686,17 @@ class AccountProvider with ChangeNotifier {
       AccountRepo().buyData(data).then((value) async {
         log("Data value:===> $value");
         hideLoader();
-          if (value['result'] == null || value['result'] != true ) {
+          if (value['result'] == null || value['result'] == false) {
           if (value['message'].toString().toLowerCase().contains('failed')) {
-            Get.to(PendingFailedPurchase(
+            // Get.to(PendingFailedPurchase(
+            //   isData: true,
+            //   isFailed: true,
+            // ));
+             Get.to(PendingFailedPurchase(
               isData: true,
-              isFailed: true,
+              plan: plan,
+              phone: data['phone'],
+              amount: amount,
             ));
           }
           if (value['message'].runtimeType == String) {
@@ -704,30 +713,33 @@ class AccountProvider with ChangeNotifier {
           //     isData: true,
           //   ));
           // }
-        } else {
-          if (value =={}||
-            value['result'] == true &&
-              value['message'].toString().toLowerCase().contains('pending')) {
+        } else if (value =={}||
+            value['result'] == 'failed' ||
+              value['message'].toString().toLowerCase().contains('pending') ||
+              value['message'].toString().toLowerCase().contains('fail') ) {
             Get.to(PendingFailedPurchase(
               isData: true,
               plan: plan,
               phone: data['phone'],
               amount: amount,
             ));
-          } else if (value['result'] == true &&
-              value['message'].toString().toLowerCase().contains('fail')) {
-            Get.to(PendingFailedPurchase(
-              isData: true,
-              isFailed: true,
-            ));
-          } else {
+          }
+          //  else if (value['result'] == true &&
+          //     value['message'].toString().toLowerCase().contains('fail')) {
+          //   Get.to(PendingFailedPurchase(
+          //     isData: true,
+          //     isFailed: true,
+          //   ));
+          // }
+           else {
             Get.to(BuyDataSuccess(
               isData: true,
               amount: amount,
               phone: data['phone'],
             ));
           }
-        }
+        // }
+        
         notifyListeners();
       });
     } catch (e) {

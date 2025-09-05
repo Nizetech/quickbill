@@ -103,12 +103,11 @@ class _HelpsupportState extends State<Helpsupport> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
-                                        // Text(
-                                        //     'Average Response Time: 1 business day',
-                                        //     style: MyStyle.tx22Green.copyWith(
-                                        //         color: themedata.tertiary)),
+                                        Text('Customer Support',
+                                            style: MyStyle.tx22Green.copyWith(
+                                                color: themedata.tertiary)),
                                         Text(
-                                            'Average Response Time: 1 business day',
+                                            'AVG.Response time: 2mins',
                                             style: MyStyle.tx12Black.copyWith(
                                                 color: themeProvider
                                                         .isDarkMode()
@@ -170,7 +169,7 @@ class _HelpsupportState extends State<Helpsupport> {
                                     ),
                                     Expanded(
                                       child: const Text(
-                                        'WhatsApp Chat - Usually less than 1 business day',
+                                        'Live chat Faster replies',
                                         style: MyStyle.tx12Green,
                                       ),
                                     ),
@@ -252,7 +251,7 @@ class _HelpsupportState extends State<Helpsupport> {
                               //   height: 20,
                               // ),
                               InkWell(
-                                onTap: () => openWhatsApp('08037878487'),
+                                onTap: () => openWhatsApp('2348037878487'),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -270,22 +269,25 @@ class _HelpsupportState extends State<Helpsupport> {
                                           'assets/images/whatsapp.png'),
                                     ),
                                     const SizedBox(width: 16),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Whatsapp",
-                                          style: MyStyle.tx16Black.copyWith(
-                                              color: themedata.tertiary),
-                                        ),
-                                        const Text(
-                                          'Chat directly with one of our support\nteams, average response within\n5mins.',
-                                          style: MyStyle.tx12Grey,
-                                        )
-                                      ],
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Whatsapp",
+                                            style: MyStyle.tx16Black.copyWith(
+                                                color: themedata.tertiary),
+                                          ),
+                                          const Text(
+                                            "Chat directly with one of our support team. We typically get back within 1 business day,sometimes faster!",
+                                            // 'Chat directly with one of our support\nteams, average response within\n5mins.',
+                                            style: MyStyle.tx12Grey,
+                                          )
+                                        ],
+                                      ),
                                     )
                                   ],
                                 ),

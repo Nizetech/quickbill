@@ -67,7 +67,7 @@ class VirtualNumber extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          'Fidelity',
+                          'Fidelity Bank',
                           style: MyStyle.tx28Black.copyWith(
                               fontSize: 14, color: themedata.tertiary),
                         ),

@@ -228,7 +228,7 @@ class _CardFundSummaryState extends State<CardFundSummary> {
                           ),
                         ),
                         onPressed: () async {
-                          if (model.userModel?.user?.basicVerified == false &&
+                          if (model.userModel?.user?.idVerified == false &&
                               num.parse(widget.amount) > 20000) {
                             ErrorToast(
                                 'You need to verify your account to deposit more than 20,000');

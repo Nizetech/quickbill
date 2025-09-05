@@ -167,6 +167,9 @@ class _DataHistoryState extends State<DataHistory> {
                                               MainAxisAlignment.start,
                                           children: [
                                             Text(
+                                              item.apiStatus == 'refunded'
+                                                  ? "Data | Refunded"
+                                                  :
                                               item.planName!,
                                               maxLines: 1,
                                               // "${item.phone!} - ${item.networkName!}",
@@ -253,6 +256,9 @@ class _DataHistoryState extends State<DataHistory> {
                                                       'No receipt available yet. Your order has not been completed.');
                                                 } else {
                                                   Get.to(ReceiptScreen(
+                                                    isRefunded:
+                                                        item.apiStatus ==
+                                                            'refunded',
                                                     status: item.status!,
                                                     serviceDetails:
                                                         'Data - ${item.phone!}',

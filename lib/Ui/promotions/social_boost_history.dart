@@ -176,7 +176,9 @@ class _SocialBoostHistoryState extends State<SocialBoostHistory> {
                                               MainAxisAlignment.start,
                                           children: [
                                             Text(
-                                              item.serviceName!,
+                                              item.apiStatus == 'refunded'
+                                                  ? 'Social Boost | Refunded'
+                                                  : item.serviceName!,
                                               maxLines: 1,
                                               style: MyStyle.tx12Black.copyWith(
                                                   overflow:
@@ -251,6 +253,9 @@ class _SocialBoostHistoryState extends State<SocialBoostHistory> {
                                                   } else {
                                                     Get.to(ReceiptScreen(
                                                       status: item.status!,
+                                                      isRefunded:
+                                                          item.apiStatus ==
+                                                              'refunded',
                                                       serviceDetails:
                                                           "Social Boost",
                                                       description:

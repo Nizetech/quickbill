@@ -244,6 +244,7 @@ class _BuyElectricityState extends State<BuyElectricity> {
                                         selectedService = provider;
                                         cableMerchant = '';
                                       });
+                                      _controller.clear();
                                       log('selectedService: $selectedService');
                                     },
                                     providers: services,
@@ -589,8 +590,7 @@ class _BuyElectricityState extends State<BuyElectricity> {
                             ),
                             onPressed: () {
                               if (amount.text.isEmpty ||
-                                  phone.text.isEmpty ||
-                                  cableMerchant.isEmpty) {
+                                  phone.text.isEmpty) {
                                 ErrorToast('Please fill all fields');
                               } else {
                                 if (num.parse(amount.text) > model.balance!) {

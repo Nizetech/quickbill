@@ -13,7 +13,6 @@ import 'package:jost_pay_wallet/Ui/Dashboard/AddFunds.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/AlarmScreen.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyAirtime.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/data_history.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/kyc_web.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/banner.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/history_card.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/profile_image.dart';
@@ -93,6 +92,8 @@ class _WalletScreenState extends State<WalletScreen> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     final dashProvider = Provider.of<DashboardProvider>(context, listen: true);
+    final account = context.watch<AccountProvider>();
+    // log('account:==> ${account.userModel?.user?.toJson()}');
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Consumer<AccountProvider>(builder: (context, model, _) {
@@ -179,7 +180,6 @@ class _WalletScreenState extends State<WalletScreen> {
                               children: [
                                 GestureDetector(
                                   onTap: () {
-                                  
                                     dashProvider.changeBottomIndex(9);
                                   },
                                   child: SvgPicture.asset(
@@ -353,16 +353,16 @@ class _WalletScreenState extends State<WalletScreen> {
                                 children: [
                                   InkWell(
                                     onTap: () {
-                                      if (accountProvider
-                                                  .userModel?.user?.createdAt !=
-                                              null &&
-                                          accountProvider
-                                                  .userModel?.user?.isActive ==
-                                              false) {
-                                        Get.to(() => const KycWebview());
-                                      } else {
+                                      // if (accountProvider
+                                      //             .userModel?.user?.createdAt !=
+                                      //         null &&
+                                      //     accountProvider
+                                      //             .userModel?.user?.isActive ==
+                                      //         false) {
+                                      //   Get.to(() => const KycWebview());
+                                      // } else {
                                         Get.to(() => const AddFunds());
-                                      }
+                                      // }
                                     
                                     },
                                     borderRadius: BorderRadius.circular(
@@ -540,14 +540,14 @@ class _WalletScreenState extends State<WalletScreen> {
                     ],
                   ),
                 ),
-                if (accountProvider.userModel?.user?.createdAt != null
+                if (account.userModel?.user?.createdAt != null
                     &&
                     // accountProvider.userModel?.user?.isActive == false ||
-                    accountProvider.userModel?.user?.idVerified == false &&
-                    accountProvider.userModel?.user?.basicVerified == false
+                    account.userModel?.user?.idVerified == false &&
+                    account.userModel?.user?.basicVerified == false
                     )
                   DeleteBanner(
-                    date: accountProvider.userModel!.user!.createdAt!,
+                    date: account.userModel!.user!.createdAt!,
                   )
                 else
                   Visibility(
@@ -591,7 +591,9 @@ class _WalletScreenState extends State<WalletScreen> {
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (context) =>
-                                                            const BuyAirtime())),
+                                                  const BuyAirtime(),
+                                            ),
+                                          ),
                                             child: Container(
                                               width: 61,
                                               height: 56.5,
@@ -609,7 +611,8 @@ class _WalletScreenState extends State<WalletScreen> {
                                                 height: 33.r,
                                                 width: 33.r,
                                               ),
-                                            ))
+                                          ),
+                                        )
                                       ],
                                     ),
                                     const SizedBox(

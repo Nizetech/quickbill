@@ -12,7 +12,8 @@ import 'package:provider/provider.dart';
 
 class ReceiptScreen extends StatefulWidget {
   final String referenceNo, date, serviceDetails, amount, status;
-  final bool isElectricity, isCable;
+  final bool isElectricity, isCable, isRefunded, isDeposit;
+
 
   final String? description;
   const ReceiptScreen({
@@ -25,6 +26,8 @@ class ReceiptScreen extends StatefulWidget {
     required this.amount,
     this.isElectricity = false,
     this.isCable = false,
+    this.isRefunded = false,
+    this.isDeposit = false,
   });
 
   @override
@@ -87,7 +90,12 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("Thank you for your purchase",
+                      Text(
+                          widget.isRefunded
+                              ? "Refund Processed to Wallet"
+                              : widget.isDeposit
+                                  ? "Thank you for your deposit"
+                                  : "Thank you for your purchase",
                           style: MyStyle.tx18Black.copyWith(
                             color: theme.tertiary,
                           )),
@@ -96,6 +104,11 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                     ],
                   ),
                   Text(
+                      widget.isRefunded
+                          ? "Your refund was successful."
+                          : widget.isDeposit
+                              ? "Your deposit was successful"
+                              :
                       widget.status == "1"
                           ? "Your payment was successful"
                           : "Your payment was not successful",
@@ -197,7 +210,8 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 10),
                           child: Text(
-                            widget.serviceDetails,
+                            widget.serviceDetails +
+                                (widget.isRefunded ? " | Refunded" : ""),
                             style: MyStyle.tx14Grey.copyWith(
                               fontSize: 16,
                               color: MyColor.grey,
@@ -325,7 +339,10 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                           )),
                       SizedBox(width: 20),
                       Expanded(
-                        child: Text("From Wallet",
+                        child: Text(
+                            widget.isRefunded || widget.isDeposit
+                                ? "To Wallet"
+                                : "From Wallet",
                             textAlign: TextAlign.end,
                             style: MyStyle.tx18Black.copyWith(
                               fontWeight: FontWeight.w600,

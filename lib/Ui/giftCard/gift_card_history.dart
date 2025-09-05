@@ -169,7 +169,9 @@ class _GiftCardHistoryState extends State<GiftCardHistory> {
                                               MainAxisAlignment.start,
                                           children: [
                                             Text(
-                                              item.giftName!,
+                                              item.reloadlyStatus == 'refunded'
+                                                  ? 'Gift Card | Refunded'
+                                                  : item.giftName!,
                                               maxLines: 1,
                                               style: MyStyle.tx12Black.copyWith(
                                                   overflow:
@@ -227,9 +229,10 @@ class _GiftCardHistoryState extends State<GiftCardHistory> {
                                               isRefunded: item.reloadlyStatus ==
                                                   'refunded',
                                               onTap: () {
-                                                if (item.status != '1' &&
+                                                if (
                                                         item.reloadlyStatus !=
-                                                            'refunded' ||
+                                                        'refunded' &&
+                                                    item.status != '1' &&
                                                     !item.reloadlyStatus!
                                                             .toLowerCase()
                                                             .contains(
@@ -243,7 +246,9 @@ class _GiftCardHistoryState extends State<GiftCardHistory> {
                                                 } else {
                                                   Get.to(ReceiptScreen(
                                                     status: item.status!,
-                                               
+                                                    isRefunded:
+                                                        item.reloadlyStatus ==
+                                                            'refunded',
                                                     serviceDetails:
                                                         item.giftName ?? "",
                                                     description:

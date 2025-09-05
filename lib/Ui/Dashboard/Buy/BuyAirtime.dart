@@ -165,6 +165,9 @@ class _BuyAirtimeState extends State<BuyAirtime> {
                                               MainAxisAlignment.start,
                                           children: [
                                             Text(
+                                              item.apiStatus == 'refunded'
+                                                  ? "Airtime | Refunded"
+                                                  :
                                               "${item.phone!} - ${item.networkName!}",
                                               maxLines: 1,
                                               style: MyStyle.tx12Black.copyWith(
@@ -201,7 +204,7 @@ class _BuyAirtimeState extends State<BuyAirtime> {
                                           ],
                                         ),
                                       ),
-                                      const Spacer(),
+                                      SizedBox(width: 20),
                                       Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.end,
@@ -252,6 +255,9 @@ class _BuyAirtimeState extends State<BuyAirtime> {
                                                       'No receipt available yet. Your order has not been completed.');
                                                 } else {
                                                   Get.to(ReceiptScreen(
+                                                    isRefunded:
+                                                        item.apiStatus ==
+                                                            'refunded',
                                                     status: item.status!,
                                                     serviceDetails: "Airtime",
                                                     description:

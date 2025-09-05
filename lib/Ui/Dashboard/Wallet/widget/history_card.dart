@@ -12,6 +12,7 @@ import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyData.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/receipt_script.dart';
 import 'package:jost_pay_wallet/Ui/Paint/paint_history.dart';
 import 'package:jost_pay_wallet/Ui/Scripts/script_history.dart';
+import 'package:jost_pay_wallet/Ui/cable/cable_electricity_success.dart';
 import 'package:jost_pay_wallet/Ui/cable/cable_history.dart';
 import 'package:jost_pay_wallet/Ui/car/car_history.dart';
 import 'package:jost_pay_wallet/Ui/electricity/electricity_history.dart';
@@ -75,6 +76,7 @@ class HistoryCard extends StatelessWidget {
           .capitalizeFirst!;
       return operator;
     }
+
     String refundedDesc(Datum transaction) {
       if (transaction.type == Type.DATA) {
         return 'Data | Refunded';
@@ -136,36 +138,38 @@ class HistoryCard extends StatelessWidget {
                 Text(
                   transaction.apiStatus == 'refunded'
                       ? refundedDesc(transaction)
-                      :   
-                  transaction.type != null
-                      ? transaction.type == Type.SCRIPT
-                          ? transaction.details!.split(' name: ')[1].toString()
-                          : transaction.type == Type.AUTOREPAIR
-                              ? "AutoRepair - ${transaction.details}"
-                              : transaction.type == Type.SOCIALBOOST
-                                  ? transaction.details!
-                                      .split(' name: ')[1]
-                                      .toString()
-                                  : transaction.type == Type.GIFTCARD
+                      : transaction.type != null
+                          ? transaction.type == Type.SCRIPT
+                              ? transaction.details!
+                                  .split(' name: ')[1]
+                                  .toString()
+                              : transaction.type == Type.AUTOREPAIR
+                                  ? "AutoRepair - ${transaction.details}"
+                                  : transaction.type == Type.SOCIALBOOST
                                       ? transaction.details!
-                                      : transaction.type == Type.MOTORS
+                                          .split(' name: ')[1]
+                                          .toString()
+                                      : transaction.type == Type.GIFTCARD
                                           ? transaction.details!
-                                              .split(' name: ')[1]
-                                              .toString()
-                                          : transaction.type == Type.PAY4_ME
+                                          : transaction.type == Type.MOTORS
                                               ? transaction.details!
-                                                  .split(' link: ')[1]
+                                                  .split(' name: ')[1]
                                                   .toString()
-                                              : (transaction.type ==
-                                                          Type.ELECTRICITY ||
-                                                      transaction.type ==
-                                                          Type.CABLE)
+                                              : transaction.type == Type.PAY4_ME
                                                   ? transaction.details!
-                                                      .split(' ID: ')[1]
+                                                      .split(' link: ')[1]
                                                       .toString()
-                                                  : transaction.type!.name
-                                                      .capitalizeFirst!
-                      : transaction.details!,
+                                                  : (transaction.type ==
+                                                              Type
+                                                                  .ELECTRICITY ||
+                                                          transaction.type ==
+                                                              Type.CABLE)
+                                                      ? transaction.details!
+                                                          .split(' ID: ')[1]
+                                                          .toString()
+                                                      : transaction.type!.name
+                                                          .capitalizeFirst!
+                          : transaction.details!,
                   maxLines: 1,
                   style: MyStyle.tx12Black.copyWith(
                     fontWeight: FontWeight.w400,
@@ -181,10 +185,11 @@ class HistoryCard extends StatelessWidget {
                 Text(
                   transaction.apiStatus == 'refunded'
                       ? refundedDesc(transaction)
-                      :   
-                  transaction.type == Type.DATA
-                      ? transaction.details!.split(' Plan: ')[1].split(',')[1]
-                      : '${getPhone(transaction)} - ${getOperator(transaction).toUpperCase()}',
+                      : transaction.type == Type.DATA
+                          ? transaction.details!
+                              .split(' Plan: ')[1]
+                              .split(',')[1]
+                          : '${getPhone(transaction)} - ${getOperator(transaction).toUpperCase()}',
                   maxLines: 1,
                   style: MyStyle.tx12Black.copyWith(
                       overflow: TextOverflow.ellipsis,
@@ -222,16 +227,16 @@ class HistoryCard extends StatelessWidget {
               //                       : 'assets/images/svg/copy.svg',
               //                 ),
               //               ),
-              //             ), 
+              //             ),
               SizedBox(height: 5.h),
               Text(
                 formatDateTime(transaction.transDate!),
                 style: MyStyle.tx12Black.copyWith(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12.sp,
-                    fontStyle: FontStyle.italic,
-                    color: themeProvider.isDarkMode()
-                        ? const Color(0XFFCBD2EB)
+                  fontWeight: FontWeight.w400,
+                  fontSize: 12.sp,
+                  fontStyle: FontStyle.italic,
+                  color: themeProvider.isDarkMode()
+                      ? const Color(0XFFCBD2EB)
                       : const Color(0xff30333A),
                 ),
               ),
@@ -308,31 +313,31 @@ class HistoryCard extends StatelessWidget {
                           color: Colors.white,
                         ),
                       )
-                    :
-                    //? This is For Pending Transactions
-                    // transaction.apiStatus != null &&
-                    //             transaction.apiStatus!.contains('pending') ||
-                    //         isSpecialTransactionService(transaction) &&
-                    //             transaction.status == '0' ||
-                    //         getStatus(transaction) == MyColor.orange01Color
-                    //? ===>>> END OF PENDING TRANSACTIONS
-                    getStatus(transaction) == MyColor.dark01GreenColor ||
-                                  isSpecialTransactionService(transaction) &&
-                                transaction.status == '1' 
+                    : transaction.apiStatus != null &&
+                                transaction.apiStatus!.contains('pending') ||
+                            isSpecialTransactionService(transaction) &&
+                                transaction.status == '0' ||
+                            getStatus(transaction) == MyColor.orange01Color
                         ? CircleAvatar(
-                            radius: 7,
-                            backgroundColor: getStatus(transaction),
-                            child: Icon(
-                              Icons.done,
-                          size: 10,
-                          color: Colors.white,
-                        ),
-                          )
-                        : CircleAvatar(
                             radius: 7,
                             backgroundColor: MyColor.pending,
                             child:
-                                SvgPicture.asset('assets/images/pending.svg')),
+                                SvgPicture.asset('assets/images/pending.svg'))
+                        : CircleAvatar(
+                            radius: 7,
+                            backgroundColor: getStatus(transaction),
+                            child: Icon(
+                              getStatus(transaction) ==
+                                          MyColor.dark01GreenColor ||
+                                      isSpecialTransactionService(
+                                              transaction) &&
+                                          transaction.status == '1'
+                                  ? Icons.done
+                                  : Icons.close,
+                              size: 10,
+                              color: Colors.white,
+                            ),
+                          ),
                 SizedBox(width: 5.w),
                 GestureDetector(
                   onTap: () {
@@ -341,9 +346,9 @@ class HistoryCard extends StatelessWidget {
                         transaction: transaction,
                         getPhone: getPhone,
                         getOperator: getOperator,
+                        context: context,
                       );
-                    } else
-                    if ((transaction.apiStatus != null &&
+                    } else if ((transaction.apiStatus != null &&
                             transaction.apiStatus!.contains('pending')) ||
                         getStatus(transaction) != MyColor.dark01GreenColor ||
                         transaction.apiStatus!.contains('pending') ||
@@ -365,6 +370,7 @@ class HistoryCard extends StatelessWidget {
                             transaction: transaction,
                             getPhone: getPhone,
                             getOperator: getOperator,
+                            context: context,
                           );
                         });
                       } else {
@@ -372,6 +378,7 @@ class HistoryCard extends StatelessWidget {
                           transaction: transaction,
                           getPhone: getPhone,
                           getOperator: getOperator,
+                          context: context,
                         );
                       }
                     }
@@ -411,10 +418,22 @@ class HistoryCard extends StatelessWidget {
     required Datum transaction,
     required String Function(Datum transaction) getPhone,
     required String Function(Datum transaction) getOperator,
+    required BuildContext context,
   }) {
+    final model = context.read<ServiceProvider>();
+    if (transaction.type == Type.ELECTRICITY) {
+      Get.to(CableElectSuccessScreen(
+        data: model.receiptModel?.info?.toJson() ?? {},
+        isCable: false,
+        amount: transaction.amount!,
+        isTransaction: true,
+      ));
+    } else {
     Get.to(
       ReceiptScreen(
         status: '1',
+          isDeposit: transaction.type == Type.DEPOSIT,
+          isRefunded: transaction.apiStatus == 'refunded',
         isElectricity: transaction.type == Type.ELECTRICITY,
         isCable: transaction.type == Type.CABLE,
         serviceDetails: transaction.type == Type.DATA
@@ -431,7 +450,8 @@ class HistoryCard extends StatelessWidget {
             ? '${getOperator(transaction).toUpperCase()} - ${transaction.type!.name.capitalizeFirst!}'
             : transaction.details!,
         date: transaction.transDate!.toString(),
-      ),
-    );
+        ),
+      );
+    }
   }
 }

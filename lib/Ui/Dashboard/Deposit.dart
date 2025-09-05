@@ -99,9 +99,10 @@ class _DepositState extends State<Deposit> {
                           fee: '0.5375%',
                           onTap: () {
                             if (model.userModel?.user?.idVerified == false) {
+                              Get.to(const KycWebview());
                               ErrorToast(
                                   'You need to verify your account to create a virtual account');
-                              return;
+                              // return;
                             } else {
                               Get.to(
                                 const VirtualAccountCreation(),
@@ -290,6 +291,7 @@ class _DepositState extends State<Deposit> {
   void _showAmountInputDialog(BuildContext context,
       {required bool isCard, required ColorScheme themedata}) {
     final TextEditingController amountController = TextEditingController();
+    final account = Provider.of<AccountProvider>(context, listen: false);
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -309,17 +311,22 @@ class _DepositState extends State<Deposit> {
               text: 'Confirm',
               onTap: () {
                 final amount = double.tryParse(amountController.text);
-                if (amount != null && amount > 0) {
+                if (amount == null || amount < 0) {
+                  Navigator.of(context).pop();
+                  ErrorToast('Please enter a valid amount');
+                  return;
+                }
+                if (account.userModel?.user?.idVerified == false &&
+                    amount > 20000) {
+                  Navigator.of(context).pop();
+                  ErrorToast(
+                      "You must complete full verification on your account before you can deposit more than 20,000 NGN.");
+                  return;
+                } else {
                   Navigator.of(context).pop();
                   Get.to(CardFundSummary(
                       amount: amount.toString(), isCard: isCard));
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Please enter a valid amount'),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
+                
                 }
               },
             ),

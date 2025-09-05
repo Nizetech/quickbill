@@ -35,26 +35,34 @@ class StatusViewReceipt extends StatelessWidget {
         CircleAvatar(
           radius: 7,
           backgroundColor:
+          isRefunded
+              ? MyColor.purpleColor
+              :
               status.contains('pending') ||
                   isServices && status == '0' ||
                   status.contains('processing') ||
-                  status.contains('waiting') ||
-                  isFailed(status)
+                      status.contains('waiting')
               ? MyColor.pending
-              :
-              // ? Colors.red
-              // :
-              isRefunded
-                  ? MyColor.purpleColor
+                  : isFailed(status)
+                      ? Colors.red
+                  
                   : MyColor.dark01GreenColor,
-          child: status.contains('pending') ||
+          child: isRefunded
+              ? Icon(
+                  Icons.done,
+                  size: 10,
+                  color: Colors.white,
+                )
+              : status.contains('pending') ||
                   isServices && status == '0' ||
                   status.contains('processing') ||
-                  status.contains('waiting') ||
-                  isFailed(status)
+                      status.contains('waiting')
               ? SvgPicture.asset('assets/images/pending.svg')
               : Icon(
-                  Icons.done,
+                 
+                      !isFailed(status) || isRefunded
+                          ? Icons.done
+                          : Icons.close,
                   size: 10,
                   color: Colors.white,
                 ),

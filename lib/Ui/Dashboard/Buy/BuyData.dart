@@ -338,6 +338,24 @@ class _BuyDataState extends State<BuyData> {
                                     value: e,
                                     onTap: () {
                                       _controller.text = e.phone ?? '';
+                                      setState(() {
+                                        selectedNetwork = model
+                                            .networkProviderModel!.networks!
+                                            .firstWhere(
+                                          (element) =>
+                                              element.network == e.networkName,
+                                        );
+                                        selectedItem = model
+                                            .networkProviderModel!.networks!
+                                            .indexWhere(
+                                          (element) =>
+                                              element.network == e.networkName,
+                                        );
+                                      });
+                                      ctrl.getDataPlans(
+                                          network: model.networkProviderModel!
+                                              .networks![selectedItem].network!
+                                              .toLowerCase());
                                     },
                                     child: Row(
                                       mainAxisAlignment:

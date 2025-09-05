@@ -406,7 +406,7 @@ class _RepairScreenState extends State<RepairScreen> {
                                           text: e['title'],
                                           style: MyStyle.tx14Black.copyWith(
                                             fontFamily: 'SF Pro Rounded',
-                                            color: MyColor.blackColor,
+                                            color: themedata.tertiary,
                                             fontWeight: FontWeight.w600,
                                           ),
                                           children: [
@@ -493,7 +493,7 @@ class _RepairScreenState extends State<RepairScreen> {
                                             text: e['title'],
                                             style: MyStyle.tx14Black.copyWith(
                                               fontFamily: 'SF Pro Rounded',
-                                              color: MyColor.blackColor,
+                                              color: themedata.tertiary,
                                               fontWeight: FontWeight.w600,
                                             ),
                                             children: [

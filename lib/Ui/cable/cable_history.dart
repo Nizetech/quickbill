@@ -171,6 +171,9 @@ class _CableHistoryState extends State<CableHistory> {
                                               MainAxisAlignment.start,
                                           children: [
                                             Text(
+                                              item.apiStatus == 'refunded'
+                                                  ? "Cable | Refunded"
+                                                  :
                                               item.networkName
                                                       ?.capitalizeFirst ??
                                                   "",
@@ -229,11 +232,12 @@ class _CableHistoryState extends State<CableHistory> {
                                               status: item.status!,
                                               isServices:
                                                   item.apiStatus == 'refunded',
-                                              isRefunded: false,
+                                              isRefunded:
+                                                  item.apiStatus == 'refunded',
                                               onTap: () {
-                                                if (item.status != '1' &&
-                                                        item.apiStatus !=
-                                                            'refunded' ||
+                                                if (item.apiStatus !=
+                                                        'refunded' &&
+                                                    item.status != '1' &&
                                                     !item.apiStatus!
                                                             .toLowerCase()
                                                             .contains(
@@ -246,6 +250,9 @@ class _CableHistoryState extends State<CableHistory> {
                                                       'No receipt available yet. Your order has not been completed.');
                                                 } else {
                                                   Get.to(ReceiptScreen(
+                                                    isRefunded:
+                                                        item.apiStatus ==
+                                                            'refunded',
                                                     status: item.status!,
                                                     serviceDetails:
                                                         item.package ?? "",

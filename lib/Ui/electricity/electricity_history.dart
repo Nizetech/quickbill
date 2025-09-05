@@ -7,6 +7,7 @@ import 'package:jost_pay_wallet/Provider/service_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/widget/balance_action_card.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/receipt_script.dart';
+import 'package:jost_pay_wallet/Ui/cable/cable_electricity_success.dart';
 import 'package:jost_pay_wallet/Ui/electricity/buy_electricity.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
@@ -136,13 +137,15 @@ class _ElectricityHistoryState extends State<ElectricityHistory> {
                                 .electricityHistoryModel!.transactions![index];
                             return Container(
                               decoration: BoxDecoration(
-                                  border: Border(
-                                      bottom: BorderSide(
-                                width: 0.4,
-                                color: themeProvider.isDarkMode()
-                                    ? MyColor.borderDarkColor
-                                    : MyColor.borderColor,
-                              ))),
+                                border: Border(
+                                  bottom: BorderSide(
+                                    width: 0.4,
+                                    color: themeProvider.isDarkMode()
+                                        ? MyColor.borderDarkColor
+                                        : MyColor.borderColor,
+                                  ),
+                                ),
+                              ),
                               child: Column(
                                 children: [
                                   const SizedBox(
@@ -173,8 +176,11 @@ class _ElectricityHistoryState extends State<ElectricityHistory> {
                                               MainAxisAlignment.start,
                                           children: [
                                             Text(
-                                              item.discoName?.capitalizeFirst ??
-                                                  "",
+                                              item.apiStatus == 'refunded'
+                                                  ? "Electricity | Refunded"
+                                                  : item.discoName
+                                                          ?.capitalizeFirst ??
+                                                      "",
                                               maxLines: 1,
                                               style: MyStyle.tx12Black.copyWith(
                                                   overflow:
@@ -232,27 +238,13 @@ class _ElectricityHistoryState extends State<ElectricityHistory> {
                                               isRefunded:
                                                   item.apiStatus == 'refunded',
                                               onTap: () {
-                                                if (item.status != '1' &&
-                                                        item.apiStatus !=
-                                                            'refunded' ||
-                                                    !item.apiStatus!
-                                                            .toLowerCase()
-                                                            .contains(
-                                                                'complete') &&
-                                                        !item.apiStatus!
-                                                            .toLowerCase()
-                                                            .contains(
-                                                                'success')) {
-                                                  ErrorToast(
-                                                      'No receipt available yet. Your order has not been completed.');
-                                                } else {
-                                                  model.getReceipt({
-                                                    'id': item.id,
-                                                    'type': 'electricity',
-                                                  }, callback: () {
-                                                  
+                                                if (item.apiStatus ==
+                                                    'refunded') {
                                                   Get.to(ReceiptScreen(
-                                                      isElectricity: true,
+                                                    isElectricity: true,
+                                                    isRefunded:
+                                                        item.apiStatus ==
+                                                            'refunded',
                                                     status: item.status!,
                                                     serviceDetails: item
                                                             .discoName
@@ -265,6 +257,32 @@ class _ElectricityHistoryState extends State<ElectricityHistory> {
                                                     amount: item.amount!,
                                                     date: item.updatedAt!,
                                                   ));
+                                                } else if (item.apiStatus !=
+                                                        'refunded' &&
+                                                    item.status != '1' &&
+                                                    !item.apiStatus!
+                                                        .toLowerCase()
+                                                        .contains('complete') &&
+                                                    !item.apiStatus!
+                                                        .toLowerCase()
+                                                        .contains('success')) {
+                                                  ErrorToast(
+                                                      'No receipt available yet. Your order has not been completed.');
+                                                } else {
+                                                  model.getReceipt({
+                                                    'id': item.id,
+                                                    'type': 'electricity',
+                                                  }, callback: () {
+                                                    Get.to(
+                                                        CableElectSuccessScreen(
+                                                      data: model.receiptModel
+                                                              ?.info
+                                                              ?.toJson() ??
+                                                          {},
+                                                      isCable: false,
+                                                      amount: item.amount!,
+                                                      isTransaction: true,
+                                                    ));
                                                   });
                                                 }
                                               },

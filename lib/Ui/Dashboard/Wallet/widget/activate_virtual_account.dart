@@ -1,7 +1,9 @@
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/kyc_web.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/virtual_account_creation.dart';
 import 'package:jost_pay_wallet/Ui/kyc/widget/info_wrap.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
@@ -65,10 +67,14 @@ class ActivateVirtualAccount extends StatelessWidget {
                         width: Get.width * 0.5,
                         child: CustomButton(
                           onTap: () {
+                            // log('model.userModel?.user?.idVerified:==> ${model.userModel?.user?.idVerified}');
+                            // return;
                             if (model.userModel?.user?.idVerified == false) {
+                              Get.to(const KycWebview());
                               ErrorToast(
-                                  'You need to verify your account to create a virtual account');
-                              return;
+                                "You must complete full verification on your account before you can create a virtual account.",
+                              );
+                           
                             } else {
                               Get.to(const VirtualAccountCreation());
                             }
@@ -85,7 +91,6 @@ class ActivateVirtualAccount extends StatelessWidget {
           ],
         ),
       );
-    }
-    );
+    });
   }
 }

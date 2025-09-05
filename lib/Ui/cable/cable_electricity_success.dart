@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -24,6 +23,7 @@ class CableElectricitySuccessScreen extends StatefulWidget {
   final Map<String, dynamic>? data;
   final bool isShowmax;
   final String amount;
+  final bool isTransaction;
   const CableElectricitySuccessScreen({
     super.key,
     this.isCable = true,
@@ -31,6 +31,7 @@ class CableElectricitySuccessScreen extends StatefulWidget {
     this.data,
     this.isShowmax = false,
     required this.amount,
+    this.isTransaction = false,
   });
 
   @override
@@ -42,7 +43,7 @@ class _CableElectricitySuccessScreenState
     extends State<CableElectricitySuccessScreen> {
   @override
   Widget build(BuildContext context) {
-    log('widget.data:==> ${widget.data} =>${widget.isShowmax}');
+    // log('widget.data:==> ${widget.data} =>${widget.isShowmax}');
     final model = Provider.of<ServiceProvider>(context, listen: false);
     return widget.isPending || widget.data?.isEmpty == true
         ? PendingScreen(
@@ -53,11 +54,12 @@ class _CableElectricitySuccessScreenState
               if (widget.isCable) {
                 model.getCableTransactions(
                     isLoading: false, account: context.read<AccountProvider>());
+                Get.close(3);
               } else {
                 model.getElectricityTransactions(
                     isLoading: false, account: context.read<AccountProvider>());
-              }
               Get.close(3);
+              }
             },
          
           )
@@ -66,22 +68,28 @@ class _CableElectricitySuccessScreenState
                 data: widget.data ?? {},
                 isCable: widget.isShowmax,
                 amount: widget.amount,
+                isTransaction: widget.isTransaction,
               )
             : SuccessScreen(
                 title: "Cable subscription placed successfully",
                 subtitle:
                     "Cable subscriptions are usually completed within minutes to hours.",
                 onTap: () {
+                  if (widget.isTransaction) {
+                    Get.back();
+                  } else 
                   if (widget.isCable) {
                     model.getCableTransactions(
                         isLoading: false,
                         account: context.read<AccountProvider>());
+                    Get.close(3);
                   } else {
                     model.getElectricityTransactions(
                         isLoading: false,
                         account: context.read<AccountProvider>());
-                  }
                   Get.close(3);
+                  }
+                  
                 },
               );
   }
@@ -91,11 +99,13 @@ class CableElectSuccessScreen extends StatelessWidget {
   final Map<String, dynamic> data;
   final bool isCable;
   final String amount;
+  final bool isTransaction;
   const CableElectSuccessScreen({
     super.key,
     required this.data,
     required this.isCable,
     required this.amount,
+    this.isTransaction = false,
   });
 
   @override
@@ -103,13 +113,20 @@ class CableElectSuccessScreen extends StatelessWidget {
     final model = Provider.of<ServiceProvider>(context, listen: false);
     final themedata = Theme.of(context).colorScheme;
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
+    // log('Success data:==> ${data}');
     return data.isEmpty
         ? PendingScreen(
             title: "Cable subscription is being processed please wait ",
             onTap: () {
-              model.getCableTransactions(
-                  isLoading: false, account: context.read<AccountProvider>());
+              if (isCable) {
+                model.getCableTransactions(
+                    isLoading: false, account: context.read<AccountProvider>());
+              } else {
+                model.getElectricityTransactions(
+                    isLoading: false, account: context.read<AccountProvider>());
+              }
               Get.close(3);
+                        
             },
           )
         : Scaffold(
@@ -160,12 +177,17 @@ class CableElectSuccessScreen extends StatelessWidget {
                           Text(
                             isCable
                                 ? data['purchased_code']
-                                : data['data']['token'].split(': ')[1],
+                                      : data['token'] ??
+                                          data['data']?['Token'] ??
+                                          data['data']?['mainToken'] ??
+                                          data['data']?['token'] ??
+                                          'N/A',
+                                
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
                               color: MyColor.greenColor,
-                            ),
+                                  ),  
                           ),
                           SizedBox(
                             width: 10,
@@ -173,8 +195,12 @@ class CableElectSuccessScreen extends StatelessWidget {
                           GestureDetector(
                             onTap: () {
                               Clipboard.setData(ClipboardData(
-                                        text: data['data']['token']
-                                            .split(': ')[1],
+                                          text: data['token'] ??
+                                              data['data']?['Token'] ??
+                                              data['data']?['token'] ??
+                                              data['data']?['mainToken'] ??
+                                              'N/A'
+
                                       ),
                                     );
                               Fluttertoast.showToast(
@@ -207,52 +233,86 @@ class CableElectSuccessScreen extends StatelessWidget {
               _buildInfo(
                   title: 'Reference ID',
                   value:
-                      isCable ? data['requestId'] : data['data']['requestId'],
+                      isCable
+                            ? data['requestId']
+                            : data['reference'] ??
+                                data['data']?['requestId'] ??
+                                data['data']?['requestid'] ??
+                                'N/A',
                   themedata: themedata),
               _buildInfo(
                   title: 'Transaction Date',
                   value: formatDateTime(DateTime.parse(isCable
                       ? data['transaction_date']
-                      : data['data']['transaction_date'])),
+                            : data['created_at'] ??
+                                data['data']?['transaction_date'])),
                   themedata: themedata),
               _buildInfo(
                   title: 'Amount',
                   value:
-                            "${Utils.naira} ${formatNumber(num.parse(amount))}",
+                            "${Utils.naira} ${formatNumber(num.parse(data['amount'] ?? amount))}",
                   themedata: themedata),
               if (!isCable) ...[
                 _buildInfo(
                     title: 'Units',
-                    value: data['data']['units'],
+                          value: data['unit'] ??
+                              data['data']?['Units'] ??
+                              data['data']?['mainTokenUnits'] ??
+                              data['data']?['units'] ??
+                              'N/A',
                     themedata: themedata),
                 _buildInfo(
-                    title: 'Tarrif',
-                    value: data['data']['tariff'],
+                          title: isTransaction ? "Meter No:" : 'Tarrif',
+                          value: isTransaction
+                              ? data['title'].toString().split(' /')[1]
+                              : data['data']?['Tariff'] ??
+                                  data['data']?['tariff'] ??
+                                  'N/A',
                     themedata: themedata),
                 _buildInfo(
                     title: 'Customer Address',
-                    value: data['data']['customerAddress'],
+                          value: data['data']?['CustomerAddress'] ??
+                              data['data']?['customerAddress'] ??
+                              data['data']?['customerAddress'] ??
+                              'N/A',
                     themedata: themedata),
-                _buildInfo(
-                    title: 'Exchange Reference',
-                    value: data['data']['exchangeReference'],
-                    themedata: themedata),
-                _buildInfo(
-                    title: 'Main Token Units',
-                    value: data['data']['units'],
-                    themedata: themedata),
+                      // _buildInfo(
+                      //           title: !isTransaction
+                      //               ? 'Exchange Reference'
+                      //               : 'Meter No:',
+                      //           value: isTransaction
+                      //               ? data['title'].toString().split(' /')[1]
+                      //               : data['data']?['ExchangeReference'] ??
+                      //                   data['data']?['exchangeReference'] ??
+                      //                   data['data']?['exchangeReference'] ??
+                      //                   'N/A',
+                      // themedata: themedata),
+                      // _buildInfo(
+                      //     title: 'Main Token Units',
+                      //           value: data['unit'] ??
+                      //               data['data']?['Units'] ??
+                      //               data['data']?['units'] ??
+                      //               data['data']?['unit'] ??
+                      //               'N/A',
+                      //     themedata: themedata),
                 _buildInfo(
                     title: 'Product Name',
-                    value: data['data']['content']['transactions']
-                        ['product_name'],
+                          value: data['title'] != null
+                              ? data['title'].toString().split(' /')[0]
+                              : data['data']?['content']?['transactions']
+                                      ?['product_name'] ??
+                                  data['data']?['content']?['transactions']
+                                      ?['product_name'] ??
+                                  'N/A',
+
                     themedata: themedata),
                 _buildInfo(
                     title: 'KCT1',
-                    value: data['data']['kct1'] ?? 'N/A',
+                          value: data['data']?['kct1'] ?? 'N/A',
                     themedata: themedata),
                 _buildInfo(
                     title: 'KCT2',
-                    value: data['data']['kct2'] ?? 'N/A',
+                          value: data['data']?['kct2'] ?? 'N/A',
                     themedata: themedata),
               ],
                     SizedBox(height: 20),
@@ -270,6 +330,9 @@ class CableElectSuccessScreen extends StatelessWidget {
               CustomButton(
                 text: 'Buy More',
                 onTap: () {
+                        if (isTransaction) {
+                          Get.back();
+                        } else {
                   if (isCable) {
                     model.getCableTransactions(
                         isLoading: false,
@@ -278,8 +341,9 @@ class CableElectSuccessScreen extends StatelessWidget {
                     model.getElectricityTransactions(
                         isLoading: false,
                         account: context.read<AccountProvider>());
-                  }
-                  Get.close(3);
+                          }
+                          Get.close(3);
+                        }
                 },
               ),
               SizedBox(height: 30),
@@ -308,13 +372,16 @@ class CableElectSuccessScreen extends StatelessWidget {
             ),
           ),
           SizedBox(width: 30),
-          Text(
-            value,
-            maxLines: 1,
-            style: MyStyle.tx12Black.copyWith(
-              fontWeight: FontWeight.w400,
-              color: themedata.tertiary,
-              overflow: TextOverflow.ellipsis,
+          Expanded(
+            child: Text(
+              value,
+              maxLines: 1,
+              textAlign: TextAlign.end,
+              style: MyStyle.tx12Black.copyWith(
+                fontWeight: FontWeight.w400,
+                color: themedata.tertiary,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
           ),
         ],

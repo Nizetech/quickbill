@@ -112,7 +112,6 @@ class _ServicesState extends State<Services> {
                       const SizedBox(
                         height: 24,
                       ),
-
                       SizedBox(
                         width: double.infinity, // Full width of the screen
                         height: 4, // Adjust height as needed

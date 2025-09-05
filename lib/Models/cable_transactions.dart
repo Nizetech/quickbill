@@ -12,20 +12,20 @@ String cableTransactionModelToJson(CableTransactionModel data) =>
 
 class CableTransactionModel {
   String? fromDate;
-  ToDate? toDate;
+  // ToDate? toDate;
   List<Transaction>? transactions;
 
   CableTransactionModel({
     this.fromDate,
-    this.toDate,
+    // this.toDate,
     this.transactions,
   });
 
   factory CableTransactionModel.fromJson(Map<String, dynamic> json) =>
       CableTransactionModel(
         fromDate: json["from_date"],
-        toDate:
-            json["to_date"] == null ? null : ToDate.fromJson(json["to_date"]),
+        // toDate:
+        //     json["to_date"] == null ? null : ToDate.fromJson(json["to_date"]),
         transactions: json["transactions"] == null
             ? []
             : List<Transaction>.from(
@@ -34,7 +34,7 @@ class CableTransactionModel {
 
   Map<String, dynamic> toJson() => {
         "from_date": fromDate,
-        "to_date": toDate?.toJson(),
+        // "to_date": toDate?.toJson(),
         "transactions": transactions == null
             ? []
             : List<dynamic>.from(transactions!.map((x) => x.toJson())),

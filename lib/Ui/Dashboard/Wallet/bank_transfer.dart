@@ -352,7 +352,7 @@ class _BankTransferScreenState extends State<BankTransferScreen> {
                         request_ref: '$ref',
                         request_type: 'collect',
                         auth: null,
-                        api_key: '${onepipeApiKey}', // Replace with actual API key
+                        api_key: '$onepipeApiKey', // Replace with actual API key
                         transaction: {
                             amount: $amt * 100, // Convert to kobo (smallest currency unit)
                             transaction_ref: '$ref',

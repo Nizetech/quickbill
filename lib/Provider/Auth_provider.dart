@@ -291,7 +291,7 @@ class AuthProvider with ChangeNotifier {
               is2fa: is2fa,
               isEnable2fa: isEnable2fa)
           .then((value) async {
-        log('Login Data:==> ${value}');
+        log('Login Data:==> $value');
         // setLoading(false);
         hideLoader();
         if (value.isEmpty) return false;

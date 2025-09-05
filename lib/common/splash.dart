@@ -9,6 +9,8 @@ import 'package:jost_pay_wallet/bottom_nav.dart';
 import 'package:jost_pay_wallet/constants/constants.dart';
 
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }

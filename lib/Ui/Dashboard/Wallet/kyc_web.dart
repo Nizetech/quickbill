@@ -94,6 +94,7 @@ class _KycWebviewState extends State<KycWebview> {
                 } else {
                   log('error');
                 }
+                return null;
               },
               onPermissionRequest: (controller, request) async {
                 log('permission request: ${request.resources}');

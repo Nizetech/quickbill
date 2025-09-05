@@ -566,7 +566,7 @@ class _BuyElectricityState extends State<BuyElectricity> {
                               scale: 0.8,
                               child: CupertinoSwitch(
                                 value: saveDetails,
-                                activeColor: MyColor.greenColor,
+                                activeTrackColor: MyColor.greenColor,
                                 onChanged: (value) {
                                   setState(() {
                                     saveDetails = value;

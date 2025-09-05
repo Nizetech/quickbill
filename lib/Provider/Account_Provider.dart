@@ -73,7 +73,7 @@ class AccountProvider with ChangeNotifier {
 
   void addKycData(Map<String, dynamic> data) {
     kycData.addAll(data);
-    log('kycData:==> ${kycData}');
+    log('kycData:==> $kycData');
     notifyListeners();
   }
 

@@ -437,7 +437,7 @@ class _BuyDataState extends State<BuyData> {
                               scale: 0.8,
                               child: CupertinoSwitch(
                                 value: saveDetails,
-                                activeColor: MyColor.greenColor,
+                                activeTrackColor: MyColor.greenColor,
                                 onChanged: (value) {
                                   setState(() {
                                     saveDetails = value;

@@ -75,10 +75,10 @@ class _CaptureImageState extends State<CaptureImage> {
 
   // @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    final CameraController? cameraController = _cameraController;
+    final CameraController cameraController = _cameraController;
 
     // App state changed before we got the chance to initialize.
-    if (cameraController == null || !cameraController.value.isInitialized) {
+    if (!cameraController.value.isInitialized) {
       return;
     }
 

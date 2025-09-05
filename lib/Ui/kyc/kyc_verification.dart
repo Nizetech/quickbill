@@ -9,7 +9,6 @@ import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/common/button.dart';
 import 'package:provider/provider.dart';
 
-import 'start_face_detection.dart';
 
 class KycVerification extends StatefulWidget {
   const KycVerification({super.key});

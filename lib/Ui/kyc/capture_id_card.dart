@@ -61,12 +61,12 @@ class _CaptureIdCardState extends State<CaptureIdCard> {
     final CameraController? cameraController = _cameraController;
 
     // App state changed before we got the chance to initialize.
-    if (cameraController == null || !cameraController!.value.isInitialized) {
+    if (cameraController == null || !cameraController.value.isInitialized) {
       return;
     }
 
     if (state == AppLifecycleState.inactive) {
-      cameraController!.dispose();
+      cameraController.dispose();
     } else if (state == AppLifecycleState.resumed) {
       _initializeCameraController();
     }
@@ -152,7 +152,7 @@ class _CaptureIdCardState extends State<CaptureIdCard> {
                   children: [
                     Stack(
                       children: [
-                        Container(
+                        SizedBox(
                           height: 242,
                           width: 350,
                           child: ClipRRect(

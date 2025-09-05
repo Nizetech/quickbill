@@ -39,12 +39,12 @@ class GlassWrap extends StatelessWidget {
                 )
               : null,
       child: GlassContainer(
-        child: child,
         border: 0,
         width: width,
         height: height,
         blur: blur,
         borderRadius: BorderRadius.circular(radius ?? 10),
+        child: child,
       ),
     );
   }

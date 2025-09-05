@@ -207,7 +207,7 @@ class _DepositState extends State<Deposit> {
                   ),
                 ),
               Text(
-                '${fee} deposit fee included',
+                '$fee deposit fee included',
                 style: MyStyle.tx12Black.copyWith(
                   color: MyColor.grey03Color,
                   fontWeight: FontWeight.w400,

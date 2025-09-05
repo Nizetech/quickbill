@@ -1,6 +1,6 @@
 class ApiRoute {
-  static String baseUrl = 'https://project.jostpay.com/apis/';
-  // static String baseUrl = 'https://jostpay.com/apis/';
+  // static String baseUrl = 'https://project.jostpay.com/apis/';
+  static String baseUrl = 'https://jostpay.com/apis/';
 
   //Auth
   static String signup = 'signup';

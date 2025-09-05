@@ -177,10 +177,11 @@ class CableElectSuccessScreen extends StatelessWidget {
                           Text(
                             isCable
                                 ? data['purchased_code']
-                                      : data['token'] ??
-                                          data['data']?['Token'] ??
-                                          data['data']?['mainToken'] ??
-                                          data['data']?['token'] ??
+                                      : data['token']?.toString() ??
+                                          data['data']?['Token']?.toString() ??
+                                          data['data']?['mainToken']
+                                              ?.toString() ??
+                                          data['data']?['token']?.toString() ??
                                           'N/A',
                                 
                             style: TextStyle(
@@ -195,10 +196,13 @@ class CableElectSuccessScreen extends StatelessWidget {
                           GestureDetector(
                             onTap: () {
                               Clipboard.setData(ClipboardData(
-                                          text: data['token'] ??
-                                              data['data']?['Token'] ??
-                                              data['data']?['token'] ??
-                                              data['data']?['mainToken'] ??
+                                          text: data['token']?.toString() ??
+                                              data['data']?['Token']
+                                                  ?.toString() ??
+                                              data['data']?['token']
+                                                  ?.toString() ??
+                                              data['data']?['mainToken']
+                                                  ?.toString() ??
                                               'N/A'
 
                                       ),
@@ -234,10 +238,10 @@ class CableElectSuccessScreen extends StatelessWidget {
                   title: 'Reference ID',
                   value:
                       isCable
-                            ? data['requestId']
-                            : data['reference'] ??
-                                data['data']?['requestId'] ??
-                                data['data']?['requestid'] ??
+                            ? data['requestId'] 
+                            : data['reference']?.toString() ??
+                                data['data']?['requestId']?.toString() ??
+                                data['data']?['requestid']?.toString() ??
                                 'N/A',
                   themedata: themedata),
               _buildInfo(
@@ -256,9 +260,9 @@ class CableElectSuccessScreen extends StatelessWidget {
                 _buildInfo(
                     title: 'Units',
                           value: data['unit'] ??
-                              data['data']?['Units'] ??
-                              data['data']?['mainTokenUnits'] ??
-                              data['data']?['units'] ??
+                              data['data']?['Units']?.toString() ??
+                              data['data']?['mainTokenUnits']?.toString() ??
+                              data['data']?['units']?.toString() ??
                               'N/A',
                     themedata: themedata),
                 _buildInfo(

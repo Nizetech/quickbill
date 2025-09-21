@@ -26,6 +26,7 @@ import 'package:jost_pay_wallet/Ui/Authentication/SignInScreen.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyDataSuccess.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/pending_purchase.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/payment_details.dart';
+import 'package:jost_pay_wallet/common/verifying_screen.dart';
 import 'package:jost_pay_wallet/constants/constants.dart';
 import 'package:jost_pay_wallet/service/account_repo.dart';
 import 'package:jost_pay_wallet/utils/loader.dart';
@@ -633,14 +634,15 @@ class AccountProvider with ChangeNotifier {
   // buy Airtime
   Future<void> buyAirtime(Map<String, dynamic> data) async {
     try {
-      showLoader();
+      Get.to(const VerifyingScreen());
+      // showLoader();
       AccountRepo().buyAirtime(data).then((value) async {
-        hideLoader();
+        // hideLoader();
         if (value['result'] == null || value['result'] == false || value['result'] == 'failed') {
           if (value['message'].toString().toLowerCase().contains('fail')) {
-            Get.to(PendingFailedPurchase(
+            Get.off(PendingFailedPurchase(
               isData: true,
-              isFailed: true,
+              // isFailed: true,
             ));
           }
           // else {
@@ -665,7 +667,7 @@ class AccountProvider with ChangeNotifier {
           if (value == {} ||
               value['message'].toString().toLowerCase().contains('pending')||
               value['message'].toString().toLowerCase().contains('failed') ) {
-            Get.to(PendingFailedPurchase(
+            Get.off(PendingFailedPurchase(
               isData: true,
             ));
           } 
@@ -679,7 +681,7 @@ class AccountProvider with ChangeNotifier {
           //   ));
           // }
            else {
-            Get.to(BuyDataSuccess(
+            Get.off(BuyDataSuccess(
               isData: false,
               amount: data['amount'],
               phone: data['phone'],
@@ -690,7 +692,7 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      hideLoader();
+      // hideLoader();
       ErrorToast(e.toString());
     } 
   }
@@ -699,16 +701,17 @@ class AccountProvider with ChangeNotifier {
   Future<void> buyData(Map<String, dynamic> data,
       {required String amount, required String plan}) async {
     try {
-      showLoader();
+      // showLoader();  
+       Get.to(const VerifyingScreen());
       AccountRepo().buyData(data).then((value) async {
-        hideLoader();
+        // hideLoader();
           if (value['result'] == null || value['result'] == false) {
           if (value['message'].toString().toLowerCase().contains('failed')) {
             // Get.to(PendingFailedPurchase(
             //   isData: true,
             //   isFailed: true,
             // ));
-             Get.to(PendingFailedPurchase(
+             Get.off(PendingFailedPurchase(
               isData: true,
               plan: plan,
               phone: data['phone'],
@@ -733,7 +736,7 @@ class AccountProvider with ChangeNotifier {
             value['result'] == 'failed' ||
               value['message'].toString().toLowerCase().contains('pending') ||
               value['message'].toString().toLowerCase().contains('fail') ) {
-            Get.to(PendingFailedPurchase(
+            Get.off(PendingFailedPurchase(
               isData: true,
               plan: plan,
               phone: data['phone'],
@@ -748,7 +751,7 @@ class AccountProvider with ChangeNotifier {
           //   ));
           // }
            else {
-            Get.to(BuyDataSuccess(
+            Get.off(BuyDataSuccess(
               isData: true,
               amount: amount,
               phone: data['phone'],

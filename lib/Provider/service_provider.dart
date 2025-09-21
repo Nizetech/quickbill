@@ -36,6 +36,7 @@ import 'package:jost_pay_wallet/Ui/giftCard/cards_option_screen.dart';
 import 'package:jost_pay_wallet/Ui/pay4me/pay4me_success_screen.dart';
 import 'package:jost_pay_wallet/Ui/promotions/social_boost.dart';
 import 'package:jost_pay_wallet/Ui/promotions/social_success_screen.dart';
+import 'package:jost_pay_wallet/common/verifying_screen.dart';
 import 'package:jost_pay_wallet/service/seervice_repo.dart';
 import 'package:jost_pay_wallet/utils/loader.dart';
 import 'package:jost_pay_wallet/utils/toast.dart';
@@ -725,10 +726,12 @@ class ServiceProvider with ChangeNotifier {
     bool isShowmax = false,
   }) async {
     try {
-      showLoader();
+      // showLoader();
+      Get.to(const VerifyingScreen());
+
       var res = await ServiceRepo().buyCable(data);
       if (res['status'] == false || res['result'] == false) {
-        hideLoader();
+        // hideLoader();
         if (res['message'].runtimeType == String) {
           ErrorToast(res['message']);
         } else {
@@ -740,12 +743,12 @@ class ServiceProvider with ChangeNotifier {
         }
         return;
       } else if (res['result'] == 'failed') {
-        hideLoader();
+        // hideLoader();
         ErrorToast(res['message']);
         return;
       } else if (res['result'] == 'pending' || res == {}) {
-        hideLoader();
-        Get.to(CableElectricitySuccessScreen(
+        // hideLoader();
+        Get.off(CableElectricitySuccessScreen(
           isCable: true,
           isPending: true,
           isShowmax: isShowmax,
@@ -753,8 +756,8 @@ class ServiceProvider with ChangeNotifier {
         ));
         notifyListeners();
       } else {
-        hideLoader();
-        Get.to(CableElectricitySuccessScreen(
+        // hideLoader();
+        Get.off(CableElectricitySuccessScreen(
           isCable: true,
           isShowmax: isShowmax,
           amount: data['amount'], 
@@ -764,17 +767,19 @@ class ServiceProvider with ChangeNotifier {
       }
     } catch (e) {
       print('Error: $e');
-      hideLoader();
+      // hideLoader();
       ErrorToast(e.toString());
     } 
   }
 
   Future<void> buyElectricity(Map<String, dynamic> data) async {
     try {
-      showLoader();
+      // showLoader();
+      Get.to(const VerifyingScreen());
+
       var res = await ServiceRepo().buyElectricity(data);
       if (res['status'] == false || res['result'] == false) {
-        hideLoader();
+        // hideLoader();
         if (res['message'].runtimeType == String) {
           ErrorToast(res['message']);
         } else {
@@ -786,20 +791,20 @@ class ServiceProvider with ChangeNotifier {
         }
         return;
       } else if (res['result'] == 'failed') {
-        hideLoader();
+        // hideLoader();
         ErrorToast(res['message']);
         return;
       } else if (res['result'] == 'pending' || res == {}) {
-        hideLoader();
-        Get.to(CableElectricitySuccessScreen(
+        // hideLoader();
+        Get.off(CableElectricitySuccessScreen(
           isCable: false,
           isPending: true,
           amount: data['amount'],
         ));
         notifyListeners();
       } else {
-        hideLoader();
-        Get.to(CableElectricitySuccessScreen(
+        // hideLoader();
+        Get.off(CableElectricitySuccessScreen(
           isCable: false,
           data: res,
           amount: data['amount'],
@@ -808,7 +813,7 @@ class ServiceProvider with ChangeNotifier {
       }
     } catch (e) {
       print('Error: $e');
-      hideLoader();
+      // hideLoader();
       ErrorToast(e.toString());
     } 
   }

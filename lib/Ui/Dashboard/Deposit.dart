@@ -98,6 +98,7 @@ class _DepositState extends State<Deposit> {
                     await model.getUserBalance();
                   },
                   child: SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
                     child: Column(
                       children: [
                         if (model.userModel?.user?.virtualAccount == false) ...[

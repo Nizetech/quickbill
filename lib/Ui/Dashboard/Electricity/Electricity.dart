@@ -348,7 +348,8 @@ class _ElectricityState extends State<Electricity> {
                                   onTap: () => Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => const ElectricityConfirm())),
+                                        builder: (context) =>
+                                            const ElectricityConfirm())),
                                   child: Container(
                                     width: 100,
                                     height: 62,

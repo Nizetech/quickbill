@@ -255,7 +255,7 @@ class CableElectSuccessScreen extends StatelessWidget {
               _buildInfo(
                   title: 'Amount',
                   value:
-                            "${Utils.naira} ${formatNumber(num.parse(data['amount'] ?? amount))}",
+                            "${Utils.naira} ${formatNumber(num.parse(data['amount']?.toString() ?? amount))}",
                   themedata: themedata),
               if (!isCable) ...[
                 _buildInfo(

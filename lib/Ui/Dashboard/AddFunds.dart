@@ -47,7 +47,7 @@ class _AddFundsState extends State<AddFunds> {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     final themedata = Theme.of(context).colorScheme;
     final account = Provider.of<AccountProvider>(context, listen: true);
-    log('deviceToken: ${account.userModel?.user?.toJson()}');
+    // log('deviceToken: ${account.userModel?.user?.toJson()}');
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -106,6 +106,7 @@ class _AddFundsState extends State<AddFunds> {
                     await account.getUserBalance();
                   },
                   child: SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [

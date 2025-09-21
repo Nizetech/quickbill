@@ -309,8 +309,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                   },
                                   child: Container(
                                     height: 41,
-                                    width: 41,
-                                
+                                      width: 41,
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(
                                         color: Theme.of(context)

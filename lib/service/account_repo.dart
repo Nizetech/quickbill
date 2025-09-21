@@ -353,6 +353,21 @@ class AccountRepo {
     }
   }
 
+  Future<Map<String, dynamic>> getSquardCallback(String ref) async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response = await client.post(ApiRoute.squardCallback,
+          body: jsonEncode({"reference": ref}),
+          requestHeaders: {
+            'Authorization': token,
+          });
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
   Future<Map<String, dynamic>> getHistory(Map<String, dynamic> data) async {
     String token = await box.get(kAccessToken);
     try {
@@ -361,6 +376,21 @@ class AccountRepo {
           .post(ApiRoute.getHistory, body: jsonEncode(data), requestHeaders: {
         'Authorization': token,
       });
+      return response;
+    } catch (e) {
+      print('Error: $e');
+      return {};
+    }
+  }
+
+  Future<Map<String, dynamic>> setDeviceToken(Map<String, dynamic> data) async {
+    String token = await box.get(kAccessToken);
+    try {
+      final response = await client.post(ApiRoute.setDeviceToken,
+          body: jsonEncode(data),
+          requestHeaders: {
+            'Authorization': token,
+          });
       return response;
     } catch (e) {
       print('Error: $e');

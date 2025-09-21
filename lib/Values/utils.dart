@@ -15,12 +15,14 @@ class Utils {
       "https://jostpay.com/our_services/giftcard?code=US&number=1&query=";
   static String faqUrl = "https://jostpay.com/our/faq";
   static String aboutUs = "https://jostpay.com/our/aboutus";
+  static String howItWorks = "https://jostpay.com/our/how-it-works";
   static String termsUrl = "https://jostpay.com/terms";
   static String privacyUrl = "https://jostpay.com/privacy";
   static String amlUrl = "https://instantexchangers.net/aml";
   static String verifyUrl = "https://www.instantexchangers.net";
   static String sellUrl = "https://instantexchangers.net/sell/final?transaction=";
   static String forgetPassword = "https://instantexchangers.net/forget-password";
+  static String squardCallback = "https://jostpay.com/apis/squard_callback";
   static String appleLink =
       "https://apps.apple.com/ng/app/jostpay/id6748660788";
   static String playStoreLink =

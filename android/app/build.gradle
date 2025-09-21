@@ -1,5 +1,8 @@
 plugins {
     id "com.android.application"
+    // START: FlutterFire Configuration
+    id 'com.google.gms.google-services'
+    // END: FlutterFire Configuration
     id "kotlin-android"
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
@@ -31,20 +34,15 @@ if (flutterVersionName == null) {
 
 android {
     namespace "com.wallet.jost_pay_wallet"
-    compileSdk = 35  
+    compileSdk = 36 
     ndkVersion = flutter.ndkVersion
-    compileSdkVersion 35
+    // compileSdkVersion 35
 
     compileOptions {
-        // sourceCompatibility = JavaVersion.VERSION_1_8
-        // targetCompatibility = JavaVersion.VERSION_1_8
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
-
-    // kotlinOptions {
-    //     jvmTarget = JavaVersion.VERSION_1_8
-    // }
     
         kotlinOptions {
         jvmTarget = '17'
@@ -55,11 +53,12 @@ android {
         applicationId = "com.wallet.jost_pay_wallet"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = 21
+        minSdk = 23
         targetSdk = 35
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
+    
     signingConfigs {
        release {
            keyAlias keystoreProperties['keyAlias']
@@ -73,6 +72,8 @@ android {
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
+             minifyEnabled false
+              shrinkResources false
             signingConfig = signingConfigs.release
         }
     }
@@ -80,4 +81,11 @@ android {
 
 flutter {
     source = "../.."
+}
+dependencies {
+    
+    implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation 'androidx.core:core-ktx:1.3.2'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.4'
 }

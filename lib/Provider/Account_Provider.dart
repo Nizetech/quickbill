@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -73,7 +72,6 @@ class AccountProvider with ChangeNotifier {
 
   void addKycData(Map<String, dynamic> data) {
     kycData.addAll(data);
-    log('kycData:==> $kycData');
     notifyListeners();
   }
 
@@ -303,7 +301,6 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      // log('Error: $e');
       ErrorToast(e.toString());
     }
   }
@@ -403,7 +400,6 @@ class AccountProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      // log('Error: $e');
       ErrorToast(e.toString());
     }
   }
@@ -457,8 +453,31 @@ class AccountProvider with ChangeNotifier {
         }
         notifyListeners();
       });
-    } catch (e) {
-      // log('Error: $e');
+    } catch (e) { 
+      ErrorToast(e.toString());
+    }
+  }
+
+  Future<void> setDeviceToken(Map<String, dynamic> data) async {
+    try {
+      // showLoader();
+      AccountRepo().setDeviceToken(data).then((value) async {
+        // hideLoader();
+
+        if (value['status'] == false || value['result'] == false ) {
+          if (value['message'].runtimeType == String) {
+            ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';
+            });
+            ErrorToast(message);
+          }
+        }
+        notifyListeners();
+      });
+    } catch (e) { 
       ErrorToast(e.toString());
     }
   }
@@ -615,8 +634,6 @@ class AccountProvider with ChangeNotifier {
   Future<void> buyAirtime(Map<String, dynamic> data) async {
     try {
       showLoader();
-      log("Loading.....");
-      // return;
       AccountRepo().buyAirtime(data).then((value) async {
         hideLoader();
         if (value['result'] == null || value['result'] == false || value['result'] == 'failed') {
@@ -684,7 +701,6 @@ class AccountProvider with ChangeNotifier {
     try {
       showLoader();
       AccountRepo().buyData(data).then((value) async {
-        log("Data value:===> $value");
         hideLoader();
           if (value['result'] == null || value['result'] == false) {
           if (value['message'].toString().toLowerCase().contains('failed')) {
@@ -769,7 +785,6 @@ class AccountProvider with ChangeNotifier {
       });
       notifyListeners();
     } catch (e) {
-      // log('Error: $e');
       ErrorToast(e.toString());
     } 
   }
@@ -793,9 +808,9 @@ class AccountProvider with ChangeNotifier {
   // get User Balance
   Future<void> getUserBalance() async {
     try {
-      setLoading(true);
+       showLoader();
       AccountRepo().getBalance().then((value) {
-        setLoading(false);
+        hideLoader();
         if (value['status'] == false || value['result'] == false ) {
           if (value['message'].runtimeType == String) {
             ErrorToast(value['message']);
@@ -807,16 +822,43 @@ class AccountProvider with ChangeNotifier {
             ErrorToast(message);
           }
         } else {
-          setLoading(false);
           balance = num.parse(value['balance'].toString());
         }
         notifyListeners();
       });
-      setLoading(false);
-      notifyListeners();
+
     } catch (e) {
       hideLoader();
+      ErrorToast(e.toString());
+    } 
+  }
+  
+  Future<void> getSquardCallback({
+    required String ref,
+    required VoidCallback callback,
+  }) async {
+    try {
+       showLoader();
+      AccountRepo().getSquardCallback(ref).then((value) {
+        hideLoader();
+        if (value['status'] == false || value['result'] == false ) {
+          if (value['message'].runtimeType == String) {
+            ErrorToast(value['message']);
+          } else {
+            String message = '';
+            value['message'].forEach((key, value) {
+              message += '$value';
+            });
+            ErrorToast(message);
+          }
+        } else {
+          callback();
+        }
+        notifyListeners();
+      });
 
+    } catch (e) {
+      hideLoader();
       ErrorToast(e.toString());
     } 
   }
@@ -1169,7 +1211,6 @@ class AccountProvider with ChangeNotifier {
             isPinEnabled,
             kExistingUser,
           ]);
-          log("clearing HIVE.........");
           hideLoader();
           Get.offAll(SignInScreen());
         }

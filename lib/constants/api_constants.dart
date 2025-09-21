@@ -1,6 +1,9 @@
 class ApiRoute {
-  // static String baseUrl = 'https://project.jostpay.com/apis/';
-  static String baseUrl = 'https://jostpay.com/apis/';
+  static String projectUrl = 'https://project.jostpay.com/';
+  // static String liveUrl = projectUrl;
+  static String liveUrl = 'https://jostpay.com/';
+  static String baseUrlWeb = liveUrl;
+  static String baseUrl = '${liveUrl}apis/';
 
   //Auth
   static String signup = 'signup';
@@ -87,4 +90,10 @@ class ApiRoute {
   static String buyElectricity = 'services/buy-electricity';
   static String getHistory = 'services/get-history';
   static String removeHistory = 'services/remove-history';
+  static String squardCallback = 'squard_callback';
+  static String setDeviceToken = 'set-device-token';
 }
+
+ //? check out on card transfer => Intercept the request and redirect to the url
+// httsp://jostpay.com/apis/squard_callback
+// reference

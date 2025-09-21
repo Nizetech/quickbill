@@ -161,21 +161,22 @@ class _ServicesState extends State<Services> {
                             page: const ElectricityHistory(),
                           ),
                           const Spacer(),
-                          if (Platform.isAndroid)
+                          // if (Platform.isAndroid)
                           ServiceTile(
                             icon: 'assets/images/giftcard.svg',
                             title: 'Buy Gift Card',
                             page: const GiftCardHistory(),
-                            )
-                          else
-                            ServiceTile(
-                              icon: 'assets/images/cable.svg',
-                              title: 'Buy Cable Tv',
-                              page: const CableHistory(),
-                            )
+                          ),
+                          // else
+                          // ServiceTile(
+                          //   icon: 'assets/images/cable.svg',
+                          //   title: 'Buy Cable Tv',
+                          //   page: const CableHistory(),
+                          // )
                         ],
                       ),
-                      if (Platform.isAndroid) ...[
+                     
+                      // if (Platform.isAndroid) ...[
                         const SizedBox(
                           height: 10,
                         ),
@@ -187,6 +188,7 @@ class _ServicesState extends State<Services> {
                               page: const CableHistory(),
                             ),
                             const Spacer(),
+                          if (Platform.isAndroid)
                             Padding(
                               padding: const EdgeInsets.only(top: 10),
                               child: ServiceTile(
@@ -197,7 +199,7 @@ class _ServicesState extends State<Services> {
                             ),
                           ],
                         ),
-                      ],
+                      // ],
                       const SizedBox(
                         height: 24,
                         ),

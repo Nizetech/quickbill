@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/card_fund_summary.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/deposit_details.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/kyc_web.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/virtual_account_creation.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/balance_card.dart';
@@ -24,7 +27,6 @@ class Deposit extends StatefulWidget {
 class _DepositState extends State<Deposit> {
   // final bool _isSwitched = false;
   final List<Map<String, dynamic>> depositMethods = [
-
     {
       'image': 'assets/images/bank_i.png',
       'title': 'Bank Transfer',
@@ -37,6 +39,13 @@ class _DepositState extends State<Deposit> {
       'detail': 'Funds should be received after 2 mins of payment',
       'fee': '1.2%',
     },
+    {
+      'image': 'assets/images/ussd.png',
+      'title': 'Manual Deposit',
+      'detail':
+          'Processing time 24–48 hours after payment. Recommended for non-urgent deposits',
+      'fee': '0%',
+    },
   ];
 
   @override
@@ -46,6 +55,7 @@ class _DepositState extends State<Deposit> {
     return Scaffold(
       // backgroundColor: Colors.white,
       body: Consumer<AccountProvider>(builder: (context, model, _) {
+        log('enableManual: ${model.userModel?.user?.enableManual}');
         return SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 24),
@@ -83,68 +93,89 @@ class _DepositState extends State<Deposit> {
                   height: 30,
                 ),
                 Expanded(
-                    child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      if (model.userModel?.user?.virtualAccount == false) ...[
-                        _buildDepositMethodCard(
-                          context: context,
-                          image: 'assets/images/vir_acc.png',
-                          themedata: themedata,
-                          themeProvider: themeProvider,
-                          isRecommended: true,
-                          title: 'Virtual Account',
-                          detail:
-                              'Get a virtual account. Deposit appear almost immediately.',
-                          fee: '0.5375%',
-                          onTap: () {
-                            if (model.userModel?.user?.idVerified == false) {
-                              Get.to(const KycWebview());
-                              ErrorToast(
-                                  'You need to verify your account to create a virtual account');
-                              // return;
-                            } else {
-                              Get.to(
-                                const VirtualAccountCreation(),
-                              );
-                            }
-                          },
-                        ),
-                        SizedBox(height: 10),
-                      ],
-                      ListView.separated(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          return _buildDepositMethodCard(
+                    child: RefreshIndicator(
+                  onRefresh: () async {
+                    await model.getUserBalance();
+                  },
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        if (model.userModel?.user?.virtualAccount == false) ...[
+                          _buildDepositMethodCard(
                             context: context,
-                            image: depositMethods[index]['image'],
+                            image: 'assets/images/vir_acc.png',
                             themedata: themedata,
                             themeProvider: themeProvider,
-                            title: depositMethods[index]['title'],
-                            detail: depositMethods[index]['detail'],
-                            fee: depositMethods[index]['fee'],
-                            onTap: model.userModel?.user?.isActive == false
-                                ? () {
-                                    Get.to(() => const KycWebview());
-                                  }
-                                : () {
-                                    if (index == 0) {
-                                      _showAmountInputDialog(context,
-                                          isCard: false, themedata: themedata);
-                                    } else {
-                                      _showAmountInputDialog(context,
-                                          isCard: true, themedata: themedata);
-                                    }
-                                  },
-                          );
-                        },
-                        separatorBuilder: (context, index) => const SizedBox(
-                          height: 10,
-                        ),
-                        itemCount: depositMethods.length,
-                      ),
-                    ],
+                            isRecommended: true,
+                            title: 'Virtual Account',
+                            detail:
+                                'Get a virtual account. Deposit appear almost immediately.',
+                            fee: '0.5375%',
+                            onTap: () {
+                              if (model.userModel?.user?.idVerified == false) {
+                                Get.to(const KycWebview());
+                                ErrorToast(
+                                    'You need to verify your account to create a virtual account');
+                                // return;
+                              } else {
+                                Get.to(
+                                  const VirtualAccountCreation(),
+                                );
+                              }
+                            },
+                          ),
+                          SizedBox(height: 10),
+                        ],
+                        ListView.separated(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return _buildDepositMethodCard(
+                                context: context,
+                                image: depositMethods[index]['image'],
+                                themedata: themedata,
+                                themeProvider: themeProvider,
+                                title: depositMethods[index]['title'],
+                                detail: depositMethods[index]['detail'],
+                                fee: depositMethods[index]['fee'],
+                                onTap: model.userModel?.user?.idVerified ==
+                                            false &&
+                                        model.userModel?.user?.basicVerified ==
+                                            false
+                                    ? () {
+                                        Get.to(() => const KycWebview());
+                                      }
+                                    : () {
+                                        if (index == 0) {
+                                          _showAmountInputDialog(context,
+                                              isCard: false,
+                                              themedata: themedata);
+                                        } else if (index == 1) {
+                                          _showAmountInputDialog(context,
+                                              isCard: true,
+                                              themedata: themedata);
+                                        } else {
+                                          Get.to(
+                                            () => const DepositDetails(
+                                                title: 'Manual Deposit'),
+                                          );
+                                        }
+                                      },
+                              );
+                            },
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                            itemCount: model.userModel?.user?.enableManual ==
+                                    true
+                                ? depositMethods.length
+                                : depositMethods
+                                    .where((element) =>
+                                        element['title'] != 'Manual Deposit')
+                                    .length),
+                      ],
+                    ),
                   ),
                 )),
                 const SizedBox(
@@ -315,7 +346,7 @@ class _DepositState extends State<Deposit> {
                   Navigator.of(context).pop();
                   ErrorToast('Please enter a valid amount');
                   return;
-                }
+                } else
                 if (account.userModel?.user?.idVerified == false &&
                     amount > 20000) {
                   Navigator.of(context).pop();

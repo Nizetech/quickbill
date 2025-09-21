@@ -40,6 +40,7 @@ class User {
   dynamic virtualAccount;
   bool? idVerified;
   bool? basicVerified;
+  bool? enableManual;
   dynamic enabledPin;
   String? createdAt;
 
@@ -57,6 +58,7 @@ class User {
     this.basicVerified,
     this.enabledPin,
     this.createdAt,
+    this.enableManual,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -73,6 +75,10 @@ class User {
         basicVerified: json["basic_verify"],
         enabledPin: json["enable_pin"],
         createdAt: json["created_at"],
+        enableManual:
+            json["enable_manual"] == null || json["enable_manual"] == '0'
+                ? false
+                : true,
       );
 
   Map<String, dynamic> toJson() => {
@@ -89,5 +95,6 @@ class User {
         "basic_verify": basicVerified,
         "enable_pin": enabledPin,
         "created_at": createdAt,
+        "enable_manual": enableManual,
       };
 }

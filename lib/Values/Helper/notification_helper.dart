@@ -1,0 +1,70 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/AlarmScreen.dart';
+
+class NotificationHelper {
+  FlutterLocalNotificationsPlugin plugin = FlutterLocalNotificationsPlugin();
+
+  AndroidNotificationChannel channel = const AndroidNotificationChannel(
+    'high_importance_channel', //id
+    'Orders Notifications', // title
+    description: 'This channel is used for importance notification.',
+    importance: Importance.high, showBadge: true, playSound: true,
+  );
+
+  Future<void> handleMessage(RemoteMessage message) async {
+    // ignore: unnecessary_null_comparison
+    RemoteNotification? notification =
+        // message.data ;
+        // != null
+        //     ? RemoteNotification(
+        //         title: message.data['title'],
+        //         body: message.data['body'],
+        //       )
+        //     :
+        message.notification;
+    if (notification != null) {
+      plugin.show(
+        notification.hashCode,
+        notification.title,
+        notification.body,
+        NotificationDetails(
+          iOS: const DarwinNotificationDetails(
+            sound: 'default',
+            presentAlert: true,
+            presentBadge: true,
+            presentSound: true,
+          ),
+          android: AndroidNotificationDetails(
+            channel.id,
+            channel.name,
+            // sound: RawResourceAndroidNotificationSound('default'),
+            importance: Importance.high,
+            channelDescription: channel.description,
+            enableVibration: true,
+            icon: 'drawable/logo',
+          ),
+        ),
+      );
+    }
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('Got a new message on Foreground! $message');
+      Get.to(const AlarmScreen());
+      // open the app and navigate to the notification screen
+    });
+  }
+
+  // Future<void> init() async {
+  //   const AndroidInitializationSettings initializationSettingsAndroid =
+  //       AndroidInitializationSettings('drawable/logo');
+  //   final InitializationSettings initializationSettings =
+  //       InitializationSettings(
+  //     android: initializationSettingsAndroid,
+  //   );
+  //   await plugin.initialize(initializationSettings);
+  //   await plugin.resolvePlatformSpecificImplementation<
+  //       AndroidFlutterLocalNotificationsPlugin>()!
+  //     ..createNotificationChannel(channel);
+  // }
+}

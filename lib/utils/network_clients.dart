@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:jost_pay_wallet/constants/api_constants.dart';
 import 'package:jost_pay_wallet/utils/network_interceptors.dart';
@@ -27,9 +28,9 @@ static Dio createDio() {
 // static late dio.CancelToken cancelToken;
       BaseOptions(
         baseUrl: ApiRoute.baseUrl,
-        receiveTimeout: const Duration(seconds: 15), // 15 seconds
-        connectTimeout: const Duration(seconds: 15),
-        sendTimeout: const Duration(seconds: 15),
+        receiveTimeout: const Duration(seconds: 25), // 25 seconds
+        connectTimeout: const Duration(seconds: 25),
+        sendTimeout: const Duration(seconds: 25),
       ),
     );
 
@@ -88,12 +89,14 @@ static Dio createDio() {
     // CancelToken? cancelToken,
     ProgressCallback? onReceiveProgress,
   }) async {
+    if (kDebugMode) {  
     log("""
       Url : $uri
-    BODY : $body  
+    BODY : $body
       Params : $queryParameters,
       Headers : ${{..._getAuthHeader, ...requestHeaders}}
       """);
+    }
     try {
       final response = await _dio.post(
         uri,
@@ -105,8 +108,10 @@ static Dio createDio() {
           headers: {..._getAuthHeader, ...requestHeaders},
         ),
       );
-      print(response.headers.value('token').toString());
+      if (kDebugMode) {
+        debugPrint(response.headers.value('token').toString());
       log(response.statusCode.toString());
+      }
       return response.data;
     } on PlatformException {
       rethrow;

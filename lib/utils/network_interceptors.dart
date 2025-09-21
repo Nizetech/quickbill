@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart' hide Response;
 import 'package:jost_pay_wallet/Ui/Authentication/SignInScreen.dart';
 import 'package:jost_pay_wallet/common/cancel_loading.dart';
@@ -19,9 +20,7 @@ class AppInterceptors extends Interceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    // checkStatusCode(response.requestOptions, response);
-    // print(÷.realUri);
-
+    if (kDebugMode) {
     _log.custom(
       "--------- Calling Api [${DateTime.now()}]----------",
       color: LoggerColor.darkGrey,
@@ -38,6 +37,7 @@ class AppInterceptors extends Interceptor {
       color: LoggerColor.darkGrey,
       functionName: "onRequest",
     );
+    }
     return handler.next(options);
   }
 
@@ -48,11 +48,13 @@ class AppInterceptors extends Interceptor {
   ) async {
     checkStatusCode(response.requestOptions, response);
 
+    if (kDebugMode) {
     _log.custom(
       "--------- Api Response [${DateTime.now()}]----------",
       color: LoggerColor.darkGrey,
       functionName: "onResponse",
     );
+    }
     if (response.data != null &&
             response.data is String &&
             (response.data as String).toLowerCase().contains("doctype") ||
@@ -63,11 +65,13 @@ class AppInterceptors extends Interceptor {
           "Invalid response recieved, logging out and redirecting to login page");
 
     }
+    if (kDebugMode) {
     _log.custom(
       response.requestOptions.uri,
       color: LoggerColor.darkGrey,
       functionName: "onResponse",
     );
+    }
     return handler.next(response);
   }
 
@@ -76,9 +80,11 @@ class AppInterceptors extends Interceptor {
     DioException err,
     ErrorInterceptorHandler handler,
   ) async {
+    if (kDebugMode) {
     _log.e(err.requestOptions.headers, functionName: "onError[1]");
     _log.e(err.requestOptions.data, functionName: "onError[2]");
     _log.e(err.response?.data, functionName: "onError[3]");
+    }
     if (err.response?.statusCode == 500) {
       CancelLoading().cancelLoading();
       Get.offAll(SignInScreen());
@@ -93,7 +99,9 @@ class AppInterceptors extends Interceptor {
       Map data = {};
       String message = "";
       if (err.response?.data['data']['error'].runtimeType != String) {
+        if (kDebugMode) {
         log('Data: Not String ==> ${err.response?.data['data']}');
+        }
         if (err.response?.data['data']['error'] != null) {
           data = err.response?.data['data']['error'];
           message = data.values
@@ -123,7 +131,9 @@ class AppInterceptors extends Interceptor {
       ErrorToast(err.response?.data['data']?['message'] ?? "");
     } else {
       var message = err.response?.data['message']?.toString();
+      if (kDebugMode) {
       log('Message $message');
+      }
       CancelLoading().cancelLoading();
       if (message == null) {
         ErrorToast('Something went wrong, please try again');
@@ -131,7 +141,9 @@ class AppInterceptors extends Interceptor {
         ErrorToast(message);
       }
     }
+    if (kDebugMode) {
     _log.e(err.response?.statusCode, functionName: "onError[4]");
+    }
 
     switch (err.type) {
       case DioExceptionType.connectionTimeout:
@@ -156,7 +168,9 @@ class AppInterceptors extends Interceptor {
         err = BadCertificateException(err.requestOptions);
         break;
       case DioExceptionType.unknown:
+        if (kDebugMode) {
         _log.e(err.message, functionName: "onError[other]");
+        }
         err = NoInternetConnectionException(err.requestOptions);
     }
     //continue
@@ -182,11 +196,13 @@ class AppInterceptors extends Interceptor {
         case 500:
           throw InternalServerErrorException(requestOptions);
         default:
+          if (kDebugMode) {
           _log.e(response?.data, functionName: "onError[checkStatusCode]");
           _log.e(
             response?.statusCode,
             functionName: "onError[checkStatusCode]",
           );
+          }
           throw ServerCommunicationException(response);
       }
     } on Failure {

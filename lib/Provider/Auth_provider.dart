@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -32,7 +31,6 @@ class AuthProvider with ChangeNotifier {
       // setLoading(true);
       showLoader();
       AuthRepo().register(data).then((value) {
-        log('Create Account Value: $value');
         setLoading(false);
         if (value['status'] == false || value['result'] == false) {
           hideLoader();
@@ -64,7 +62,6 @@ class AuthProvider with ChangeNotifier {
       // setLoading(false);
       notifyListeners();
     } catch (e) {
-      log('Error: $e');
       // setLoading(false);
       ErrorToast(e.toString());
     }
@@ -114,7 +111,6 @@ class AuthProvider with ChangeNotifier {
         }
       });
     } catch (e) {
-      log('Error: $e');
       ErrorToast(e.toString());
     }
   }
@@ -149,7 +145,6 @@ class AuthProvider with ChangeNotifier {
         }
       });
     } catch (e) {
-      log('Error: $e');
       ErrorToast(e.toString());
     }
   }
@@ -190,7 +185,6 @@ class AuthProvider with ChangeNotifier {
         }
       });
     } catch (e) {
-      log('Error: $e');
       ErrorToast(e.toString());
     }
   }
@@ -227,7 +221,6 @@ class AuthProvider with ChangeNotifier {
         }
       });
     } catch (e) {
-      log('Error: $e');
       ErrorToast(e.toString());
     }
   }
@@ -269,7 +262,6 @@ class AuthProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      log('Error: $e');
       // setLoading(false);
     }
   }
@@ -291,7 +283,6 @@ class AuthProvider with ChangeNotifier {
               is2fa: is2fa,
               isEnable2fa: isEnable2fa)
           .then((value) async {
-        log('Login Data:==> $value');
         // setLoading(false);
         hideLoader();
         if (value.isEmpty) return false;
@@ -319,7 +310,6 @@ class AuthProvider with ChangeNotifier {
               var data = await AccountRepo().getProfile();
               updateAuthToken('');
               notifyListeners();
-              log('data: $data');
               if (data['user'] != null) {
                 
                 if ( data['user']['enable_pin'] != '1' ||  data['user']['enable_pin'] == 'null' ||   data['user']['enable_pin'] == null) {
@@ -339,14 +329,12 @@ class AuthProvider with ChangeNotifier {
                 SuccessToast('Login Successful');
               }
             } else {
-              log('account is null');
             }
           }
           // }
         }
       });
     } catch (e) {
-      log('Error: $e');
       // setLoading(false);
       hideLoader();
       ErrorToast(e.toString());
@@ -387,7 +375,7 @@ class AuthProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      log('Error: $e');
+
       hideLoader();
       ErrorToast(e.toString());
     }
@@ -421,7 +409,7 @@ class AuthProvider with ChangeNotifier {
         }
       });
     } catch (e) {
-      log('Error: $e');
+      
       hideLoader();
       ErrorToast(e.toString());
     }
@@ -456,7 +444,7 @@ class AuthProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      log('Error: $e');
+      
       hideLoader();
       ErrorToast(e.toString());
     }

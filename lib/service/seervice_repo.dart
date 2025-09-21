@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jost_pay_wallet/constants/api_constants.dart';
 import 'package:jost_pay_wallet/constants/constants.dart';
@@ -115,7 +114,6 @@ class ServiceRepo {
           await client.get(ApiRoute.electricityTransactions, requestHeaders: {
         'Authorization': token,
       });
-      log("elect res => $response");
       return response;
     } catch (e) {
       print('Error: $e');
@@ -194,8 +192,7 @@ class ServiceRepo {
         "country_code": code,
         "query": "",
       };
-      log('data:===> $data');
-      // return data;
+
       final response = await client
           .post(ApiRoute.getGiftCard, body: jsonEncode(data), requestHeaders: {
         'Authorization': token,
@@ -547,7 +544,6 @@ class ServiceRepo {
           await client.get(ApiRoute.scriptTransactions, requestHeaders: {
         'Authorization': token,
       });
-      // log('Reponse: ==> $response');
       return response;
     } catch (e) {
       print('Error: $e');

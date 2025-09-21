@@ -11,6 +11,7 @@ import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/NewColor.dart';
 import 'package:jost_pay_wallet/Values/NewStyle.dart';
 import 'package:jost_pay_wallet/Values/utils.dart';
+import 'package:jost_pay_wallet/constants/api_constants.dart';
 import 'package:jost_pay_wallet/constants/constants.dart';
 import 'package:jost_pay_wallet/utils/toast.dart';
 import 'package:provider/provider.dart';
@@ -238,13 +239,17 @@ class _CardFundSummaryState extends State<CardFundSummary> {
                               model.cardBankTransfer(
                                   amount: widget.amount,
                                   onSuccess: (value) {
+                                    print(value);
+                                    // return;
                                     Get.to(
                                         BankWebview(url: value, isCard: true));
                                   });
                             } else {
                               String token = await box.get(kAccessToken);
                               String url =
-                                  'https://project.jostpay.com/deposit-fidelity?token=$token&&amount=${widget.amount}';
+                                  '${ApiRoute.baseUrlWeb}deposit-fidelity?token=$token&&amount=${widget.amount}';
+                              print(url);
+                              // return;
                               Get.to(BankWebview(url: url));
                             }
                           }

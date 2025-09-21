@@ -9,6 +9,7 @@ import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/WalletScreen.dart';
 import 'package:jost_pay_wallet/Ui/Support/SupportScreen.dart';
 import 'package:jost_pay_wallet/Ui/Support/about_scren.dart';
 import 'package:jost_pay_wallet/Ui/Support/faq_screen.dart';
+import 'package:jost_pay_wallet/Ui/Support/how_it_works.dart';
 import 'package:jost_pay_wallet/Ui/Support/privacy_screen.dart';
 import 'package:jost_pay_wallet/Ui/Support/terms_screen.dart';
 import 'package:jost_pay_wallet/Ui/promotions/promo_screen.dart';
@@ -17,10 +18,7 @@ import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/NewStyle.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:wallet_connect_dart_v2/sign/sign-client/client/sign_client.dart';
 
-
-// SignClient? signClient;
 
 class BottomNav extends StatefulWidget {
   const BottomNav({super.key});
@@ -41,6 +39,7 @@ class _BottomNavState extends State<BottomNav> with WidgetsBindingObserver {
     const AboutUsScreen(),
     const FaqScreen(),
     const SupportScreen(),
+    const HowItWorksScreen(),
   ];
 
   _onWillPop() {

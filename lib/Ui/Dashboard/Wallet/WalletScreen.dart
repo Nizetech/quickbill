@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/DashboardProvider.dart';
@@ -26,6 +27,8 @@ import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/common/delete_banner.dart';
+import 'package:jost_pay_wallet/common/verifying_screen.dart';
+import 'package:jost_pay_wallet/constants/constants.dart';
 import 'package:provider/provider.dart';
 import 'dart:core';
 
@@ -50,6 +53,7 @@ class _WalletScreenState extends State<WalletScreen> {
       selectedAccountPrivateAddress = "";
 
   bool isCalculating = false;
+  final box = Hive.box(kAppName);
   bool isLoaded = false;
 
   @override
@@ -57,8 +61,12 @@ class _WalletScreenState extends State<WalletScreen> {
     accountProvider = Provider.of<AccountProvider>(context, listen: false);
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      String deviceToken = box.get(kDeviceToken);
       await accountProvider.getUserBalance();
       await accountProvider.getNotification();
+      await accountProvider.setDeviceToken(
+        {"token": box.get(kDeviceToken), 'platform': "mobile"},
+      );
       await accountProvider.getProfileImage(isLoading: false);
       if (accountProvider.transactionModel == null) {
         await accountProvider.getTrasactions();
@@ -139,7 +147,8 @@ class _WalletScreenState extends State<WalletScreen> {
                               ),
                               decoration: BoxDecoration(
                                   borderRadius: const BorderRadius.all(
-                                      Radius.circular(20)),
+                                    Radius.circular(20),
+                                  ),
                                   border: Border.all(
                                       color: themeProvider.isDarkMode()
                                           ? MyColor.borderDarkColor
@@ -353,17 +362,8 @@ class _WalletScreenState extends State<WalletScreen> {
                                 children: [
                                   InkWell(
                                     onTap: () {
-                                      // if (accountProvider
-                                      //             .userModel?.user?.createdAt !=
-                                      //         null &&
-                                      //     accountProvider
-                                      //             .userModel?.user?.isActive ==
-                                      //         false) {
-                                      //   Get.to(() => const KycWebview());
-                                      // } else {
-                                        Get.to(() => const AddFunds());
-                                      // }
-                                    
+                                      Get.to(() => const AddFunds());
+                                      // Get.to(() => const VerifyingScreen());
                                     },
                                     borderRadius: BorderRadius.circular(
                                         12.3), // Optional: to match the container's border radius
@@ -381,18 +381,20 @@ class _WalletScreenState extends State<WalletScreen> {
                                       ),
                                       child: SvgPicture.asset(
                                         'assets/images/svg/deposit.svg',
-                                        
                                       ),
                                     ),
                                   )
                                 ],
                               ),
                               const SizedBox(height: 8),
-                              Text('Add funds',
+                              Text(
+                                'Add funds',
                                   style: MyStyle.tx12Black.copyWith(
                                       color: Theme.of(context)
                                           .colorScheme
-                                          .tertiary))
+                                          .tertiary,
+                                ),
+                              ),
                             ],
                           ),
                           Container(

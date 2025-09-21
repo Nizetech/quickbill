@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -103,9 +102,9 @@ class ServiceProvider with ChangeNotifier {
         carTypeModel = CarTypeModel.fromJson(res);
         hideLoader();
         notifyListeners();
-      }
+      } 
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
     }
@@ -133,7 +132,7 @@ class ServiceProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');
       ErrorToast(e.toString());
     } 
   }
@@ -160,7 +159,7 @@ class ServiceProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');
       ErrorToast(e.toString());
     } 
   }
@@ -189,7 +188,7 @@ class ServiceProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
     } 
@@ -200,7 +199,6 @@ class ServiceProvider with ChangeNotifier {
     try {
       if (isLoading) showLoader();
       var res = await ServiceRepo().getElectricityTransactions();
-      log('res:==> $res');
       if (res['status'] == false || res['result'] == false) {
         if (isLoading) hideLoader();
         if (res['message'].runtimeType == String) {
@@ -220,7 +218,7 @@ class ServiceProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
     } 
@@ -242,7 +240,7 @@ class ServiceProvider with ChangeNotifier {
       callback();
       notifyListeners();
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');
       ErrorToast(e.toString());
     } 
   }
@@ -252,7 +250,6 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().getElectricityMerchant(data);
-      log('res: $res');
       if (res['res'] != null &&
           res['res']['content'].toString().contains('error')) {
         hideLoader();
@@ -264,7 +261,7 @@ class ServiceProvider with ChangeNotifier {
       callback();
       notifyListeners();
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
     } 
@@ -292,7 +289,7 @@ class ServiceProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
     }
@@ -320,7 +317,7 @@ class ServiceProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');
       ErrorToast(e.toString());
     } 
   }
@@ -347,7 +344,7 @@ class ServiceProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
     }
@@ -377,7 +374,7 @@ class ServiceProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');
       ErrorToast(e.toString());
     } 
   }
@@ -406,7 +403,7 @@ class ServiceProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
     }
@@ -437,7 +434,7 @@ class ServiceProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');
       ErrorToast(e.toString());
     } 
   }
@@ -470,7 +467,7 @@ class ServiceProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
     } 
@@ -506,7 +503,7 @@ class ServiceProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');     
       hideLoader();
       ErrorToast(e.toString());
     }
@@ -536,7 +533,7 @@ class ServiceProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');
       ErrorToast(e.toString());
     }
   }
@@ -568,7 +565,7 @@ class ServiceProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');
       ErrorToast(e.toString());
     }
   }
@@ -597,7 +594,7 @@ class ServiceProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
     } 
@@ -628,7 +625,7 @@ class ServiceProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
     } 
@@ -656,7 +653,7 @@ class ServiceProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
     } 
@@ -686,7 +683,7 @@ class ServiceProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
     } 
@@ -717,7 +714,7 @@ class ServiceProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
     } 
@@ -730,7 +727,6 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().buyCable(data);
-      log('res: $res');
       if (res['status'] == false || res['result'] == false) {
         hideLoader();
         if (res['message'].runtimeType == String) {
@@ -767,7 +763,7 @@ class ServiceProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
     } 
@@ -777,7 +773,6 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().buyElectricity(data);
-      log('res:===> $res');
       if (res['status'] == false || res['result'] == false) {
         hideLoader();
         if (res['message'].runtimeType == String) {
@@ -812,7 +807,7 @@ class ServiceProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
     } 
@@ -840,7 +835,7 @@ class ServiceProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');
       ErrorToast(e.toString());
     }
   }
@@ -868,7 +863,7 @@ class ServiceProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
     }
@@ -896,7 +891,7 @@ class ServiceProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
     }
@@ -924,7 +919,7 @@ class ServiceProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
     }
@@ -953,7 +948,7 @@ class ServiceProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
     }
@@ -982,8 +977,8 @@ class ServiceProvider with ChangeNotifier {
         Get.to(SocialSuccessScreen());
         notifyListeners();
       }
-    } catch (e) {
-      log('Error: $e');
+    } catch (e) { 
+      print('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
     }
@@ -1013,7 +1008,7 @@ class ServiceProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
     } 
@@ -1044,7 +1039,7 @@ class ServiceProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');
       ErrorToast(e.toString());
     } 
   }
@@ -1071,7 +1066,7 @@ class ServiceProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');
       ErrorToast(e.toString());
     } 
   }
@@ -1100,7 +1095,7 @@ class ServiceProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');
       ErrorToast(e.toString());
     } 
   }
@@ -1132,7 +1127,7 @@ class ServiceProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');
       ErrorToast(e.toString());
     } 
   }
@@ -1160,7 +1155,7 @@ class ServiceProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
     } 
@@ -1196,7 +1191,7 @@ class ServiceProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');
       ErrorToast(e.toString());
     } 
   }
@@ -1224,7 +1219,7 @@ class ServiceProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');
       ErrorToast(e.toString());
     } 
   }
@@ -1254,7 +1249,7 @@ class ServiceProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');
       ErrorToast(e.toString());
     } 
   }
@@ -1285,7 +1280,7 @@ class ServiceProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');
       ErrorToast(e.toString());
     } 
   }
@@ -1312,7 +1307,7 @@ class ServiceProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      log('Error: $e');
+      print('Error: $e');
       ErrorToast(e.toString());
     } 
   }

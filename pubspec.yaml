@@ -4,7 +4,7 @@ description: A new Flutter project.
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.4+7
+version: 1.0.5+9
 
 environment:
   sdk: ">=3.1.0 <4.0.0"
@@ -64,6 +64,16 @@ dependencies:
   flutter_otp_text_field: ^1.1.0+2
   dotted_border: ^2.1.0
   file_picker: ^10.1.9
+  # firebase
+  firebase_core: 
+  firebase_crashlytics:
+  firebase_messaging: 
+  flutter_local_notifications:
+  firebase_app_check: ^0.3.0+4
+  firebase_analytics: 
+
+
+
 
 
   video_player: any

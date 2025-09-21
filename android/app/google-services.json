@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1076873078718",
+    "project_id": "jostpay-dbf44",
+    "storage_bucket": "jostpay-dbf44.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1076873078718:android:950f192c8182e8f18d7bef",
+        "android_client_info": {
+          "package_name": "com.wallet.jost_pay_wallet"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmf_H3lbRWtRb7QDHXaZiz5Vl4Mflttqc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

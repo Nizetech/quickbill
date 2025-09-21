@@ -188,50 +188,26 @@ class _SettingScreenState extends State<SettingScreen> {
                         themeProvider: themeProvider,
                         title: "Settings",
                       ),
-                      Container(
-                          height: 0.5,
-                          decoration:
-                              const BoxDecoration(color: Color(0xFFF3F4F6))),
+                    
                       const SizedBox(height: 16),
-                      Container(
-                        padding: const EdgeInsets.only(top: 8, bottom: 8),
-                        child: InkWell(
-                          onTap: () => dashProvider.changeBottomIndex(7),
-                          child: Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    color: Theme.of(context)
-                                        .scaffoldBackgroundColor),
-                                child: Image.asset(
-                                  "assets/images/help-square.png",
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              Text("About Us",
-                                  style: MyStyle.tx14Black.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    color: themeProvider.isDarkMode()
-                                        ? const Color(0XFFCBD2EB)
-                                        : const Color(0xff30333A),
-                                  )),
-                              const Spacer(),
-                              Image.asset(
-                                "assets/images/right.png",
-                                fit: BoxFit.cover,
-                              ),
-                            ],
-                          ),
-                        ),
+                      _buildSettingCard(
+                        image: "assets/images/help-square.png",
+                        onTap: () => dashProvider.changeBottomIndex(7), 
+                        themeProvider: themeProvider,
+                        title: "About Us",
                       ),
-                      // const SizedBox(
-                      //   height: 8,
-                      // ),
+                      _buildSettingCard(
+                        icon: Icons.ads_click_sharp,
+                        onTap: () => dashProvider.changeBottomIndex(10),
+                        themeProvider: themeProvider,
+                        title: "How It Works",
+                      ),
+                
                       Container(
-                        padding: const EdgeInsets.only(top: 8, bottom: 8),
+                        padding: const EdgeInsets.only(
+                          top: 8,
+                          bottom: 8,
+                        ),
                         child: InkWell(
                           onTap: () {
                             Navigator.push(

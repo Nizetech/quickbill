@@ -147,6 +147,12 @@ class _DepositDetailsState extends State<DepositDetails> {
                         CustomButton(
                           text: 'Proceed',
                           onTap: () {
+                            if (model.userModel?.user?.idVerified == false &&
+                                num.parse(amount.text) > 20000) {
+                              ErrorToast(
+                                  "You must complete full verification on your account before you can deposit more than 20,000 NGN.");
+                              return;
+                            } else
                             if (amount.text.isEmpty || bank.text.isEmpty) {
                               ErrorToast('Please fill all fields');
                             } else if (int.parse(amount.text) <= 100) {

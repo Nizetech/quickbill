@@ -1,61 +1,117 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
+import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/common/button.dart';
 import 'package:provider/provider.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 class BankWebview extends StatefulWidget {
   final String url;
   final bool isCard;
-  const BankWebview({super.key, required this.url, this.isCard = false});
+  final bool isCardTransfer;
+  const BankWebview({
+    super.key,
+    required this.url,
+    this.isCard = false,
+    this.isCardTransfer = false,
+  });
 
   @override
   State<BankWebview> createState() => _BankWebviewState();
 }
 
 class _BankWebviewState extends State<BankWebview> {
-  // late InAppWebViewController _webViewController;
+  String path =
+      'https://jostpay.com/squard_redirect?reference=CD-356178-000243';
   bool isLoading = true;
-  WebViewController? controller;
-  @override
-  void initState() {
-    super.initState();
-    controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onProgress: (int progress) {
-            // Update loading bar.
-          },
-          onNavigationRequest: (NavigationRequest request) {
-            if (request.url.isNotEmpty) {
-              Get.close(2);
-            }
-            return NavigationDecision.prevent;
-          },
-          onPageStarted: (String url) {},
-          onPageFinished: (String url) {
-            setState(() {
-              isLoading = false;
-            });
-          },
-          onHttpError: (HttpResponseError error) {},
-          onWebResourceError: (WebResourceError error) {},
-        ),
-      )
-      ..loadRequest(Uri.parse(widget.url));
-  }
-
+  InAppWebViewController? controller;
   @override
   Widget build(BuildContext context) {
+    final account = context.read<AccountProvider>();
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
+    log('contains: ${path.contains('?reference')}');
     return Scaffold(
         body: SafeArea(
       child: Stack(
         children: [
-          WebViewWidget(controller: controller!),
+          Column(
+            children: [
+              SizedBox(height: 50),
+              Expanded(
+                child: InAppWebView(
+                  initialUrlRequest: URLRequest(
+                    url: WebUri(widget.url),
+                  ),
+                  shouldOverrideUrlLoading:
+                      (controller, navigationAction) async {
+                    return NavigationActionPolicy.ALLOW;
+                  },
+                  onReceivedError: (controller, request, error) {
+                    log('error: ${error.description}');
+                  },
+
+                  onLoadStart: (controller, request) async {
+                    log('load start :=> ${request?.uriValue.path}');
+                    log('load start:=> ${request?.uriValue}');
+                    bool isDashboard = request?.uriValue.path == '/dashboard';
+                    bool isDepositDone =
+                        request?.uriValue.path == '/squard_redirect';
+                    log('isDepositDone:=> $isDepositDone');
+                    if (isDepositDone == true) {
+                      String ref = request?.path.split('reference=')[1] ?? '';
+                      log('ref:=> $ref');
+                      await account.getSquardCallback(
+                          ref: ref,
+                          callback: () async {
+                            Get.close(2);
+                            await account.getUserBalance();
+                          });
+                    }
+                    log('isDashboard:=> $isDashboard');
+                    if (isDashboard) {
+                      Get.close(2);
+                      await account.getUserBalance();
+                    }
+                  },
+                  onLoadStop: (controller, request) {
+                    setState(() {
+                      isLoading = false;
+                    });
+                  },
+                  onReceivedLoginRequest: (controller, request) {
+                    log('login request: $request');
+                  },
+                  // initialSettings: InAppWebViewSettings(
+                  //   mediaPlaybackRequiresUserGesture: false,
+                  //   allowsInlineMediaPlayback: true,
+                  // ),
+                  initialSettings: InAppWebViewSettings(
+                    mediaPlaybackRequiresUserGesture: false,
+                    allowsInlineMediaPlayback: true,
+                    allowsAirPlayForMediaPlayback: true,
+                    javaScriptEnabled: true,
+                    useOnNavigationResponse: false,
+                    useOnDownloadStart: true,
+                    supportMultipleWindows: true,
+                    useOnLoadResource: true,
+                    javaScriptCanOpenWindowsAutomatically: true,
+                  ),
+                  //get message from webview
+                  onConsoleMessage: (controller, message) {
+                    log('message:==> ${message.message}');
+                  },
+                  onNavigationResponse: (controller, response) async {
+                    log('navigation response: ${response.response?.url}');
+                    // prevent navigation to other pages
+                  },
+                ),
+              ),
+            ],
+          ),
           Visibility(
             visible: isLoading,
             child: const Center(

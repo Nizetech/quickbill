@@ -207,7 +207,8 @@ class BadCertificateException extends DioException {
   }
 
   @override
-  String get message => "Server is experincing temporary, please try again.";
+  String get message =>
+      "Server is experiencing temporary issues, please try again.";
 
   @override
   String get title => "Server error";

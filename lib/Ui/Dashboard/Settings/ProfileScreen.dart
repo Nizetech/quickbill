@@ -230,7 +230,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Text(model.userModel?.user?.email ?? "",
                               style: MyStyle.tx14Black.copyWith(
                                   color: themedata.tertiary,
-                                  fontWeight: FontWeight.w500))
+                              fontWeight: FontWeight.w500,
+                            ),
+                          )
                         ],
                       ),
                     

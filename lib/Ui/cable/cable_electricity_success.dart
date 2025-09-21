@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -113,7 +114,7 @@ class CableElectSuccessScreen extends StatelessWidget {
     final model = Provider.of<ServiceProvider>(context, listen: false);
     final themedata = Theme.of(context).colorScheme;
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
-    // log('Success data:==> ${data}');
+    log('Success data:==> ${data}');
     return data.isEmpty
         ? PendingScreen(
             title: "Cable subscription is being processed please wait ",
@@ -279,6 +280,11 @@ class CableElectSuccessScreen extends StatelessWidget {
                               data['data']?['customerAddress'] ??
                               data['data']?['customerAddress'] ??
                               'N/A',
+                          themedata: themedata),
+                      if (isTransaction)
+                        _buildInfo(
+                            title: 'Bonus',
+                            value: data['bonus'] ?? 'N/A',
                     themedata: themedata),
                       // _buildInfo(
                       //           title: !isTransaction

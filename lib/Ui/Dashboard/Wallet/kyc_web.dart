@@ -8,6 +8,7 @@ import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/common/button.dart';
+import 'package:jost_pay_wallet/constants/api_constants.dart';
 import 'package:jost_pay_wallet/constants/constants.dart';
 import 'package:jost_pay_wallet/utils/toast.dart';
 import 'package:provider/provider.dart';
@@ -31,7 +32,8 @@ class _KycWebviewState extends State<KycWebview> {
     super.initState();
     String token = box.get(kAccessToken);
     _requestPermissions();
-    url = 'https://project.jostpay.com/face-capture?token=$token';
+    url = '${ApiRoute.baseUrlWeb}face-capture?token=$token';
+    log('url: $url');
     // controller = WebViewController()
   }
 
@@ -62,9 +64,19 @@ class _KycWebviewState extends State<KycWebview> {
                 log('error: ${error.description}');
               },
               onLoadStop: (controller, request) {
+                log('load stop:====>>>>> ${request?.toString()}');
                 setState(() {
                   isLoading = false;
                 });
+              },
+              shouldOverrideUrlLoading: (controller, navigationAction) async {
+                return NavigationActionPolicy.ALLOW;
+              },
+
+              onReceivedServerTrustAuthRequest: (controller, challenge) async {
+                log('ServerTrustAuthRequest for host: ${challenge.protectionSpace.host}');
+                return ServerTrustAuthResponse(
+                    action: ServerTrustAuthResponseAction.PROCEED);
               },
               initialUrlRequest: URLRequest(
                 url: WebUri(url),
@@ -72,32 +84,70 @@ class _KycWebviewState extends State<KycWebview> {
               initialSettings: InAppWebViewSettings(
                 mediaPlaybackRequiresUserGesture: false,
                 allowsInlineMediaPlayback: true,
+                allowsAirPlayForMediaPlayback: true,
+                javaScriptEnabled: true,
+                useOnNavigationResponse: false,
+                useOnDownloadStart: true,
+                supportMultipleWindows: true,
+                useOnLoadResource: true,
+                javaScriptCanOpenWindowsAutomatically: true,
               ),
-              //get message from webview
-              onConsoleMessage: (controller, message) {
-                log('message:==> ${message.message}');
-                if (message.message.contains('Uncaught ReferenceError')) {
-                  Get.back();
+              onLoadResource: (controller, request) async {
+                log('my load resource:===>>> ${request.url}');
+                if (request.url.toString() ==
+                    'https://jostpay.com/verification/verify') {
+                  await account.getUserProfile().then((value) {
+                    Get.back();
+                  });
                   SuccessToast(
                       'Your KYC Verification has been submitted successfully');
                 }
               },
-              onNavigationResponse: (controller, response) async {
-                log('navigation response: ${response.response?.url}');
-                // prevent navigation to other pages
-                if (response.response?.url.toString().isNotEmpty ?? false) {
-                  log('success');
+
+              onWebViewCreated: (controller) {
+                controller.addJavaScriptHandler(
+                  handlerName: 'onSuccess',
+                  callback: (args) async {},
+                );
+                this.controller = controller;
+              },
+              //get message from webview
+              onConsoleMessage: (controller, message) async {
+                log('my console message:==> ${message.message}');
+                if (message.message.contains('Uncaught ReferenceError')) {
                   await account.getUserProfile().then((value) {
                     Get.back();
                   });
+                  SuccessToast(
+                      'Your KY`C Verification has been submitted successfully');
+                }
+              },
+              onNavigationResponse: (controller, response) async {
+                log('my navigation response: ${response.response?.url}');
+                if (response.response?.url.toString().isNotEmpty ?? false) {
+                  log('my success');
+                  await account.getUserProfile().then((value) {
+                    Get.back();
+                  });
+                  SuccessToast(
+                      'Your KYC Verification has been submitted successfully');
                   return;
                 } else {
-                  log('error');
+                  log('my error');
                 }
                 return null;
               },
+
+              // Or use onLoadStart
+              onLoadStart: (controller, url) async {
+                final urlString = url?.toString();
+                log('my load start:====>>>>> ${urlString}');
+                if (urlString != null && urlString.contains('success')) {
+                  // Handle success
+                }
+              },
               onPermissionRequest: (controller, request) async {
-                log('permission request: ${request.resources}');
+                log('my permission request: ${request.resources}');
                 return Future.value(
                   PermissionResponse(
                     action: PermissionResponseAction.GRANT,

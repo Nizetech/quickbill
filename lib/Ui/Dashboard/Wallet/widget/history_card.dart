@@ -1,3 +1,4 @@
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -39,15 +40,18 @@ class HistoryCard extends StatelessWidget {
         return MyColor.dark01GreenColor;
       } else if (transaction.type == Type.SPRAY && transaction.status == '1') {
         return MyColor.orange01Color;
+      } else if (transaction.status == 'pending' ||
+          transaction.apiStatus == 'pending') {
+        return MyColor.orange01Color;
+      } else if (transaction.apiStatus == 'failed') {
+        return MyColor.redColor;
+      } else if (transaction.apiStatus == 'refunded') {
+        return MyColor.purpleColor;
       } else if (transaction.status == 'success' || transaction.status == '1') {
         return MyColor.dark01GreenColor;
       } else if (transaction.type == Type.AUTOREPAIR &&
           transaction.status!.isNotEmpty) {
         return MyColor.dark01GreenColor;
-      } else if (transaction.status == 'pending') {
-        return MyColor.orange01Color;
-      } else if (transaction.apiStatus == 'refunded') {
-        return MyColor.purpleColor;
       } else {
         return MyColor.redColor;
       }
@@ -107,7 +111,7 @@ class HistoryCard extends StatelessWidget {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     final themedata = Theme.of(context).colorScheme;
     final model = context.read<ServiceProvider>();
-    // log('transaction:==> ${transaction.toJson()}');
+    log('transaction:==> ${transaction.toJson()}');
     return Row(
       children: [
         Container(
@@ -330,7 +334,7 @@ class HistoryCard extends StatelessWidget {
                                           MyColor.dark01GreenColor ||
                                       isSpecialTransactionService(
                                               transaction) &&
-                                          transaction.status == '1'
+                                          transaction.status == '1' 
                                   ? Icons.done
                                   : Icons.close,
                               size: 10,

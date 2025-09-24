@@ -552,22 +552,23 @@ class _PaintScreenState extends State<PaintScreen> {
                                        
                                         ).then((value) async {
                                           if (value != null) {
-                                            // File file =
-                                            //     File(value.files.single.path!);
-                                            // Check the file size
-                                            // bool enoughSpace =
-                                            //     await checkUploadSize(
-                                            //   file,
-                                            // );
-                                            // if (enoughSpace) {
+                                            File file =
+                                                File(value.files.single.path!);
                                             setState(() {
                                               selectedFile =
                                                   File(value.files.first.path!);
                                             });
+                                            // Check the file size
+                                            bool enoughSpace =
+                                                await checkUploadSize(
+                                              file,
+                                            );
+                                            if (enoughSpace == true) {
                                             base64Image = await fileToBase64(
                                                 selectedFile!);
+                                            }
                                             model.updateImage(base64Image);
-                                            // }
+                                        
                                           }
                                         });
                                 },
@@ -632,7 +633,9 @@ class _PaintScreenState extends State<PaintScreen> {
                                 onTap: () {
                                   setState(() {
                                     selectedFile = null;
+                                    base64Image = '';
                                   });
+                                  model.clearImage();
                                 },
                               child: SvgPicture.asset(
                                 isDark

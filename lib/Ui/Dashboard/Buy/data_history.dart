@@ -246,12 +246,16 @@ class _DataHistoryState extends State<DataHistory> {
                                               isRefunded:
                                                   item.apiStatus == 'refunded',
                                               onTap: () {
-                                                if (item.status != '1' &&
-                                                        item.apiStatus !=
-                                                            'refunded' ||
+                                                if (
+                                                    // item.status != '1' ||
+                                                    item.apiStatus !=
+                                                            'refunded' &&
+                                                        // item.apiStatus!
+                                                        //     .toLowerCase()
+                                                        //     .contains('pending')
                                                     item.apiStatus!
-                                                        .toLowerCase()
-                                                        .contains('pending')) {
+                                                                .toLowerCase() !=
+                                                            'success') {
                                                   ErrorToast(
                                                       'No receipt available yet. Your order has not been completed.');
                                                 } else {

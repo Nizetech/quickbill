@@ -244,13 +244,17 @@ class _BuyAirtimeState extends State<BuyAirtime> {
                                               isRefunded:
                                                   item.apiStatus == 'refunded',
                                               onTap: () {
-                                                if (item.status != '1' &&
-                                                        item.apiStatus !=
-                                                            'refunded' ||
-                                                    
+                                                if (
+                                                    // item.status != '1' ||
                                                     item.apiStatus!
-                                                        .toLowerCase()
-                                                        .contains('pending')) {
+                                                                .toLowerCase() !=
+                                                            'success' &&
+                                                        item.apiStatus !=
+                                                            'refunded'
+                                                    //   item.apiStatus!
+                                                    //       .toLowerCase()
+                                                    //       .contains('pending')
+                                                    ) {
                                                   ErrorToast(
                                                       'No receipt available yet. Your order has not been completed.');
                                                 } else {

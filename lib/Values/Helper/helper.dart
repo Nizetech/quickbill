@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -12,7 +13,7 @@ class Helper {
 
   Helper._();
 
-  showToast(context,String messages){
+  showToast(context, String messages) {
     Fluttertoast.showToast(
         msg: messages,
         toastLength: Toast.LENGTH_SHORT,
@@ -20,22 +21,19 @@ class Helper {
         timeInSecForIosWeb: 1,
         backgroundColor: MyColor.darkGrey01Color,
         textColor: MyColor.whiteColor,
-        fontSize: 15.0
-    );
+        fontSize: 15.0);
   }
 
-
-  showLoader(){
+  showLoader() {
     return const Center(
         child: CircularProgressIndicator(
-          color: MyColor.greenColor,
-        )
-    );
+      color: MyColor.greenColor,
+    ));
   }
 
-  showAlertDialog(BuildContext context){
-    AlertDialog alert =  AlertDialog(
-      backgroundColor:MyColor.boarderColor,
+  showAlertDialog(BuildContext context) {
+    AlertDialog alert = AlertDialog(
+      backgroundColor: MyColor.boarderColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),
@@ -45,9 +43,9 @@ class Helper {
             backgroundColor: Colors.white,
             valueColor: AlwaysStoppedAnimation<Color>(MyColor.greenColor),
           ),
-
           SizedBox(width: 20),
-          Text("Loading...",
+          Text(
+            "Loading...",
             style: TextStyle(
               fontSize: 18,
               color: MyColor.whiteColor,
@@ -56,16 +54,14 @@ class Helper {
         ],
       ),
     );
-    showDialog(barrierDismissible: false,
-      context:context,
-      builder:(BuildContext context){
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
         return alert;
       },
     );
   }
-
-
-
 }
 
 String truncateEmail(String email) {
@@ -78,8 +74,7 @@ String truncateEmail(String email) {
 }
 
 void launchWeb(String url) async {
-  await launchUrl(
-    Uri.parse(url),
+  await launchUrl(Uri.parse(url),
       mode: LaunchMode.externalApplication,
       webViewConfiguration: WebViewConfiguration());
 }
@@ -143,14 +138,15 @@ String isToday(DateTime date) {
   }
 }
 
-
 Future<bool> checkUploadSize(File selectedFile) async {
   int fileSizeInBytes = await selectedFile.length();
-  // Check if file size is greater than 100KB
-  if (fileSizeInBytes > 102400) {
-    ErrorToast(
-      'The file size exceeds 100KB. Please select a smaller file.',
-    );
+  // Check if file size is greater than 500KB
+  log("Size $fileSizeInBytes");
+  if (fileSizeInBytes > 512000) {
+    log('The file size exceeds 500KB. Please select a smaller file.');
+    // ErrorToast(
+    //   'The file size exceeds 500KB. Please select a smaller file.',
+    // );
     return false;
   }
   return true;

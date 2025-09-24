@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -75,6 +76,12 @@ class ServiceProvider with ChangeNotifier {
 
   void updateImage(String image) {
     base64Image = image;
+    notifyListeners();
+  }
+
+  void clearImage() {
+    base64Image = '';
+    print("base64Image $base64Image");
     notifyListeners();
   }
 
@@ -778,6 +785,7 @@ class ServiceProvider with ChangeNotifier {
       Get.to(const VerifyingScreen());
 
       var res = await ServiceRepo().buyElectricity(data);
+      log('electricity response: $res');
       if (res['status'] == false || res['result'] == false) {
         // hideLoader();
         if (res['message'].runtimeType == String) {

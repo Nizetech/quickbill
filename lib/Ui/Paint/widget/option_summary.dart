@@ -172,7 +172,7 @@ class _OptionSummaryState extends State<OptionSummary> {
                   if ((widget.rentType ?? -1) >= 0 &&
                       (widget.carType ?? "").isNotEmpty &&
                       (widget.total ?? "").isNotEmpty &&
-                      (widget.image ?? "").isNotEmpty &&
+                      // (widget.image ?? "").isNotEmpty &&
                       widget.date != null &&
                       widget.time.isNotEmpty &&
                       widget.total != null &&
@@ -185,7 +185,7 @@ class _OptionSummaryState extends State<OptionSummary> {
                             time: widget.time,
                             date: widget.date!,
                             price15: widget.price15,
-                            image: widget.image!,
+                            image: widget.image ?? "",
                             rentType: widget.rentType!,
                             carType: widget.carType!,
                             total: widget.total!.replaceAll(',', ''),

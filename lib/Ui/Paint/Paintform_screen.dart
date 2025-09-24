@@ -1,3 +1,4 @@
+import 'dart:developer';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -311,7 +312,8 @@ class _PaintformScreenState extends State<PaintformScreen> {
                                   : careDuration == 1
                                       ? 90
                                       : 180;
-                              num price = num.parse(touchPrice(
+                              num price = num.parse(
+                                touchPrice(
                                   careIndex: careDuration,
                                   parkageIndex: packageIndex,
                                   color: model.colorPaintModel!.color!,
@@ -515,16 +517,16 @@ class _PaintformScreenState extends State<PaintformScreen> {
                       ],
                       if (packageIndex != 1 && painterindex == 0)
                         Container(
-                          padding: EdgeInsets.all(10),
-                          margin: const EdgeInsets.only(bottom: 10),
-                          decoration: BoxDecoration(
-                            color:
-                                MyColor.dark01GreenColor.withValues(alpha: 0.1),
-                            borderRadius: BorderRadius.circular(15),
-                            border: Border.all(
-                              color: MyColor.dark01GreenColor,
+                            padding: EdgeInsets.all(10),
+                            margin: const EdgeInsets.only(bottom: 10),
+                            decoration: BoxDecoration(
+                              color: MyColor.dark01GreenColor
+                                  .withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(15),
+                              border: Border.all(
+                                color: MyColor.dark01GreenColor,
+                              ),
                             ),
-                          ),
                             child:
                                 // Text(
                                 //   ""
@@ -542,10 +544,10 @@ class _PaintformScreenState extends State<PaintformScreen> {
                                     text:
                                         "This cost covers paint, equipment rental, interior/engine wash, labour, and VAT. If any dents or damaged parts are found on your vehicle, the invoice will be updated to include repair or replacement costs. Please note that the aftercare service does not cover scratches or damage resulting from driver error, collisions, or accidental impact. For full details and a clear understanding, kindly refer to our ",
                                     style: MyStyle.tx12Black.copyWith(
-                              height: 1.5,
-                              color: MyColor.dark01GreenColor,
-                              fontWeight: FontWeight.w500,
-                            ),
+                                      height: 1.5,
+                                      color: MyColor.dark01GreenColor,
+                                      fontWeight: FontWeight.w500,
+                                    ),
                                   ),
                                   TextSpan(
                                     text: "Terms and Conditions",
@@ -564,8 +566,7 @@ class _PaintformScreenState extends State<PaintformScreen> {
                                   ),
                                 ],
                               ),
-                            )
-                        ),
+                            )),
                       PaintSummary(
                         time: widget.rentalData.time,
                         date: dateFormat.format(widget.rentalData.date),
@@ -641,6 +642,8 @@ class _PaintformScreenState extends State<PaintformScreen> {
                                     .split(" ")
                                     .first,
                             };
+                            log("sprayData $sprayData");
+                            // return;
                             if (selectedTouch.isEmpty && packageIndex == 1) {
                               ErrorToast('Please select at least one touch');
                             } else {

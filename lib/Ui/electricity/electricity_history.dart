@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -49,6 +50,7 @@ class _ElectricityHistoryState extends State<ElectricityHistory> {
 
     return Scaffold(
       body: Consumer<ServiceProvider>(builder: (context, model, _) {
+        // log('electricity history model: ${model.electricityHistoryModel?.toJson()}');
         return SafeArea(
           child: Padding(
             padding: const EdgeInsets.only(top: 10, left: 24, right: 24),
@@ -234,7 +236,7 @@ class _ElectricityHistoryState extends State<ElectricityHistory> {
                                               height: 8.h,
                                             ),
                                             StatusViewReceipt(
-                                              status: item.status!,
+                                              status: item.apiStatus!,
                                               isRefunded:
                                                   item.apiStatus == 'refunded',
                                               onTap: () {
@@ -245,7 +247,7 @@ class _ElectricityHistoryState extends State<ElectricityHistory> {
                                                     isRefunded:
                                                         item.apiStatus ==
                                                             'refunded',
-                                                    status: item.status!,
+                                                    status: item.apiStatus!,
                                                     serviceDetails: item
                                                             .discoName
                                                             ?.capitalizeFirst ??
@@ -257,8 +259,16 @@ class _ElectricityHistoryState extends State<ElectricityHistory> {
                                                     amount: item.amount!,
                                                     date: item.updatedAt!,
                                                   ));
-                                                } else if (item.apiStatus !=
-                                                        'refunded' &&
+                                                } else if (
+                                                    // item.apiStatus ==
+                                                    //       'pending' ||
+                                                    //   item.apiStatus ==
+                                                    //       'failed' ||
+                                                    item.apiStatus !=
+                                                            'refunded' &&
+                                                        item.apiStatus!
+                                                                .toLowerCase() !=
+                                                            'success' &&
                                                     item.status != '1' &&
                                                     !item.apiStatus!
                                                         .toLowerCase()

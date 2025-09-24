@@ -229,23 +229,22 @@ class _CableHistoryState extends State<CableHistory> {
                                               height: 8.h,
                                             ),
                                             StatusViewReceipt(
-                                              status: item.status!,
+                                              status: item.apiStatus!,
                                               isServices:
                                                   item.apiStatus == 'refunded',
                                               isRefunded:
                                                   item.apiStatus == 'refunded',
                                               onTap: () {
-                                                if (item.apiStatus !=
-                                                        'refunded' &&
+                                                if (item.apiStatus!
+                                                                .toLowerCase() !=
+                                                            'success' &&
+                                                        item.apiStatus !=
+                                                            'refunded' ||
                                                     item.status != '1' &&
                                                     !item.apiStatus!
                                                             .toLowerCase()
                                                             .contains(
-                                                                'complete') &&
-                                                        !item.apiStatus!
-                                                            .toLowerCase()
-                                                            .contains(
-                                                                'success')) {
+                                                                'complete')) {
                                                   ErrorToast(
                                                       'No receipt available yet. Your order has not been completed.');
                                                 } else {

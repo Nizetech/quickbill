@@ -1,3 +1,4 @@
+import 'dart:developer';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
@@ -15,12 +16,12 @@ import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 
 class OtpScreen extends StatefulWidget {
   final String email;
-  // final String? authToken;
+  final String? authToken;
   final bool isForgetPass;
   final bool is2Fa;
   const OtpScreen(
       {super.key,
-      // this.authToken,
+      this.authToken,
       required this.email,
       this.isForgetPass = false,
       this.is2Fa = false});
@@ -42,6 +43,8 @@ class _OtpScreenState extends State<OtpScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Consumer<AuthProvider>(builder: (context, model, _) {
+        log("isDark:====>>> ${widget.authToken}");
+        log("isDark Model:====>>> ${model.authToken}");
         return SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.only(top: 70, right: 16.w, left: 16.w),

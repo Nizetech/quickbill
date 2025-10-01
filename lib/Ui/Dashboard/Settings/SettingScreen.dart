@@ -3,11 +3,13 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/DashboardProvider.dart';
+import 'package:jost_pay_wallet/Provider/auth_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Authentication/SignInScreen.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/HelpSupport.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Settings/ProfileScreen.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Settings/Rewards/reward_screen.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Settings/connect_withUs.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/kyc_web.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/profile_image.dart';
 import 'package:jost_pay_wallet/Ui/Static/AccountSetting.dart';
@@ -45,7 +47,8 @@ class _SettingScreenState extends State<SettingScreen> {
     final dashProvider = Provider.of<DashboardProvider>(context, listen: true);
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: Consumer<AccountProvider>(builder: (context, model, _) {
+      body: Consumer2<AccountProvider, AuthProvider>(
+          builder: (context, model, auth, _) {
         return SafeArea(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(24, 10, 24, 10),
@@ -188,7 +191,6 @@ class _SettingScreenState extends State<SettingScreen> {
                         themeProvider: themeProvider,
                         title: "Settings",
                       ),
-                    
                       const SizedBox(height: 16),
                       _buildSettingCard(
                         image: "assets/images/help-square.png",
@@ -246,20 +248,30 @@ class _SettingScreenState extends State<SettingScreen> {
                           ),
                         ),
                       ),
-                      // const SizedBox(
-                      //   height: 8,
-                      // ),
+                      _buildSettingCard(
+                        icon: Icons.language,
+                        onTap: () {
+                          Get.to(() => const ConnectWithUs());
+                        },
+                        themeProvider: themeProvider,
+                        title: "Connect with us",
+                      ),
                       Container(
                         padding: const EdgeInsets.only(top: 8, bottom: 8),
                         child: InkWell(
                           onTap: () async {
-                            await box.delete(kAccessToken);
+                            await box.deleteAll([
+                              kAccessToken,
+                              kExistingUser,
+                              isPinEnabled,
+                            ]);
                             if (themeProvider.isDarkMode()) {
                               themeProvider.toggleTheme(false);
                             }
+                            // google logout
                             await box.delete('themeMode');
-                            await box.clear();
-                            setState(() {});
+                            // await box.clear();
+                            await auth.googleLogout();
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(

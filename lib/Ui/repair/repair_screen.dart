@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/service_provider.dart';
@@ -258,7 +258,6 @@ class _RepairScreenState extends State<RepairScreen> {
                                       height: 7,
                                     ),
                                     CustomTextField(
-                                     
                                       controller: make,
                                       text: "Toyota",
                                     ),
@@ -298,7 +297,6 @@ class _RepairScreenState extends State<RepairScreen> {
                                     CustomTextField(
                                       text: "Camry",
                                       controller: carModel,
-                                   
                                     ),
                                   ],
                                 ),
@@ -323,7 +321,6 @@ class _RepairScreenState extends State<RepairScreen> {
                                       text: "2022",
                                       controller: year,
                                       keyboardType: TextInputType.number,
-                                    
                                     ),
                                   ],
                                 ),
@@ -352,7 +349,6 @@ class _RepairScreenState extends State<RepairScreen> {
                               text: "",
                               keyboardType: TextInputType.number,
                               controller: agentContact,
-                             
                             ),
                             const SizedBox(height: 16),
                             Text("Name",
@@ -365,7 +361,6 @@ class _RepairScreenState extends State<RepairScreen> {
                             CustomTextField(
                               text: "",
                               controller: agentName,
-                            
                             ),
                             SizedBox(height: 16),
                           ],
@@ -446,7 +441,6 @@ class _RepairScreenState extends State<RepairScreen> {
                               text: "Additional Information",
                               minlines: 5,
                               controller: info,
-                             
                             ),
                           ],
                           ...[
@@ -565,42 +559,48 @@ class _RepairScreenState extends State<RepairScreen> {
                                     partProcureindex == -1 ||
                                     partReplacedIndex == -1) {
                                   ErrorToast("Please fill all the fields");
-                                } 
-                                 else {
-                                {
-                                  Map<String, dynamic> data = {
-                                    "repair_type": repairOption.text,
-                                    "appointment_pickup_date": selectedDate,
-                                    "vehicle_status": status.text,
-                                    "vehicle_make": make.text,
-                                    "vehicle_model": carModel.text,
-                                    "vehicle_year": year.text,
-                                    "part_accessory_procurement":
-                                        partProcure[partProcureindex]['title'],
-                                    "additional_info": info.text,
-                                    "replaced_part_handling":
-                                        replacedPart[partReplacedIndex]
-                                              ['title'],                 
-                                    "agent_contact_number": agentContact.text,
-                                    "agent_contact_name": agentName.text,
-                                  };
-                                  // return;
+                                } else {
+                                  {
+                                    Map<String, dynamic> data = {
+                                      "repair_type": repairOption.text,
+                                      "appointment_pickup_date": selectedDate,
+                                      "vehicle_status": status.text,
+                                      "vehicle_make": make.text,
+                                      "vehicle_model": carModel.text,
+                                      "vehicle_year": year.text,
+                                      "part_accessory_procurement":
+                                          partProcure[partProcureindex]
+                                              ['title'],
+                                      "additional_info": info.text,
+                                      "replaced_part_handling":
+                                          replacedPart[partReplacedIndex]
+                                              ['title'],
+                                      if (agentContact.text.isNotEmpty)
+                                        "agent_contact_number":
+                                            int.parse(agentContact.text),
+                                      if (optionIndex == 2) "price": 5000,
+                                      "agent_contact_name": agentName.text,
+                                    };
+                                    // return;
                                     model.buyRepaires(data,
                                         account:
                                             context.read<AccountProvider>(),
                                         callback: () {
-                                    repairOption.clear();
-                                    date.clear();
-                                    status.clear();
-                                    make.clear();
-                                    carModel.clear();
-                                    year.clear();
-                                    partProcureindex = -1;
-                                    partReplacedIndex = -1;
-                                    info.clear();
-                                    agentContact.clear();
-                                    agentName.clear();
-                                  });
+                                      repairOption.clear();
+                                      date.clear();
+                                      status.clear();
+                                      make.clear();
+                                      carModel.clear();
+                                      year.clear();
+                                      partProcureindex = -1;
+                                      partReplacedIndex = -1;
+                                      info.clear();
+                                      agentContact.clear();
+                                      agentName.clear();
+                                      Get.isDialogOpen!
+                                          ? Get.close(2)
+                                          : Navigator.pop(context);
+                                    });
                                   }
                                 }
                               },

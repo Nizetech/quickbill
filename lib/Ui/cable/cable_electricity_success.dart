@@ -117,7 +117,9 @@ class CableElectSuccessScreen extends StatelessWidget {
     log('Success data:==> ${data}');
     return data.isEmpty
         ? PendingScreen(
-            title: "Cable subscription is being processed please wait ",
+            title: isCable
+                ? "Cable subscription is being processed please wait "
+                : "Electricity subscription is being processed please wait ",
             onTap: () {
               if (isCable) {
                 model.getCableTransactions(

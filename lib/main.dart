@@ -7,6 +7,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -32,28 +33,30 @@ import 'Provider/InternetProvider.dart';
 @visibleForTesting
 List<CameraDescription> get cameras => _cameras;
 List<CameraDescription> _cameras = <CameraDescription>[];
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print("Handling a background message: ${message.messageId}");
-}
+// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+//   print("Handling a background message: ${message.messageId}");
+// }
 void main() async {
   HttpOverrides.global = MyHttpOverrides();
   try {
     WidgetsFlutterBinding.ensureInitialized();
+    await dotenv.load(fileName: ".env");
     await Permission.notification.isDenied.then((value) {
       if (value) {
         Permission.notification.request();
       }
     });
+    //!===== Firebase ================
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-    final firebaseMessaging = FirebaseMessaging.instance;
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('Got a message whilst in the foreground! $message');
-      NotificationHelper().handleMessage(message);
-    });
-    await firebaseMessaging.getAPNSToken();
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    // final firebaseMessaging = FirebaseMessaging.instance;
+    // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    //   print('Got a message whilst in the foreground! $message');
+    //   NotificationHelper().handleMessage(message);
+    // });
+    // await firebaseMessaging.getAPNSToken();
+    // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
     _cameras = await availableCameras();
   } on CameraException catch (e) {
@@ -66,11 +69,11 @@ void main() async {
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   await Hive.initFlutter();
   await Hive.openBox(kAppName);
-  await FirebaseAppCheck.instance.activate(
-    androidProvider: AndroidProvider.playIntegrity,
-    appleProvider: AppleProvider.appAttest,
-    webProvider: ReCaptchaV3Provider('recaptcha-v3-site-key'),
-  );
+  // await FirebaseAppCheck.instance.activate(
+  //   androidProvider: AndroidProvider.playIntegrity,
+  //   appleProvider: AppleProvider.appAttest,
+  //   webProvider: ReCaptchaV3Provider('recaptcha-v3-site-key'),
+  // );
   const fatalError = true;
   // Non-async exceptions
   FlutterError.onError = (errorDetails) {

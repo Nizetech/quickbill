@@ -1,3 +1,4 @@
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,6 +19,7 @@ class AuthProvider with ChangeNotifier {
 
   void updateAuthToken(String token) {
     authToken = token;
+    log("authToken:====>>> $authToken");
     notifyListeners();
   }
 
@@ -44,6 +46,7 @@ class AuthProvider with ChangeNotifier {
             ErrorToast(message);
           }
         } else {
+          print("value['token']:====>>> ${value['token']}");
           updateAuthToken(value['token']);
           hideLoader();
           updateAuthToken(value['token']);
@@ -111,6 +114,77 @@ class AuthProvider with ChangeNotifier {
         }
       });
     } catch (e) {
+      ErrorToast(e.toString());
+    }
+  }
+
+  Future<void> googleLogout() async {
+    try {
+      showLoader();
+      await AuthRepo().googleLogout();
+      // Clear the auth token
+      updateAuthToken('');
+      hideLoader();
+      SuccessToast('Logged out successfully');
+    } catch (e) {
+      hideLoader();
+      ErrorToast(e.toString());
+    }
+  }
+
+  Future<void> googleAuth({
+    required String fcmToken,
+    required DashboardProvider dashProvider,
+    required AccountProvider account,
+  }) async {
+    try {
+      showLoader();
+      await AuthRepo().googleAuth(fcmToken).then((value) async {
+        hideLoader();
+        if (value.isNotEmpty) {
+          if (value['status'] == false || value['result'] == false) {
+            if (value['message'].runtimeType == String) {
+              ErrorToast(value['message']);
+            } else {
+              String message = '';
+              value['message'].forEach((key, value) {
+                message += '$value';
+              });
+              ErrorToast(message);
+            }
+            return;
+          } else {
+            // Store the token properly
+            if (value['token'] != null) {
+              updateAuthToken(value['token']);
+            }
+            
+            dashProvider.changeBottomIndex(0);
+            var data = await AccountRepo().getProfile();
+            notifyListeners();
+            if (data['user'] != null) {
+              if (data['user']['enable_pin'] != '1' ||
+                  data['user']['enable_pin'] == 'null' ||
+                  data['user']['enable_pin'] == null) {
+                Get.to(
+                  SetPinLogin(
+                    isFromAuth: true,
+                  ),
+                );
+              } else {
+                Get.offAll(BottomNav());
+                SuccessToast('Login Successful');
+              }
+            }
+          }
+          notifyListeners();
+        } else {
+          ErrorToast('Something went wrong');
+          return;
+        }
+      });
+    } catch (e) {
+      hideLoader();
       ErrorToast(e.toString());
     }
   }
@@ -311,8 +385,9 @@ class AuthProvider with ChangeNotifier {
               updateAuthToken('');
               notifyListeners();
               if (data['user'] != null) {
-                
-                if ( data['user']['enable_pin'] != '1' ||  data['user']['enable_pin'] == 'null' ||   data['user']['enable_pin'] == null) {
+                if (data['user']['enable_pin'] != '1' ||
+                    data['user']['enable_pin'] == 'null' ||
+                    data['user']['enable_pin'] == null) {
                   Get.to(
                     SetPinLogin(
                       isFromAuth: true,
@@ -320,7 +395,7 @@ class AuthProvider with ChangeNotifier {
                   );
                 } else {
                   Get.offAll(BottomNav());
-                      // Get.offAll(BottomNav());
+                  // Get.offAll(BottomNav());
                 }
               }
               if (value['message'] != null && value['message'] != '') {
@@ -328,8 +403,7 @@ class AuthProvider with ChangeNotifier {
               } else {
                 SuccessToast('Login Successful');
               }
-            } else {
-            }
+            } else {}
           }
           // }
         }
@@ -375,7 +449,6 @@ class AuthProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-
       hideLoader();
       ErrorToast(e.toString());
     }
@@ -409,7 +482,6 @@ class AuthProvider with ChangeNotifier {
         }
       });
     } catch (e) {
-      
       hideLoader();
       ErrorToast(e.toString());
     }
@@ -444,9 +516,54 @@ class AuthProvider with ChangeNotifier {
         notifyListeners();
       });
     } catch (e) {
-      
       hideLoader();
       ErrorToast(e.toString());
     }
   }
+
+  // Future<void> googleLogin(Map<String, dynamic> data) async {
+  //   try {
+  //     showLoader();
+  //     await AuthRepo().googleLogin(data).then((value) {
+  //       hideLoader();
+  //       if (value.isNotEmpty) {
+  //         if (value['status'] == false || value['result'] == false) {
+  //           if (value['message'].runtimeType == String) {
+  //             ErrorToast(value['message']);
+  //           } else {
+  //             String message = '';
+  //             value['message'].forEach((key, value) {
+  //               message += '$value';
+  //             });
+  //             ErrorToast(message);
+  //           }
+  //           return;
+  //         } else {
+  //           updateAuthToken(value['token']);
+  //           if (value['message'] != null && value['message'] != '') {
+  //             SuccessToast(value['message']);
+  //           } else {
+  //             SuccessToast('Google Sign-In Successful');
+  //           }
+  //           // Navigate to main screen or OTP screen based on response
+  //           if (value['requires_otp'] == true) {
+  //             Get.to(OtpScreen(
+  //               email: data['email'],
+  //               is2Fa: false,
+  //             ));
+  //           } else {
+  //             Get.offAll(BottomNav());
+  //           }
+  //         }
+  //         notifyListeners();
+  //       } else {
+  //         ErrorToast('Something went wrong');
+  //         return;
+  //       }
+  //     });
+  //   } catch (e) {
+  //     hideLoader();
+  //     ErrorToast(e.toString());
+  //   }
+  // }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jost_pay_wallet/Provider/service_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
+import 'package:jost_pay_wallet/Ui/Domain/widget/domain_empty_state.dart';
 import 'package:jost_pay_wallet/Ui/Domain/widget/domain_modal_sheet.dart';
 import 'package:jost_pay_wallet/Ui/Domain/widget/dot.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
@@ -40,6 +41,9 @@ class _DomainScreenState extends State<DomainScreen> {
             : MyColor.mainWhiteColor,
         body: SafeArea(
           child: Consumer<ServiceProvider>(builder: (context, model, _) {
+            if (model.domainListModel?.domainList?.isEmpty ?? false) {
+              return DomainEmptyState();
+            }
             return Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 24, vertical: 20)
@@ -72,9 +76,7 @@ class _DomainScreenState extends State<DomainScreen> {
                         const Spacer(), // Adds flexible space after the text
                       ],
                     ),
-                    const SizedBox(
-                      height: 20,
-                    ),
+                    const SizedBox(height: 20),
                     Expanded(
                       child: SingleChildScrollView(
                         physics: const AlwaysScrollableScrollPhysics(),
@@ -137,15 +139,15 @@ class _DomainScreenState extends State<DomainScreen> {
                                               children: [
                                                 DotLabel(
                                                     text: "Domain",
-                                                    value: item.dns!),
+                                                  value: item.dns!,
+                                                ),
                                                 DotLabel(
                                                     text: "Expiry date",
-                                                    value: item.expiryAt!),
+                                                  value: item.expiryAt!,
+                                                ),
                                               ],
                                             ),
                                             const SizedBox(height: 22),
-
-                                            // Services and SSL
                                             Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
@@ -367,7 +369,8 @@ class _DomainScreenState extends State<DomainScreen> {
                                   itemCount:
                                       model.domainListModel!.domainList!.length,
                                 ),
-                              const SizedBox(height: 24),
+                              // else
+                               
                               // SizedBox(
                               //   width: double.infinity,
                               //   child: OutlinedButton(

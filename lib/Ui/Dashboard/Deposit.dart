@@ -9,6 +9,7 @@ import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/deposit_details.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/kyc_web.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/virtual_account_creation.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/balance_card.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/deposit_limit.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/common/button.dart';
 import 'package:jost_pay_wallet/common/text_field.dart';
@@ -96,6 +97,7 @@ class _DepositState extends State<Deposit> {
                     child: RefreshIndicator(
                   onRefresh: () async {
                     await model.getUserBalance();
+                    await model.getUserProfile();
                   },
                   child: SingleChildScrollView(
                     physics: const AlwaysScrollableScrollPhysics(),
@@ -139,29 +141,29 @@ class _DepositState extends State<Deposit> {
                                 title: depositMethods[index]['title'],
                                 detail: depositMethods[index]['detail'],
                                 fee: depositMethods[index]['fee'],
-                                onTap: model.userModel?.user?.idVerified ==
-                                            false &&
-                                        model.userModel?.user?.basicVerified ==
-                                            false
-                                    ? () {
-                                        Get.to(() => const KycWebview());
-                                      }
-                                    : () {
-                                        if (index == 0) {
-                                          _showAmountInputDialog(context,
-                                              isCard: false,
-                                              themedata: themedata);
-                                        } else if (index == 1) {
-                                          _showAmountInputDialog(context,
-                                              isCard: true,
-                                              themedata: themedata);
-                                        } else {
-                                          Get.to(
-                                            () => const DepositDetails(
-                                                title: 'Manual Deposit'),
-                                          );
-                                        }
-                                      },
+                                onTap:
+                                    //  model.userModel?.user?.idVerified ==
+                                    //             false &&
+                                    //         model.userModel?.user?.basicVerified ==
+                                    //             false
+                                    //     ? () {
+                                    //         Get.to(() => const KycWebview());
+                                    //       }
+                                    //     :
+                                    () {
+                                  if (index == 0) {
+                                    _showAmountInputDialog(context,
+                                        isCard: false, themedata: themedata);
+                                  } else if (index == 1) {
+                                    _showAmountInputDialog(context,
+                                        isCard: true, themedata: themedata);
+                                  } else {
+                                    Get.to(
+                                      () => const DepositDetails(
+                                          title: 'Manual Deposit'),
+                                    );
+                                  }
+                                },
                               );
                             },
                             separatorBuilder: (context, index) =>
@@ -270,11 +272,9 @@ class _DepositState extends State<Deposit> {
                   height: 20,
                 ),
               ),
-              SizedBox(
-                width: 15),
+              SizedBox(width: 15),
               Expanded(
                 child: Column(
-
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
@@ -290,7 +290,6 @@ class _DepositState extends State<Deposit> {
                         fontWeight: FontWeight.w400,
                       ),
                     ),
-                    
                   ],
                 ),
               )
@@ -342,23 +341,24 @@ class _DepositState extends State<Deposit> {
             CustomButton(
               text: 'Confirm',
               onTap: () {
+              
+             
                 final amount = double.tryParse(amountController.text);
                 if (amount == null || amount < 0) {
                   Navigator.of(context).pop();
                   ErrorToast('Please enter a valid amount');
                   return;
-                } else
-                if (account.userModel?.user?.idVerified == false &&
-                    amount > 20000) {
-                  Navigator.of(context).pop();
-                  ErrorToast(
-                      "You must complete full verification on your account before you can deposit more than 20,000 NGN.");
+                } else if (account.userModel?.user?.idVerified == false &&
+                    amount > (account.userModel?.user?.limit ?? 0)) {
+                  // Navigator.of(context).pop();
+                  // ErrorToast(
+                  //     "You must complete full verification on your account before you can deposit more than 20,000 NGN.");
+                  showDepositLimit();
                   return;
                 } else {
                   Navigator.of(context).pop();
                   Get.to(CardFundSummary(
                       amount: amount.toString(), isCard: isCard));
-                
                 }
               },
             ),

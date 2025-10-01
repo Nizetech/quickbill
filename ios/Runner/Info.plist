@@ -6,6 +6,22 @@
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>GIDClientID</key>
+	<string>1076873078718-r1epf6tk41jg62fll00c2357t4f8fsrd.apps.googleusercontent.com</string>
+	<!-- Put me in the [my_project]/ios/Runner/Info.plist file -->
+<!-- Google Sign-in Section -->
+	<key>CFBundleURLTypes</key>
+	<array>
+	<dict>
+		<key>CFBundleTypeRole</key>
+		<string>Editor</string>
+		<key>CFBundleURLSchemes</key>
+		<array>
+			<string>com.googleusercontent.apps.1076873078718-r1epf6tk41jg62fll00c2357t4f8fsrd</string>
+		</array>
+	</dict>
+	</array>
+<!-- End of the Google Sign-in Section -->
 	<key>CFBundleDisplayName</key>
 	<string>JostPay</string>
 	<key>CFBundleExecutable</key>

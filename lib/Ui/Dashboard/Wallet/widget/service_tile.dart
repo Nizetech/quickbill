@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
+import 'package:jost_pay_wallet/Ui/giftCard/widget/verification_prompt.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:provider/provider.dart';
@@ -10,20 +12,27 @@ class ServiceTile extends StatelessWidget {
   final Widget page;
   final String icon, title;
   final bool isTransform;
+  final bool isGiftCard;
   const ServiceTile({
     super.key,
     required this.page,
     required this.icon,
     this.isTransform = false,
     required this.title,
+    this.isGiftCard = false,
   });
 
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
+    final model = Provider.of<AccountProvider>(context, listen: true);
     final themedata = Theme.of(context).colorScheme;
     return InkWell(
-      onTap: () => Get.to(page),
+      onTap: isGiftCard && model.userModel?.user?.idVerified == false
+          ? () {
+              showVerificationPrompt();
+            }
+          : () => Get.to(page),
       child: Container(
         width: 155,
         height: 110,

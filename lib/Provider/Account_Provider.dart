@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -636,41 +638,50 @@ class AccountProvider with ChangeNotifier {
     try {
       Get.to(const VerifyingScreen());
       // showLoader();
+      bool isFailed = false;
+      bool isPending = false;
       AccountRepo().buyAirtime(data).then((value) async {
         // hideLoader();
-        if (value['result'] == null || value['result'] == false || value['result'] == 'failed') {
-          if (value['message'].toString().toLowerCase().contains('fail')) {
+        log('airtime response: $value');
+        isFailed = value['message'].toString().toLowerCase().contains('failed');
+        isPending = value['message'].toString().toLowerCase().contains('pending') || value == {};
+        if (value['result'] == null || value['result'] == false || isFailed || isPending) {
+          // if (value['message'].toString().toLowerCase().contains('fail')) {
             Get.off(PendingFailedPurchase(
-              isData: true,
+              isData: false,
+              amount: data['amount'],
+              phone: data['phone'],
               // isFailed: true,
             ));
-          }
+          // }
           // else {
           //   Get.to(InvalidPurchase(
           //     isData: false,
           //   ));
           // }
-          if (value['message'].runtimeType == String) {
-            ErrorToast(value['message']);
-          } else {
-            String message = '';
-            if (value['message'] == null) {
-              ErrorToast('Something went wrong');
-            } else {
-              value['message'].forEach((key, value) {
-                message += '$value';
-              });
-              ErrorToast(message);
-            }
-          }
-        } else {
-          if (value == {} ||
-              value['message'].toString().toLowerCase().contains('pending')||
-              value['message'].toString().toLowerCase().contains('failed') ) {
-            Get.off(PendingFailedPurchase(
-              isData: true,
-            ));
-          } 
+          // if (value['message'].runtimeType == String) {
+          //   ErrorToast(value['message']);
+          // } else {
+          //   String message = '';
+          //   if (value['message'] == null) {
+          //     ErrorToast('Something went wrong');
+          //   } else {
+          //     value['message'].forEach((key, value) {
+          //       message += '$value';
+          //     });
+          //     ErrorToast(message);
+          //   }
+          // }
+        }
+        //  else {
+          // if (value == {} ||
+          //     value['message'].toString().toLowerCase().contains('pending')||
+          //     value['message'].toString().toLowerCase().contains('failed') ||
+          //     value == {} ) {
+          //   Get.off(PendingFailedPurchase(
+          //     isData: true,
+          //   ));
+          // } 
           // else if (value['message']
           //     .toString()
           //     .toLowerCase()
@@ -687,7 +698,7 @@ class AccountProvider with ChangeNotifier {
               phone: data['phone'],
             ));
           }
-        }
+        // }
 
         notifyListeners();
       });
@@ -702,11 +713,15 @@ class AccountProvider with ChangeNotifier {
       {required String amount, required String plan}) async {
     try {
       // showLoader();  
+        bool isFailed = false;
+        bool isPending = false;
        Get.to(const VerifyingScreen());
       AccountRepo().buyData(data).then((value) async {
         // hideLoader();
-          if (value['result'] == null || value['result'] == false) {
-          if (value['message'].toString().toLowerCase().contains('failed')) {
+        isFailed=value['message'].toString().toLowerCase().contains('failed');
+        isPending = value['message'].toString().toLowerCase().contains('pending') || value == {};
+          if (value['result'] == null || value['result'] == false || isFailed || isPending
+          ) {
             // Get.to(PendingFailedPurchase(
             //   isData: true,
             //   isFailed: true,
@@ -717,32 +732,32 @@ class AccountProvider with ChangeNotifier {
               phone: data['phone'],
               amount: amount,
             ));
-          }
-          if (value['message'].runtimeType == String) {
-            ErrorToast(value['message']);
-          } else {
-            String message = '';
-            value['message'].forEach((key, value) {
-              message += '$value';
-            });
-            ErrorToast(message);
-          }
+          // if (value['message'].runtimeType == String) {
+          //   ErrorToast(value['message']);
+          // } else {
+          //   String message = '';
+          //   value['message'].forEach((key, value) {
+          //     message += '$value';
+          //   });
+          //   ErrorToast(message);
+          // }
           //  else {
           //   Get.to(InvalidPurchase(
           //     isData: true,
           //   ));
           // }
-        } else if (value =={}||
-            value['result'] == 'failed' ||
-              value['message'].toString().toLowerCase().contains('pending') ||
-              value['message'].toString().toLowerCase().contains('fail') ) {
-            Get.off(PendingFailedPurchase(
-              isData: true,
-              plan: plan,
-              phone: data['phone'],
-              amount: amount,
-            ));
-          }
+        } 
+        // else if (value =={}||
+        //     value['result'] == 'failed' ||
+        //       value['message'].toString().toLowerCase().contains('pending') ||
+        //       value['message'].toString().toLowerCase().contains('fail') ) {
+        //     Get.off(PendingFailedPurchase(
+        //       isData: true,
+        //       plan: plan,
+        //       phone: data['phone'],
+        //       amount: amount,
+        //     ));
+        //   }
           //  else if (value['result'] == true &&
           //     value['message'].toString().toLowerCase().contains('fail')) {
           //   Get.to(PendingFailedPurchase(

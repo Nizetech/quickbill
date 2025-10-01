@@ -110,7 +110,7 @@ class ServiceProvider with ChangeNotifier {
         carTypeModel = CarTypeModel.fromJson(res);
         hideLoader();
         notifyListeners();
-      } 
+      }
     } catch (e) {
       print('Error: $e');
       hideLoader();
@@ -142,7 +142,7 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       print('Error: $e');
       ErrorToast(e.toString());
-    } 
+    }
   }
 
   Future<void> getSocialSections({bool isLoading = true}) async {
@@ -169,7 +169,7 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       print('Error: $e');
       ErrorToast(e.toString());
-    } 
+    }
   }
 
   Future<void> getCableTransactions(
@@ -199,7 +199,7 @@ class ServiceProvider with ChangeNotifier {
       print('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
-    } 
+    }
   }
 
   Future<void> getElectricityTransactions(
@@ -229,7 +229,7 @@ class ServiceProvider with ChangeNotifier {
       print('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
-    } 
+    }
   }
 
   Future<void> getCableMerchant(Map<String, dynamic> data,
@@ -250,7 +250,7 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       print('Error: $e');
       ErrorToast(e.toString());
-    } 
+    }
   }
 
   Future<void> getElectricityMerchant(Map<String, dynamic> data,
@@ -272,7 +272,7 @@ class ServiceProvider with ChangeNotifier {
       print('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
-    } 
+    }
   }
 
   Future<void> getCarListing({bool isLoading = true}) async {
@@ -327,7 +327,7 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       print('Error: $e');
       ErrorToast(e.toString());
-    } 
+    }
   }
 
   Future<void> getScripts({bool isLoading = true}) async {
@@ -384,7 +384,7 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       print('Error: $e');
       ErrorToast(e.toString());
-    } 
+    }
   }
 
   Future<void> payRepairVehicle(String id,
@@ -444,7 +444,7 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       print('Error: $e');
       ErrorToast(e.toString());
-    } 
+    }
   }
 
   // shareRepairInvoice
@@ -478,7 +478,7 @@ class ServiceProvider with ChangeNotifier {
       print('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
-    } 
+    }
   }
 
   Future<void> skipRepair({
@@ -511,7 +511,7 @@ class ServiceProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      print('Error: $e');     
+      print('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
     }
@@ -550,19 +550,30 @@ class ServiceProvider with ChangeNotifier {
     try {
       showLoader();
       var res = await ServiceRepo().buyCar(data);
+      bool isFailed = false;
+      bool isPending = false;
+      isFailed = res['result'] == 'failed';
+      isPending = res['result'] == 'pending' || res == {};
 
-      if (res['status'] == false || res['result'] == false) {
+      if (res['status'] == false ||
+          res['result'] == false ||
+          isFailed ||
+          isPending) {
         hideLoader();
-        if (res['message'].runtimeType == String) {
-          ErrorToast(res['message']);
-        } else {
-          String message = '';
-          res['message'].forEach((key, value) {
-            message += '$value';
-          });
-          ErrorToast(message);
-        }
-        return;
+        // if (res['message'].runtimeType == String) {
+        //   ErrorToast(res['message']);
+        // } else {
+        //   String message = '';
+        //   res['message'].forEach((key, value) {
+        //     message += '$value';
+        //   });
+        //   ErrorToast(message);
+        // }
+        // return;
+        Get.off(BuyCarScriptSuccess(
+          isCar: true,
+          isPending: true,
+        ));
       } else {
         hideLoader();
         Get.to(
@@ -605,26 +616,37 @@ class ServiceProvider with ChangeNotifier {
       print('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
-    } 
+    }
   }
 
   Future<void> buyScript(Map<String, dynamic> data) async {
     try {
       showLoader();
       var res = await ServiceRepo().buyScript(data);
+      bool isFailed = false;
+      bool isPending = false;
+      isFailed = res['result'] == 'failed';
+      isPending = res['result'] == 'pending' || res == {};
 
-      if (res['status'] == false || res['result'] == false) {
+      if (res['status'] == false ||
+          res['result'] == false ||
+          isFailed ||
+          isPending) {
         hideLoader();
-        if (res['message'].runtimeType == String) {
-          ErrorToast(res['message']);
-        } else {
-          String message = '';
-          res['message'].forEach((key, value) {
-            message += '$value';
-          });
-          ErrorToast(message);
-        }
-        return;
+        // if (res['message'].runtimeType == String) {
+        //   ErrorToast(res['message']);
+        // } else {
+        //   String message = '';
+        //   res['message'].forEach((key, value) {
+        //     message += '$value';
+        //   });
+        //   ErrorToast(message);
+        // }
+        // return;
+        Get.off(BuyCarScriptSuccess(
+          isCar: false,
+          isPending: true,
+        ));
       } else {
         hideLoader();
         Get.to(BuyCarScriptSuccess(
@@ -636,7 +658,7 @@ class ServiceProvider with ChangeNotifier {
       print('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
-    } 
+    }
   }
 
   Future<void> getGiftCard(String code) async {
@@ -664,7 +686,7 @@ class ServiceProvider with ChangeNotifier {
       print('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
-    } 
+    }
   }
 
   Future<void> getReceipt(Map<String, dynamic> data,
@@ -694,26 +716,36 @@ class ServiceProvider with ChangeNotifier {
       print('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
-    } 
+    }
   }
 
   Future<void> buyGiftCard(Map<String, dynamic> data) async {
     try {
       showLoader();
+      bool isFailed = false;
+      bool isPending = false;
       var res = await ServiceRepo().buyGiftCard(data);
-
-      if (res['status'] == false || res['result'] == false) {
+      isFailed = res['result'] == 'failed';
+      isPending = res['result'] == 'pending' || res == {};
+      if (res['status'] == false ||
+          res['result'] == false ||
+          isFailed ||
+          isPending) {
         hideLoader();
-        if (res['message'].runtimeType == String) {
-          ErrorToast(res['message']);
-        } else {
-          String message = '';
-          res['message'].forEach((key, value) {
-            message += '$value';
-          });
-          ErrorToast(message);
-        }
-        return;
+        // if (res['message'].runtimeType == String) {
+        //   ErrorToast(res['message']);
+        // } else {
+        //   String message = '';
+        //   res['message'].forEach((key, value) {
+        //     message += '$value';
+        //   });
+        //   ErrorToast(message);
+        // }
+        // return;
+        Get.off(SocialSuccessScreen(
+          isGiftCard: true,
+          isPending: true,
+        ));
       } else {
         hideLoader();
         Get.to(SocialSuccessScreen(
@@ -725,7 +757,7 @@ class ServiceProvider with ChangeNotifier {
       print('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
-    } 
+    }
   }
 
   Future<void> buyCable(
@@ -735,39 +767,52 @@ class ServiceProvider with ChangeNotifier {
     try {
       // showLoader();
       Get.to(const VerifyingScreen());
-
+      bool isFailed = false;
+      bool isPending = false;
       var res = await ServiceRepo().buyCable(data);
-      if (res['status'] == false || res['result'] == false) {
+      if (res['status'] == false ||
+          res['result'] == false ||
+          isFailed ||
+          isPending) {
         // hideLoader();
-        if (res['message'].runtimeType == String) {
-          ErrorToast(res['message']);
-        } else {
-          String message = '';
-          res['message'].forEach((key, value) {
-            message += '$value';
-          });
-          ErrorToast(message);
-        }
-        return;
-      } else if (res['result'] == 'failed') {
-        // hideLoader();
-        ErrorToast(res['message']);
-        return;
-      } else if (res['result'] == 'pending' || res == {}) {
-        // hideLoader();
+        // if (res['message'].runtimeType == String) {
+        //   ErrorToast(res['message']);
+        // } else {
+        //   String message = '';
+        //   res['message'].forEach((key, value) {
+        //     message += '$value';
+        //   });
+        //   ErrorToast(message);
+        // }
         Get.off(CableElectricitySuccessScreen(
           isCable: true,
           isPending: true,
           isShowmax: isShowmax,
           amount: data['amount'],
         ));
-        notifyListeners();
+        // return;[]
+        // }
+        // else if (res['result'] == 'failed') {
+        //   // hideLoader();
+        //   ErrorToast(res['message']);
+        //   return;
+        // }
+        //  else
+        // if (res['result'] == 'pending' || res == {}) {
+        //   // hideLoader();
+        //   Get.off(CableElectricitySuccessScreen(
+        //     isCable: true,
+        //     isPending: true,
+        //     isShowmax: isShowmax,
+        //     amount: data['amount'],
+        //   ));
+        //   notifyListeners();
       } else {
         // hideLoader();
         Get.off(CableElectricitySuccessScreen(
           isCable: true,
           isShowmax: isShowmax,
-          amount: data['amount'], 
+          amount: data['amount'],
           data: res['data'],
         ));
         notifyListeners();
@@ -776,41 +821,64 @@ class ServiceProvider with ChangeNotifier {
       print('Error: $e');
       // hideLoader();
       ErrorToast(e.toString());
-    } 
+    }
   }
 
   Future<void> buyElectricity(Map<String, dynamic> data) async {
     try {
       // showLoader();
       Get.to(const VerifyingScreen());
-
+      bool isFailed = false;
+      bool isPending = false;
       var res = await ServiceRepo().buyElectricity(data);
       log('electricity response: $res');
-      if (res['status'] == false || res['result'] == false) {
-        // hideLoader();
-        if (res['message'].runtimeType == String) {
-          ErrorToast(res['message']);
+      bool noToken = res['token'] == null &&
+          res['data']?['Token'] == null &&
+          res['data']?['mainToken'] == null &&
+          res['data']?['token'] == null;
+      log('noToken:====>>> $noToken');
+      isFailed = res['result'] == 'failed';
+      isPending = res['result'] == 'pending' || res == {};
+      if (noToken ||
+          (res['status'] == false ||
+              res['result'] == false ||
+              isFailed ||
+              isPending)) {
+        if (res['result'] == 'slow') {
+          // hideLoader();
+          Get.back();
+          if (res['message'].runtimeType == String) {
+            ErrorToast(res['message']);
+          } else {
+            String message = '';
+            res['message'].forEach((key, value) {
+              message += '$value';
+            });
+            ErrorToast(message);
+          }
         } else {
-          String message = '';
-          res['message'].forEach((key, value) {
-            message += '$value';
-          });
-          ErrorToast(message);
+          Get.off(CableElectricitySuccessScreen(
+            isCable: false,
+            isPending: true,
+            amount: data['amount'],
+          ));
         }
-        return;
-      } else if (res['result'] == 'failed') {
-        // hideLoader();
-        ErrorToast(res['message']);
-        return;
-      } else if (res['result'] == 'pending' || res == {}) {
-        // hideLoader();
-        Get.off(CableElectricitySuccessScreen(
-          isCable: false,
-          isPending: true,
-          amount: data['amount'],
-        ));
-        notifyListeners();
-      } else {
+      }
+      // else if (res['result'] == 'failed') {
+      //   // hideLoader();
+      //   ErrorToast(res['message']);
+      //   return;
+      // }
+      // else if (res['result'] == 'pending' || res == {}) {
+      //   // hideLoader();
+      //   Get.off(CableElectricitySuccessScreen(
+      //     isCable: false,
+      //     isPending: true,
+      //     amount: data['amount'],
+      //   ));
+      //   notifyListeners();
+      // }
+      else {
         // hideLoader();
         Get.off(CableElectricitySuccessScreen(
           isCable: false,
@@ -823,25 +891,35 @@ class ServiceProvider with ChangeNotifier {
       print('Error: $e');
       // hideLoader();
       ErrorToast(e.toString());
-    } 
+    }
   }
 
   Future<void> buyPay4Me(Map<String, dynamic> data) async {
     try {
       showLoader();
       var res = await ServiceRepo().buyPay4Me(data);
-      if (res['status'] == false || res['result'] == false) {
+      bool isFailed = false;
+      bool isPending = false;
+      isFailed = res['result'] == 'failed';
+      isPending = res['result'] == 'pending' || res == {};
+      if (res['status'] == false ||
+          res['result'] == false ||
+          isFailed ||
+          isPending) {
         hideLoader();
-        if (res['message'].runtimeType == String) {
-          ErrorToast(res['message']);
-        } else {
-          String message = '';
-          res['message'].forEach((key, value) {
-            message += '$value';
-          });
-          ErrorToast(message);
-        }
-        return;
+        // if (res['message'].runtimeType == String) {
+        //   ErrorToast(res['message']);
+        // } else {
+        //   String message = '';
+        //   res['message'].forEach((key, value) {
+        //     message += '$value';
+        //   });
+        //   ErrorToast(message);
+        // }
+        // return;
+        Get.off(Pay4meSuccessScreen(
+          isPending: true,
+        ));
       } else {
         hideLoader();
         Get.to(Pay4meSuccessScreen());
@@ -971,26 +1049,36 @@ class ServiceProvider with ChangeNotifier {
       {required AccountProvider ctrl}) async {
     try {
       showLoader();
+      bool isFailed = false;
+      bool isPending = false;
       var res = await ServiceRepo().buySocialBoost(data);
-      if (res['status'] == false || res['result'] == false) {
+      isFailed = res['result'] == 'failed';
+      isPending = res['result'] == 'pending' || res == {};
+      if (res['status'] == false ||
+          res['result'] == false ||
+          isFailed ||
+          isPending) {
         hideLoader();
-        if (res['message'].runtimeType == String) {
-          ErrorToast(res['message']);
-        } else {
-          String message = '';
-          res['message'].forEach((key, value) {
-            message += '$value';
-          });
-          ErrorToast(message);
-        }
-        return;
+        // if (res['message'].runtimeType == String) {
+        //   ErrorToast(res['message']);
+        // } else {
+        //   String message = '';
+        //   res['message'].forEach((key, value) {
+        //     message += '$value';
+        //   });
+        //   ErrorToast(message);
+        // }
+        // return;
+        Get.off(SocialSuccessScreen(
+          isPending: true,
+        ));
       } else {
         await ctrl.getTrasactions(isLoading: false);
         hideLoader();
         Get.to(SocialSuccessScreen());
         notifyListeners();
       }
-    } catch (e) { 
+    } catch (e) {
       print('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
@@ -1024,7 +1112,7 @@ class ServiceProvider with ChangeNotifier {
       print('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
-    } 
+    }
   }
 
   Future<void> sprayDetails(int id) async {
@@ -1054,7 +1142,7 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       print('Error: $e');
       ErrorToast(e.toString());
-    } 
+    }
   }
 
   Future<void> getSprayDetails(Map<String, dynamic> data) async {
@@ -1081,7 +1169,7 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       print('Error: $e');
       ErrorToast(e.toString());
-    } 
+    }
   }
 
   Future<void> getRepairTransactions(
@@ -1110,7 +1198,7 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       print('Error: $e');
       ErrorToast(e.toString());
-    } 
+    }
   }
 
   Future<void> buyRepaires(Map<String, dynamic> data,
@@ -1135,14 +1223,13 @@ class ServiceProvider with ChangeNotifier {
       } else {
         await getRepairTransactions(account: account);
         callback();
-        Get.back();
         SuccessToast(res['message']);
         notifyListeners();
       }
     } catch (e) {
       print('Error: $e');
       ErrorToast(e.toString());
-    } 
+    }
   }
 
   Future<void> payPending(int id) async {
@@ -1171,7 +1258,7 @@ class ServiceProvider with ChangeNotifier {
       print('Error: $e');
       hideLoader();
       ErrorToast(e.toString());
-    } 
+    }
   }
 
   // get pdf
@@ -1206,7 +1293,7 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       print('Error: $e');
       ErrorToast(e.toString());
-    } 
+    }
   }
 
   Future<void> getSprayHistory({bool isLoading = true}) async {
@@ -1234,7 +1321,7 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       print('Error: $e');
       ErrorToast(e.toString());
-    } 
+    }
   }
 
   Future<void> getScriptTransactions(
@@ -1264,7 +1351,7 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       print('Error: $e');
       ErrorToast(e.toString());
-    } 
+    }
   }
 
   Future<void> getCarsTransactions(
@@ -1295,7 +1382,7 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       print('Error: $e');
       ErrorToast(e.toString());
-    } 
+    }
   }
 
   Future<void> getColorPaint() async {
@@ -1322,6 +1409,6 @@ class ServiceProvider with ChangeNotifier {
     } catch (e) {
       print('Error: $e');
       ErrorToast(e.toString());
-    } 
+    }
   }
 }

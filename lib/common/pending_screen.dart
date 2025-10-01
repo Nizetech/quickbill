@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/HelpSupport.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/common/button.dart';
@@ -75,9 +76,15 @@ class PendingScreen extends StatelessWidget {
                 ),
               ),
               Spacer(),
-              Image.asset(themeProvider.isDarkMode()
-                  ? 'assets/images/support_p_dark.png'
-                  : 'assets/images/support_p_light.png'),
+              InkWell(
+                onTap: () {
+                  onTap();
+                  Get.to(const Helpsupport());
+                },
+                child: Image.asset(themeProvider.isDarkMode()
+                    ? 'assets/images/support_p_dark.png'
+                    : 'assets/images/support_p_light.png'),
+              ),
               SizedBox(height: 30),
               CustomButton(
                 text: "Try Again Later",

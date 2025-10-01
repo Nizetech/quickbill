@@ -23,6 +23,15 @@ class Utils {
   static String sellUrl = "https://instantexchangers.net/sell/final?transaction=";
   static String forgetPassword = "https://instantexchangers.net/forget-password";
   static String squardCallback = "https://jostpay.com/apis/squard_callback";
+  static String instagramLink = "https://www.instagram.com/jostpay";
+  static String xLink = "https://x.com/Jostpay";
+  static String tiktokLink = "https://www.tiktok.com/@jostpay";
+  static String youtubeLink = "https://www.youtube.com/@JostPay-r5z";
+  static String linkedinLink = "https://linkedin.com/company/jostpay-limited";
+  // static String instagramLink = "https://www.instagram.com/jostpay";
+  static String facebookLink = "https://facebook.com/jostpay";
+  static String telegramLink = "https://t.me/JostPay";
+  static String whatsappLink = "https://wa.me/2348037878487";
   static String appleLink =
       "https://apps.apple.com/ng/app/jostpay/id6748660788";
   static String playStoreLink =

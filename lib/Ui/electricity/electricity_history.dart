@@ -260,19 +260,20 @@ class _ElectricityHistoryState extends State<ElectricityHistory> {
                                                     date: item.updatedAt!,
                                                   ));
                                                 } else if (
-                                                    // item.apiStatus ==
-                                                    //       'pending' ||
-                                                    //   item.apiStatus ==
-                                                    //       'failed' ||
-                                                    item.apiStatus !=
-                                                            'refunded' &&
-                                                        item.apiStatus!
-                                                                .toLowerCase() !=
-                                                            'success' &&
-                                                    item.status != '1' &&
-                                                    !item.apiStatus!
-                                                        .toLowerCase()
-                                                        .contains('complete') &&
+                                                    item.apiStatus ==
+                                                        'pending' ||
+                                                    item.apiStatus ==
+                                                        'failed' ||
+
+                                                    // item.apiStatus !=
+                                                    //         'refunded' &&
+                                                    //     item.apiStatus!
+                                                    //             .toLowerCase() !=
+                                                    //         'success' &&
+                                                    // item.status != '1' &&
+                                                    // !item.apiStatus!
+                                                    //     .toLowerCase()
+                                                    //     .contains('complete') &&
                                                     !item.apiStatus!
                                                         .toLowerCase()
                                                         .contains('success')) {

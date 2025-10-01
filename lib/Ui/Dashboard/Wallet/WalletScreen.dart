@@ -26,8 +26,6 @@ import 'package:jost_pay_wallet/Ui/repair/repairdetail_screen.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
-import 'package:jost_pay_wallet/common/delete_banner.dart';
-import 'package:jost_pay_wallet/common/verifying_screen.dart';
 import 'package:jost_pay_wallet/constants/constants.dart';
 import 'package:provider/provider.dart';
 import 'dart:core';
@@ -61,12 +59,12 @@ class _WalletScreenState extends State<WalletScreen> {
     accountProvider = Provider.of<AccountProvider>(context, listen: false);
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      String deviceToken = box.get(kDeviceToken);
+      // String deviceToken = box.get(kDeviceToken);
       await accountProvider.getUserBalance();
       await accountProvider.getNotification();
-      await accountProvider.setDeviceToken(
-        {"token": box.get(kDeviceToken), 'platform': "mobile"},
-      );
+      // await accountProvider.setDeviceToken(
+      //   {"token": box.get(kDeviceToken), 'platform': "mobile"},
+      // );
       await accountProvider.getProfileImage(isLoading: false);
       if (accountProvider.transactionModel == null) {
         await accountProvider.getTrasactions();
@@ -120,7 +118,6 @@ class _WalletScreenState extends State<WalletScreen> {
                     // color: Colors.white,
                     border: Border(
                       bottom: BorderSide(
-
                         color: themeProvider.isDarkMode()
                             ? MyColor.borderDarkColor
                             : MyColor.borderColor,
@@ -541,16 +538,17 @@ class _WalletScreenState extends State<WalletScreen> {
                     ],
                   ),
                 ),
-                if (account.userModel?.user?.createdAt != null
-                    &&
-                    // accountProvider.userModel?.user?.isActive == false ||
-                    account.userModel?.user?.idVerified == false &&
-                    account.userModel?.user?.basicVerified == false
-                    )
-                  DeleteBanner(
-                    date: account.userModel!.user!.createdAt!,
-                  )
-                else
+                //? Delete Banner
+                // if (account.userModel?.user?.createdAt != null
+                //     &&
+                //     // accountProvider.userModel?.user?.isActive == false ||
+                //     account.userModel?.user?.idVerified == false &&
+                //     account.userModel?.user?.basicVerified == false
+                //     )
+                //   DeleteBanner(
+                //     date: account.userModel!.user!.createdAt!,
+                //   )
+                // else
                   Visibility(
                     visible: dashProvider.promotionBanner,
                     child: BannerAds(

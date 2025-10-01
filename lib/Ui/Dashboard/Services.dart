@@ -166,6 +166,7 @@ class _ServicesState extends State<Services> {
                             icon: 'assets/images/giftcard.svg',
                             title: 'Buy Gift Card',
                             page: const GiftCardHistory(),
+                            isGiftCard: true,
                           ),
                           // else
                           // ServiceTile(

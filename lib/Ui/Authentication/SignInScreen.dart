@@ -1,11 +1,16 @@
+import 'dart:developer';
+
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 // ignore: unused_import
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:jost_pay_wallet/Provider/DashboardProvider.dart';
+import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/auth_provider.dart';
-import 'package:jost_pay_wallet/Ui/Authentication/SignUpScreen.dart';
 import 'package:jost_pay_wallet/Ui/Authentication/forget_password.dart';
+import 'package:jost_pay_wallet/Ui/Authentication/register_options.dart';
 import 'package:jost_pay_wallet/Values/NewColor.dart';
 import 'package:jost_pay_wallet/Values/NewStyle.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +18,7 @@ import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/bottom_nav.dart';
 import 'package:jost_pay_wallet/common/button.dart';
+import 'package:jost_pay_wallet/common/google_auth.dart';
 import 'package:jost_pay_wallet/common/text_field.dart';
 import 'package:jost_pay_wallet/common/upgrader.dart';
 import 'package:jost_pay_wallet/constants/constants.dart';
@@ -36,6 +42,7 @@ class _SignInScreenState extends State<SignInScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final GoogleSignIn googleSignIn = GoogleSignIn.instance;
 
   void _validateForm(AuthProvider model) async {
     if (_formKey.currentState?.validate() ?? false) {
@@ -46,6 +53,7 @@ class _SignInScreenState extends State<SignInScreen> {
       final Map<String, dynamic> body = {
         "email": _emailController.text.trim(),
         "password": _passwordController.text.trim(),
+        'token': box.get(kDeviceToken),
       };
       model.login(body);
     } else {
@@ -75,9 +83,12 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
+    log("pinEnabled: $pinEnabled, isEmailLogin: $useEmailLogin");
     return Scaffold(
-      backgroundColor: Colors.white, 
-      body: Consumer<AuthProvider>(builder: (context, model, _) {
+      backgroundColor: Colors.white,
+      body: Consumer3<AuthProvider, AccountProvider, DashboardProvider>(
+          builder: (context, model, account, dash, _) {
+        bool usePin = !useEmailLogin && pinEnabled == '1' && token.isNotEmpty;
         return SafeArea(
           child: AppUpgrader(
             child: SingleChildScrollView(
@@ -116,9 +127,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             ],
                           ),
                           const SizedBox(height: 28),
-                          if (!useEmailLogin &&
-                              pinEnabled == '1' &&
-                              token.isNotEmpty) ...[
+                          if (usePin) ...[
                             SizedBox(height: Get.height * 0.1),
                             Text(
                               'Enter Pin',
@@ -183,9 +192,6 @@ class _SignInScreenState extends State<SignInScreen> {
                                 return null;
                               },
                             ),
-                             
-                          
-                           
                             const SizedBox(height: 14),
                             Text(
                               'Password',
@@ -195,7 +201,6 @@ class _SignInScreenState extends State<SignInScreen> {
                                 height: 2,
                               ),
                             ),
-                          
                             CustomTextField(
                               text: 'Enter your password',
                               isAuth: true,
@@ -217,7 +222,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             child: TextButton(
                               onPressed: () {
                                 print(pinEnabled);
-                                if (pinEnabled == '1' && !useEmailLogin) {
+                                if (usePin) {
                                   setState(() {
                                     useEmailLogin = true;
                                   });
@@ -229,7 +234,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                 }
                               },
                               child: Text(
-                                pinEnabled == '1' && !useEmailLogin
+                                usePin
                                     ? "Use Email"
                                     // 'Forgot PIN?'
                                     : 'Forgot Password?',
@@ -241,7 +246,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 10),
                     CustomButton(
                         text: 'Login',
                         isLoading: model.isLoading,
@@ -257,7 +262,14 @@ class _SignInScreenState extends State<SignInScreen> {
                     const SizedBox(
                       height: 10,
                     ),
-                    if (pinEnabled != '1' || useEmailLogin)
+                    if (!usePin)
+                      GoogleAuth(
+                        text: 'Continue with Google',
+                      ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    if (!usePin)
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -268,12 +280,8 @@ class _SignInScreenState extends State<SignInScreen> {
                                 fontWeight: FontWeight.w400),
                           ),
                           TextButton(
-                            onPressed: () => Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const SignUpScreen(),
-                              ),
-                            ),
+                            onPressed: () =>
+                                Get.to(() => const RegisterOptions()),
                             child: Text(
                               'Sign Up',
                               style: NewStyle.btnTx16SplashBlue

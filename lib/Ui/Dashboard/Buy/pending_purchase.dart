@@ -40,7 +40,7 @@ final String? plan;
         : PendingScreen(
             title: isData
                 ? "Data purchase of $plan plan for $phone is currently processing."
-                : ": Airtime purchase of ${Utils.naira} $amount to $phone is being processed. Please wait",
+                : "Airtime purchase of ${Utils.naira} $amount to $phone is being processed. Please wait",
             onTap: () {
             if (isData) {
                     model.getDataHistory(isLoading: false);

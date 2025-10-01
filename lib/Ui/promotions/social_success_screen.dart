@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
+import 'package:jost_pay_wallet/common/pending_screen.dart';
 import 'package:jost_pay_wallet/common/success_screen.dart';
 import 'package:provider/provider.dart';
 
 class SocialSuccessScreen extends StatefulWidget {
   final bool isGiftCard;
-  const SocialSuccessScreen({super.key, this.isGiftCard = false});
+  final bool isPending;
+  const SocialSuccessScreen({
+    super.key,
+    this.isGiftCard = false,
+    this.isPending = false,
+  });
 
   @override
   State<SocialSuccessScreen> createState() => _SocialSuccessScreenState();
@@ -16,7 +22,21 @@ class _SocialSuccessScreenState extends State<SocialSuccessScreen> {
   @override
   Widget build(BuildContext context) {
     final model = Provider.of<AccountProvider>(context, listen: false);
-    return SuccessScreen(
+    return widget.isPending
+        ? PendingScreen(
+            title: widget.isGiftCard
+                ? "Your Gift card subscription is being processed please wait "
+                : "Your social boost subscription is being processed please wait",
+            onTap: () {
+              if (widget.isGiftCard) {
+                model.getGiftCradHistory(isLoading: false);
+              } else {
+                model.getSociaBoostHistory(isLoading: false);
+              }
+              Get.close(4);
+            },
+          )
+        : SuccessScreen(
       title: widget.isGiftCard
           ? "Gift card purchased successfully"
           : "Social boost order placed successfully.",

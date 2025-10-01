@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -111,7 +110,7 @@ class HistoryCard extends StatelessWidget {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     final themedata = Theme.of(context).colorScheme;
     final model = context.read<ServiceProvider>();
-    log('transaction:==> ${transaction.toJson()}');
+    // log('transaction:==> ${transaction.toJson()}');
     return Row(
       children: [
         Container(

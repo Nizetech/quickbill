@@ -1,7 +1,7 @@
 class ApiRoute {
   static String projectUrl = 'https://project.jostpay.com/';
-  // static String liveUrl = projectUrl;
-  static String liveUrl = 'https://jostpay.com/';
+  static String liveUrl = projectUrl;
+  // static String liveUrl = 'https://jostpay.com/';
   static String baseUrlWeb = liveUrl;
   static String baseUrl = '${liveUrl}apis/';
 
@@ -18,6 +18,7 @@ class ApiRoute {
   static String updatePin = 'pin-update';
   static String pinLogin = 'pin-login';
   static String updatePinLogin = 'pin-update';
+  static String googleLogin = 'google-login'; 
   static String kycVerify = 'verification/verify';
   static String getVerificationDetails = 'verification';
   static String verifyImageUpload = 'verification/verify-image-upload';

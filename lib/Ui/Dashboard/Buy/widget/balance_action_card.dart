@@ -60,12 +60,14 @@ class BalanceActionCard extends StatelessWidget {
           ),
           if (showBtn)
           TextButton(
-              onPressed: model.userModel?.user?.createdAt != null &&
-                      model.userModel?.user?.isActive == false
-                  ? () {
-                      Get.to(() => const KycWebview());
-                    }
-                  : onTap,
+              onPressed:
+                  //  model.userModel?.user?.createdAt != null &&
+                  //         model.userModel?.user?.isActive == false
+                  //     ? () {
+                  //         Get.to(() => const KycWebview());
+                  //       }
+                  //     :
+                  onTap,
             style: TextButton.styleFrom(
               backgroundColor: MyColor.greenColor,
                 padding:

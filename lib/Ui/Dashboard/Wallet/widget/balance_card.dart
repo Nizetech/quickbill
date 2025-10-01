@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Deposit.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/kyc_web.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
@@ -62,14 +61,15 @@ class BalanceCard extends StatelessWidget {
               if (hasAddFund)
                 GestureDetector(
                   onTap: () {
-                    if (account.userModel?.user?.createdAt != null &&
-                        // account.userModel?.user?.isActive == false ||
-                        account.userModel?.user?.basicVerified == false &&
-                        account.userModel?.user?.idVerified == false) {
-                      Get.to(() => const KycWebview());
-                    } else {
+                    // if (account.userModel?.user?.createdAt != null &&
+                    //     // account.userModel?.user?.isActive == false ||
+                    //     account.userModel?.user?.basicVerified == false &&
+                    //     account.userModel?.user?.idVerified == false) {
+                    //   Get.to(() => const KycWebview());
+                    // }
+                    // else {
                       Get.to(Deposit());
-                    }
+                    // }
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(top: 10),

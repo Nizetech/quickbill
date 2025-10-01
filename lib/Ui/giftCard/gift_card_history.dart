@@ -230,9 +230,13 @@ class _GiftCardHistoryState extends State<GiftCardHistory> {
                                                   'refunded',
                                               onTap: () {
                                                 if (
+                                                    item.reloadlyStatus ==
+                                                        'pending' ||
+                                                    item.reloadlyStatus ==
+                                                        'failed' ||
                                                         item.reloadlyStatus !=
                                                         'refunded' &&
-                                                    item.status != '1' &&
+                                                        item.status != '1' && 
                                                     !item.reloadlyStatus!
                                                             .toLowerCase()
                                                             .contains(

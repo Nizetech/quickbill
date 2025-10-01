@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Deposit.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/kyc_web.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/receipt_script.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/activate_virtual_account.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/balance_card.dart';
@@ -104,6 +102,7 @@ class _AddFundsState extends State<AddFunds> {
                   onRefresh: () async {
                     await account.getDepositHistory();
                     await account.getUserBalance();
+                    await account.getUserProfile();
                   },
                   child: SingleChildScrollView(
                     physics: const AlwaysScrollableScrollPhysics(),
@@ -121,21 +120,21 @@ class _AddFundsState extends State<AddFunds> {
                             Expanded(
                               child: GestureDetector(
                                   onTap: () {
-                                    if (account.userModel?.user?.createdAt !=
-                                            null &&
-                                        // account.userModel?.user?.isActive ==
-                                        //     false &&
-                                        account.userModel?.user
-                                                ?.basicVerified ==
-                                            false &&
-                                        account.userModel?.user?.idVerified ==
-                                            false) {
-                                      Get.to(() => const KycWebview());
-                                    } else {
+                                    // if (account.userModel?.user?.createdAt !=
+                                    //         null &&
+                                    //     // account.userModel?.user?.isActive ==
+                                    //     //     false &&
+                                    //     account.userModel?.user
+                                    //             ?.basicVerified ==
+                                    //         false &&
+                                    //     account.userModel?.user?.idVerified ==
+                                    //         false) {
+                                    //   Get.to(() => const KycWebview());
+                                    // } else {
                                       Get.to(
                                         Deposit(),
                                       );
-                                    }
+                                    // }
                                   },
                                   child: Container(
                                     height: 125,

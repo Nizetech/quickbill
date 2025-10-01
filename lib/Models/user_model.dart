@@ -43,6 +43,8 @@ class User {
   bool? enableManual;
   dynamic enabledPin;
   String? createdAt;
+  num? limit;
+  num? monthlyLimit;
 
   User({
     this.id,
@@ -59,6 +61,8 @@ class User {
     this.enabledPin,
     this.createdAt,
     this.enableManual,
+    this.limit,
+    this.monthlyLimit,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -79,6 +83,9 @@ class User {
             json["enable_manual"] == null || json["enable_manual"] == '0'
                 ? false
                 : true,
+        limit: json["limit"] ?? num.parse(json["monthly_limit"].toString()),
+        monthlyLimit:
+            json["monthly_limit"] ?? num.parse(json["limit"].toString()),
       );
 
   Map<String, dynamic> toJson() => {
@@ -96,5 +103,7 @@ class User {
         "enable_pin": enabledPin,
         "created_at": createdAt,
         "enable_manual": enableManual,
+        "limit": limit,
+        "monthly_limit": monthlyLimit,
       };
 }

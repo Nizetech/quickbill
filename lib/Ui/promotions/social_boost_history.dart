@@ -1,6 +1,5 @@
 
 
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -85,9 +84,9 @@ class _SocialBoostHistoryState extends State<SocialBoostHistory> {
                     // showBtn: Platform.isIOS ? false : true,
                     title: 'Try Social Boost',
                     onTap: () {
-                      Platform.isIOS
-                          ? launchWeb(Utils.socialBoostLink)
-                          :
+                      // Platform.isIOS
+                      //     ? launchWeb(Utils.socialBoostLink)
+                      //     :
                       Get.to(const SocialsScreen());
                     }),
                 const SizedBox(
@@ -238,7 +237,11 @@ class _SocialBoostHistoryState extends State<SocialBoostHistory> {
                                                 isRefunded: item.apiStatus ==
                                                     'refunded',
                                                 onTap: () {
-                                                  if (item.apiStatus !=
+                                                  if (item.apiStatus ==
+                                                          'pending' ||
+                                                      item.apiStatus ==
+                                                          'failed' ||
+                                                      item.apiStatus !=
                                                           'refunded' &&
                                                       !item.apiStatus!
                                                       .toLowerCase()

@@ -12,7 +12,36 @@
           "package_name": "com.wallet.jost_pay_wallet"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1076873078718-bgkhlbp82q3bog9joh295vr5loeuav4n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wallet.jost_pay_wallet",
+            "certificate_hash": "d01a1cd9aa33eb13382db0b56f03cc161203854d"
+          }
+        },
+        {
+          "client_id": "1076873078718-flbt2ffobjq3nt40dl39fshlolcpj7s2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wallet.jost_pay_wallet",
+            "certificate_hash": "f066b663e556dcd7234ba1258cf379b298ace589"
+          }
+        },
+        {
+          "client_id": "1076873078718-vurlt0gdluogq30enriah7nkrodl0d2j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wallet.jost_pay_wallet",
+            "certificate_hash": "83fe6ee7b76b684c91e9e6641054fc4a58895035"
+          }
+        },
+        {
+          "client_id": "1076873078718-cen643n0q9805sbc6pdn8surergvhin6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAmf_H3lbRWtRb7QDHXaZiz5Vl4Mflttqc"
@@ -20,7 +49,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1076873078718-cen643n0q9805sbc6pdn8surergvhin6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1076873078718-r1epf6tk41jg62fll00c2357t4f8fsrd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.wallet.jostpaywallet"
+              }
+            }
+          ]
         }
       }
     }

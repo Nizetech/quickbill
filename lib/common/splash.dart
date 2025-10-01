@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -48,6 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    log("pinEnabled: $pinEnabled, isEmailLogin: $token");
     return Scaffold(
       backgroundColor: Colors.black,
       body: Center(

@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/deposit_limit.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/select_bank_sheet.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
@@ -148,9 +149,12 @@ class _DepositDetailsState extends State<DepositDetails> {
                           text: 'Proceed',
                           onTap: () {
                             if (model.userModel?.user?.idVerified == false &&
-                                num.parse(amount.text) > 20000) {
-                              ErrorToast(
-                                  "You must complete full verification on your account before you can deposit more than 20,000 NGN.");
+                                num.parse(amount.text) >
+                                    (model.userModel?.user?.limit ?? 0)) {
+                              showDepositLimit();
+
+                              // ErrorToast(
+                              //     "You must complete full verification on your account before you can deposit more than 20,000 NGN.");
                               return;
                             } else
                             if (amount.text.isEmpty || bank.text.isEmpty) {

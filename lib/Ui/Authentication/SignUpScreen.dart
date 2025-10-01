@@ -1,4 +1,6 @@
 
+import 'package:get/get.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:jost_pay_wallet/Provider/auth_provider.dart';
 import 'package:jost_pay_wallet/Ui/Authentication/SignInScreen.dart';
@@ -9,6 +11,7 @@ import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/common/button.dart';
 import 'package:jost_pay_wallet/common/text_field.dart';
 import 'package:jost_pay_wallet/common/upgrader.dart';
+import 'package:jost_pay_wallet/constants/constants.dart';
 import 'package:jost_pay_wallet/utils/toast.dart';
 import 'package:provider/provider.dart';
 
@@ -29,7 +32,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   late String deviceId;
   bool fingerOn = false;
   String isLogin = "";
-
   bool isLoading = false;
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
@@ -46,6 +48,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   //   final prefs = await SharedPreferences.getInstance();
   //   await prefs.setString("token", token);
   // }
+  final box = Hive.box(kAppName);
 
   void _validateForm(AuthProvider model) async {
     if (_formKey.currentState?.validate() ?? false) {
@@ -62,6 +65,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           "first_name": _firstName.text.trim(),
           "last_name": _lastName.text.trim(),
           'country': selectedCountry,
+          'token': box.get(kDeviceToken),
           "referral_code": _referalCode.text.trim(),
           "phone":
               // remove the first zero from the phone number if it starts with 0
@@ -88,12 +92,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         leading: Padding(
           padding: const EdgeInsets.fromLTRB(15, 10, 1, 0),
           child: InkWell(
-              onTap: () {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const SignInScreen()));
-              },
+              onTap: () => Get.back(),
               child: Container(
                 padding: EdgeInsets.all(5),
                 decoration: BoxDecoration(
@@ -137,7 +136,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 style: MyStyle.tx28Green,
                               ),
                               TextSpan(
-                                text: ' account',
+                                text: 'account',
                                 style: MyStyle.tx28Black,
                               ),
                             ],
@@ -374,11 +373,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   fontWeight: FontWeight.w500),
                             ),
                             TextButton(
-                              onPressed: () => Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const SignInScreen())),
+                              onPressed: () =>
+                                  Get.to(() => const SignInScreen()),
                               child: Row(
                                 children: [
                                   Image.asset('assets/images/signin-icon.png'),

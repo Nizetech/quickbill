@@ -262,10 +262,12 @@ class AuthRepo {
   // Pin Log IN
   Future<Map<String, dynamic>> pinLogin(String pin) async {
     String token = await box.get(kAccessToken);
+    String deviceToken = await box.get(kDeviceToken);
     try {
       final response = await client.post(ApiRoute.pinLogin,
           body: jsonEncode({
             "pin": pin,
+            "token": deviceToken,
           }),
           requestHeaders: {
             'Authorization': token,

@@ -145,7 +145,7 @@ class DepositLimit extends StatelessWidget {
                             themedata: themedata,
                           ),
                           _buildFeature(
-                            title: 'Activste personal virtual account',
+                            title: 'Activate personal virtual account',
                             themedata: themedata,
                           ),
                           _buildFeature(

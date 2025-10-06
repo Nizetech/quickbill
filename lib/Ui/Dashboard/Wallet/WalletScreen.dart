@@ -98,8 +98,6 @@ class _WalletScreenState extends State<WalletScreen> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     final dashProvider = Provider.of<DashboardProvider>(context, listen: true);
-    final account = context.watch<AccountProvider>();
-    // log('account:==> ${account.userModel?.user?.toJson()}');
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Consumer<AccountProvider>(builder: (context, model, _) {

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gif_view/gif_view.dart';
@@ -76,7 +78,11 @@ class OnboardingScreen extends StatelessWidget {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const RegisterOptions()));
+                              builder: (context) {
+                        return Platform.isAndroid
+                            ? const RegisterOptions()
+                            : const SignUpScreen();
+                      }));
                     },
                     style: TextButton.styleFrom(
                       backgroundColor: MyColor.greenColor,

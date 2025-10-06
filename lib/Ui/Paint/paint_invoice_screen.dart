@@ -1,3 +1,4 @@
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -19,6 +20,7 @@ class PaintInvoiceScreen extends StatefulWidget {
 class _PaintInvoiceScreenState extends State<PaintInvoiceScreen> {
   num total = 0;
   num colorChangePrice = 0;
+  num pendingPrice = 0;
   @override
   void initState() {
     super.initState();
@@ -47,6 +49,17 @@ class _PaintInvoiceScreenState extends State<PaintInvoiceScreen> {
           return prev + num.parse(priceString ?? '0');
         },
       );
+      if (model.sprayDetailsModel!.data!
+          .any((data) => data.status == '1' || data.extraFee != null)) {
+        pendingPrice = model.sprayDetailsModel!.data!.fold<num>(
+          0,
+          (prev, item) {
+            return prev +
+                num.parse(
+                    item.extraFee == null ? item.price ?? '0' : item.extraFee!);
+          },
+        );
+      }
       if (model.sprayDetailsModel!.check!.paintType == '5') {
         if (model.sprayDetailsModel!.check!.careDay != null) {
           setState(() {
@@ -79,11 +92,13 @@ class _PaintInvoiceScreenState extends State<PaintInvoiceScreen> {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     final themedata = Theme.of(context).colorScheme;
     final isDark = themeProvider.isDarkMode();
+    log('pendingPrice: $pendingPrice');
     return Scaffold(
       backgroundColor: themeProvider.isDarkMode()
           ? MyColor.dark02Color
           : MyColor.mainWhiteColor,
       body: Consumer<ServiceProvider>(builder: (context, model, _) {
+        log("model: ${model.sprayDetailsModel!.toJson()}");
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 68)
               .copyWith(bottom: 0),

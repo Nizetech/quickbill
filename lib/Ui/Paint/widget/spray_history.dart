@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -26,9 +28,14 @@ class SprayHistory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // log('history: ${history.toJson()}');
+    // String envUrl = 'https://project.jostpay.com/uploads/';
+    String imageBaseUrl =
+        'https://smanager.jostpay.com/assets/media/uploads/auto_repair/vehicle_photo/';
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     final isDark = themeProvider.isDarkMode();
     final themedata = Theme.of(context).colorScheme;
+    log('history: ${history.toJson()}');
     return Consumer2<ServiceProvider, AccountProvider>(
         builder: (context, model, account, _) {
       return Container(
@@ -65,17 +72,15 @@ class SprayHistory extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CachedNetworkImage(
-                    imageUrl:
-                        'https://jostpay.com/uploads/${history.image}',
+                    imageUrl: '$imageBaseUrl${history.image}',
                     height: 68,
                     width: 86,
                     fit: BoxFit.cover,
-                    placeholder: (context, url) =>
-                                                           SvgPicture.asset(
-                    isDark
-                        ? 'assets/images/svg/file-dark.svg'
-                        : 'assets/images/svg/file.svg',
-                  ),
+                    placeholder: (context, url) => SvgPicture.asset(
+                      isDark
+                          ? 'assets/images/svg/file-dark.svg'
+                          : 'assets/images/svg/file.svg',
+                    ),
                     errorWidget: (context, url, error) => SvgPicture.asset(
                       isDark
                           ? 'assets/images/svg/file-dark.svg'
@@ -114,7 +119,7 @@ class SprayHistory extends StatelessWidget {
                             num.parse(history.total ?? '0')) {
                           ErrorToast("Insufficient balance");
                         } else {
-                        model.payPending(int.parse(history.id!));
+                          model.payPending(int.parse(history.id!));
                         }
                       },
                 style: OutlinedButton.styleFrom(
@@ -150,33 +155,32 @@ class SprayHistory extends StatelessWidget {
             ),
             const SizedBox(height: 6),
             //todo
-              Row(
-                children: [
-                  Text(history.reference!,
-                      style: MyStyle.tx16Black.copyWith(
-                        fontWeight: FontWeight.w500,
-                        color: themedata.tertiary,
-                      )),
-                  GestureDetector(
-                    onTap: () {
-                      // Copy to clipboard
-                      Clipboard.setData(
-                          ClipboardData(text: history.reference!));
+            Row(
+              children: [
+                Text(history.reference!,
+                    style: MyStyle.tx16Black.copyWith(
+                      fontWeight: FontWeight.w500,
+                      color: themedata.tertiary,
+                    )),
+                GestureDetector(
+                  onTap: () {
+                    // Copy to clipboard
+                    Clipboard.setData(ClipboardData(text: history.reference!));
                     Fluttertoast.showToast(msg: "Copied to clipboard");
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(6),
-                      child: SvgPicture.asset(
-                        isDark
-                            ? 'assets/images/svg/copy-dark.svg'
-                            : 'assets/images/svg/copy.svg',
-                      ),
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(6),
+                    child: SvgPicture.asset(
+                      isDark
+                          ? 'assets/images/svg/copy-dark.svg'
+                          : 'assets/images/svg/copy.svg',
                     ),
                   ),
-                ],
-              ),
-              const SizedBox(height: 28),
-           
+                ),
+              ],
+            ),
+            const SizedBox(height: 28),
+
             dotTypeTile(
               title1: "Rent type",
               title2: "Car type",
@@ -198,14 +202,14 @@ class SprayHistory extends StatelessWidget {
               value2: formatDateYear(history.date!),
               isDark: isDark,
             ),
-              const SizedBox(height: 22),
+            const SizedBox(height: 22),
             dotTypeTile(
               title1: "Time",
               title2: "Care Day",
               value: history.time!,
               value2: history.paintType == '2' || history.paintType == '3'
-                        ? 'NIL'
-                        : "${history.careDay} Days AfterCare",
+                  ? 'NIL'
+                  : "${history.careDay} Days AfterCare",
               isDark: isDark,
             ),
             const SizedBox(height: 22),
@@ -295,7 +299,6 @@ class SprayHistory extends StatelessWidget {
     });
   }
 }
-
 
 Widget dotTypeTile({
   required bool isDark,

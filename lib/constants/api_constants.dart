@@ -1,7 +1,7 @@
 class ApiRoute {
   static String projectUrl = 'https://project.jostpay.com/';
-  // static String liveUrl = projectUrl;
-  static String liveUrl = 'https://jostpay.com/';
+  static String liveUrl = projectUrl;
+  // static String liveUrl = 'https://jostpay.com/';
   static String baseUrlWeb = liveUrl;
   static String baseUrl = '${liveUrl}apis/';
 
@@ -94,7 +94,3 @@ class ApiRoute {
   static String squardCallback = 'squard_callback';
   static String setDeviceToken = 'set-device-token';
 }
-
- //? check out on card transfer => Intercept the request and redirect to the url
-// httsp://jostpay.com/apis/squard_callback
-// reference

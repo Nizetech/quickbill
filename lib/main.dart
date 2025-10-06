@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 import 'package:camera/camera.dart';
-import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +24,6 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'Provider/account_provider.dart';
 import 'Provider/DashboardProvider.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'Provider/InternetProvider.dart';
 
 
@@ -33,9 +31,16 @@ import 'Provider/InternetProvider.dart';
 @visibleForTesting
 List<CameraDescription> get cameras => _cameras;
 List<CameraDescription> _cameras = <CameraDescription>[];
-// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-//   print("Handling a background message: ${message.messageId}");
-// }
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  print("Handling a background message: ${message.messageId}");
+  // Initialize Firebase in background isolates if needed
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  // Handle background notification logic here
+  print('Background message title: ${message.notification?.title}');
+  print('Background message body: ${message.notification?.body}');
+  print('Background message data: ${message.data}');
+}
 void main() async {
   HttpOverrides.global = MyHttpOverrides();
   try {
@@ -50,13 +55,29 @@ void main() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-    // final firebaseMessaging = FirebaseMessaging.instance;
-    // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    //   print('Got a message whilst in the foreground! $message');
-    //   NotificationHelper().handleMessage(message);
-    // });
-    // await firebaseMessaging.getAPNSToken();
-    // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    
+    // Initialize Firebase Messaging
+    final firebaseMessaging = FirebaseMessaging.instance;
+
+    // Request notification permissions
+    await firebaseMessaging.requestPermission(
+      alert: true,
+      badge: true,
+      sound: true,
+      provisional: false,
+    );
+
+    // Listen for foreground messages
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('Got a message whilst in the foreground! $message');
+      NotificationHelper().handleMessage(message);
+    });
+
+    // Get APNS token for iOS
+    await firebaseMessaging.getAPNSToken();
+
+    // Set background message handler
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
     _cameras = await availableCameras();
   } on CameraException catch (e) {
@@ -117,6 +138,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   bool crashlyticsEnabled = true;
   // Define an async function to initialize FlutterFire
   Future<void> _initializeFlutterFire() async {
+    // Initialize notification helper
+    await NotificationHelper().init();
+    
     if (kDebugMode) {
       // Force enable crashlytics collection enabled if we're testing it.
       await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
@@ -163,9 +187,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     });
   }
   // This widget is the root of your application.
-  static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-  static FirebaseAnalyticsObserver observer =
-      FirebaseAnalyticsObserver(analytics: analytics);
   @override
   Widget build(BuildContext context) {
     

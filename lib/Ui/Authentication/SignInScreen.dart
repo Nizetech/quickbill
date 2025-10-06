@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 // ignore: unused_import
@@ -9,6 +10,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jost_pay_wallet/Provider/DashboardProvider.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/auth_provider.dart';
+import 'package:jost_pay_wallet/Ui/Authentication/SignUpScreen.dart';
 import 'package:jost_pay_wallet/Ui/Authentication/forget_password.dart';
 import 'package:jost_pay_wallet/Ui/Authentication/register_options.dart';
 import 'package:jost_pay_wallet/Values/NewColor.dart';
@@ -262,7 +264,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     const SizedBox(
                       height: 10,
                     ),
-                    if (!usePin)
+                    if (!usePin && Platform.isAndroid)
                       GoogleAuth(
                         text: 'Continue with Google',
                       ),
@@ -281,7 +283,11 @@ class _SignInScreenState extends State<SignInScreen> {
                           ),
                           TextButton(
                             onPressed: () =>
-                                Get.to(() => const RegisterOptions()),
+                                Get.to(() {
+                              return Platform.isAndroid
+                                  ? const RegisterOptions()
+                                  : const SignUpScreen();
+                            }),
                             child: Text(
                               'Sign Up',
                               style: NewStyle.btnTx16SplashBlue

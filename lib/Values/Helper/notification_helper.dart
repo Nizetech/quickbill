@@ -55,16 +55,29 @@ class NotificationHelper {
     });
   }
 
-  // Future<void> init() async {
-  //   const AndroidInitializationSettings initializationSettingsAndroid =
-  //       AndroidInitializationSettings('drawable/logo');
-  //   final InitializationSettings initializationSettings =
-  //       InitializationSettings(
-  //     android: initializationSettingsAndroid,
-  //   );
-  //   await plugin.initialize(initializationSettings);
-  //   await plugin.resolvePlatformSpecificImplementation<
-  //       AndroidFlutterLocalNotificationsPlugin>()!
-  //     ..createNotificationChannel(channel);
-  // }
+  Future<void> init() async {
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('drawable/logo');
+
+    const DarwinInitializationSettings initializationSettingsIOS =
+        DarwinInitializationSettings(
+      requestAlertPermission: true,
+      requestBadgePermission: true,
+      requestSoundPermission: true,
+    );
+
+    final InitializationSettings initializationSettings =
+        const InitializationSettings(
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsIOS,
+    );
+
+    await plugin.initialize(initializationSettings);
+
+    // Create notification channel for Android
+    final AndroidFlutterLocalNotificationsPlugin? androidImplementation =
+        plugin.resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>();
+    androidImplementation?.createNotificationChannel(channel);
+  }
 }

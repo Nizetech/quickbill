@@ -21,7 +21,6 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     getToken();
-
     Future.delayed(Duration(seconds: 2), () {
       token.isNotEmpty && pinEnabled.isNotEmpty && pinEnabled == '0'
           ? Get.offAll(() => BottomNav())
@@ -54,7 +53,7 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: Colors.black,
       body: Center(
         child:
-            Image.asset(width: double.infinity, 'assets/images/splash_2.png'),
+            Image.asset(width: double.infinity, 'assets/images/splash.png'),
       ),
     );
   }

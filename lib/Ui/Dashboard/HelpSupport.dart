@@ -75,13 +75,7 @@ class _HelpsupportState extends State<Helpsupport> {
                               top: 24, left: 24, bottom: 24),
                           decoration: BoxDecoration(
                               border: Border(
-                                bottom: BorderSide(
-                                  color: themeProvider.isDarkMode()
-                                      ? MyColor.borderDarkColor
-                                      : MyColor
-                                          .transparentColor, // Set the color of the border
-                                  width: 0.5, // Set the width of the border
-                                ),
+                             
                               ),
                               color: Theme.of(context).scaffoldBackgroundColor,
                               boxShadow: themeProvider.isDarkMode()

@@ -35,11 +35,6 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print("Handling a background message: ${message.messageId}");
   // Initialize Firebase in background isolates if needed
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
-  // Handle background notification logic here
-  print('Background message title: ${message.notification?.title}');
-  print('Background message body: ${message.notification?.body}');
-  print('Background message data: ${message.data}');
 }
 void main() async {
   HttpOverrides.global = MyHttpOverrides();
@@ -58,7 +53,6 @@ void main() async {
     
     // Initialize Firebase Messaging
     final firebaseMessaging = FirebaseMessaging.instance;
-
     // Request notification permissions
     await firebaseMessaging.requestPermission(
       alert: true,
@@ -208,7 +202,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           child: GetMaterialApp(
             navigatorKey: navigatorKey,
             debugShowCheckedModeBanner: false,
-            title: 'JostPay',
+            title: 'QuickBills',
             theme: themeProvider.lightTheme,
             darkTheme: themeProvider.darkTheme,
             themeMode: themeProvider.themeMode,

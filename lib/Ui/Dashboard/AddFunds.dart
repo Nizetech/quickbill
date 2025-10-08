@@ -6,10 +6,8 @@ import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Deposit.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/receipt_script.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/activate_virtual_account.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/balance_card.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/virtual_number.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Home/receipt_screen.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Home/widget/balance_card.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
@@ -45,7 +43,6 @@ class _AddFundsState extends State<AddFunds> {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     final themedata = Theme.of(context).colorScheme;
     final account = Provider.of<AccountProvider>(context, listen: true);
-    // log('deviceToken: ${account.userModel?.user?.toJson()}');
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -186,9 +183,7 @@ class _AddFundsState extends State<AddFunds> {
                         const SizedBox(
                           height: 20,
                         ),
-                        account.userModel?.user?.virtualAccount != false
-                            ? VirtualNumber()
-                            : ActivateVirtualAccount(),
+                    
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

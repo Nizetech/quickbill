@@ -1,18 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:jost_pay_wallet/Provider/DashboardProvider.dart';
 import 'package:jost_pay_wallet/Provider/InternetProvider.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Services.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Settings/SettingScreen.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/TransactionHistory.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/WalletScreen.dart';
-import 'package:jost_pay_wallet/Ui/Support/SupportScreen.dart';
-import 'package:jost_pay_wallet/Ui/Support/about_scren.dart';
-import 'package:jost_pay_wallet/Ui/Support/faq_screen.dart';
-import 'package:jost_pay_wallet/Ui/Support/how_it_works.dart';
-import 'package:jost_pay_wallet/Ui/Support/privacy_screen.dart';
-import 'package:jost_pay_wallet/Ui/Support/terms_screen.dart';
-import 'package:jost_pay_wallet/Ui/promotions/promo_screen.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Home/home.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/NewStyle.dart';
@@ -29,17 +23,10 @@ class BottomNav extends StatefulWidget {
 
 class _BottomNavState extends State<BottomNav> with WidgetsBindingObserver {
   List body = [
-    const WalletScreen(),
+    const HomeScreen(),
     const Services(),
-    const Transactionhistory(),
-    const PromoScreen(),
     const SettingScreen(),
-    const TermsScreen(),
-    const PrivacyScreen(),
-    const AboutUsScreen(),
-    const FaqScreen(),
-    const SupportScreen(),
-    const HowItWorksScreen(),
+    const Transactionhistory(),
   ];
 
   _onWillPop() {
@@ -118,7 +105,8 @@ class _BottomNavState extends State<BottomNav> with WidgetsBindingObserver {
               // bottom navigation
               Container(
                 alignment: Alignment.bottomCenter,
-                padding: const EdgeInsets.only(top: 10.5, bottom: 10.5),
+                padding: const EdgeInsets.only(
+                    top: 10.5, bottom: 10.5, left: 24, right: 24),
                 decoration: BoxDecoration(
                   color: Theme.of(context).scaffoldBackgroundColor,
                 ),
@@ -127,172 +115,38 @@ class _BottomNavState extends State<BottomNav> with WidgetsBindingObserver {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Expanded(
-                          child: InkWell(
+                        _navItem(
+                            image: "assets/images/home_icon.svg",
+                            title: "Home",
+                            index: 0,
+                            dashProvider: dashProvider,
                             onTap: () {
                               dashProvider.changeBottomIndex(0);
-                            },
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                // SvgPicture.asset(
-                                //   'assets/images/dashboard/home/filled.svg',
-                                //   height: 24,
-                                //   width: 24,
-                                //   colorFilter: ColorFilter.mode(
-                                //       dashProvider.currentIndex == 0
-                                //           ? MyColor.greenColor
-                                //           : MyColor.signGray,
-                                //       BlendMode.srcIn),
-                                // ),
-                                Image.asset(
-                                  "assets/images/dashboard/home.png",
-                                  height: 24,
-                                  width: 24,
-                                  fit: BoxFit.contain,
-                                  color: dashProvider.currentIndex == 0
-                                      ? MyColor.greenColor
-                                      : MyColor.signGray,
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  "Home",
-                                  style: NewStyle.tx28White.copyWith(
-                                    fontSize: 10,
-                                    color: dashProvider.currentIndex == 0
-                                        ? MyColor.greenColor
-                                        : MyColor.signGray,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: InkWell(
+                            }),
+                        _navItem(
+                            image: "assets/images/service_icon.svg",
+                            title: "Services",
+                            index: 1,
+                            dashProvider: dashProvider,
                             onTap: () {
                               dashProvider.changeBottomIndex(1);
-                            },
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Image.asset(
-                                  "assets/images/dashboard/shop.png",
-                                  height: 24,
-                                  width: 24,
-                                  fit: BoxFit.contain,
-                                  color: dashProvider.currentIndex == 1
-                                      ? MyColor.greenColor
-                                      : MyColor.signGray,
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  "Services",
-                                  style: NewStyle.tx28White.copyWith(
-                                    fontSize: 10,
-                                    color: dashProvider.currentIndex == 1
-                                        ? MyColor.greenColor
-                                        : MyColor.signGray,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: InkWell(
+                            }),
+                        _navItem(
+                            image: "assets/images/deposit_icon.svg",
+                            title: "Deposit",
+                            index: 2,
+                            dashProvider: dashProvider,
                             onTap: () {
                               dashProvider.changeBottomIndex(2);
-                              dashProvider.changeDefaultCoin("");
-                            },
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Image.asset(
-                                  "assets/images/dashboard/cards.png",
-                                  height: 24,
-                                  width: 24,
-                                  fit: BoxFit.contain,
-                                  color: dashProvider.currentIndex == 2
-                                      ? MyColor.greenColor
-                                      : MyColor.signGray,
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  "History",
-                                  style: NewStyle.tx28White.copyWith(
-                                    fontSize: 10,
-                                    color: dashProvider.currentIndex == 2
-                                        ? MyColor.greenColor
-                                        : MyColor.signGray,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: InkWell(
+                            }),
+                        _navItem(
+                            image: "assets/images/history_icon.svg",
+                            title: "History",
+                            index: 3,
+                            dashProvider: dashProvider,
                             onTap: () {
                               dashProvider.changeBottomIndex(3);
-                            },
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Image.asset(
-                                  "assets/images/dashboard/promo.png",
-                                  height: 24,
-                                  width: 24,
-                                  fit: BoxFit.contain,
-                                  color: dashProvider.currentIndex == 3
-                                      ? MyColor.greenColor
-                                      : MyColor.signGray,
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  "Promotion",
-                                  style: NewStyle.tx28White.copyWith(
-                                    fontSize: 10,
-                                    color: dashProvider.currentIndex == 3
-                                        ? MyColor.greenColor
-                                        : MyColor.signGray,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: InkWell(
-                            onTap: () {
-                              dashProvider.changeBottomIndex(4);
-                            },
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Image.asset(
-                                  "assets/images/dashboard/profile.png",
-                                  height: 24,
-                                  width: 24,
-                                  fit: BoxFit.contain,
-                                  color: dashProvider.currentIndex == 4
-                                      ? MyColor.greenColor
-                                      : MyColor.signGray,
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  "Profile",
-                                  style: NewStyle.tx28White.copyWith(
-                                    fontSize: 10,
-                                    color: dashProvider.currentIndex == 4
-                                        ? MyColor.greenColor
-                                        : MyColor.signGray,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
+                            }),
                       ],
                     ),
                     SizedBox(height: Platform.isIOS ? 20 : 5),
@@ -309,4 +163,41 @@ class _BottomNavState extends State<BottomNav> with WidgetsBindingObserver {
           child: body[dashProvider.currentIndex],
         ));
   }
+
+  Widget _navItem({
+    required String image,
+    required String title,
+    required int index,
+    required DashboardProvider dashProvider,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SvgPicture.asset(
+            image,
+            height: 24,
+            width: 24,
+            fit: BoxFit.contain,
+            color: dashProvider.currentIndex == index
+                ? MyColor.primaryColor
+                : MyColor.textGreyColor,
+          ),
+          const SizedBox(height: 4),
+          Text(
+            title,
+            style: NewStyle.tx28White.copyWith(
+              fontSize: 10,
+              color: dashProvider.currentIndex == index
+                  ? MyColor.primaryColor
+                  : MyColor.textGreyColor,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
 }

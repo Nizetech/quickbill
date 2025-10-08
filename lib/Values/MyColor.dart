@@ -1,12 +1,18 @@
 import 'dart:ui';
 
 class MyColor {
-  static const Color transparentColor = Color(0x00000000);
+  // Basic Colors
+  static const Color primaryColor = Color(0xff08304C);
+  static const Color secondaryColor = Color(0xffC8EBDE);
+  static const Color primaryGreen = Color(0xff0E8360);
+
+
   static const Color lightPrimaryDarkColor = Color(0xFF162A16);
   static const Color darkGreyColor = Color(0xFF31333C);
-  static const Color textGreyColor = Color(0xFFb5babe);
+  static const Color textGreyColor = Color(0xFF99A1B7);
   static const Color darkGrey01Color = Color(0xFF2b2d35);
   static const Color boarderColor = Color(0xFF434953);
+  static const Color lightGreen = Color(0xFFC8EBDE);
   static const Color grey = Color(0xFF505660);
   static const Color dotBoarderColor = Color(0xFF828f99);
   static const Color greyColor = Color(0xFFaaaeb1);
@@ -22,7 +28,6 @@ class MyColor {
   static const Color colorsBack1 = Color(0xFF282828);
   static const Color textFieldFillColor = Color(0xFFF0F1F2);
 
-  //JostPay
   static const Color blackColor = Color(0xFF141B34);
   static const Color cardDarkBgColor = Color(0xFF171717);
   static const Color cardlightBgColor = Color(0xFFF4F5F6);
@@ -48,7 +53,7 @@ class MyColor {
   static const Color darkPurpleColor = Color(0xFF7A0202);
   static const Color dark01GreenColor = Color(0xFF027A48);
   static const Color orangeColor = Color(0xFFFF7145);
-  static const Color redColor = Color(0xFFFF0000);
+  static const Color redColor = Color(0xFFDC2626);
   static const Color darkRed = Color(0xFF750000);
   static const Color yellowColor = Color(0xFFFFC045);
   static const Color pending = Color(0xFFFFAE00);

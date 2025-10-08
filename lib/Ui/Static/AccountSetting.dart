@@ -7,8 +7,7 @@ import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/auth_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Authentication/change_password.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/profile_image.dart';
-import 'package:jost_pay_wallet/Ui/Static/2fa.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Home/widget/profile_image.dart';
 import 'package:jost_pay_wallet/Ui/Static/set_pin_login.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:provider/provider.dart';
@@ -242,58 +241,7 @@ class _AccountsettingState extends State<Accountsetting> {
                     const SizedBox(
                       height: 24,
                     ),
-                    Row(
-                      children: [
-                        Image.asset('assets/images/lock-password.png',
-                            color: themeProvider.isDarkMode()
-                                ? const Color(0XFFAAAAAA)
-                                : MyColor.lightBlackColor),
-                        const SizedBox(
-                          width: 12,
-                        ),
-
-                        Text(
-                          '2FA Authentication',
-                          style: MyStyle.tx16LightBlack.copyWith(
-                              color: themeProvider.isDarkMode()
-                                  ? const Color(0XFFAAAAAA)
-                                  : MyColor.lightBlackColor),
-                        ),
-                        const Spacer(),
-                        Switch(
-                          value: model.userModel?.user?.useGoogleAuth == "1"
-                              ? true
-                              : false,
-                          onChanged: (value) {
-                            if (model.userModel?.user?.useGoogleAuth == "1") {
-                              model.toogle2Fa(
-                                0,
-                                showMessage: true,
-                                account: context.read<AccountProvider>(),
-                              );
-                            } else {
-                              model.toogle2Fa(1).then((val) {
-                                if (val != null) {
-                                  Get.to(TwoFAScreen());
-                                }
-                              });
-                            }
-                            // log("Switch value: ");
-                          },
-                          activeColor: Colors.green,
-                          inactiveThumbColor: Colors.white,
-                          activeTrackColor: themedata.primary,
-                          inactiveTrackColor: MyColor.switchGreyColor,
-                        ),
-                        // Image.asset('assets/images/arrow-right.png',
-                        //     color: themeProvider.isDarkMode()
-                        //         ? const Color(0XFFAAAAAA)
-                        //         : MyColor.lightBlackColor)
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 24,
-                    ),
+                
                     GestureDetector(
                       behavior: HitTestBehavior.opaque,
                       onTap: () => Get.to(SetPinLogin(

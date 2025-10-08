@@ -7,9 +7,10 @@ import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Settings/edit_profile.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/profile_image.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Home/widget/profile_image.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
+import 'package:jost_pay_wallet/common/appbar.dart';
 import 'package:provider/provider.dart';
 import '../../../bottom_nav.dart';
 
@@ -34,6 +35,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     final themedata = Theme.of(context).colorScheme;
     return Scaffold(
+      appBar: appBar(title: 'My Profile'),
       body: Consumer<AccountProvider>(builder: (context, model, _) {
         return SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 68),

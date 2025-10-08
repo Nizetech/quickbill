@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/DashboardProvider.dart';
 import 'package:jost_pay_wallet/Provider/auth_provider.dart';
-import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Authentication/SignInScreen.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/HelpSupport.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Settings/ProfileScreen.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Settings/Rewards/reward_screen.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Settings/connect_withUs.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/kyc_web.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/widget/profile_image.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Home/kyc_web.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Home/widget/profile_image.dart';
 import 'package:jost_pay_wallet/Ui/Static/AccountSetting.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
+import 'package:jost_pay_wallet/common/appbar.dart';
+import 'package:jost_pay_wallet/common/button.dart';
 import 'package:jost_pay_wallet/constants/constants.dart';
 import 'package:provider/provider.dart';
 
@@ -25,7 +23,9 @@ class SettingScreen extends StatefulWidget {
   State<SettingScreen> createState() => _SettingScreenState();
 }
 
+
 class _SettingScreenState extends State<SettingScreen> {
+
   @override
   void initState() {
     super.initState();
@@ -42,286 +42,143 @@ class _SettingScreenState extends State<SettingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
-    final themedata = Theme.of(context).colorScheme;
     final dashProvider = Provider.of<DashboardProvider>(context, listen: true);
     return Scaffold(
+      appBar: appBar(title: 'My Profile'),
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Consumer2<AccountProvider, AuthProvider>(
           builder: (context, model, auth, _) {
-        return SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(24, 10, 24, 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
+        return Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    InkWell(
-                      onTap: () => dashProvider.changeBottomIndex(0),
-                      child: Image.asset(
-                        'assets/images/arrow_left.png',
-                        color: themeProvider.isDarkMode()
-                            ? MyColor.mainWhiteColor
-                            : MyColor.dark01Color,
+                    Row(
+                      children: [
+                        ProfileImage(size: 60),
+                        const SizedBox(width: 10),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "${model.userModel?.user?.firstName?.capitalizeFirst ?? ""} ${model.userModel?.user?.lastName ?? ""}",
+                              style: MyStyle.tx18Black
+                                  .copyWith(color: MyColor.blackColor),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              model.userModel?.user?.phoneNumber ?? "",
+                              style: MyStyle.tx12Black.copyWith(
+                                fontSize: 14,
+                                color: MyColor.blackColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 25),
+                    Text(
+                      "General",
+                      style: MyStyle.tx16Black.copyWith(
+                        fontWeight: FontWeight.w500,
+                        color: MyColor.grey,
                       ),
                     ),
-                    const Spacer(),
-                    Transform.translate(
-                      offset: const Offset(-20, 0),
-                      child: Text(
-                        'Profile',
-                        style: MyStyle.tx18Black
-                            .copyWith(color: themedata.tertiary),
+                    const SizedBox(height: 16),
+                    _buildSettingCard(
+                      image: "assets/images/profile.svg",
+                      onTap: () {
+                        Get.to(() => const KycWebview());
+                      },
+                      title: "Update profile",
+                    ),
+                    Container(
+                        height: 0.5,
+                        decoration:
+                            const BoxDecoration(color: Color(0xFFF3F4F6))),
+                    const SizedBox(height: 16),
+                    _buildSettingCard(
+                      image: "assets/images/lock.svg",
+                      onTap: () {
+                        dashProvider.changeBottomIndex(5);
+                      },
+                      title: "Change Password",
+                    ),
+                    const SizedBox(height: 16),
+
+                    _buildSettingCard(
+                      image: "assets/images/support.svg",
+                      onTap: () {
+                        Get.to(() => const Accountsetting());
+                      },
+                      title: "Support",
+                    ),
+                    const SizedBox(height: 25),
+                    Text(
+                      "Legal",
+                      style: MyStyle.tx16Black.copyWith(
+                        fontWeight: FontWeight.w500,
+                        color: MyColor.grey,
                       ),
                     ),
-                    const Spacer(), // Adds flexible space after the text
+                    const SizedBox(height: 16),
+                    _buildSettingCard(
+                      image: "assets/images/terms.svg",
+                      onTap: () => dashProvider.changeBottomIndex(7),
+                      title: "Terms and Conditions",
+                    ),
+                    const SizedBox(height: 16),
+
+                    _buildSettingCard(
+                      image: "assets/images/privacy.svg",
+                      onTap: () => dashProvider.changeBottomIndex(10),
+                      title: "Privacy Policy",
+                    ),
+                   
+                   
                   ],
                 ),
-                const SizedBox(height: 30),
-                const Center(
-                  child: ProfileImage(size: 100),
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                Center(
-                  child: Text(
-                    "${model.userModel?.user?.firstName?.capitalizeFirst ?? ""} ${model.userModel?.user?.lastName ?? ""}",
-                    style:
-                        MyStyle.tx18Black.copyWith(color: themedata.tertiary),
-                  ),
-                ),
-                const SizedBox(
-                  height: 4,
-                ),
-                Center(
-                  child: Text(
-                    model.userModel?.user?.email ?? "",
-                    style: MyStyle.tx12Black.copyWith(
-                        color: themeProvider.isDarkMode()
-                            ? const Color(0XFFCBD2EB)
-                            : const Color(0xff30333A)),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Expanded(
-                    child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.only(top: 8, bottom: 8),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const ProfileScreen(),
-                              ),
-                            );
-                          },
-                          child: Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    color: Theme.of(context)
-                                        .scaffoldBackgroundColor),
-                                child: Image.asset(
-                                  "assets/images/user-edit-01.png",
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              Text("Edit Information",
-                                  style: MyStyle.tx14Black.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    color: themeProvider.isDarkMode()
-                                        ? const Color(0XFFCBD2EB)
-                                        : const Color(0xff30333A),
-                                  )),
-                              const Spacer(),
-                              Image.asset(
-                                "assets/images/right.png",
-                                fit: BoxFit.cover,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      _buildSettingCard(
-                        image: "assets/images/gift.png",
-                        onTap: () {
-                          Get.to(() => const RewardScreen());
-                        },
-                        themeProvider: themeProvider,
-                        title: "Referral Code",
-                      ),
-                      _buildSettingCard(
-                        icon: Icons.verified_user_outlined,
-                        onTap: () {
-                          Get.to(() => const KycWebview());
-                        },
-                        themeProvider: themeProvider,
-                        title: "KYC Verification",
-                      ),
-                      Container(
-                          height: 0.5,
-                          decoration:
-                              const BoxDecoration(color: Color(0xFFF3F4F6))),
-                      const SizedBox(height: 16),
-                      _buildSettingCard(
-                        image: "assets/images/google-doc.png",
-                        onTap: () {
-                          dashProvider.changeBottomIndex(5);
-                        },
-                        themeProvider: themeProvider,
-                        title: "Terms",
-                      ),
-                      _buildSettingCard(
-                        image: "assets/images/settings-02.png",
-                        onTap: () {
-                          Get.to(() => const Accountsetting());
-                        },
-                        themeProvider: themeProvider,
-                        title: "Settings",
-                      ),
-                      const SizedBox(height: 16),
-                      _buildSettingCard(
-                        image: "assets/images/help-square.png",
-                        onTap: () => dashProvider.changeBottomIndex(7), 
-                        themeProvider: themeProvider,
-                        title: "About Us",
-                      ),
-                      _buildSettingCard(
-                        icon: Icons.ads_click_sharp,
-                        onTap: () => dashProvider.changeBottomIndex(10),
-                        themeProvider: themeProvider,
-                        title: "How It Works",
-                      ),
-                
-                      Container(
-                        padding: const EdgeInsets.only(
-                          top: 8,
-                          bottom: 8,
-                        ),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const Helpsupport(),
-                                ));
-                          },
-                          child: Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    color: Theme.of(context)
-                                        .scaffoldBackgroundColor),
-                                child: Image.asset(
-                                  "assets/images/message-question.png",
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              Text("Help & Support",
-                                  style: MyStyle.tx14Black.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    color: themeProvider.isDarkMode()
-                                        ? const Color(0XFFCBD2EB)
-                                        : const Color(0xff30333A),
-                                  )),
-                              const Spacer(),
-                              Image.asset(
-                                "assets/images/right.png",
-                                fit: BoxFit.cover,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      _buildSettingCard(
-                        icon: Icons.language,
-                        onTap: () {
-                          Get.to(() => const ConnectWithUs());
-                        },
-                        themeProvider: themeProvider,
-                        title: "Connect with us",
-                      ),
-                      Container(
-                        padding: const EdgeInsets.only(top: 8, bottom: 8),
-                        child: InkWell(
-                          onTap: () async {
-                            await box.deleteAll([
-                              kAccessToken,
-                              kExistingUser,
-                              isPinEnabled,
-                            ]);
-                            if (themeProvider.isDarkMode()) {
-                              themeProvider.toggleTheme(false);
-                            }
-                            // google logout
-                            await box.delete('themeMode');
-                            // await box.clear();
-                            await auth.googleLogout();
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const SignInScreen(),
-                                ));
-                          },
-                          child: Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    color: Theme.of(context)
-                                        .scaffoldBackgroundColor),
-                                child: Image.asset(
-                                  "assets/images/logout-05.png",
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              Text("Sign out",
-                                  style: MyStyle.tx14Black.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.red,
-                                  )),
-                              const Spacer(),
-                              Image.asset(
-                                "assets/images/right.png",
-                                fit: BoxFit.cover,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ))
-              ],
+              ),
             ),
-          ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: CustomButton(
+                bgColor: MyColor.redColor,
+                text: "Log out",
+                radius: 30,
+                onTap: () async {
+                  await box.deleteAll([
+                    kAccessToken,
+                    kExistingUser,
+                    isPinEnabled,
+                  ]);
+                  // google logout
+                  await box.delete('themeMode');
+                  // await box.clear();
+                  await auth.googleLogout();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SignInScreen(),
+                      ));
+                },
+              ),
+            ),
+            const SizedBox(height: 40),
+          ],
         );
       }),
     );
   }
 
   Widget _buildSettingCard({
-    String? image,
+    required String image,
     required VoidCallback onTap,
-    IconData? icon,
-    required ThemeProvider themeProvider,
     required String title,
   }) {
     return Container(
@@ -333,28 +190,20 @@ class _SettingScreenState extends State<SettingScreen> {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: Theme.of(context).scaffoldBackgroundColor),
-              child: icon != null
-                  ? Icon(icon, color: MyColor.grey)
-                  : Image.asset(
-                      image ?? "",
-                      fit: BoxFit.cover,
-                    ),
+                  borderRadius: BorderRadius.circular(8),
+                  color: Color(0xffEBEBEB)),
+              child: SvgPicture.asset(image, fit: BoxFit.cover),
             ),
             const SizedBox(width: 16),
             Text(title,
-                style: MyStyle.tx14Black.copyWith(
-                  fontWeight: FontWeight.w500,
-                  color: themeProvider.isDarkMode()
-                      ? const Color(0XFFCBD2EB)
-                      : const Color(0xff30333A),
+                style: MyStyle.tx16Black.copyWith(
+                  fontWeight: FontWeight.w400,
                 )),
             const Spacer(),
-            Image.asset(
-              "assets/images/right.png",
-              fit: BoxFit.cover,
-            ),
+            Icon(
+              Icons.keyboard_arrow_right,
+              color: MyColor.grey,
+            )
           ],
         ),
       ),

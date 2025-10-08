@@ -60,8 +60,6 @@ class ThemeProvider extends ChangeNotifier {
           tertiary: MyColor.darkColor,
           onTertiary: MyColor.darkColor,
         ),
-        // brightness: Brightness.light,
-        
         primarySwatch: kPrimaryColor,
         scaffoldBackgroundColor: MyColor.mainWhiteColor,
         appBarTheme: const AppBarTheme(

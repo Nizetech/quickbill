@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Wallet/kyc_web.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Home/kyc_web.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/constants/constants.dart';

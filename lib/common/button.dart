@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:jost_pay_wallet/Provider/theme_provider.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/AddFunds.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
+import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/NewStyle.dart';
-import 'package:provider/provider.dart';
 
 import '../Values/NewColor.dart';
 
@@ -16,13 +19,13 @@ class CustomButton extends StatelessWidget {
   final Color? textColor;
   final FontWeight? fontWeight;
 
-  const CustomButton(
-      {super.key,
-      this.isLoading = false,
-      this.radius,
-      this.bgColor,
-      this.textColor,
-      required this.text,
+  const CustomButton({
+    super.key,
+    this.isLoading = false,
+    this.radius,
+    this.bgColor,
+    this.textColor,
+    required this.text,
     required this.onTap,
     this.fontWeight,
     this.fontSize,
@@ -36,7 +39,7 @@ class CustomButton extends StatelessWidget {
       child: TextButton(
         onPressed: isLoading ? null : onTap,
         style: TextButton.styleFrom(
-          backgroundColor: bgColor ?? MyColor.greenColor,
+          backgroundColor: bgColor ?? MyColor.primaryColor,
           padding: EdgeInsets.zero,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(radius ?? 10),
@@ -60,40 +63,60 @@ class CustomButton extends StatelessWidget {
   }
 }
 
-
 class BackBtn extends StatelessWidget {
   final VoidCallback? onTap;
   final bool isFromAuth;
   const BackBtn({super.key, this.onTap, this.isFromAuth = false});
-
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
-   
+
     return InkWell(
         onTap: onTap ??
             () {
-          Navigator.pop(context);
-        },
-        child: Container(
-          margin: const EdgeInsets.only(left: 15, top: 10),
-          padding: EdgeInsets.all(5),
-          decoration: BoxDecoration(
-            color: Colors.transparent,
-            border: Border.all(
-                color: themeProvider.isDarkMode() && !isFromAuth
-                    ? MyColor.mainWhiteColor
-                    : MyColor.dark01Color,
-                width: 1),
+            Navigator.pop(context);
+          },
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(10, 0, 5, 10),
+        child: CircleAvatar(
+          backgroundColor: MyColor.grey01Color,
+          child: SvgPicture.asset('assets/images/back_arrow.svg'),
+        ),
+      ),
+    );
+  }
+}
+
+class AddFundsBtn extends StatelessWidget {
+  const AddFundsBtn({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 45,
+      width: double.infinity,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          elevation: 0,
+          backgroundColor: MyColor.lightGreen,
+          foregroundColor: MyColor.greenColor,
+          shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          child: Icon(
-            Icons.arrow_back_ios_new,
-            color: themeProvider.isDarkMode() && !isFromAuth
-                ? MyColor.mainWhiteColor
-                : MyColor.dark01Color,
-            size: 20,
-          ),
-        ));
+        ),
+        onPressed: () {
+          Get.to(() => const AddFunds());
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Iconsax.add, color: MyColor.greenColor),
+            const SizedBox(width: 8),
+            Text('Add Funds',
+                style: MyStyle.tx14Black.copyWith(
+                    color: MyColor.greenColor, fontWeight: FontWeight.w500)),
+          ],
+        ),
+      ),
+    );
   }
 }

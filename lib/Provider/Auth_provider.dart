@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,13 +18,47 @@ class AuthProvider with ChangeNotifier {
 
   void updateAuthToken(String token) {
     authToken = token;
-    log("authToken:====>>> $authToken");
     notifyListeners();
   }
 
   void setLoading(bool value) {
     isLoading = value;
     notifyListeners();
+  }
+
+
+  Future<void> deActivateAccount() async {
+    try {
+      showLoader();
+      await AuthRepo().deActivateAccount().then((value) {
+        hideLoader();
+        if (value.isNotEmpty) {
+          if (value['status'] == false || value['result'] == false) {
+            if (value['message'].runtimeType == String) {
+              ErrorToast(value['message']);
+            } else {
+              String message = '';
+              value['message'].forEach((key, value) {
+                message += '$value';
+              });
+              ErrorToast(message);
+            }
+            return;
+          } else {
+            Get.offAll(SignInScreen());
+            if (value['message'] != null && value['message'] != '') {
+              SuccessToast(value['message']);
+            }
+          }
+          notifyListeners();
+        } else {
+          ErrorToast('Something went wrong');
+          return;
+        }
+      });
+    } catch (e) {
+      ErrorToast(e.toString());
+    }
   }
 
   Future<void> createAccount(Map<String, dynamic> data) async {
@@ -62,10 +95,8 @@ class AuthProvider with ChangeNotifier {
         }
         notifyListeners();
       });
-      // setLoading(false);
       notifyListeners();
     } catch (e) {
-      // setLoading(false);
       ErrorToast(e.toString());
     }
   }
@@ -122,7 +153,6 @@ class AuthProvider with ChangeNotifier {
     try {
       showLoader();
       await AuthRepo().googleLogout();
-      // Clear the auth token
       updateAuthToken('');
       hideLoader();
       SuccessToast('Logged out successfully');
@@ -154,7 +184,6 @@ class AuthProvider with ChangeNotifier {
             }
             return;
           } else {
-            // Store the token properly
             if (value['token'] != null) {
               updateAuthToken(value['token']);
             }
@@ -185,40 +214,6 @@ class AuthProvider with ChangeNotifier {
       });
     } catch (e) {
       hideLoader();
-      ErrorToast(e.toString());
-    }
-  }
-
-  Future<void> deActivateAccount() async {
-    try {
-      showLoader();
-      await AuthRepo().deActivateAccount().then((value) {
-        hideLoader();
-        if (value.isNotEmpty) {
-          if (value['status'] == false || value['result'] == false) {
-            if (value['message'].runtimeType == String) {
-              ErrorToast(value['message']);
-            } else {
-              String message = '';
-              value['message'].forEach((key, value) {
-                message += '$value';
-              });
-              ErrorToast(message);
-            }
-            return;
-          } else {
-            Get.offAll(SignInScreen());
-            if (value['message'] != null && value['message'] != '') {
-              SuccessToast(value['message']);
-            }
-          }
-          notifyListeners();
-        } else {
-          ErrorToast('Something went wrong');
-          return;
-        }
-      });
-    } catch (e) {
       ErrorToast(e.toString());
     }
   }
@@ -302,11 +297,9 @@ class AuthProvider with ChangeNotifier {
   Future<void> resendOtp(String email,
       {bool isForgetPass = false, String? authToken}) async {
     try {
-      // setLoading(true);
       showLoader();
       AuthRepo().resendOTP(email, authToken: authToken).then((value) {
         hideLoader();
-        // setLoading(false);
         if (value.isEmpty) return;
         if (value['status'] == false || value['result'] == false) {
           if (value['message'].runtimeType == String) {
@@ -324,19 +317,12 @@ class AuthProvider with ChangeNotifier {
             Get.to(OtpScreen(email: email));
           }
           updateAuthToken(value['token']);
-          // else{
-          //     Get.to(OtpScreen(
-          //       authToken: value['token'],
-          //       email: email,
-          //       ),
-          //       );
-          // }
+         
           SuccessToast('An OTP has been sent to your email');
         }
         notifyListeners();
       });
     } catch (e) {
-      // setLoading(false);
     }
   }
 
@@ -348,7 +334,6 @@ class AuthProvider with ChangeNotifier {
       AccountProvider? account,
       DashboardProvider? dashProvider}) async {
     try {
-      // return false;
       showLoader();
       AuthRepo()
           .verifyOTP(
@@ -357,7 +342,7 @@ class AuthProvider with ChangeNotifier {
               is2fa: is2fa,
               isEnable2fa: isEnable2fa)
           .then((value) async {
-        // setLoading(false);
+       
         hideLoader();
         if (value.isEmpty) return false;
         if (value['status'] == false || value['result'] == false) {
@@ -395,7 +380,6 @@ class AuthProvider with ChangeNotifier {
                   );
                 } else {
                   Get.offAll(BottomNav());
-                  // Get.offAll(BottomNav());
                 }
               }
               if (value['message'] != null && value['message'] != '') {
@@ -405,11 +389,11 @@ class AuthProvider with ChangeNotifier {
               }
             } else {}
           }
-          // }
+         
         }
       });
     } catch (e) {
-      // setLoading(false);
+     
       hideLoader();
       ErrorToast(e.toString());
       return false;
@@ -420,10 +404,9 @@ class AuthProvider with ChangeNotifier {
   Future<void> updateProfile(Map<String, dynamic> data,
       {required AccountProvider account}) async {
     try {
-      // setLoading(true);
       showLoader();
       AuthRepo().updateProfile(data).then((value) async {
-        // setLoading(false);
+       
         hideLoader();
         if (value.isEmpty) return;
         if (value['status'] == false || value['result'] == false) {
@@ -456,10 +439,8 @@ class AuthProvider with ChangeNotifier {
 
   Future<void> forgetPassword(String email) async {
     try {
-      // setLoading(true);
       showLoader();
       AuthRepo().forgetPassword(email).then((value) async {
-        // setLoading(false);
         hideLoader();
         if (value.isEmpty) return;
         if (value['status'] == false || value['result'] == false) {
@@ -489,10 +470,8 @@ class AuthProvider with ChangeNotifier {
 
   Future<void> changePassword(Map<String, dynamic> data) async {
     try {
-      // setLoading(true);
       showLoader();
       AuthRepo().changePassword(data).then((value) {
-        // setLoading(false);
         hideLoader();
         if (value.isEmpty) return;
         if (value['status'] == false || value['result'] == false) {
@@ -520,50 +499,4 @@ class AuthProvider with ChangeNotifier {
       ErrorToast(e.toString());
     }
   }
-
-  // Future<void> googleLogin(Map<String, dynamic> data) async {
-  //   try {
-  //     showLoader();
-  //     await AuthRepo().googleLogin(data).then((value) {
-  //       hideLoader();
-  //       if (value.isNotEmpty) {
-  //         if (value['status'] == false || value['result'] == false) {
-  //           if (value['message'].runtimeType == String) {
-  //             ErrorToast(value['message']);
-  //           } else {
-  //             String message = '';
-  //             value['message'].forEach((key, value) {
-  //               message += '$value';
-  //             });
-  //             ErrorToast(message);
-  //           }
-  //           return;
-  //         } else {
-  //           updateAuthToken(value['token']);
-  //           if (value['message'] != null && value['message'] != '') {
-  //             SuccessToast(value['message']);
-  //           } else {
-  //             SuccessToast('Google Sign-In Successful');
-  //           }
-  //           // Navigate to main screen or OTP screen based on response
-  //           if (value['requires_otp'] == true) {
-  //             Get.to(OtpScreen(
-  //               email: data['email'],
-  //               is2Fa: false,
-  //             ));
-  //           } else {
-  //             Get.offAll(BottomNav());
-  //           }
-  //         }
-  //         notifyListeners();
-  //       } else {
-  //         ErrorToast('Something went wrong');
-  //         return;
-  //       }
-  //     });
-  //   } catch (e) {
-  //     hideLoader();
-  //     ErrorToast(e.toString());
-  //   }
-  // }
 }

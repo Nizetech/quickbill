@@ -191,25 +191,6 @@ class AccountRepo {
     }
   }
 
-  Future<dynamic> cardBankTransfer(String amount) async {
-    String token = await box.get(kAccessToken);
-    try {
-      final response = await client.post(
-        ApiRoute.cardBankTransfer,
-        requestHeaders: {
-          'Authorization': token,
-        },
-        body: jsonEncode({
-          "amount": int.parse(double.parse(amount).ceil().toString()),
-        }),
-      );
-      return response;
-    } catch (e) {
-      print('Error: $e');
-      return {};
-    }
-  }
-
   Future<dynamic> readNotification() async {
     String token = await box.get(kAccessToken);
     try {
@@ -228,19 +209,6 @@ class AccountRepo {
     }
   }
 
-
-  Future<Map<String, dynamic>> getPromotion() async {
-    String token = await box.get(kAccessToken);
-    try {
-      final response = await client.post(ApiRoute.getPromo, requestHeaders: {
-        'Authorization': token,
-      });
-      return response;
-    } catch (e) {
-      print('Error: $e');
-      return {};
-    }
-  }
 
   Future<Map<String, dynamic>> verifyKyc(Map<String, dynamic> data) async {
     String token = await box.get(kAccessToken);
@@ -295,33 +263,6 @@ class AccountRepo {
     }
   }
 
-  Future<Map<String, dynamic>> deleteAccount() async {
-    String token = await box.get(kAccessToken);
-    try {
-      final response =
-          await client.post(ApiRoute.deleteAccount, requestHeaders: {
-        'Authorization': token,
-      });
-      return response;
-    } catch (e) {
-      print('Error: $e');
-      return {};
-    }
-  }
-
-  Future<Map<String, dynamic>> getReferral() async {
-    String token = await box.get(kAccessToken);
-    try {
-      final response =
-          await client.post(ApiRoute.getReferrals, requestHeaders: {
-        'Authorization': token,
-      });
-      return response;
-    } catch (e) {
-      print('Error: $e');
-      return {};
-    }
-  }
 
   Future<Map<String, dynamic>> getBalance() async {
     String token = await box.get(kAccessToken) ?? '';

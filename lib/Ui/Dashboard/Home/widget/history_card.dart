@@ -1,0 +1,318 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:provider/provider.dart';
+
+import 'package:jost_pay_wallet/Models/transactions.dart';
+import 'package:jost_pay_wallet/Provider/service_provider.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Home/receipt_screen.dart';
+import 'package:jost_pay_wallet/Ui/cable/cable_electricity_success.dart';
+import 'package:jost_pay_wallet/Values/Helper/helper.dart';
+import 'package:jost_pay_wallet/Values/MyColor.dart';
+import 'package:jost_pay_wallet/Values/MyStyle.dart';
+import 'package:jost_pay_wallet/utils/toast.dart';
+
+class HistoryCard extends StatelessWidget {
+  final Datum transaction;
+  const HistoryCard({
+    super.key,
+    required this.transaction,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    Color getStatus(Datum transaction) {
+      if (transaction.status == 'pending' ||
+          transaction.apiStatus == 'pending') {
+        return MyColor.orange01Color;
+      } else if (transaction.apiStatus == 'failed') {
+        return MyColor.redColor;
+      } else if (transaction.apiStatus == 'refunded') {
+        return MyColor.purpleColor;
+      } else if (transaction.status == 'success' || transaction.status == '1') {
+        return MyColor.dark01GreenColor;
+      } else {
+        return MyColor.redColor;
+      }
+    }
+
+    String getPhone(Datum transaction) {
+      return transaction.details!.split(' Phone: ')[1].split(',')[0].toString();
+    }
+
+    String getOperator(Datum transaction) {
+      String operator = transaction.details!
+          .split(' Operator: ')[1]
+          .split(',')[0]
+          .toString()
+          .split('Airtime')[0]
+          .capitalizeFirst!;
+      return operator;
+    }
+
+    String refundedDesc(Datum transaction) {
+      if (transaction.type == Type.DATA) {
+        return 'Data | Refunded';
+      } else if (transaction.type == Type.AIRTIME) {
+        return 'Airtime | Refunded';
+      } else if (transaction.type == Type.ELECTRICITY) {
+        return 'Electricity | Refunded';
+      } else if (transaction.type == Type.CABLE) {
+        return 'Cable | Refunded';
+      } else {
+        return '${transaction.type!.name.capitalizeFirst!} | Refunded';
+      }
+    }
+
+    String getDescription(Datum transaction) {
+      return transaction.apiStatus == 'refunded'
+          ? refundedDesc(transaction)
+          : transaction.type != null
+              ? (transaction.type == Type.ELECTRICITY ||
+                      transaction.type == Type.CABLE)
+                  ? transaction.details!.split(' ID: ')[1].toString()
+                  : transaction.type!.name.capitalizeFirst!
+              : transaction.details!;
+    }
+
+    final model = context.read<ServiceProvider>();
+    return Row(
+      children: [
+        Container(
+          height: 41.r,
+          width: 41.r,
+          padding: EdgeInsets.all(6.r),
+          decoration: BoxDecoration(
+              color: MyColor.mainWhiteColor,
+              border: Border.all(color: MyColor.borderColor),
+              shape: BoxShape.circle),
+          child: Icon(
+            transaction.type != null && transaction.type == Type.DEPOSIT
+                ? Iconsax.arrow_down
+                : Iconsax.arrow_up_3,
+            color: transaction.type != null && transaction.type == Type.DEPOSIT
+                ? MyColor.greenColor
+                : MyColor.redColor,
+          ),
+        ),
+        SizedBox(width: 10.w),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (transaction.type != Type.DATA &&
+                  transaction.type != Type.AIRTIME)
+                Text(
+                  getDescription(transaction),
+                  maxLines: 1,
+                  style: MyStyle.tx12Black.copyWith(
+                    fontWeight: FontWeight.w400,
+                    overflow: TextOverflow.ellipsis,
+                    fontSize: 12.sp,
+                    color: MyColor.blackColor,
+                  ),
+                ),
+              if (transaction.type == Type.DATA ||
+                  transaction.type == Type.AIRTIME)
+                Text(
+                  transaction.apiStatus == 'refunded'
+                      ? refundedDesc(transaction)
+                      : transaction.type == Type.DATA
+                          ? transaction.details!
+                              .split(' Plan: ')[1]
+                              .split(',')[1]
+                          : '${getPhone(transaction)} - ${getOperator(transaction).toUpperCase()}',
+                  maxLines: 1,
+                  style: MyStyle.tx12Black.copyWith(
+                      overflow: TextOverflow.ellipsis,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 12.sp,
+                      color: MyColor.blackColor),
+                ),
+              if (transaction.reference != null &&
+                  transaction.reference!.isNotEmpty) ...[
+                const SizedBox(height: 5),
+                Text(
+                  transaction.reference!,
+                  maxLines: 1,
+                  style: MyStyle.tx12Black.copyWith(
+                      overflow: TextOverflow.ellipsis,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 12.sp,
+                      color: MyColor.blackColor),
+                ),
+              ],
+              SizedBox(height: 5.h),
+              Text(
+                formatDateTime(transaction.transDate!),
+                style: MyStyle.tx12Black.copyWith(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 12.sp,
+                  fontStyle: FontStyle.italic,
+                  color: MyColor.blackColor,
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(width: 25),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              '₦${formatNumber(num.parse(transaction.amount!))}',
+              style: MyStyle.tx12Black.copyWith(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 12.sp,
+                  color: MyColor.blackColor),
+            ),
+            const SizedBox(height: 5),
+            Row(
+              children: [
+                transaction.apiStatus == 'refunded'
+                    ? CircleAvatar(
+                        radius: 7,
+                        backgroundColor: MyColor.purpleColor,
+                        child: Icon(
+                          Icons.check,
+                          size: 10,
+                          color: Colors.white,
+                        ),
+                      )
+                    : transaction.apiStatus != null &&
+                                transaction.apiStatus!.contains('pending') ||
+                            getStatus(transaction) == MyColor.orange01Color
+                        ? CircleAvatar(
+                            radius: 7,
+                            backgroundColor: MyColor.pending,
+                            child:
+                                SvgPicture.asset('assets/images/pending.svg'))
+                        : CircleAvatar(
+                            radius: 7,
+                            backgroundColor: getStatus(transaction),
+                            child: Icon(
+                              getStatus(transaction) == MyColor.dark01GreenColor
+                                  ? Icons.done
+                                  : Icons.close,
+                              size: 10,
+                              color: Colors.white,
+                            ),
+                          ),
+                SizedBox(width: 5.w),
+                GestureDetector(
+                  onTap: () {
+                    if (transaction.apiStatus == 'refunded') {
+                      viewReceipt(
+                        transaction: transaction,
+                        getPhone: getPhone,
+                        getOperator: getOperator,
+                        context: context,
+                      );
+                    } else if ((transaction.apiStatus != null &&
+                            transaction.apiStatus!.contains('pending')) ||
+                        getStatus(transaction) != MyColor.dark01GreenColor ||
+                        transaction.apiStatus!.contains('pending') ||
+                        getStatus(transaction) == MyColor.orange01Color) {
+                      ErrorToast(
+                          'No receipt available yet. Your order has not been completed.');
+                    } else {
+                      if (transaction.type == Type.ELECTRICITY ||
+                          transaction.type == Type.CABLE) {
+                        model.getReceipt({
+                          'id': transaction.id,
+                          'type': transaction.type == Type.ELECTRICITY
+                              ? 'electricity'
+                              : 'cable',
+                        }, callback: () {
+                          viewReceipt(
+                            transaction: transaction,
+                            getPhone: getPhone,
+                            getOperator: getOperator,
+                            context: context,
+                          );
+                        });
+                      } else {
+                        viewReceipt(
+                          transaction: transaction,
+                          getPhone: getPhone,
+                          getOperator: getOperator,
+                          context: context,
+                        );
+                      }
+                    }
+                  },
+                  child: Container(
+                      decoration: BoxDecoration(
+                          color: MyColor.lightGreen.withValues(alpha: 0.5),
+                          borderRadius: BorderRadius.circular(15)),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 3, horizontal: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'View Details',
+                              style: MyStyle.tx11Grey.copyWith(
+                                  color: MyColor.dark01GreenColor,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            const SizedBox(
+                              width: 4,
+                            ),
+                          ],
+                        ),
+                      )),
+                ),
+              ],
+            )
+          ],
+        ),
+      ],
+    );
+  }
+
+  void viewReceipt({
+    required Datum transaction,
+    required String Function(Datum transaction) getPhone,
+    required String Function(Datum transaction) getOperator,
+    required BuildContext context,
+  }) {
+    final model = context.read<ServiceProvider>();
+    if (transaction.type == Type.ELECTRICITY) {
+      Get.to(CableElectSuccessScreen(
+        data: model.receiptModel?.info?.toJson() ?? {},
+        isCable: false,
+        amount: transaction.amount!,
+        isTransaction: true,
+      ));
+    } else {
+      Get.to(
+        ReceiptScreen(
+          status: '1',
+          isDeposit: transaction.type == Type.DEPOSIT,
+          isRefunded: transaction.apiStatus == 'refunded',
+          isElectricity: transaction.type == Type.ELECTRICITY,
+          isCable: transaction.type == Type.CABLE,
+          serviceDetails: transaction.type == Type.DATA
+              ? "Data - ${getPhone(transaction)}"
+              : transaction.type == Type.AIRTIME
+                  ? "Airtime"
+                  : transaction.type != null
+                      ? transaction.type!.name.capitalizeFirst!
+                      : transaction.details!,
+          referenceNo: transaction.reference!,
+          amount: transaction.amount!,
+          description: transaction.type == Type.DATA ||
+                  transaction.type == Type.AIRTIME
+              ? '${getOperator(transaction).toUpperCase()} - ${transaction.type!.name.capitalizeFirst!}'
+              : transaction.details!,
+          date: transaction.transDate!.toString(),
+        ),
+      );
+    }
+  }
+}

@@ -16,13 +16,6 @@ class NotificationHelper {
   Future<void> handleMessage(RemoteMessage message) async {
     // ignore: unnecessary_null_comparison
     RemoteNotification? notification =
-        // message.data ;
-        // != null
-        //     ? RemoteNotification(
-        //         title: message.data['title'],
-        //         body: message.data['body'],
-        //       )
-        //     :
         message.notification;
     if (notification != null) {
       plugin.show(
@@ -39,7 +32,6 @@ class NotificationHelper {
           android: AndroidNotificationDetails(
             channel.id,
             channel.name,
-            // sound: RawResourceAndroidNotificationSound('default'),
             importance: Importance.high,
             channelDescription: channel.description,
             enableVibration: true,

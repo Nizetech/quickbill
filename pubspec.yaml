@@ -106,58 +106,11 @@ flutter:
     - .env
 
   fonts:
-    - family: NimbusSanLBol
+    - family: Switzer
       fonts:
-        - asset: assets/fonts/NimbusSanL-Bol.otf
-
-    - family: NimbusSanLBolIta
-      fonts:
-        - asset: assets/fonts/NimbusSanL-BolIta.otf
-
-    - family: NimbusSanLRegular
-      fonts:
-        - asset: assets/fonts/NimbusSanL-Reg.otf
-
-    - family: NimbusSanLRegularItalic
-      fonts:
-        - asset: assets/fonts/NimbusSanL-RegIta.otf
-
-    - family: VahidRegular
-      fonts:
-        - asset: assets/fonts/XM-Vahid-Reg.otf
-
-    - family: VahidRegularItalic
-      fonts:
-        - asset: assets/fonts/XM-Vahid-RegIta.otf
-
-    - family: VahidBold
-      fonts:
-        - asset: assets/fonts/XM-Vahid-Bol.otf
-
-    - family: VahidBoldItalic
-      fonts:
-        - asset: assets/fonts/XM-Vahid-BolIta.otf
-
-    - family: InterRegular
-      fonts:
-        - asset: assets/fonts/Inter-Reg.otf
-
-    - family: InterRegularItalic
-      fonts:
-        - asset: assets/fonts/Inter-RegIta.otf
-
-    - family: InterBold
-      fonts:
-        - asset: assets/fonts/Inter-Bol.otf
-
-    - family: InterBoldItalic
-      fonts:
-        - asset: assets/fonts/Inter-BolIta.otf
-
-    - family: SF Pro Rounded
-      fonts:
-        - asset: assets/fonts/SF-Pro-Rounded-Regular.otf
-
-    - family: Roboto
-      fonts:
-        - asset: assets/fonts/Roboto-Regular.ttf
+        - asset: assets/fonts/Switzer-Black.otf
+        - asset: assets/fonts/Switzer-Bold.otf
+        - asset: assets/fonts/Switzer-Medium.otf
+        - asset: assets/fonts/Switzer-Regular.otf
+        - asset: assets/fonts/Switzer-SemiBold.otf
+        - asset: assets/fonts/Switzer-Thin.otf

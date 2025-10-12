@@ -20,6 +20,7 @@ AppBar appBar({
       title,
       style: MyStyle.tx20Grey.copyWith(
         color: MyColor.blackColor,
+        fontSize: 18,
       ),
     ),
   );

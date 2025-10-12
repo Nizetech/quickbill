@@ -420,7 +420,7 @@ class AuthProvider with ChangeNotifier {
             ErrorToast(message);
           }
         } else {
-          await account.getUserProfile();
+          await account.getUserProfile(isLoading: false);
           hideLoader();
           Get.back();
           if (value['message'] != null && value['message'] != '') {

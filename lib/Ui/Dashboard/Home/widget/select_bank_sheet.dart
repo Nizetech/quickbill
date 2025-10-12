@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
-import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:provider/provider.dart';
 
 void bankSelectionSheet({
-  required ThemeProvider themeProvider,
   required Function(Map<dynamic, String>) onSelect,
 }) {
   final themedata = Theme.of(Get.context!).colorScheme;
@@ -21,9 +19,7 @@ void bankSelectionSheet({
         width: double.infinity,
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: themeProvider.isDarkMode()
-              ? MyColor.dark02Color
-              : MyColor.mainWhiteColor,
+          color: MyColor.mainWhiteColor,
           borderRadius: BorderRadius.vertical(
             top: Radius.circular(20),
           ),

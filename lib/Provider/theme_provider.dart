@@ -60,6 +60,7 @@ class ThemeProvider extends ChangeNotifier {
           tertiary: MyColor.darkColor,
           onTertiary: MyColor.darkColor,
         ),
+        fontFamily: 'Switzer',
         primarySwatch: kPrimaryColor,
         scaffoldBackgroundColor: MyColor.mainWhiteColor,
         appBarTheme: const AppBarTheme(
@@ -72,6 +73,7 @@ class ThemeProvider extends ChangeNotifier {
 
   ThemeData get darkTheme => ThemeData(
         // brightness: Brightness.dark,
+        fontFamily: 'Switzer',
         primarySwatch: kPrimaryColor,
         colorScheme: const ColorScheme.dark(
           primary: MyColor.splashBtn,

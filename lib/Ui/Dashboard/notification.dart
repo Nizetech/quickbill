@@ -15,14 +15,14 @@ import 'package:jost_pay_wallet/Values/NewStyle.dart';
 import 'package:jost_pay_wallet/common/button.dart';
 import 'package:provider/provider.dart';
 
-class AlarmScreen extends StatefulWidget {
-  const AlarmScreen({super.key});
+class NotificationScreen extends StatefulWidget {
+  const NotificationScreen({super.key});
 
   @override
-  State<AlarmScreen> createState() => _AlarmScreenState();
+  State<NotificationScreen> createState() => _NotificationScreenState();
 }
 
-class _AlarmScreenState extends State<AlarmScreen> {
+class _NotificationScreenState extends State<NotificationScreen> {
   String selectedAccountName = "";
   String type = "all";
   TextEditingController searchController = TextEditingController();

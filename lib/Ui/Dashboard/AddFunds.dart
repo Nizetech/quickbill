@@ -1,23 +1,19 @@
-
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
-import 'package:jost_pay_wallet/Provider/theme_provider.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Deposit.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Home/receipt_screen.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Home/widget/balance_card.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Home/deposit_summary.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
-import 'package:jost_pay_wallet/Values/utils.dart';
-import 'package:jost_pay_wallet/common/status_view_receipt.dart';
+import 'package:jost_pay_wallet/common/appbar.dart';
+import 'package:jost_pay_wallet/common/button.dart';
+import 'package:jost_pay_wallet/common/text_field.dart';
 import 'package:jost_pay_wallet/utils/toast.dart';
 import 'package:provider/provider.dart';
 
 class AddFunds extends StatefulWidget {
-  const AddFunds({super.key});
+  final bool isFromNav;
+  const AddFunds({super.key, this.isFromNav = false});
 
   @override
   State<AddFunds> createState() => _AddFundsState();
@@ -25,358 +21,183 @@ class AddFunds extends StatefulWidget {
 
 class _AddFundsState extends State<AddFunds> {
 
+  int isSelected = 0;
+  final amountController = TextEditingController();
   @override
-  void initState() {
-    super.initState();
-    final model = Provider.of<AccountProvider>(context, listen: false);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (model.depositHistoryModel == null) {
-        model.getDepositHistory();
-      } else {
-        model.getDepositHistory(isLoading: false);
-      }
-    });
+  Widget build(BuildContext context) {
+    final account = context.watch<AccountProvider>();
+    return Scaffold(
+      appBar: appBar(title: 'Deposit wallet', isBack: !widget.isFromNav),
+      body: Padding(
+        padding: const EdgeInsets.all(
+          20,
+        ),
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Fund Wallet',
+                        style: MyStyle.tx16Black.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Text(
+                        'Deposit via Card/Manually',
+                        style: MyStyle.tx16Black.copyWith(
+                          fontWeight: FontWeight.w400,
+                          color: MyColor.grey,
+                        ),
+                      ),
+                      const SizedBox(height: 50),
+                      Text(
+                        'Fund Wallet with',
+                        style: MyStyle.tx16Black.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: MyColor.grey,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          DepositType(
+                            image: 'assets/images/card_fund.png',
+                            onTap: (value) {
+                              setState(() {
+                                isSelected = 0;
+                              });
+                            },
+                            isSelected: isSelected == 0,
+                          ),
+                          const SizedBox(width: 10),
+                          DepositType(
+                            image: 'assets/images/manual_fund.png',
+                            onTap: (value) {
+                              setState(() {
+                                isSelected = 1;
+                              });
+                            },
+                            isSelected: isSelected == 1,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 40),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Amount',
+                            style: MyStyle.tx14Black
+                                .copyWith(fontWeight: FontWeight.w500),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 5),
+                            decoration: BoxDecoration(
+                              color: MyColor.grey01Color,
+                              border: Border.all(color: MyColor.borderColor),
+                              borderRadius: BorderRadius.circular(7),
+                            ),
+                            child: Text(
+                              'Bal:₦ ${formatNumber(account.balance ?? 0)}',
+                              style: MyStyle.tx14Black.copyWith(
+                                fontWeight: FontWeight.w400,
+                                color: MyColor.greenColor,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      
+                      const SizedBox(height: 10),
+                      CustomTextField(
+                        controller: amountController,
+                        keyboardType: TextInputType.number,
+                        text: 'Enter amount',
+                        preffixIcon: Padding(
+                          padding: const EdgeInsets.fromLTRB(10, 5, 0, 0),
+                          child: Text(
+                            '₦',
+                            style: MyStyle.tx14Black.copyWith(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 24,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ]),
+              ),
+            ),
+            CustomButton(
+              text: 'Continue',
+              onTap: () {
+                final amount = double.tryParse(amountController.text);
+                if (amount == null || amount < 0) {
+                  ErrorToast('Please enter a valid amount');
+                  return;
+                } else {
+              
+                  Get.to(
+                    DepositSummary(
+                      amount: amount.toString(),
+                      isCard: isSelected == 0,
+                    ),
+                  );
+                }
+            
+              },
+            ),
+            const SizedBox(height: 80),
+          ],
+        ),
+      ),
+    );
   }
+}
+
+class DepositType extends StatelessWidget {
+  final String image;
+  final void Function(bool?)? onTap;
+  final bool isSelected;
+  const DepositType({
+    super.key,
+    required this.image,
+    required this.onTap,
+    required this.isSelected,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
-    final themedata = Theme.of(context).colorScheme;
-    final account = Provider.of<AccountProvider>(context, listen: true);
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.only(
-            top: 10,
-            left: 24,
-            right: 24,
-          ),
-          child: Column(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: themeProvider.isDarkMode()
-                          ? MyColor.borderDarkColor
-                          : MyColor.borderColor, // Set the color of the border
-                      width: 0.5, // Set the width of the border
-                    ),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 20),
-                  child: Row(
-                    children: [
-                      InkWell(
-                        onTap: () => Get.back(),
-                        child: Image.asset(
-                          'assets/images/arrow_left.png',
-                          color: themeProvider.isDarkMode()
-                              ? MyColor.mainWhiteColor
-                              : MyColor.dark01Color,
-                        ),
-                      ),
-                      const Spacer(), // Adds flexible space between the image and the text
-                      Transform.translate(
-                        offset: const Offset(-26, 0),
-                        child: Text(
-                          'Add Funds',
-                          style: MyStyle.tx18Black
-                              .copyWith(color: themedata.tertiary),
-                        ),
-                      ),
-                      const Spacer(), // Adds flexible space after the text
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Expanded(
-                child: RefreshIndicator(
-                  onRefresh: () async {
-                    await account.getDepositHistory();
-                    await account.getUserBalance();
-                    await account.getUserProfile();
-                  },
-                  child: SingleChildScrollView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: BalanceCard(
-                                hasAddFund: true,
-                              ),
-                            ),
-                            SizedBox(width: 5),
-                            Expanded(
-                              child: GestureDetector(
-                                  onTap: () {
-                                    // if (account.userModel?.user?.createdAt !=
-                                    //         null &&
-                                    //     // account.userModel?.user?.isActive ==
-                                    //     //     false &&
-                                    //     account.userModel?.user
-                                    //             ?.basicVerified ==
-                                    //         false &&
-                                    //     account.userModel?.user?.idVerified ==
-                                    //         false) {
-                                    //   Get.to(() => const KycWebview());
-                                    // } else {
-                                      Get.to(
-                                        Deposit(),
-                                      );
-                                    // }
-                                  },
-                                  child: Container(
-                                    height: 125,
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                      color: themeProvider.isDarkMode()
-                                          ? Color(0XFF1D361D)
-                                          : Color(0xffDAEBDA),
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          children: [
-                                            SizedBox(width: 10),
-                                            CircleAvatar(
-                                              radius: 20,
-                                              backgroundColor: Colors.white
-                                                  .withValues(alpha: .08),
-                                              child: SvgPicture.asset(
-                                                'assets/images/trend_up.svg',
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                            Spacer(),
-                                            Image.asset(
-                                              'assets/images/vector.png',
-                                              height: 60,
-                                            ),
-                                          ],
-                                        ),
-                                        Spacer(),
-                                        Text(
-                                          'Explore other options',
-                                          style: MyStyle.tx16Black.copyWith(
-                                              decoration:
-                                                  TextDecoration.underline,
-                                              decorationColor:
-                                                  MyColor.greenColor,
-                                              color: MyColor.greenColor),
-                                        ),
-                                        SizedBox(height: 5),
-                                      ],
-                                    ),
-                                  )),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                    
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Deposit History',
-                              style: MyStyle.tx14Black
-                                  .copyWith(color: themedata.tertiary),
-                            ),
-                            // Text(
-                            //   'View all',
-                            //   style: MyStyle.tx14Black
-                            //       .copyWith(color: themedata.tertiary),
-                            // ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        if (account.depositHistoryModel != null)
-                          ListView.builder(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemCount:
-                                  account.depositHistoryModel!.data!.length,
-                              padding: EdgeInsets.zero,
-                              itemBuilder: (context, index) {
-                                var item =
-                                    account.depositHistoryModel!.data![index];
-                                return Container(
-                                  decoration: BoxDecoration(
-                                      border: Border(
-                                          bottom: BorderSide(
-                                    width: 0.4,
-                                    color: themeProvider.isDarkMode()
-                                        ? MyColor.borderDarkColor
-                                        : MyColor.borderColor,
-                                  ))),
-                                  child: Column(
-                                    children: [
-                                      const SizedBox(
-                                        height: 16,
-                                      ),
-                                      Row(
-                                        children: [
-                                          Container(
-                                            height: 41,
-                                            width: 41,
-                                            padding: EdgeInsets.all(8),
-                                            decoration: BoxDecoration(
-                                                color: themedata.secondary,
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        12.3)),
-                                            child: SvgPicture.asset(
-                                                'assets/images/svg/deposit.svg'),
-                                          ),
-                                          const SizedBox(
-                                            width: 6,
-                                          ),
-                                          Expanded(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  "Deposit - ${item.type!}",
-                                                  maxLines: 1,
-                                                  // "${item.phone!} - ${item.networkName!}",
-                                                  style: MyStyle.tx12Black
-                                                      .copyWith(
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          color: themedata
-                                                              .tertiary),
-                                                ),
-                                                const SizedBox(
-                                                  height: 4,
-                                                ),
-                                                Text(
-                                                  item.reference!,
-                                                  maxLines: 1,
-                                                  style: MyStyle.tx12Black
-                                                      .copyWith(
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          color: themedata
-                                                              .tertiary),
-                                                ),
-                                                const SizedBox(
-                                                  height: 4,
-                                                ),
-                                                Text(
-                                                  formatDateTime(
-                                                    item.updatedAt!,
-                                                  ),
-                                                  //  dateFormat.format(item.createdAt!),
-                                                  style: MyStyle.tx12Black
-                                                      .copyWith(
-                                                    color: themeProvider
-                                                            .isDarkMode()
-                                                        ? const Color(
-                                                            0XFFCBD2EB)
-                                                        : const Color(
-                                                            0xff30333A),
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          SizedBox(width: 25),
-                                          Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.end,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      Utils.naira +
-                                                          formatNumber(
-                                                              num.parse(item
-                                                                  .amount!)),
-                                                      style: MyStyle.tx12Black
-                                                          .copyWith(
-                                                              color: themedata
-                                                                  .tertiary),
-                                                    ),
-                                                    SizedBox(width: 5),
-                                                    GestureDetector(
-                                                      onTap: () {},
-                                                      child: SvgPicture.asset(
-                                                          'assets/images/refresh.svg'),
-                                                    ),
-                                                  ],
-                                                ),
-                                                SizedBox(
-                                                  height: 8.h,
-                                                ),
-                                                StatusViewReceipt(
-                                                  status: item.status!,
-                                                  isRefunded: false,
-                                                  onTap: () {
-                                                    if (item.status!
-                                                            .toLowerCase()
-                                                            .contains(
-                                                                'pending') ||
-                                                        item.status!
-                                                            .toLowerCase()
-                                                            .contains(
-                                                                'cancel') ||
-                                                        item.status!
-                                                            .toLowerCase()
-                                                            .contains('fail')) {
-                                                      ErrorToast(
-                                                          'No receipt available yet. Your order has not been completed.');
-                                                    } else {
-                                                      Get.to(ReceiptScreen(
-                                                        status: item.status!,
-                                                        isDeposit: true,
-                                                        serviceDetails: 'Data',
-                                                        description:
-                                                            'Deposit - ${item.type!}',
-                                                        referenceNo:
-                                                            item.reference!,
-                                                        amount: item.amount!,
-                                                        date: item.updatedAt!
-                                                            .toString(),
-                                                      ));
-                                                    }
-                                                  },
-                                                ),
-                                              ])
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 16,
-                                      )
-                                    ],
-                                  ),
-                                );
-                              })
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
+    return Stack(
+      children: [
+        GestureDetector(
+          onTap: () => onTap!(isSelected),
+          child: Image.asset(
+            image,
+            height: 120,
           ),
         ),
-      ),
+        Positioned(
+            bottom: 0,
+            left: 0,
+            child: Checkbox(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+              side: BorderSide(
+                color: MyColor.mainWhiteColor,
+                width: 2,
+              ),
+              activeColor: MyColor.primaryColor,
+              checkColor: MyColor.mainWhiteColor,
+              value: isSelected,
+              onChanged: onTap,
+            )),
+      ],
     );
   }
 }

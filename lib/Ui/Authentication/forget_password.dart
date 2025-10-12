@@ -4,6 +4,7 @@ import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/NewStyle.dart';
 import 'package:jost_pay_wallet/common/button.dart';
+import 'package:jost_pay_wallet/common/text_field.dart';
 import 'package:provider/provider.dart';
 
 class ForgotPassword extends StatelessWidget {
@@ -71,8 +72,10 @@ class ForgotPassword extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
-                TextFormField(
+                CustomTextField(
+                  text: 'Email address',
                   controller: email,
+                  keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your email address';
@@ -82,15 +85,8 @@ class ForgotPassword extends StatelessWidget {
                     }
                     return null;
                   },
-                  cursorColor: MyColor.greenColor,
-                  style: MyStyle.tx16Black.copyWith(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
-                  decoration: NewStyle.authInputDecoration.copyWith(
-                    hintText: 'Email address',
-                  ),
                 ),
+               
                 SizedBox(height: 60),
                 CustomButton(
                     text: 'Verify',

@@ -1,8 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyAirtime.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Buy/data_history.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Buy/buy_data.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Buy/purchase_airtime.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Home/widget/service_chip.dart';
 import 'package:jost_pay_wallet/Ui/cable/cable_history.dart';
 import 'package:jost_pay_wallet/Ui/electricity/electricity_history.dart';
@@ -50,14 +50,14 @@ class _ServicesState extends State<Services> {
             Row(
               children: [
                 ServiceChip(
-                  onTap: () => Get.to(const BuyAirtime()),
+                  onTap: () => Get.to(const PurchaseAirtime()),
                   title: 'Airtime',
                   icon: 'assets/images/call_s.svg',
                   height: 110,
                 ),
                 SizedBox(width: 10),
                 ServiceChip(
-                  onTap: () => Get.to(const DataHistory()),
+                  onTap: () => Get.to(const BuyData()),
                   title: 'Data',
                   icon: 'assets/images/data_s.svg',
                   height: 110,

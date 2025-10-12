@@ -5,6 +5,7 @@ import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/NewColor.dart';
 import 'package:jost_pay_wallet/Values/NewStyle.dart';
+import 'package:jost_pay_wallet/common/text_field.dart';
 
 import '../../../bottom_nav.dart';
 
@@ -195,64 +196,16 @@ class _CableBillsState extends State<CableBills> {
                 )
             ),
             const SizedBox(height: 30,),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center, // Aligns vertically centered
-              children: [
-                // Container with a placeholder or icon
-                Container(
-                  padding: const EdgeInsets.symmetric(vertical: 9),
-                  decoration: const BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(
-                              width: 1,
-                              color: MyColor.borderColor
-                          )
-                      )
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 30,
-                        height: 30,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: MyColor.grey01Color,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: const Text(
-                          '***',
-                          style: MyStyle.tx16Green,
-                        ),
-                      ),
-                      const SizedBox( width: 20,)
-                    ],
-                  ),
-                ),
+          
                 // Expanded TextFormField for mobile number input
-                Expanded(
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: MyColor.borderColor,
-                        ),
-                      ),
-                    ),
-                    child: TextFormField(
+              
+            CustomTextField(
+              text: 'Enter IUC /Smart Card Number',
                       controller: _controller,
-                      decoration: const InputDecoration(
-                        hintText: 'Enter IUC /Smart Card Number',
-                        hintStyle: TextStyle(
-                          fontSize: 12,
-                          color: Color(0xFF999999),
-                          fontFamily: 'SF Pro Rounded',
-                        ),
-                        border: InputBorder.none, // No border for the TextFormField
-                        contentPadding: EdgeInsets.symmetric(vertical: 10), // Adjust as needed
-                      ),
-                    ),
-                  ),
-                ),
+              keyboardType: TextInputType.number,
+            ),
+                  
+                
                 const SizedBox(width: 16),
                 Container(
                   width: 110, // Set the width of the dropdown button
@@ -301,8 +254,7 @@ class _CableBillsState extends State<CableBills> {
                     ),
                   ),
                 )
-              ],
-            ),
+             ,
             const SizedBox(height: 30),
             const Align(
               alignment: Alignment.centerLeft,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:jost_pay_wallet/Provider/DashboardProvider.dart';
 import 'package:jost_pay_wallet/Provider/InternetProvider.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/AddFunds.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Services.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Settings/SettingScreen.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/TransactionHistory.dart';
@@ -25,7 +26,7 @@ class _BottomNavState extends State<BottomNav> with WidgetsBindingObserver {
   List body = [
     const HomeScreen(),
     const Services(),
-    const SettingScreen(),
+    const AddFunds(isFromNav: true),
     const Transactionhistory(),
   ];
 

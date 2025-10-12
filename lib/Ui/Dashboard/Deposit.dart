@@ -4,12 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Home/card_fund_summary.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Home/deposit_summary.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Home/deposit_details.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Home/kyc_web.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Home/virtual_account_creation.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Home/widget/balance_card.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Home/widget/deposit_limit.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/common/button.dart';
 import 'package:jost_pay_wallet/common/text_field.dart';
@@ -115,16 +112,7 @@ class _DepositState extends State<Deposit> {
                                 'Get a virtual account. Deposit appear almost immediately.',
                             fee: '0.5375%',
                             onTap: () {
-                              if (model.userModel?.user?.idVerified == false) {
-                                Get.to(const KycWebview());
-                                ErrorToast(
-                                    'You need to verify your account to create a virtual account');
-                                // return;
-                              } else {
-                                Get.to(
-                                  const VirtualAccountCreation(),
-                                );
-                              }
+                            
                             },
                           ),
                           SizedBox(height: 10),
@@ -142,14 +130,7 @@ class _DepositState extends State<Deposit> {
                                 detail: depositMethods[index]['detail'],
                                 fee: depositMethods[index]['fee'],
                                 onTap:
-                                    //  model.userModel?.user?.idVerified ==
-                                    //             false &&
-                                    //         model.userModel?.user?.basicVerified ==
-                                    //             false
-                                    //     ? () {
-                                    //         Get.to(() => const KycWebview());
-                                    //       }
-                                    //     :
+                                  
                                     () {
                                   if (index == 0) {
                                     _showAmountInputDialog(context,
@@ -160,7 +141,8 @@ class _DepositState extends State<Deposit> {
                                   } else {
                                     Get.to(
                                       () => const DepositDetails(
-                                          title: 'Manual Deposit'),
+                                        amount: '',
+                                      ),
                                     );
                                   }
                                 },
@@ -353,11 +335,10 @@ class _DepositState extends State<Deposit> {
                   // Navigator.of(context).pop();
                   // ErrorToast(
                   //     "You must complete full verification on your account before you can deposit more than 20,000 NGN.");
-                  showDepositLimit();
                   return;
                 } else {
                   Navigator.of(context).pop();
-                  Get.to(CardFundSummary(
+                  Get.to(DepositSummary(
                       amount: amount.toString(), isCard: isCard));
                 }
               },

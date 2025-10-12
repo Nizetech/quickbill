@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/DashboardProvider.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyAirtime.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Buy/data_history.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Buy/buy_data.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Buy/purchase_airtime.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Home/widget/account_tile.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Home/widget/banner.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Home/widget/history_card.dart';
@@ -135,13 +135,13 @@ class _HomeScreenState extends State<HomeScreen> {
                             Row(
                               children: [
                                 ServiceChip(
-                                  onTap: () => Get.to(const BuyAirtime()),
+                                  onTap: () => Get.to(const PurchaseAirtime()),
                                   title: 'Airtime',
                                   icon: 'assets/images/call.svg',
                                 ),
                                 const SizedBox(width: 10),
                                 ServiceChip(
-                                  onTap: () => Get.to(const DataHistory()),
+                                  onTap: () => Get.to(const BuyData()),
                                   title: 'Data',
                                   icon: 'assets/images/data.svg',
                                 ),

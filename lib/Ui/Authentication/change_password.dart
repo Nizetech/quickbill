@@ -1,26 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'package:jost_pay_wallet/Provider/auth_provider.dart';
-import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
-import 'package:jost_pay_wallet/Values/NewStyle.dart';
+import 'package:jost_pay_wallet/common/appbar.dart';
 import 'package:jost_pay_wallet/common/button.dart';
 import 'package:jost_pay_wallet/common/text_field.dart';
-import 'package:provider/provider.dart';
 
 class ChangePassword extends StatelessWidget {
   const ChangePassword({super.key});
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
-    final isDark = themeProvider.isDarkMode();
     final formKey = GlobalKey<FormState>();
     final cfmPwd = TextEditingController();
     final newPwd = TextEditingController();
     final currentPwd = TextEditingController();
     void validateForm(AuthProvider model) async {
       if (formKey.currentState?.validate() ?? false) {
-        // loginAccount();
         model.changePassword({
           "current_password": currentPwd.text.trim(),
           "new_password": newPwd.text.trim(),
@@ -32,11 +29,7 @@ class ChangePassword extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        leading: BackBtn(),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
+      appBar: appBar(title: 'Change Password'),
       body: Consumer<AuthProvider>(builder: (context, model, _) {
         return Form(
           key: formKey,
@@ -48,27 +41,29 @@ class ChangePassword extends StatelessWidget {
                 const SizedBox(height: 20),
                 Text(
                   'Change Password',
-                  style: NewStyle.tx28White
-                      .copyWith(
-                      fontSize: 24,
-                      color: isDark
-                          ? MyColor.whiteColor
-                          : MyColor.lightBlackColor),
+                  style: MyStyle.tx16Black,
+                ),
+                const SizedBox(height: 7),
+                Text(
+                  'Update your password below',
+                  style: MyStyle.tx14Black.copyWith(
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
                 const SizedBox(height: 7),
                 Text(
                   'Carefully enter your correct password',
                   style: MyStyle.tx16Gray.copyWith(
                     color:
-                        isDark ? MyColor.whiteColor : MyColor.lightBlackColor,
+                        MyColor.blackColor,
                   ),
                 ),
                 const SizedBox(height: 20),
                 Text(
                   'Current Password',
-                  style: NewStyle.tx14SplashWhite.copyWith(
-                      color:
-                          isDark ? MyColor.whiteColor : MyColor.lightBlackColor,
+                  style: MyStyle.tx16Black
+                      .copyWith(
+                 
                       fontWeight: FontWeight.w700,
                       height: 2),
                 ),
@@ -90,9 +85,9 @@ class ChangePassword extends StatelessWidget {
                 const SizedBox(height: 20),
                 Text(
                   'New Password',
-                  style: NewStyle.tx14SplashWhite.copyWith(
-                      color:
-                          isDark ? MyColor.whiteColor : MyColor.lightBlackColor,
+                  style: MyStyle.tx16Black
+                      .copyWith(
+                    
                       fontWeight: FontWeight.w700,
                       height: 2),
                 ),
@@ -114,9 +109,9 @@ class ChangePassword extends StatelessWidget {
                 const SizedBox(height: 20),
                 Text(
                   'Confirm Password',
-                  style: NewStyle.tx14SplashWhite.copyWith(
+                  style: MyStyle.tx16Black.copyWith(
                       color:
-                          isDark ? MyColor.whiteColor : MyColor.lightBlackColor,
+                      MyColor.blackColor,
                       fontWeight: FontWeight.w700,
                       height: 2),
                 ),

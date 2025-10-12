@@ -7,11 +7,15 @@ import 'package:jost_pay_wallet/Models/data_plans_model.dart';
 import 'package:jost_pay_wallet/Models/network_provider.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Buy/confirm_airtime_details.dart';
+import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/NewColor.dart';
 import 'package:jost_pay_wallet/Values/NewStyle.dart';
 import 'package:jost_pay_wallet/Values/utils.dart';
+import 'package:jost_pay_wallet/common/appbar.dart';
+import 'package:jost_pay_wallet/common/button.dart';
 import 'package:provider/provider.dart';
 
 class BuyDataConfirm extends StatefulWidget {
@@ -38,180 +42,128 @@ class _BuyDataConfirmState extends State<BuyDataConfirm> {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     final themedata = Theme.of(context).colorScheme;
     return Scaffold(
-      // backgroundColor: Colors.white,
+      appBar: appBar(title: 'Purchase Data'),
       body: Consumer<AccountProvider>(builder: (context, model, _) {
         return SafeArea(
           child: Padding(
             padding: const EdgeInsets.only(top: 10, left: 24, right: 24),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Text(
+                  'Review & Pay',
+                  style: MyStyle.tx14Black.copyWith(
+                    color: MyColor.grey,
+                  ),
+                ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    InkWell(
-                      onTap: () => Get.back(),
-                      child: Image.asset(
-                        'assets/images/arrow_left.png',
-                        color: themeProvider.isDarkMode()
-                            ? MyColor.mainWhiteColor
-                            : MyColor.dark01Color,
-                      ),
-                    ),
-                    const Spacer(),
-                    Transform.translate(
-                      offset: const Offset(-20, 0),
+                    Expanded(
                       child: Text(
-                        'Buy Data',
-                        style: MyStyle.tx18Black.copyWith(
-                          color: themedata.tertiary,
-                        ),
+                        "${Utils.naira}${formatNumber(num.parse(widget.plan.price.toString()))}",
+                        style: MyStyle.tx28Black,
                       ),
                     ),
-                    const Spacer(), // Adds flexible space after the text
+                    SizedBox(width: 12),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: CachedNetworkImage(
+                        imageUrl: widget.network.logo ?? "",
+                        height: 68,
+                        width: 86,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ],
                 ),
-                const SizedBox(
-                  height: 50,
+                const SizedBox(height: 40),
+                Text(
+                  'Bill payment breakdown',
+                  style: MyStyle.tx14Black.copyWith(
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                      boxShadow: const [MyStyle.widgetShadow],
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                      borderRadius: BorderRadius.circular(5)),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                Divider(
+                  color: MyColor.borderColor,
+                  thickness: 1,
+                ),
+                details(
+                    title: 'Network Provider', value: widget.network.network!),
+                details(
+                    title: 'Data Plan',
+                    value: widget.plan.name!.split('-').first),
+                details(title: 'Phone Number', value: widget.phone),
+                details(
+                    title: 'Amount',
+                    value: '${Utils.naira} ${widget.plan.price}'),
+                details(title: 'Payment Method', value: 'Wallet'),
+                Spacer(),
+                CustomButton(
+                  text: 'Confirm',
+                  onTap: () {
+                    model.buyData(
+                      {
+                        "network_name": widget.network.network!.toLowerCase(),
+                        "phone": widget.phone,
+                        "data_type": "SME",
+                        "plan_id": widget.plan.planId,
+                        'details': widget.saveDetails ? 1 : 0,
+                      },
+                      amount: widget.plan.price.toString(),
+                      plan: widget.plan.name!,
+                    );
+                  },
+                ),
+                SizedBox(
+                  width: double.infinity, // Full width of the screen
+                  height: 4, // Adjust height as needed
+                  child: Stack(
                     children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: CachedNetworkImage(
-                          imageUrl: widget.network.logo ?? "",
-                          height: 68,
-                          width: 86,
-                          fit: BoxFit.cover,
+                      // Bottom border
+                      Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: DottedBorder(
+                          color: themeProvider.isDarkMode()
+                              ? MyColor.borderDarkColor
+                              : MyColor.borderColor,
+                          strokeWidth: 1,
+                          dashPattern: const [
+                            6,
+                            3
+                          ], // Dash pattern: 6 units line, 3 units space
+                          customPath: (size) => Path()
+                            ..moveTo(0, 0)
+                            ..lineTo(size.width, 0),
+                          child: Container(
+                            height:
+                                0, // The container for the border can have a height of 0
+                          ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      Text(
-                        'Data Package Summary',
-                        style: MyStyle.tx14Black.copyWith(
-                            color: themedata.tertiary, fontFamily: 'Roboto'),
-                      ),
-                      const SizedBox(
-                        height: 24,
-                      ),
-                      Row(
-                        children: [
-                          const Text(
-                            'Network Provider',
-                            style: MyStyle.tx12Grey,
-                          ),
-                          const Spacer(),
-                          Text(
-                            widget.network.network!,
-                            style: MyStyle.tx12Black.copyWith(
-                                color: themedata.tertiary,
-                                fontFamily: 'SF Pro Rounded'),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      Row(
-                        children: [
-                          const Text(
-                            'Data Plan',
-                            style: MyStyle.tx12Grey,
-                          ),
-                          const Spacer(flex: 1),
-                          Expanded(
-                            flex: 2,
-                            child: Text(
-                              widget.plan.name!,
-                              textAlign: TextAlign.end,
-                              style: MyStyle.tx12Black.copyWith(
-                                  color: themedata.tertiary,
-                                  fontFamily: 'SF Pro Rounded'),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      Row(
-                        children: [
-                          const Text(
-                            'Phone Number',
-                            style: MyStyle.tx12Grey,
-                          ),
-                          const Spacer(),
-                          Text(
-                            widget.phone,
-                            style: MyStyle.tx12Black.copyWith(
-                                color: themedata.tertiary,
-                                fontFamily: 'SF Pro Rounded'),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      SizedBox(
-                        width: double.infinity, // Full width of the screen
-                        height: 4, // Adjust height as needed
-                        child: Stack(
-                          children: [
-                            // Bottom border
-                            Positioned(
-                              bottom: 0,
-                              left: 0,
-                              right: 0,
-                              child: DottedBorder(
-                                color: themeProvider.isDarkMode()
-                                    ? MyColor.borderDarkColor
-                                    : MyColor.borderColor,
-                                strokeWidth: 1,
-                                dashPattern: const [
-                                  6,
-                                  3
-                                ], // Dash pattern: 6 units line, 3 units space
-                                customPath: (size) => Path()
-                                  ..moveTo(0, 0)
-                                  ..lineTo(size.width, 0),
-                                child: Container(
-                                  height:
-                                      0, // The container for the border can have a height of 0
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      Row(
-                        children: [
-                          const Text(
-                            'Amount',
-                            style: MyStyle.tx12Grey,
-                          ),
-                          const Spacer(),
-                          Text(
-                            '${Utils.naira} ${widget.plan.price}',
-                            style: MyStyle.tx14Black.copyWith(
-                                fontWeight: FontWeight.w600,
-                                color: themedata.tertiary,
-                                fontFamily: 'SF Pro Rounded'),
-                          ),
-                        ],
                       ),
                     ],
                   ),
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                Row(
+                  children: [
+                    const Text(
+                      'Amount',
+                      style: MyStyle.tx12Grey,
+                    ),
+                    const Spacer(),
+                    Text(
+                      '${Utils.naira} ${widget.plan.price}',
+                      style: MyStyle.tx14Black.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: themedata.tertiary,
+                          fontFamily: 'SF Pro Rounded'),
+                    ),
+                  ],
                 ),
                 const SizedBox(
                   height: 50,

@@ -45,9 +45,16 @@ class NewStyle {
       ),
       borderRadius: BorderRadius.circular(10),
     ),
+    disabledBorder: OutlineInputBorder(
+      borderSide: const BorderSide(
+        color: Color(0xffE9EBF8),
+        width: 1.3,
+      ),
+      borderRadius: BorderRadius.circular(10),
+    ),
     focusedBorder: OutlineInputBorder(
       borderSide: BorderSide(
-        color: MyColor.greenColor,
+        color: MyColor.primaryColor,
         width: 1.2,
       ),
       borderRadius: BorderRadius.circular(10),
@@ -96,6 +103,13 @@ class NewStyle {
       ),
       borderRadius: BorderRadius.circular(5),
     ),
+    disabledBorder: OutlineInputBorder(
+      borderSide: const BorderSide(
+        color: Color(0x99D1D1D1),
+        width: 0.5,
+      ),
+      borderRadius: BorderRadius.circular(5),
+    ),
   );
   static InputDecoration searchInputDecoration = InputDecoration(
     hintText: 'Search coins',
@@ -126,6 +140,13 @@ class NewStyle {
       borderRadius: BorderRadius.circular(5),
     ),
     enabledBorder: OutlineInputBorder(
+      borderSide: const BorderSide(
+        color: Color(0x33D1D1D1),
+        width: 0.5,
+      ),
+      borderRadius: BorderRadius.circular(5),
+    ),
+    disabledBorder: OutlineInputBorder(
       borderSide: const BorderSide(
         color: Color(0x33D1D1D1),
         width: 0.5,

@@ -1,7 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/AlarmScreen.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/notification.dart';
 
 class NotificationHelper {
   FlutterLocalNotificationsPlugin plugin = FlutterLocalNotificationsPlugin();
@@ -42,7 +42,7 @@ class NotificationHelper {
     }
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print('Got a new message on Foreground! $message');
-      Get.to(const AlarmScreen());
+      Get.to(const NotificationScreen());
       // open the app and navigate to the notification screen
     });
   }

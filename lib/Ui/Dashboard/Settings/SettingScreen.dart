@@ -6,9 +6,10 @@ import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/DashboardProvider.dart';
 import 'package:jost_pay_wallet/Provider/auth_provider.dart';
 import 'package:jost_pay_wallet/Ui/Authentication/SignInScreen.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Home/kyc_web.dart';
+import 'package:jost_pay_wallet/Ui/Authentication/change_password.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Home/widget/profile_image.dart';
-import 'package:jost_pay_wallet/Ui/Static/AccountSetting.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Settings/edit_profile.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Settings/support.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/common/appbar.dart';
@@ -90,10 +91,10 @@ class _SettingScreenState extends State<SettingScreen> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    _buildSettingCard(
+                    buildInfoCard(
                       image: "assets/images/profile.svg",
                       onTap: () {
-                        Get.to(() => const KycWebview());
+                        Get.to(() => const EditProfileScreen());
                       },
                       title: "Update profile",
                     ),
@@ -102,20 +103,15 @@ class _SettingScreenState extends State<SettingScreen> {
                         decoration:
                             const BoxDecoration(color: Color(0xFFF3F4F6))),
                     const SizedBox(height: 16),
-                    _buildSettingCard(
+                    buildInfoCard(
                       image: "assets/images/lock.svg",
-                      onTap: () {
-                        dashProvider.changeBottomIndex(5);
-                      },
+                      onTap: () => Get.to(() => const ChangePassword()),
                       title: "Change Password",
                     ),
                     const SizedBox(height: 16),
-
-                    _buildSettingCard(
+                    buildInfoCard(
                       image: "assets/images/support.svg",
-                      onTap: () {
-                        Get.to(() => const Accountsetting());
-                      },
+                      onTap: () => Get.to(() => const SupportScreen()),
                       title: "Support",
                     ),
                     const SizedBox(height: 25),
@@ -127,20 +123,17 @@ class _SettingScreenState extends State<SettingScreen> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    _buildSettingCard(
+                    buildInfoCard(
                       image: "assets/images/terms.svg",
                       onTap: () => dashProvider.changeBottomIndex(7),
                       title: "Terms and Conditions",
                     ),
                     const SizedBox(height: 16),
-
-                    _buildSettingCard(
+                    buildInfoCard(
                       image: "assets/images/privacy.svg",
                       onTap: () => dashProvider.changeBottomIndex(10),
                       title: "Privacy Policy",
                     ),
-                   
-                   
                   ],
                 ),
               ),
@@ -176,7 +169,9 @@ class _SettingScreenState extends State<SettingScreen> {
     );
   }
 
-  Widget _buildSettingCard({
+}
+
+Widget buildInfoCard({
     required String image,
     required VoidCallback onTap,
     required String title,
@@ -207,6 +202,5 @@ class _SettingScreenState extends State<SettingScreen> {
           ],
         ),
       ),
-    );
-  }
+  );
 }

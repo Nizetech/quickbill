@@ -9,7 +9,8 @@ import 'package:provider/provider.dart';
 class CustomTextField extends StatefulWidget {
   final String text;
   final IconData? suffixIcon;
-  final IconData? preffixIcon;
+  final Widget? preffixIcon;
+  final IconData? preffixIconData;
   final bool isAuth;
   final String? asset;
   final bool enabled;
@@ -33,6 +34,7 @@ class CustomTextField extends StatefulWidget {
     this.isPassword = false,
     this.suffixIcon,
     this.preffixIcon,
+    this.preffixIconData,
     this.asset,
     this.onTap,
     this.controller,
@@ -63,19 +65,29 @@ class _CustomTextFieldState extends State<CustomTextField> {
       validator: widget.validator,
       obscureText: widget.isPassword ? isObscure : false,
       decoration: InputDecoration(
-        prefixIcon: widget.preffixIcon != null
-            ? Icon(widget.preffixIcon, size: 22, color: Colors.grey)
+        prefixIcon: widget.preffixIconData != null
+            ? Icon(widget.preffixIconData, size: 22, color: Colors.grey)
+            : widget.preffixIcon != null
+                ? widget.preffixIcon
             : null,
         hintText: widget.text,
         filled: true,
-        fillColor:
-            widget.isAuth || !isDark ? Colors.white : MyColor.dark02Color,
+        fillColor: MyColor.grey01Color.withOpacity(0.4),
+        // widget.isAuth || !isDark ? Colors.white :
+        //  MyColor.dark02Color,
         hintStyle: TextStyle(
             fontSize: 12, // Font size
             color: NewColor.inputHintColor,
-            fontFamily: 'Inter' // Font color
+         
         ),
-        enabled: false,
+        focusColor: MyColor.primaryColor,
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: MyColor.primaryColor,
+            width: 1.2,
+          ),
+          borderRadius: BorderRadius.circular(10),
+        ),
         enabledBorder: _buildEnabledBorder(isDark, widget.isAuth),
         border: _buildEnabledBorder(isDark, widget.isAuth),
         disabledBorder: _buildEnabledBorder(isDark, widget.isAuth),
@@ -114,9 +126,12 @@ class _CustomTextFieldState extends State<CustomTextField> {
     );
   }
 
-  OutlineInputBorder _buildEnabledBorder(bool isDark, bool isAuth) {
+  OutlineInputBorder _buildEnabledBorder(
+    bool isDark,
+    bool isAuth,
+  ) {
     return OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(12),
         borderSide: BorderSide(
           width: 1.2,
           color: isAuth || !isDark

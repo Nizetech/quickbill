@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/AlarmScreen.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/notification.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Home/widget/profile_image.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Settings/SettingScreen.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
@@ -44,7 +44,8 @@ class HomeAppBar extends StatelessWidget {
         InkWell(
           onTap: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const AlarmScreen()));
+                MaterialPageRoute(
+                    builder: (context) => const NotificationScreen()));
           },
           child: Stack(
             children: [

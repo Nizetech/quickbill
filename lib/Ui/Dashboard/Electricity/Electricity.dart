@@ -5,6 +5,7 @@ import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/NewColor.dart';
 import 'package:jost_pay_wallet/Values/NewStyle.dart';
+import 'package:jost_pay_wallet/common/text_field.dart';
 
 import '../../../bottom_nav.dart';
 
@@ -251,28 +252,13 @@ class _ElectricityState extends State<Electricity> {
                         ),
                         // Expanded TextFormField for mobile number input
                         Expanded(
-                          child: Container(
-                            decoration: const BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: MyColor.borderColor,
-                                ),
-                              ),
-                            ),
-                            child: TextFormField(
-                              controller: _controller,
-                              decoration: const InputDecoration(
-                                hintText: 'Enter Mobile number',
-                                hintStyle: TextStyle(
-                                  fontSize: 12,
-                                  color: Color(0xFF999999),
-                                  fontFamily: 'SF Pro Rounded',
-                                ),
-                                border: InputBorder.none, // No border for the TextFormField
-                                contentPadding: EdgeInsets.symmetric(vertical: 10), // Adjust as needed
-                              ),
-                            ),
-                          ),
+                        child: CustomTextField(
+                          text: 'Enter Mobile number',
+                          controller: _controller,
+                          keyboardType: TextInputType.number,
+                        ),
+                         
+                          
                         ),
                         const SizedBox(width: 16),
                         Container(

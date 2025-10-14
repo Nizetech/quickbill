@@ -1,4 +1,4 @@
-package com.wallet.jost_pay_wallet
+package com.quick_bills
 
 import io.flutter.embedding.android.FlutterActivity
 

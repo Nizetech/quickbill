@@ -1,14 +1,12 @@
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jost_pay_wallet/Provider/service_provider.dart';
-import 'package:jost_pay_wallet/Provider/theme_provider.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Buy/confirm_airtime_details.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
-import 'package:jost_pay_wallet/Values/NewColor.dart';
-import 'package:jost_pay_wallet/Values/NewStyle.dart';
 import 'package:jost_pay_wallet/Values/utils.dart';
+import 'package:jost_pay_wallet/common/appbar.dart';
 import 'package:jost_pay_wallet/common/button.dart';
 import 'package:provider/provider.dart';
 
@@ -37,258 +35,93 @@ class _CableSummaryScreenState extends State<CableSummaryScreen> {
   }
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
-    final themedata = Theme.of(context).colorScheme;
     return Scaffold(
+      appBar: appBar(title: 'Cable Package Summary'),
       body: Consumer<ServiceProvider>(builder: (context, model, _) {
         return SafeArea(
           child: Padding(
             padding: const EdgeInsets.only(top: 15, left: 24, right: 24),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Text(
+                  'Review & Pay',
+                  style: MyStyle.tx14Black.copyWith(
+                    color: MyColor.grey,
+                  ),
+                ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    BackBtn(),
-                    const Spacer(),
-                    Transform.translate(
-                      offset: const Offset(-20, 0),
+                    Expanded(
                       child: Text(
-                        'Cable Package Summary',
-                        style: MyStyle.tx18Black.copyWith(
-                          color: themedata.tertiary,
-                        ),
+                        "${Utils.naira}${formatNumber(num.parse(totalAmount.toString()))}",
+                        style: MyStyle.tx28Black,
                       ),
                     ),
-                    const Spacer(), // Adds flexible space after the text
+                    SizedBox(width: 12),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.asset(
+                        widget.data['img'],
+                        height: 85.r,
+                        width: 85.r,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ],
                 ),
-                SizedBox(
-                  height: 78.h,
-                ),
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                      boxShadow: const [MyStyle.widgetShadow],
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                      borderRadius: BorderRadius.circular(5)),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                              color: MyColor.borderColor,
-                              width: 1,
-                            ),
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.asset(
-                              widget.data['img'],
-                              height: 85.r,
-                              width: 85.r,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      Text(
-                        'Cable Package Summary',
-                        style: MyStyle.tx14Black.copyWith(
-                            fontFamily: 'Roboto', color: themedata.tertiary),
-                      ),
-                      const SizedBox(
-                        height: 24,
-                      ),
-                      Row(
-                        children: [
-                          const Text(
-                            'Package Name',
-                            style: MyStyle.tx12Grey,
-                          ),
-                          const Spacer(),
-                          Text(
-                            widget.data['name'],
-                            style: MyStyle.tx12Black.copyWith(
-                                color: themedata.tertiary,
-                                fontFamily: 'SF Pro Rounded'),
-                          ),
-                        ],
-                      ),
-                     
-                      if (!widget.data['showmax'])
-                        Padding(
-                          padding: const EdgeInsets.only(top: 12),
-                          child: Row(
-                            children: [
-                              const Text(
-                                'Customer Name',
-                                style: MyStyle.tx12Grey,
-                              ),
-                              const Spacer(),
-                              Text(
-                                widget.data['cableMerchant'],
-                                style: MyStyle.tx12Black.copyWith(
-                                    color: themedata.tertiary,
-                                    fontFamily: 'SF Pro Rounded'),
-                              ),
-                            ],
-                          ),
-                        ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 12),
-                        child: Row(
-                          children: [
-                            const Text(
-                              'Convenience Fee',
-                              style: MyStyle.tx12Grey,
-                            ),
-                            const Spacer(),
-                            Text(
-                              "NGN 100",
-                              style: MyStyle.tx12Black.copyWith(
-                                  color: themedata.tertiary,
-                                  fontFamily: 'SF Pro Rounded'),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      Row(
-                        children: [
-                          const Text(
-                            'Phone Number',
-                            style: MyStyle.tx12Grey,
-                          ),
-                          const Spacer(),
-                          Text(
-                            widget.data['phone'],
-                            style: MyStyle.tx12Black.copyWith(
-                                color: themedata.tertiary,
-                                fontFamily: 'SF Pro Rounded'),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      Row(
-                        children: [
-                          const Text(
-                            'Payment method',
-                            style: MyStyle.tx12Grey,
-                          ),
-                          const Spacer(),
-                          Text(
-                            'wallet',
-                            style: MyStyle.tx12Black.copyWith(
-                                color: themedata.tertiary,
-                                fontFamily: 'SF Pro Rounded'),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      SizedBox(
-                        width: double.infinity, // Full width of the screen
-                        height: 4, // Adjust height as needed
-                        child: Stack(
-                          children: [
-                            Positioned(
-                              bottom: 0,
-                              left: 0,
-                              right: 0,
-                              child: DottedBorder(
-                                color: themeProvider.isDarkMode()
-                                    ? MyColor.borderDarkColor
-                                    : MyColor.borderColor,
-                                strokeWidth: 1,
-                                dashPattern: const [
-                                  6,
-                                  3
-                                ], // Dash pattern: 6 units line, 3 units space
-                                customPath: (size) => Path()
-                                  ..moveTo(0, 0)
-                                  ..lineTo(size.width, 0),
-                                child: Container(
-                                  height:
-                                      0, // The container for the border can have a height of 0
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      Row(
-                        children: [
-                          const Text(
-                            'You pay',
-                            style: MyStyle.tx12Grey,
-                          ),
-                          const Spacer(),
-                          Text(
-                            '${Utils.naira} ${formatNumber(
-                              num.parse(
-                                totalAmount.toString(),
-                              ),
-                            )}',
-                            style: MyStyle.tx14Black.copyWith(
-                                fontWeight: FontWeight.w600,
-                                color: themedata.tertiary,
-                                fontFamily: 'SF Pro Rounded'),
-                          ),
-                        ],
-                      ),
-                    ],
+                const SizedBox(height: 40),
+                Text(
+                  'Bill payment breakdown',
+                  style: MyStyle.tx14Black.copyWith(
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
-                SizedBox(height: 47.h),
-                SizedBox(
-                  width: double.infinity,
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                      backgroundColor: MyColor.greenColor,
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    onPressed: () {
-                      Map<String, dynamic> data = {
-                        'code': widget.data['id'],
-                        "service_id": widget.data['service_id'],
-                        "price": widget.data['amount'],
-                        "card": widget.data['card'],
-                        "phone": widget.data['phone'],
-                        "package": widget.data['package'],
-                        'amount': totalAmount.toString(),
-                        'details': widget.saveDetails ? 1 : 0,
-                      };
-                      model.buyCable(
-                        data,
-                        isShowmax: widget.data['showmax'],
-                      );
-                    },
-                    child: Text(
-                      "Confirm",
-                      style: NewStyle.btnTx16SplashBlue
-                          .copyWith(color: NewColor.mainWhiteColor),
-                    ),
-                  ),
-                )
+                Divider(
+                  color: MyColor.borderColor,
+                  thickness: 1,
+                ),
+                details(
+                  title: 'Package Name',
+                  value: widget.data['name'],
+                ),
+                if (!widget.data['showmax'])
+                  details(
+                      title: 'Customer Name',
+                      value: widget.data['cableMerchant']),
+                details(title: 'Phone Number', value: widget.data['phone']),
+                details(title: 'Smart Card Number', value: widget.data['card']),
+                // details(
+                //     title: 'Cable Merchant',
+                //     value: widget.data['cableMerchant']),
+                details(title: 'Convenience Fee', value: 'NGN 100'),
+                details(title: 'Payment Method', value: 'Wallet'),
+                details(
+                    title: 'Amount',
+                    value:
+                        '${Utils.naira} ${formatNumber(num.parse(totalAmount.toString()))}'),
+                Spacer(),
+                CustomButton(
+                  text: 'Confirm',
+                  onTap: () {
+                    Map<String, dynamic> data = {
+                      'code': widget.data['id'],
+                      "service_id": widget.data['service_id'],
+                      "price": widget.data['amount'],
+                      "card": widget.data['card'],
+                      "phone": widget.data['phone'],
+                      "package": widget.data['package'],
+                      'amount': totalAmount.toString(),
+                      'details': widget.saveDetails ? 1 : 0,
+                    };
+                    model.buyCable(
+                      data,
+                      isShowmax: widget.data['showmax'],
+                    );
+                  },
+                ),
+                const SizedBox(height: 30),
               ],
             ),
           ),

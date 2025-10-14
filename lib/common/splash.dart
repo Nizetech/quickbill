@@ -4,8 +4,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:jost_pay_wallet/Ui/Authentication/SignInScreen.dart';
-import 'package:jost_pay_wallet/Ui/Static/onboarding_screen.dart';
+import 'package:jost_pay_wallet/Ui/Authentication/signIn_screen.dart';
+import 'package:jost_pay_wallet/Ui/Authentication/onboarding_screen.dart';
 import 'package:jost_pay_wallet/bottom_nav.dart';
 import 'package:jost_pay_wallet/constants/constants.dart';
 
@@ -22,9 +22,10 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     getToken();
     Future.delayed(Duration(seconds: 2), () {
-      token.isNotEmpty && pinEnabled.isNotEmpty && pinEnabled == '0'
+      log("token: $token, isExistingUser: $isExistingUser");
+      token.isNotEmpty 
           ? Get.offAll(() => BottomNav())
-          : isExistingUser && pinEnabled == '1'
+          : isExistingUser 
               ? Get.offAll(SignInScreen())
               : Get.offAll(() => (OnboardingScreen()));
     });
@@ -38,8 +39,8 @@ class _SplashScreenState extends State<SplashScreen> {
   FutureOr getToken() async {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       token = await box.get(kAccessToken, defaultValue: '');
+      log("token:==> $token");
       isExistingUser = await box.get(kExistingUser, defaultValue: false);
-      pinEnabled = box.get(isPinEnabled, defaultValue: "");
       if (mounted) {
         setState(() {});
       }

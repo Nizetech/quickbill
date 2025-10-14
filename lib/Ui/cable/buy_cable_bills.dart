@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,18 +8,18 @@ import 'package:jost_pay_wallet/Models/cable_varaitaions.dart';
 import 'package:jost_pay_wallet/Models/network_provider.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/service_provider.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/AddFunds.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Buy/widget/balance_action_card.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Settings/edit_profile.dart';
 import 'package:jost_pay_wallet/Ui/cable/cable_summary.dart';
 import 'package:jost_pay_wallet/Ui/cable/widget/cable_provider_sheet.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
-import 'package:jost_pay_wallet/Values/NewColor.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
+import 'package:jost_pay_wallet/common/amount_chip.dart';
+import 'package:jost_pay_wallet/common/appbar.dart';
+import 'package:jost_pay_wallet/common/button.dart';
 import 'package:jost_pay_wallet/common/text_field.dart';
 import 'package:jost_pay_wallet/utils/toast.dart';
 import 'package:provider/provider.dart';
-import 'package:jost_pay_wallet/Values/NewStyle.dart';
 
 class BuyCableBills extends StatefulWidget {
   final String? package;
@@ -134,6 +133,7 @@ class _BuyCableBillsState extends State<BuyCableBills> {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     final themedata = Theme.of(context).colorScheme;
     return Scaffold(
+      appBar: appBar(title: 'Purchase Cable Bills'),
       body: Consumer2<AccountProvider, ServiceProvider>(
           builder: (context, model, service, _) {
         return SafeArea(
@@ -146,53 +146,18 @@ class _BuyCableBillsState extends State<BuyCableBills> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    InkWell(
-                      onTap: () => Get.back(),
-                      child: Image.asset(
-                        'assets/images/arrow_left.png',
-                        color: themeProvider.isDarkMode()
-                            ? MyColor.mainWhiteColor
-                            : MyColor.dark01Color,
-                      ),
-                    ),
-                    const Spacer(),
-                    Transform.translate(
-                      offset: const Offset(-20, 0),
-                      child: Text(
-                        'Buy Cable Bills',
-                        style: MyStyle.tx18Black
-                            .copyWith(color: themedata.tertiary),
-                      ),
-                    ),
-                    const Spacer(), // Adds flexible space after the text
-                  ],
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
+              
                 Expanded(
                   child: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        BalanceActionCard(
-                            title: 'Add Funds',
-                            onTap: () {
-                              Get.to(const AddFunds());
-                            }),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Select Service Providers',
-                            style: MyStyle.tx14Grey.copyWith(
-                              color: themedata.tertiary,
-                              fontWeight: FontWeight.w500,
-                            ),
+                      
+                        Text(
+                          'Select Service Providers',
+                          style: MyStyle.tx14Grey.copyWith(
+                            color: themedata.tertiary,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                         const SizedBox(
@@ -261,7 +226,8 @@ class _BuyCableBillsState extends State<BuyCableBills> {
                                                         top: 2.r, right: 8.r),
                                                     child: Icon(
                                                       Icons.check_circle,
-                                                      color: MyColor.greenColor,
+                                                      color:
+                                                          MyColor.primaryColor,
                                                     ),
                                                   ),
                                                 )
@@ -285,167 +251,24 @@ class _BuyCableBillsState extends State<BuyCableBills> {
                                   );
                                 })),
                         const SizedBox(
-                          height: 10,
+                          height: 30,
                         ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment
-                              .end, // Aligns vertically centered
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(vertical: 9),
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                    width: 1,
-                                    color: themeProvider.isDarkMode()
-                                        ? MyColor.borderDarkColor
-                                        : MyColor.borderColor,
-                                  ),
-                                ),
-                              ),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    width: 30,
-                                    height: 30,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      color:
-                                          themedata.secondary.withOpacity(0.5),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Image.asset(
-                                      'assets/images/star.png',
-                                      width: 20,
-                                      height: 20,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 20,
-                                  )
-                                ],
-                              ),
-                            ),
-                            Expanded(
-                              child: Container(
-                                  decoration: BoxDecoration(
-                                    border: Border(
-                                      bottom: BorderSide(
-                                        color: themeProvider.isDarkMode()
-                                            ? MyColor.borderDarkColor
-                                            : MyColor.borderColor,
-                                      ),
-                                    ),
-                                  ),
-                                  child: UnderlineTextfield(
-                                    controller: _controller,
-                                    hintText: 'Enter IUC /Smart Card Number',
-                                    suffixIcon: PopupMenuButton(
-                                      color: themedata.secondary,
-                                      constraints: const BoxConstraints(
-                                        maxHeight: 150,
-                                      ),
-                                      itemBuilder: (context) => [
-                                        ...model.cableServiceModel!.details!
-                                            .map((e) => PopupMenuItem(
-                                            value: e,
-                                                  onTap: () {
-                                                    _controller.text =
-                                                        e.smartCard ?? '';
-                                                    phone.text = e.phone ?? '';
-                                                    int index = services
-                                                        .indexWhere((element) =>
-                                                            element['name']
-                                                                .toString()
-                                                                .toLowerCase() ==
-                                                            e.networkName!
-                                                                .toLowerCase());
-                                                    setState(() {
-                                                      selectedItem = index;
-                                                selectedServiceId =
-                                                    services[index]
-                                                        ['serviceId'];
-                                                    });
-
-                                              log('selectedItem: $selectedItem, selectedServiceId: $selectedServiceId');
-                                                    // return;  
-                                                    service.getCableVariations(
-                                                  selectedServiceId);
-                                                            
-                                                  },
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  '${e.networkName} - ${e.smartCard}',
-                                                  style: MyStyle.tx12Black
-                                                      .copyWith(
-                                                    color: themedata.tertiary,
-                                                  ),
-                                                ),
-                                                const SizedBox(width: 10),
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    model.removeHistory(
-                                                      {
-                                                        'id': "cable",
-                                                        "network_name":
-                                                            e.networkName,
-                                                        "phone": e.phone,
-                                                        "smart_card":
-                                                            e.smartCard,
-                                                        "package": e.package,
-                                                      },
-                                                      callback: () async {
-                                                        Get.back();
-                                                        await model
-                                                            .getCableServiceDetail();
-                                                      },
-                                                    );
-                                                  },
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 10),
-                                                    child: CircleAvatar(
-                                                      radius: 16,
-                                                      backgroundColor:
-                                                          MyColor.redColor,
-                                                      child: Icon(
-                                                        Icons.delete_outline,
-                                                        color:
-                                                            MyColor.whiteColor,
-                                                        size: 16,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                      child: Icon(
-                                        Icons.history,
-                                        color: MyColor.greenColor,
-                                      ),
-                                    ),
-                                  )),
-                            ),
-                          ],
+                        requiredLabel('Smart Card Number'),
+                        CustomTextField(
+                          text: 'Enter IUC /Smart Card Number',
+                          controller: _controller,
                         ),
                         const SizedBox(height: 10),
                         if (cableMerchant != '')
                           Container(
+                            margin: const EdgeInsets.only(bottom: 10),
                             width: double.infinity,
                             alignment: Alignment.center,
                             padding: const EdgeInsets.all(15),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(
-                                color: MyColor.greenColor,
+                                color: MyColor.primaryColor,
                                 width: 1,
                               ),
                             ),
@@ -453,19 +276,12 @@ class _BuyCableBillsState extends State<BuyCableBills> {
                               cableMerchant,
                               style: MyStyle.tx12Black.copyWith(
                                 fontWeight: FontWeight.w600,
-                                color: MyColor.greenColor,
+                                color: MyColor.primaryColor,
                               ),
                             ),
                           ),
-                        const SizedBox(height: 10),
-                        Text(
-                          'Phone Number',
-                          style: MyStyle.tx12Black.copyWith(
-                            fontWeight: FontWeight.w400,
-                            color: themedata.tertiary,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
+                        requiredLabel('Phone Number'),
+                     
                         CustomTextField(
                           text: 'Enter Phone Number',
                           controller: phone,
@@ -473,14 +289,8 @@ class _BuyCableBillsState extends State<BuyCableBills> {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                          'Select Package',
-                          style: MyStyle.tx12Black.copyWith(
-                            fontWeight: FontWeight.w400,
-                            color: themedata.tertiary,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
+                        requiredLabel('Choose a Package'),
+                       
                         GestureDetector(
                           onTap: service.cableVariationsModel != null &&
                                   selectedItem != -1
@@ -528,102 +338,58 @@ class _BuyCableBillsState extends State<BuyCableBills> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 10),
-                        if (selectedPlan != null)
-                          Text(
-                            'Amount',
-                            style: MyStyle.tx12Black.copyWith(
-                              fontWeight: FontWeight.w400,
-                              color: themedata.tertiary,
-                            ),
-                          ),
+                        const SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            requiredLabel('Amount'),
+                            AmountChip(),
+                          ],
+                        ),
                         const SizedBox(height: 10),
                         CustomTextField(
                           text: 'Enter Amount',
                           controller: amount,
                           enabled: false,
                         ),
-                        const SizedBox(height: 10),
-                        Row(
-                          children: [
-                            Text(
-                              'Save details for next purchase',
-                              style: MyStyle.tx12Black.copyWith(
-                                color: themedata.tertiary,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            const Spacer(),
-                            Transform.scale(
-                              scale: 0.8,
-                              child: CupertinoSwitch(
-                                value: saveDetails,
-                                activeTrackColor: MyColor.greenColor,
-                                onChanged: (value) {
-                                  setState(() {
-                                    saveDetails = value;
-                                  });
-                                  print('saveDetails: $saveDetails');
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 40),
-                        SizedBox(
-                          width: double.infinity,
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                              backgroundColor: MyColor.greenColor,
-                              padding: const EdgeInsets.symmetric(vertical: 14),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                            onPressed: () {
-                              if (amount.text.isEmpty ||
-                                  phone.text.isEmpty ||
-                                  selectedItem != 3 && cableMerchant.isEmpty) {
-                                ErrorToast('Please fill all fields');
-                              } else if (selectedItem == -1) {
-                                ErrorToast('Please select network');
-                              } else {
-                                if (num.parse(amount.text) > model.balance!) {
-                                  ErrorToast('Insufficient balance');
-                                } else {
-                                  Get.to(CableSummaryScreen(
-                                    saveDetails: saveDetails,
-                                    data: {
-                                      'id': selectedPlan!.variationCode,
-                                      'img': services[selectedItem]['img'],
-                                      'service_id': services[selectedItem]
-                                          ['serviceId'],
-                                      'name': selectedPlan!.name,
-                                      'phone': phone.text,
-                                      'amount': amount.text,
-                                      'showmax': selectedItem == 3,
-                                      'cableMerchant': cableMerchant,
-                                      'card': _controller.text,
-                                      'package': selectedPlan!.name,
-                                    },
-                                  ));
-                                }
-                              }
-                            },
-                            child: Text(
-                              "Confirm",
-                              style: NewStyle.btnTx16SplashBlue
-                                  .copyWith(color: NewColor.mainWhiteColor),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        )
+                        const SizedBox(height: 30),
                       ],
                     ),
                   ),
                 ),
+                CustomButton(
+                  text: 'Confirm',
+                  onTap: () {
+                    if (amount.text.isEmpty ||
+                        phone.text.isEmpty ||
+                        selectedItem != 3 && cableMerchant.isEmpty) {
+                      ErrorToast('Please fill all fields');
+                    } else if (selectedItem == -1) {
+                      ErrorToast('Please select network');
+                    } else {
+                      // if (num.parse(amount.text) > model.balance!) {
+                      //   ErrorToast('Insufficient balance');
+                      // } else {
+                      Get.to(CableSummaryScreen(
+                        saveDetails: saveDetails,
+                        data: {
+                          'id': selectedPlan!.variationCode,
+                          'img': services[selectedItem]['img'],
+                          'service_id': services[selectedItem]['serviceId'],
+                          'name': selectedPlan!.name,
+                          'phone': phone.text,
+                          'amount': amount.text,
+                          'showmax': selectedItem == 3,
+                          'cableMerchant': cableMerchant,
+                          'card': _controller.text,
+                          'package': selectedPlan!.name,
+                        },
+                      ));
+                    }
+                   
+                  },
+                ),
+                const SizedBox(height: 30),
               ],
             ),
           ),

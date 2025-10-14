@@ -6,11 +6,12 @@ import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Models/data_plans_model.dart';
 import 'package:jost_pay_wallet/Models/network_provider.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyDataConfirm.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Buy/confirm_data_purchase.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/widget/package_sheet.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Settings/edit_profile.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
+import 'package:jost_pay_wallet/common/amount_chip.dart';
 import 'package:jost_pay_wallet/common/appbar.dart';
 import 'package:jost_pay_wallet/common/button.dart';
 import 'package:jost_pay_wallet/common/text_field.dart';
@@ -191,9 +192,8 @@ class _BuyDataState extends State<BuyData> {
                                                                 right: 8.r),
                                                         child: Icon(
                                                           Icons.check_circle,
-                                                          color: Theme.of(
-                                                                  context)
-                                                              .scaffoldBackgroundColor,
+                                                            color: MyColor
+                                                                .primaryColor
                                                         ),
                                                       ),
                                                     )
@@ -248,15 +248,22 @@ class _BuyDataState extends State<BuyData> {
                           ),
                         ),
                         const SizedBox(height: 20),
-                        if (amount.text.isNotEmpty) ...[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+
                           requiredLabel('Amount'),
+                            AmountChip(),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
                           CustomTextField(
                             text: 'Enter Amount',
                             controller: amount,
                             keyboardType: TextInputType.number,
                             enabled: false,
                           ),
-                        ],
+                        
                         const SizedBox(height: 20),
                       ],
                     ),
@@ -268,7 +275,7 @@ class _BuyDataState extends State<BuyData> {
                     if (selectedPlan == null) {
                       ErrorToast('Please select a package');
                     } else {
-                      Get.to(BuyDataConfirm(
+                      Get.to(ConfirmDataPurchase(
                         saveDetails: saveDetails,
                         plan: selectedPlan!,
                         phone: _controller.text,

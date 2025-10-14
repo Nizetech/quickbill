@@ -7,9 +7,9 @@ import 'package:jost_pay_wallet/Models/network_provider.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/confirm_airtime_details.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Settings/edit_profile.dart';
-import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
+import 'package:jost_pay_wallet/common/amount_chip.dart';
 import 'package:jost_pay_wallet/common/appbar.dart';
 import 'package:jost_pay_wallet/common/button.dart';
 import 'package:jost_pay_wallet/common/text_field.dart';
@@ -152,8 +152,10 @@ class _PurchaseAirtimeState extends State<PurchaseAirtime> {
                                                                       .circular(
                                                                           10),
                                                               child: Image
-                                                                  .asset(item[
-                                                                      'img'])),
+                                                                  .asset(
+                                                              item['img'],
+                                                            ),
+                                                          ),
                                                       errorWidget: (context,
                                                               url, error) =>
                                                           ClipRRect(
@@ -214,22 +216,7 @@ class _PurchaseAirtimeState extends State<PurchaseAirtime> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           requiredLabel('Amount'),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 5),
-                            decoration: BoxDecoration(
-                              color: MyColor.grey01Color,
-                              border: Border.all(color: MyColor.borderColor),
-                              borderRadius: BorderRadius.circular(7),
-                            ),
-                            child: Text(
-                              'Bal:₦ ${formatNumber(model.balance ?? 0)}',
-                              style: MyStyle.tx14Black.copyWith(
-                                fontWeight: FontWeight.w400,
-                                color: MyColor.greenColor,
-                              ),
-                            ),
-                          ),
+                          AmountChip(),
                         ],
                       ),
                       SizedBox(height: 10),

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
-import 'package:jost_pay_wallet/Provider/DashboardProvider.dart';
+import 'package:jost_pay_wallet/Provider/dashboard_provider.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/buy_data.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/purchase_airtime.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Home/widget/account_tile.dart';
@@ -11,6 +11,7 @@ import 'package:jost_pay_wallet/Ui/Dashboard/Home/widget/banner.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Home/widget/history_card.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Home/widget/home_appbar.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Home/widget/service_chip.dart';
+import 'package:jost_pay_wallet/Ui/cable/buy_cable_bills.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/common/button.dart';
@@ -31,9 +32,10 @@ class _HomeScreenState extends State<HomeScreen> {
     accountProvider = Provider.of<AccountProvider>(context, listen: false);
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+   
       await accountProvider.getUserBalance();
       await accountProvider.getNotification();
-      await accountProvider.getProfileImage(isLoading: false);
+      // await accountProvider.getProfileImage(isLoading: false);
       if (accountProvider.transactionModel == null) {
         await accountProvider.getTrasactions();
       } else {
@@ -49,12 +51,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   FutureOr refresh() async {
     await accountProvider.getTrasactions();
-    await accountProvider.getUserBalance();
   }
 
   FutureOr refreshAll() async {
     await accountProvider.getTrasactions();
-    await accountProvider.getUserBalance();
     await accountProvider.getNotification();
     await accountProvider.getUserProfile();
   }
@@ -64,10 +64,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    
     final dashProvider = Provider.of<DashboardProvider>(context, listen: true);
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Consumer<AccountProvider>(builder: (context, model, _) {
+       
         return RefreshIndicator(
           onRefresh: () async {
             await refreshAll();
@@ -79,7 +81,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       HomeAppBar(),
                       const SizedBox(height: 20),
@@ -147,7 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                                 const SizedBox(width: 10),
                                 ServiceChip(
-                                  onTap: () {},
+                                  onTap: () => Get.to(const BuyCableBills()),
                                   title: 'Cable',
                                   icon: 'assets/images/cable.svg',
                                 ),
@@ -168,7 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                                 GestureDetector(
                                   onTap: () =>
-                                      dashProvider.changeBottomIndex(2),
+                                      dashProvider.changeBottomIndex(3),
                                   child: Text(
                                     'View all',
                                     style: MyStyle.tx28Black.copyWith(

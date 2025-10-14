@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:jost_pay_wallet/Models/transactions.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
-import 'package:jost_pay_wallet/Provider/DashboardProvider.dart';
+import 'package:jost_pay_wallet/Provider/dashboard_provider.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Home/widget/history_card.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';

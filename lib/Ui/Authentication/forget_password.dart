@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:jost_pay_wallet/Provider/auth_provider.dart';
-import 'package:jost_pay_wallet/Values/MyColor.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Settings/edit_profile.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
-import 'package:jost_pay_wallet/Values/NewStyle.dart';
 import 'package:jost_pay_wallet/common/button.dart';
 import 'package:jost_pay_wallet/common/text_field.dart';
-import 'package:provider/provider.dart';
 
 class ForgotPassword extends StatelessWidget {
   final bool isPin;
@@ -27,26 +26,7 @@ class ForgotPassword extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.fromLTRB(15, 10, 1, 0),
-          child: InkWell(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Container(
-                padding: EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  border: Border.all(color: MyColor.blackColor, width: 1),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Icon(
-                  Icons.arrow_back_ios_new,
-                  color: MyColor.blackColor,
-                  size: 20,
-                ),
-              )),
-        ),
+        leading: BackBtn(),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -59,10 +39,18 @@ class ForgotPassword extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 20),
+                Image.asset(
+                  'assets/images/logo.png',
+                  width: 170,
+                  height: 46,
+                ),
+                const SizedBox(height: 30),
                 Text(
                   isPin ? 'Forgot Pin' : 'Forgot Password',
-                  style: NewStyle.tx28White
-                      .copyWith(fontSize: 24, color: MyColor.blackColor),
+                  style: MyStyle.tx16Black.copyWith(
+                    fontSize: 30,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 const SizedBox(height: 7),
                 Text(
@@ -72,9 +60,11 @@ class ForgotPassword extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
+                requiredLabel('Email address'),
                 CustomTextField(
                   text: 'Email address',
                   controller: email,
+                  isAuth: !isPin,
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value == null || value.isEmpty) {

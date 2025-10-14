@@ -6,18 +6,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/service_provider.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/AddFunds.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Buy/widget/balance_action_card.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Settings/edit_profile.dart';
 import 'package:jost_pay_wallet/Ui/electricity/electricity_summary.dart';
 import 'package:jost_pay_wallet/Ui/electricity/widget/provider_sheet.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
-import 'package:jost_pay_wallet/Values/NewColor.dart';
-import 'package:jost_pay_wallet/Provider/theme_provider.dart';
+import 'package:jost_pay_wallet/common/amount_chip.dart';
+import 'package:jost_pay_wallet/common/appbar.dart';
+import 'package:jost_pay_wallet/common/button.dart';
 import 'package:jost_pay_wallet/common/text_field.dart';
 import 'package:jost_pay_wallet/utils/toast.dart';
 import 'package:provider/provider.dart';
-import 'package:jost_pay_wallet/Values/NewStyle.dart';
 
 class BuyElectricity extends StatefulWidget {
   final String? package;
@@ -166,9 +165,8 @@ class _BuyElectricityState extends State<BuyElectricity> {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
-    final themedata = Theme.of(context).colorScheme;
     return Scaffold(
+      appBar: appBar(title: 'Purchase Electricity'),
       body: Consumer2<AccountProvider, ServiceProvider>(
           builder: (context, model, service, _) {
         return SafeArea(
@@ -181,53 +179,18 @@ class _BuyElectricityState extends State<BuyElectricity> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    InkWell(
-                      onTap: () => Get.back(),
-                      child: Image.asset(
-                        'assets/images/arrow_left.png',
-                        color: themeProvider.isDarkMode()
-                            ? MyColor.mainWhiteColor
-                            : MyColor.dark01Color,
-                      ),
-                    ),
-                    const Spacer(),
-                    Transform.translate(
-                      offset: const Offset(-20, 0),
-                      child: Text(
-                        'Electricity',
-                        style: MyStyle.tx18Black
-                            .copyWith(color: themedata.tertiary),
-                      ),
-                    ),
-                    const Spacer(), // Adds flexible space after the text
-                  ],
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
+              
                 Expanded(
                   child: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        BalanceActionCard(
-                            title: 'Add Funds',
-                            onTap: () {
-                              Get.to(const AddFunds());
-                            }),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Select Service Providers',
-                            style: MyStyle.tx14Grey.copyWith(
-                              color: themedata.tertiary,
-                              fontWeight: FontWeight.w500,
-                            ),
+                      
+                        Text(
+                          'Select Service Providers',
+                          style: MyStyle.tx14Grey.copyWith(
+                            color: MyColor.blackColor,
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                         const SizedBox(
@@ -249,7 +212,6 @@ class _BuyElectricityState extends State<BuyElectricity> {
                                     },
                                     providers: services,
                                     context: context,
-                                    themeProvider: themeProvider,
                                   );
                                 },
                                 child: Container(
@@ -257,9 +219,11 @@ class _BuyElectricityState extends State<BuyElectricity> {
                                       vertical: 10, horizontal: 15),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    color: themeProvider.isDarkMode()
-                                        ? MyColor.dark01Color
-                                        : MyColor.grey01Color,
+                                    color: MyColor.grey01Color.withOpacity(0.4),
+                                    border: Border.all(
+                                      color: MyColor.borderColor,
+                                      width: 1,
+                                    ),
                                   ),
                                   child: Row(
 
@@ -280,7 +244,7 @@ class _BuyElectricityState extends State<BuyElectricity> {
                                             'Please select package',
                                         style: MyStyle.tx12Black.copyWith(
                                           fontWeight: FontWeight.w400,
-                                          color: themedata.tertiary,
+                                          color: MyColor.blackColor,
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
@@ -288,7 +252,7 @@ class _BuyElectricityState extends State<BuyElectricity> {
                                       const SizedBox(width: 10),
                                       Icon(
                                         Icons.keyboard_arrow_down_sharp,
-                                        color: themedata.tertiary,
+                                        color: MyColor.blackColor,
                                       )
                                     ],
                                   ),
@@ -305,7 +269,7 @@ class _BuyElectricityState extends State<BuyElectricity> {
                                   child: Text(
                                     e,
                                     style: MyStyle.tx12Black.copyWith(
-                                      color: MyColor.greenColor,
+                                      color: MyColor.primaryColor,
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
@@ -324,7 +288,7 @@ class _BuyElectricityState extends State<BuyElectricity> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
                                   border: Border.all(
-                                    color: MyColor.greenColor,
+                                    color: MyColor.primaryColor,
                                     width: 1,
                                   ),
                                 ),
@@ -332,12 +296,12 @@ class _BuyElectricityState extends State<BuyElectricity> {
                                   children: [
                                     Text(meterTypes[selectedMeterType],
                                         style: MyStyle.tx12Black.copyWith(
-                                          color: MyColor.greenColor,
+                                          color: MyColor.primaryColor,
                                           fontWeight: FontWeight.w600,
                                         )),
                                     Icon(
                                       Icons.keyboard_arrow_down_sharp,
-                                      color: MyColor.greenColor,
+                                      color: MyColor.primaryColor,
                                     )
                                   ],
                                 ),
@@ -345,171 +309,25 @@ class _BuyElectricityState extends State<BuyElectricity> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 10),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment
-                              .end, // Aligns vertically centered
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(vertical: 9),
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                    width: 1,
-                                    color: themeProvider.isDarkMode()
-                                        ? MyColor.borderDarkColor
-                                        : MyColor.borderColor,
-                                  ),
-                                ),
-                              ),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    width: 30,
-                                    height: 30,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      color:
-                                          themedata.secondary.withOpacity(0.5),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Image.asset(
-                                      'assets/images/star.png',
-                                      width: 20,
-                                      height: 20,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 20,
-                                  )
-                                ],
-                              ),
-                            ),
-                            Expanded(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    bottom: BorderSide(
-                                      color: themeProvider.isDarkMode()
-                                          ? MyColor.borderDarkColor
-                                          : MyColor.borderColor,
-                                    ),
-                                  ),
-                                ),
-                                child: UnderlineTextfield(
-                                    controller: _controller,
-                                    hintText: 'Enter Meter Number',
-                                    suffixIcon: PopupMenuButton(
-                                      color: themedata.secondary,
-                                      constraints: const BoxConstraints(
-                                        maxHeight: 150,
-                                      ),
-                                      itemBuilder: (context) => [
-                                        ...model.electServiceModel!.details!
-                                            .map((e) => PopupMenuItem(
-                                                  value: e,
-                                                  onTap: () {
-                                                    _controller.text =
-                                                        e.meterNumber ?? '';
-                                                    selectedMeterType =
-                                                        e.meterType == 'Prepaid'
-                                                            ? 0
-                                                            : 1;
-                                                    int index = services
-                                                        .indexWhere((element) =>
-                                                            element['serviceId']
-                                                                .toString()
-                                                                .toLowerCase() ==
-                                                            e.discoName!
-                                                                .toLowerCase());
-                                                    setState(() {
-                                                      selectedService =
-                                                          services[index];
-                                                    });
-                                                
-                                                  },
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Text(
-                                                        '${e.discoName!.capitalizeFirst} - ${e.meterNumber}',
-                                                        style: MyStyle.tx12Black
-                                                            .copyWith(
-                                                          color: themedata
-                                                              .tertiary,
-                                                        ),
-                                                      ),
-                                                      const SizedBox(width: 10),
-                                                      GestureDetector(
-                                                        onTap: () {
-                                                          model.removeHistory(
-                                                            {
-                                                              'id':
-                                                                  "electricity",
-                                                              "meter_number":
-                                                                  e.meterNumber,
-                                                              "disco_name":
-                                                                  e.discoName,
-                                                              "meter_type":
-                                                                  e.meterType,
-                                                              "customer_name": e
-                                                                  .customerName,
-                                                              "address":
-                                                                  e.address,
-                                                            },
-                                                            callback: () async {
-                                                              Get.back();
-                                                              await model
-                                                                  .getElectServiceDetail();
-                                                            },
-                                                          );
-                                                          log('e: $e');
-                                                        },
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .only(
-                                                                  left: 10),
-                                                          child: CircleAvatar(
-                                                            radius: 16,
-                                                            backgroundColor:
-                                                                MyColor
-                                                                    .redColor,
-                                                            child: Icon(
-                                                              Icons
-                                                                  .delete_outline,
-                                                              color: MyColor
-                                                                  .whiteColor,
-                                                              size: 16,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                )),
-                                      ],
-                                      child: Icon(
-                                        Icons.history,
-                                        color: MyColor.greenColor,
-                                      ),
-                                    ),
-                                  )),
-                            ),
-                          ],
+                        const SizedBox(height: 20),
+                        requiredLabel('Meter Number'),
+                        CustomTextField(
+                          text: 'Enter Meter Number',
+                          controller: _controller,
+                          keyboardType: TextInputType.number,
                         ),
                         const SizedBox(height: 10),
+               
                         if (cableMerchant != '')
                           Container(
                             width: double.infinity,
                             alignment: Alignment.center,
+                            margin: const EdgeInsets.only(bottom: 10),
                             padding: const EdgeInsets.all(15),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(
-                                color: MyColor.greenColor,
+                                color: MyColor.primaryColor,
                                 width: 1,
                               ),
                             ),
@@ -517,123 +335,73 @@ class _BuyElectricityState extends State<BuyElectricity> {
                               cableMerchant,
                               style: MyStyle.tx12Black.copyWith(
                                 fontWeight: FontWeight.w600,
-                                color: MyColor.greenColor,
+                                color: MyColor.primaryColor,
                               ),
                             ),
                           ),
-                        const SizedBox(height: 10),
-                        Text(
-                          'Phone Number',
-                          style: MyStyle.tx12Black.copyWith(
-                            fontWeight: FontWeight.w400,
-                            color: themedata.tertiary,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
+                    
+                        requiredLabel('Phone Number'),
+                   
                         CustomTextField(
                           text: 'Enter Phone Number',
                           controller: phone,
                           keyboardType: TextInputType.number,
                         ),
                         const SizedBox(
-                          height: 10,
+                          height: 20,
                         ),
-                        Text(
-                          'Amount',
-                          style: MyStyle.tx12Black.copyWith(
-                            fontWeight: FontWeight.w400,
-                            color: themedata.tertiary,
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            requiredLabel('Amount'),
+                            AmountChip(),
+                          ],
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10),
                         CustomTextField(
-                          text: 'Enter Amount',
+                          text: 'Enter an Amount',
                           controller: amount,
                           keyboardType: TextInputType.number,
                         ),
-                        const SizedBox(height: 10),
-                        Row(
-                          children: [
-                            Text(
-                              'Save details for next purchase',
-                              style: MyStyle.tx12Black.copyWith(
-                                color: themedata.tertiary,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            const Spacer(),
-                            Transform.scale(
-                              scale: 0.8,
-                              child: CupertinoSwitch(
-                                value: saveDetails,
-                                activeTrackColor: MyColor.greenColor,
-                                onChanged: (value) {
-                                  setState(() {
-                                    saveDetails = value;
-                                  });
-                                  print('saveDetails: $saveDetails');
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 40),
-                        SizedBox(
-                          width: double.infinity,
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                              backgroundColor: MyColor.greenColor,
-                              padding: const EdgeInsets.symmetric(vertical: 14),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                            onPressed: () {
-                              if (amount.text.isEmpty ||
-                                  phone.text.isEmpty) {
-                                ErrorToast('Please fill all fields');
-                              } else {
-                                if (num.parse(amount.text) > model.balance!) {
-                                  ErrorToast('Insufficient balance');
-                                } else if (selectedMeterType == 0 &&
-                                    num.parse(amount.text) < 2000) {
-                                  ErrorToast('Minimum amount is 2000');
-                                } else if (selectedMeterType == 1 &&
-                                    num.parse(amount.text) < 5000) {
-                                  ErrorToast('Minimum amount is 5000');
-                                } else {
-                                  Get.to(ElectricitySummaryScreen(
-                                    saveDetails: saveDetails,
-                                    data: {
-                                      'service_id':
-                                          selectedService['serviceId'],
-                                      'name': selectedService['name'],
-                                      'phone': phone.text,
-                                      'amount': amount.text,
-                                      'merchant': cableMerchant,
-                                      'meter_number': _controller.text,
-                                      'img': selectedService['img'],
-                                      'meter_type':
-                                          meterTypes[selectedMeterType],
-                                    },
-                                  ));
-                                }
-                              }
-                            },
-                            child: Text(
-                              "Confirm",
-                              style: NewStyle.btnTx16SplashBlue
-                                  .copyWith(color: NewColor.mainWhiteColor),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        )
+                      
                       ],
                     ),
                   ),
                 ),
+                CustomButton(
+                  text: 'Confirm',
+                  onTap: () {
+                    if (amount.text.isEmpty || phone.text.isEmpty) {
+                      ErrorToast('Please fill all fields');
+                    } else {
+                      // if (num.parse(amount.text) > model.balance!) {
+                      //   ErrorToast('Insufficient balance');
+                      // } else
+                      if (selectedMeterType == 0 &&
+                          num.parse(amount.text) < 2000) {
+                        ErrorToast('Minimum amount is 2000');
+                      } else if (selectedMeterType == 1 &&
+                          num.parse(amount.text) < 5000) {
+                        ErrorToast('Minimum amount is 5000');
+                      } else {
+                        Get.to(ElectricitySummaryScreen(
+                          saveDetails: saveDetails,
+                          data: {
+                            'service_id': selectedService['serviceId'],
+                            'name': selectedService['name'],
+                            'phone': phone.text,
+                            'amount': amount.text,
+                            'merchant': cableMerchant,
+                            'meter_number': _controller.text,
+                            'img': selectedService['img'],
+                            'meter_type': meterTypes[selectedMeterType],
+                          },
+                        ));
+                      }
+                    }
+                  },
+                ),
+                const SizedBox(height: 30),
               ],
             ),
           ),

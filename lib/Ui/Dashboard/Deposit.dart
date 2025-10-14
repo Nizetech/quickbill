@@ -93,7 +93,7 @@ class _DepositState extends State<Deposit> {
                 Expanded(
                     child: RefreshIndicator(
                   onRefresh: () async {
-                    await model.getUserBalance();
+                 
                     await model.getUserProfile();
                   },
                   child: SingleChildScrollView(

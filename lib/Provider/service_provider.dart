@@ -14,7 +14,6 @@ import 'package:jost_pay_wallet/Models/paymentOption.dart';
 import 'package:jost_pay_wallet/Models/receipt_model.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Ui/cable/cable_electricity_success.dart';
-import 'package:jost_pay_wallet/common/verifying_screen.dart';
 import 'package:jost_pay_wallet/service/seervice_repo.dart';
 import 'package:jost_pay_wallet/utils/loader.dart';
 import 'package:jost_pay_wallet/utils/toast.dart';
@@ -61,7 +60,7 @@ class ServiceProvider with ChangeNotifier {
         return;
       } else {
         cableTransactionModel = CableTransactionModel.fromJson(res);
-        await account.getUserBalance();
+        await account.getUserProfile();
         hideLoader();
         notifyListeners();
       }
@@ -91,7 +90,7 @@ class ServiceProvider with ChangeNotifier {
         return;
       } else {
         electricityHistoryModel = ElectricityHistoryModel.fromJson(res);
-        await account.getUserBalance();
+        await account.getUserProfile();
         hideLoader();
         notifyListeners();
       }
@@ -209,7 +208,7 @@ class ServiceProvider with ChangeNotifier {
   }) async {
     try {
       // showLoader();
-      Get.to(const VerifyingScreen());
+      showLoader();
       bool isFailed = false;
       bool isPending = false;
       var res = await ServiceRepo().buyCable(data);
@@ -217,7 +216,7 @@ class ServiceProvider with ChangeNotifier {
           res['result'] == false ||
           isFailed ||
           isPending) {
-        // hideLoader();
+        hideLoader();
        
         Get.off(CableElectricitySuccessScreen(
           isCable: true,
@@ -237,14 +236,14 @@ class ServiceProvider with ChangeNotifier {
       }
     } catch (e) {
       print('Error: $e');
-      // hideLoader();
+      hideLoader();
       ErrorToast(e.toString());
     }
   }
 
   Future<void> buyElectricity(Map<String, dynamic> data) async {
     try {
-      Get.to(const VerifyingScreen());
+      showLoader();
       bool isFailed = false;
       bool isPending = false;
       var res = await ServiceRepo().buyElectricity(data);

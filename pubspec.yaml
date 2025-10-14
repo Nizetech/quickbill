@@ -49,27 +49,13 @@ dependencies:
   intl: ^0.20.2
   url_launcher: 
   country_picker: ^2.0.27
-  camera: ^0.11.2
   image: ^4.1.7
   audioplayers: ^5.2.1
   country_state_picker: ^0.0.5
-  glassmorphism_widgets: ^0.2.2
-  #<<<< web view
   flutter_inappwebview: ^6.1.5   
-  flutter_widget_from_html: ^0.16.0
-  #web view
-  flutter_slidable: ^4.0.0
   flutter_otp_text_field: ^1.1.0+2
-  dotted_border: ^2.1.0
   file_picker: ^10.1.9
-  google_sign_in: 
-  # firebase
-  firebase_core: 
-  firebase_crashlytics:
-  firebase_messaging: 
-  flutter_local_notifications:
-  firebase_app_check: ^0.3.0+4
-  firebase_analytics: 
+
   flutter_dotenv: ^5.2.1
 
 
@@ -100,9 +86,6 @@ flutter:
   assets:
     - assets/
     - assets/images/
-    - assets/images/dashboard/
-    - assets/images/svg/
-    - assets/sounds/
     - .env
 
   fonts:

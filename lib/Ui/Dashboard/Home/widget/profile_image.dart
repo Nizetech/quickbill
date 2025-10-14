@@ -20,7 +20,7 @@ class ProfileImage extends StatelessWidget {
         placeholder: (context, url) => ClipRRect(
           borderRadius: BorderRadius.circular(size),
           child: Image.asset(
-            'assets/images/avatar.jpeg',
+            'assets/images/avatar.png',
             height: size,
             width: size,
           ),
@@ -28,7 +28,7 @@ class ProfileImage extends StatelessWidget {
         errorWidget: (context, url, error) => ClipRRect(
           borderRadius: BorderRadius.circular(size),
           child: Image.asset(
-            'assets/images/avatar.jpeg',
+            'assets/images/avatar.png',
             height: size,
             width: size,
           ),

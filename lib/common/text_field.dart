@@ -71,10 +71,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 ? widget.preffixIcon
             : null,
         hintText: widget.text,
-        filled: true,
+        filled: widget.isAuth ? false : true,
         fillColor: MyColor.grey01Color.withOpacity(0.4),
-        // widget.isAuth || !isDark ? Colors.white :
-        //  MyColor.dark02Color,
+      
         hintStyle: TextStyle(
             fontSize: 12, // Font size
             color: NewColor.inputHintColor,
@@ -86,7 +85,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
             color: MyColor.primaryColor,
             width: 1.2,
           ),
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(
+            widget.isAuth ? 30 : 10,
+          ),
         ),
         enabledBorder: _buildEnabledBorder(isDark, widget.isAuth),
         border: _buildEnabledBorder(isDark, widget.isAuth),
@@ -131,13 +132,13 @@ class _CustomTextFieldState extends State<CustomTextField> {
     bool isAuth,
   ) {
     return OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(
+        isAuth ? 30 : 10,
+      ),
         borderSide: BorderSide(
           width: 1.2,
-          color: isAuth || !isDark
-              ? const Color(0xffE9EBF8)
-              : const Color(0xff1B1B1B),
-        ));
+            color: const Color(0xffE9EBF8)),
+    );
   }
 }
 

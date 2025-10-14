@@ -73,7 +73,7 @@ class AccountRepo {
     try {
       final response = await client.post(ApiRoute.getInvoice,
           body: jsonEncode({
-        "bank_id": int.parse(bankID),
+            "bank": int.parse(bankID),
           }),
           requestHeaders: {
         'Authorization': token,
@@ -149,47 +149,47 @@ class AccountRepo {
     }
   }
 
-  Future<dynamic> getServiceHistory(
-    String type, {
-    Map<String, dynamic>? filter,
-  }) async {
-    String token = await box.get(kAccessToken);
-    try {
-      final response = await client.post(
-        ApiRoute.serviceHistory,
-        requestHeaders: {
-          'Authorization': token,
-        },
-        body: jsonEncode({
-          "type": type,
-          if (filter != null) ...filter,
-        }),
-      );
-      return response;
-    } catch (e) {
-      print('Error: $e');
-      return {};
-    }
-  }
+  // Future<dynamic> getServiceHistory(
+  //   String type, {
+  //   Map<String, dynamic>? filter,
+  // }) async {
+  //   String token = await box.get(kAccessToken);
+  //   try {
+  //     final response = await client.post(
+  //       ApiRoute.serviceHistory,
+  //       requestHeaders: {
+  //         'Authorization': token,
+  //       },
+  //       body: jsonEncode({
+  //         "type": type,
+  //         if (filter != null) ...filter,
+  //       }),
+  //     );
+  //     return response;
+  //   } catch (e) {
+  //     print('Error: $e');
+  //     return {};
+  //   }
+  // }
 
-  Future<dynamic> getDepositHistory() async {
-    String token = await box.get(kAccessToken);
-    try {
-      final response = await client.post(
-        ApiRoute.recentDepositHistory,
-        requestHeaders: {
-          'Authorization': token,
-        },
-        body: jsonEncode({
-          "type": 'deposit',
-        }),
-      );
-      return response;
-    } catch (e) {
-      print('Error: $e');
-      return {};
-    }
-  }
+  // Future<dynamic> getDepositHistory() async {
+  //   String token = await box.get(kAccessToken);
+  //   try {
+  //     final response = await client.post(
+  //       ApiRoute.recentDepositHistory,
+  //       requestHeaders: {
+  //         'Authorization': token,
+  //       },
+  //       body: jsonEncode({
+  //         "type": 'deposit',
+  //       }),
+  //     );
+  //     return response;
+  //   } catch (e) {
+  //     print('Error: $e');
+  //     return {};
+  //   }
+  // }
 
   Future<dynamic> readNotification() async {
     String token = await box.get(kAccessToken);
@@ -324,36 +324,6 @@ class AccountRepo {
     }
   }
 
-  Future<Map<String, dynamic>> setDeviceToken(Map<String, dynamic> data) async {
-    String token = await box.get(kAccessToken);
-    try {
-      final response = await client.post(ApiRoute.setDeviceToken,
-          body: jsonEncode(data),
-          requestHeaders: {
-            'Authorization': token,
-          });
-      return response;
-    } catch (e) {
-      print('Error: $e');
-      return {};
-    }
-  }
-
-  Future<Map<String, dynamic>> removeHistory(Map<String, dynamic> data) async {
-    String token = await box.get(kAccessToken);
-    try {
-      final response =
-          await client.post(ApiRoute.removeHistory,
-          body: jsonEncode(data),
-          requestHeaders: {
-        'Authorization': token,
-      });
-      return response;
-    } catch (e) {
-      print('Error: $e');
-      return {};
-    }
-  }
 
   Future<Map<String, dynamic>> buyAirtime(Map<String, dynamic> data) async {
     String token = await box.get(kAccessToken);

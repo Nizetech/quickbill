@@ -19,10 +19,7 @@ import 'package:jost_pay_wallet/Models/network_provider.dart';
 import 'package:jost_pay_wallet/Models/notification_model.dart';
 import 'package:jost_pay_wallet/Models/transactions.dart';
 import 'package:jost_pay_wallet/Models/user_model.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Buy/BuyDataSuccess.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Buy/pending_purchase.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Home/payment_details.dart';
-import 'package:jost_pay_wallet/common/verifying_screen.dart';
 import 'package:jost_pay_wallet/constants/constants.dart';
 import 'package:jost_pay_wallet/service/account_repo.dart';
 import 'package:jost_pay_wallet/utils/loader.dart';
@@ -236,96 +233,65 @@ class AccountProvider with ChangeNotifier {
     } 
   }
 
-  Future<void> getAirtimeHistory({
-    bool isLoading = true,
-    Map<String, dynamic>? filter,
-  }) async {
-    try {
-      if (isLoading) showLoader();
-      AccountRepo()
-          .getServiceHistory('airtime', filter: filter)
-          .then((value) async {
-        if (isLoading) hideLoader();
-        if (value['status'] == false || value['result'] == false) {
-          if (value['message'].runtimeType == String) {
-            ErrorToast(value['message']);
-          } else {
-            String message = '';
-            value['message'].forEach((key, value) {
-              message += '$value';
-            });
-            ErrorToast(message);
-          }
-        } else {
-          airtimeHistory = AirtimeHistory.fromJson(value);
-          await getUserBalance();
-        }
-        notifyListeners();
-      });
-    } catch (e) {
-      ErrorToast(e.toString());
-    }
-  }
+  // // get data History
+  // Future<void> getDataHistory({
+  //   bool isLoading = true,
+  //   Map<String, dynamic>? filter,
+  // }) async {
+  //   try {
+  //     if (isLoading) showLoader();
+  //     AccountRepo()
+  //         .getServiceHistory('data', filter: filter)
+  //         .then((value) async {
+  //       if (isLoading) hideLoader();
+  //       if (value['status'] == false || value['result'] == false ) {
+  //         if (value['message'].runtimeType == String) {
+  //           ErrorToast(value['message']);
+  //         } else {
+  //           String message = '';
+  //           value['message'].forEach((key, value) {
+  //             message += '$value';
+  //           });
+  //           ErrorToast(message);
+  //         }
+  //       } else {
+  //         dataHistoryModel = DataHistoryModel.fromJson(value);
+  //         await getUserBalance();
+  //       }
+  //       notifyListeners();
+  //     });
+  //   } catch (e) {
+  //     hideLoader();
+  //     ErrorToast(e.toString());
+  //   } 
+  // }
 
-  // get data History
-  Future<void> getDataHistory({
-    bool isLoading = true,
-    Map<String, dynamic>? filter,
-  }) async {
-    try {
-      if (isLoading) showLoader();
-      AccountRepo()
-          .getServiceHistory('data', filter: filter)
-          .then((value) async {
-        if (isLoading) hideLoader();
-        if (value['status'] == false || value['result'] == false ) {
-          if (value['message'].runtimeType == String) {
-            ErrorToast(value['message']);
-          } else {
-            String message = '';
-            value['message'].forEach((key, value) {
-              message += '$value';
-            });
-            ErrorToast(message);
-          }
-        } else {
-          dataHistoryModel = DataHistoryModel.fromJson(value);
-          await getUserBalance();
-        }
-        notifyListeners();
-      });
-    } catch (e) {
-      hideLoader();
-      ErrorToast(e.toString());
-    } 
-  }
-
-  // get User Profile
-  Future<void> getDepositHistory({bool isLoading = true}) async {
-    try {
-      if (isLoading) showLoader();
-      AccountRepo().getDepositHistory().then((value) async {
-        if (isLoading) hideLoader();
-        if (value['status'] == false || value['result'] == false ) {
-          if (value['message'].runtimeType == String) {
-            ErrorToast(value['message']);
-          } else {
-            String message = '';
-            value['message'].forEach((key, value) {
-              message += '$value';
-            });
-            ErrorToast(message);
-          }
-        } else {
-          depositHistoryModel = DepositHistoryModel.fromJson(value);
-        }
-        notifyListeners();
-      });
-    } catch (e) {
-      hideLoader();
-      ErrorToast(e.toString());
-    } 
-  }
+  // // get User Profile
+  // Future<void> getDepositHistory({bool isLoading = true}) async {
+  //   try {
+  //     if (isLoading) showLoader();
+  //     AccountRepo().getDepositHistory().then((value) async {
+  //       if (isLoading) hideLoader();
+  //       if (value['status'] == false || value['result'] == false ) {
+  //         if (value['message'].runtimeType == String) {
+  //           ErrorToast(value['message']);
+  //         } else {
+  //           String message = '';
+  //           value['message'].forEach((key, value) {
+  //             message += '$value';
+  //           });
+  //           ErrorToast(message);
+  //         }
+  //       } else {
+  //         depositHistoryModel = DepositHistoryModel.fromJson(value);
+  //       }
+  //       notifyListeners();
+  //     });
+  //   } catch (e) {
+  //     hideLoader();
+  //     ErrorToast(e.toString());
+  //   } 
+  // }
 
   Future<void> createDeposit(Map<String, dynamic> data) async {
     try {
@@ -354,29 +320,6 @@ class AccountProvider with ChangeNotifier {
     }
   }
 
-  Future<void> setDeviceToken(Map<String, dynamic> data) async {
-    try {
-      // showLoader();
-      AccountRepo().setDeviceToken(data).then((value) async {
-        // hideLoader();
-
-        if (value['status'] == false || value['result'] == false ) {
-          if (value['message'].runtimeType == String) {
-            ErrorToast(value['message']);
-          } else {
-            String message = '';
-            value['message'].forEach((key, value) {
-              message += '$value';
-            });
-            ErrorToast(message);
-          }
-        }
-        notifyListeners();
-      });
-    } catch (e) { 
-      ErrorToast(e.toString());
-    }
-  }
 
 
   Future<void> getBanks({bool isLoading = true}) async {
@@ -395,7 +338,7 @@ class AccountProvider with ChangeNotifier {
             ErrorToast(message);
           }
         } else {
-          banksModel = List<BanksModel>.from(value['data']['banks'].map(
+          banksModel = List<BanksModel>.from(value['banks'].map(
             (x) => BanksModel.fromJson(x),
           ));
         }
@@ -498,31 +441,23 @@ class AccountProvider with ChangeNotifier {
   // buy Airtime
   Future<void> buyAirtime(Map<String, dynamic> data) async {
     try {
-      Get.to(const VerifyingScreen());
+      showLoader();
       // showLoader();
       bool isFailed = false;
       bool isPending = false;
       AccountRepo().buyAirtime(data).then((value) async {
-        // hideLoader();
+          hideLoader();
         log('airtime response: $value');
         isFailed = value['message'].toString().toLowerCase().contains('failed');
         isPending = value['message'].toString().toLowerCase().contains('pending') || value == {};
         if (value['result'] == null || value['result'] == false || isFailed || isPending) {
           // if (value['message'].toString().toLowerCase().contains('fail')) {
-            Get.off(PendingFailedPurchase(
-              isData: false,
-              amount: data['amount'],
-              phone: data['phone'],
-            ));
+           //todo add pending page
          
         }
        
            else {
-            Get.off(BuyDataSuccess(
-              isData: false,
-              amount: data['amount'],
-              phone: data['phone'],
-            ));
+          //todo add success page
           }
        
 
@@ -539,29 +474,20 @@ class AccountProvider with ChangeNotifier {
     try {
         bool isFailed = false;
         bool isPending = false;
-       Get.to(const VerifyingScreen());
+      showLoader();
       AccountRepo().buyData(data).then((value) async {
-        // hideLoader();
+        hideLoader();
         isFailed=value['message'].toString().toLowerCase().contains('failed');
         isPending = value['message'].toString().toLowerCase().contains('pending') || value == {};
           if (value['result'] == null || value['result'] == false || isFailed || isPending
           ) {
         
-             Get.off(PendingFailedPurchase(
-              isData: true,
-              plan: plan,
-              phone: data['phone'],
-              amount: amount,
-            ));
+           //todo add pending page
         
         } 
         
            else {
-            Get.off(BuyDataSuccess(
-              isData: true,
-              amount: amount,
-              phone: data['phone'],
-            ));
+          //todo add success page
           }
 
         
@@ -883,33 +809,6 @@ class AccountProvider with ChangeNotifier {
     } 
   }
 
-  Future<void> removeHistory(Map<String, dynamic> data, {required VoidCallback callback}) async { 
-    try {
-      showLoader();
-      AccountRepo().removeHistory(data).then((value) {
-          if (value['status'] == false || value['result'] == false ) {
-          hideLoader();
-          if (value['message'].runtimeType == String) {
-            ErrorToast(value['message']);
-          } else {
-            String message = '';
-            value['message'].forEach((key, value) {
-              message += '$value';
-            });
-            ErrorToast(message);
-          }
-        } else {
-          hideLoader();
-          callback();
-        }
-        notifyListeners();
-      });
-    } catch (e) {
-      hideLoader();
-      ErrorToast(e.toString());
-    } 
-  }
-
   // get Data plans
   Future<void> getDataPlans(
       {bool isLoading = true, required String network}) async {
@@ -938,6 +837,4 @@ class AccountProvider with ChangeNotifier {
       ErrorToast(e.toString());
     } 
   }
-
-
 }

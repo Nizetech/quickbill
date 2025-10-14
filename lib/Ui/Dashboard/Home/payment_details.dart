@@ -50,7 +50,6 @@ log("amount:==> $amount");
                   ),
                 ),
                 SizedBox(height: 20),
-         
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -86,8 +85,8 @@ log("amount:==> $amount");
                   fontWeight: FontWeight.w500,
                   onTap: () => model.createDeposit({
                     'invoice_number': model.invoiceModel!.invoiceNumber,
-                    'amount': int.parse(amount),
-                    'payment_method': 'bank',
+                    'amount': int.parse(amount.split('.')[0]),
+                    // 'payment_method': 'bank',
                     'bank_id': int.parse(bankId),
                   }),
                 ),

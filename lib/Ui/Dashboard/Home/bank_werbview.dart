@@ -63,7 +63,7 @@ class _BankWebviewState extends State<BankWebview> {
         await account.getSquardCallback(
             ref: ref,
             callback: () async {
-              await account.getUserBalance();
+              await account.getUserProfile();
             });
       } else {
         log('No reference found in URL: $fullPath');
@@ -105,7 +105,7 @@ class _BankWebviewState extends State<BankWebview> {
                     // Handle dashboard redirect
                     if (isDashboard) {
                       Get.close(2);
-                      await account.getUserBalance();
+                      await account.getUserProfile();
                     }
                   },
                   onUpdateVisitedHistory:

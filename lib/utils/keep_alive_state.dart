@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:jost_pay_wallet/Ui/Authentication/SignInScreen.dart';
+import 'package:jost_pay_wallet/Ui/Authentication/signIn_screen.dart';
 import 'package:jost_pay_wallet/main.dart';
 
 const _inactivityTimeout = Duration(minutes: 5);

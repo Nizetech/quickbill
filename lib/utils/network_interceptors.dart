@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart' hide Response;
-import 'package:jost_pay_wallet/Ui/Authentication/SignInScreen.dart';
+import 'package:jost_pay_wallet/Ui/Authentication/signIn_screen.dart';
 import 'package:jost_pay_wallet/common/cancel_loading.dart';
 import 'package:jost_pay_wallet/utils/app_logger.dart';
 import 'package:jost_pay_wallet/utils/exception.dart';

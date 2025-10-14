@@ -5,7 +5,7 @@ import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/notification.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Home/widget/profile_image.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Settings/SettingScreen.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Settings/setting_screen.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:provider/provider.dart';

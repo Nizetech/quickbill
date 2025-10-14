@@ -1,7 +1,4 @@
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/AddFunds.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Electricity/ElectricitySuccess.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/NewColor.dart';
@@ -136,10 +133,10 @@ class _ElectricityConfirmState extends State<ElectricityConfirm> {
                     const Spacer(),
                     TextButton(
                       onPressed: () => {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const AddFunds()))
+                        // Navigator.pushReplacement(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => const AddFunds()))
                       },
                       style: TextButton.styleFrom(
                         backgroundColor: MyColor.greenColor,
@@ -238,30 +235,8 @@ class _ElectricityConfirmState extends State<ElectricityConfirm> {
                     ],
                   ),
                   const SizedBox(height: 12,),
-                  SizedBox(
-                    width: double.infinity, // Full width of the screen
-                    height: 4, // Adjust height as needed
-                    child: Stack(
-                      children: [
-                        // Bottom border
-                        Positioned(
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          child: DottedBorder(
-                            color: MyColor.borderColor,
-                            strokeWidth: 1,
-                            dashPattern: const [6, 3], // Dash pattern: 6 units line, 3 units space
-                            customPath: (size) => Path()
-                              ..moveTo(0, 0)
-                              ..lineTo(size.width, 0),
-                            child: Container(
-                              height: 0, // The container for the border can have a height of 0
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                  Divider(
+                    color: MyColor.borderColor.withValues(alpha: 0.5),
                   ),
                   const SizedBox(height: 12,),
                   Row(
@@ -289,10 +264,7 @@ class _ElectricityConfirmState extends State<ElectricityConfirm> {
                   ),
                 ),
                 onPressed: () {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ElectricitySuccess()));
+                  //todo add success page
                 },
                 child: Text(
                   "Confirm",

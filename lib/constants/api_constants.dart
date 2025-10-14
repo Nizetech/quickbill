@@ -1,7 +1,8 @@
 class ApiRoute {
-  static String projectUrl = 'https://project.jostpay.com/';
+  // static String projectUrl = 'https://project.jostpay.com/';
   // static String liveUrl = projectUrl;
-  static String liveUrl = 'https://jostpay.com/';
+  // static String liveUrl = 'https://jostpay.com/';
+  static String liveUrl = 'https://jostpay.masterscript.org/';
   static String baseUrlWeb = liveUrl;
   static String baseUrl = '${liveUrl}apis/';
 
@@ -29,12 +30,14 @@ class ApiRoute {
   static String updateProfile = 'update-profile';
   static String getProfileImage = 'get-profile-image';
   static String updateProfileImage = 'update-image';
-  static String getInvoice = 'get-invoice';
+  static String getInvoice = 'deposits/get-invoice';
   static String getBalance = 'get-balance';
   static String getDataPlans = 'get-data-plans';
-  static String getTransactions = 'get-purchases';
+  static String getTransactions = 'transactions';
+  // static String getTransactions = 'get-purchases';
   static String getNotification = 'get-news';
-  static String getBanks = 'get-banks';
+  // static String getBanks = 'get-banks';
+  static String getBanks = 'deposits';
   static String readNotification = 'read-news';
 
   static String getNetworkProviders = 'get-network-providers';
@@ -44,10 +47,11 @@ class ApiRoute {
   static String buyAirtime = 'buy-airtime';
   static String buyData = 'buy-data';
 
-  static String serviceHistory = 'get-purchases';
-  static String recentDepositHistory = 'get-recent-purchases';
+  // static String serviceHistory = 'get-purchases';
+  // static String recentDepositHistory = 'get-recent-purchases';
   static String receipt = 'marketplace/receipt';
-  static String creditDeposit = 'create-deposit';
+  static String creditDeposit = 'add-fund-manual';
+  // static String creditDeposit = 'create-deposit';
   static String cardBankTransfer = 'deposits/create-payment';
 
   static String sharePdf = 'services/spray-history/download';
@@ -60,7 +64,5 @@ class ApiRoute {
   static String buyCable = 'services/buy-cable';
   static String buyElectricity = 'services/buy-electricity';
   static String getHistory = 'services/get-history';
-  static String removeHistory = 'services/remove-history';
   static String squardCallback = 'squard_callback';
-  static String setDeviceToken = 'set-device-token';
 }

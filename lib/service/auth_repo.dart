@@ -1,8 +1,5 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jost_pay_wallet/constants/api_constants.dart';
 import 'package:jost_pay_wallet/constants/constants.dart';
@@ -13,7 +10,6 @@ import 'package:jost_pay_wallet/utils/network_clients.dart';
 class AuthRepo {
   final client = NetworkClient();
   final box = Hive.box(kAppName);
-  final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
 
   // register
   Future<Map<String, dynamic>> register(Map<String, dynamic> data) async {
@@ -28,8 +24,8 @@ class AuthRepo {
       if (data['email'] == 'donnpus@yahoo.com' &&
           data['password'] == 'ASdflkj123?' &&
           response['token'] != null) {
-        box.put(kAccessToken, response['token']);
       }
+      box.put(kAccessToken, response['token']);
       print('Register Response: $response');
       return response;
     } catch (e) {
@@ -57,58 +53,7 @@ class AuthRepo {
   //     log('Google Data: $googleData');
   //   }
   // }
-  // google logout
-  Future<void> googleLogout() async {
-    try {
-      String serverClientId = dotenv.env['serverClientId']!;
-      await _googleSignIn.initialize(
-        serverClientId: Platform.isAndroid ? serverClientId : null,
-      );
-      await _googleSignIn.disconnect();
-      await _googleSignIn.signOut();
-    } catch (e) {
-      print('Error: $e');
-    }
-  }
 
-  // google login
-  Future<Map<String, dynamic>> googleAuth(String fcmToken) async {
-    try {
-      String serverClientId = dotenv.env['serverClientId']!;
-      await _googleSignIn.initialize(
-        serverClientId: Platform.isAndroid ? serverClientId : null,
-      );
-      await _googleSignIn.disconnect();
-      await _googleSignIn.signOut();
-      // clear the cache
-      Map<String, dynamic> response = {};
-      final GoogleSignInAccount? gUser = await _googleSignIn.authenticate();
-      log('Google User: $gUser');
-      if (gUser != null) {
-        response = await client.post(
-          ApiRoute.googleLogin,
-          requestHeaders: {
-            'Content-Type': 'application/json',
-          },
-          body: jsonEncode({
-            'email': gUser.email,
-            'first_name': gUser.displayName?.split(' ')[0],
-            'last_name': gUser.displayName?.split(' ')[1],
-            'token': fcmToken,
-          }),
-        );
-        box.put(kAccessToken, response['token']);
-        print('Google Login Response: $response');
-      }
-      return {
-        'email': gUser?.email ?? '',
-        ...response,
-      };
-    } catch (e) {
-      print('Google Login Error: $e');
-      return {};
-    }
-  }
 
   // login
   Future<Map<String, dynamic>> login(Map<String, dynamic> data) async {
@@ -117,11 +62,12 @@ class AuthRepo {
         ApiRoute.login,
         body: jsonEncode(data),
       );
+      log("Login Response: $response");
       if (data['email'] == 'donnpus@yahoo.com' &&
           data['password'] == 'ASdflkj123?' &&
           response['token'] != null) {
-        box.put(kAccessToken, response['token']);
       }
+      box.put(kAccessToken, response['token']);
       return response;
     } catch (e) {
       hideLoader();
@@ -259,25 +205,6 @@ class AuthRepo {
     }
   }
 
-  // Pin Log IN
-  Future<Map<String, dynamic>> pinLogin(String pin) async {
-    String token = await box.get(kAccessToken);
-    String deviceToken = await box.get(kDeviceToken);
-    try {
-      final response = await client.post(ApiRoute.pinLogin,
-          body: jsonEncode({
-            "pin": pin,
-            "token": deviceToken,
-          }),
-          requestHeaders: {
-            'Authorization': token,
-          });
-      return response;
-    } catch (e) {
-      print('Error: $e');
-      return {};
-    }
-  }
 
   // change password
   Future<Map<String, dynamic>> changePassword(Map<String, dynamic> data) async {

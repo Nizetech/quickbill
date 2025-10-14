@@ -1,13 +1,10 @@
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
-import 'package:jost_pay_wallet/Provider/DashboardProvider.dart';
-import 'package:jost_pay_wallet/Ui/Authentication/OtpScreen.dart';
-import 'package:jost_pay_wallet/Ui/Authentication/SignInScreen.dart';
-import 'package:jost_pay_wallet/Ui/Static/set_pin_login.dart';
+import 'package:jost_pay_wallet/Ui/Authentication/signIn_screen.dart';
 import 'package:jost_pay_wallet/bottom_nav.dart';
-import 'package:jost_pay_wallet/service/account_repo.dart';
 import 'package:jost_pay_wallet/service/auth_repo.dart';
 import 'package:jost_pay_wallet/utils/loader.dart';
 import 'package:jost_pay_wallet/utils/toast.dart';
@@ -15,6 +12,7 @@ import 'package:jost_pay_wallet/utils/toast.dart';
 class AuthProvider with ChangeNotifier {
   bool isLoading = false;
   String authToken = '';
+  Map<String, dynamic> userData = {};
 
   void updateAuthToken(String token) {
     authToken = token;
@@ -26,6 +24,36 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void updateUserData(Map<String, dynamic> data) {
+    // Only add keys that don't already exist to prevent duplicates
+    data.forEach((key, value) {
+      if (!userData.containsKey(key)) {
+        userData[key] = value;
+      }
+    });
+    log("userData:====>>> $userData");
+    notifyListeners();
+  }
+  // void createAccount(Map<String, dynamic> data) {
+  //   log("data:====>>> $data");
+  //   // createAccount(data);
+  // //  createAccount({
+  // //     "email": _emailController.text.trim(),
+  // //     "password": _passwordController.text.trim(),
+  // //     "first_name": _firstName.text.trim(),
+  // //     "last_name": _lastName.text.trim(),
+  // //     'country': selectedCountry,
+  // //     'token': box.get(kDeviceToken),
+  // //     "referral_code": _referalCode.text.trim(),
+  // //     "phone":
+  // //         // remove the first zero from the phone number if it starts with 0
+  // //         selectedCountry == 'NG' &&
+  // //                 _phoneNumberController.text.trim().startsWith('0')
+  // //             ? '+$selectedCountryCode${_phoneNumberController.text.trim().substring(1)}'
+  // //             : '+$selectedCountryCode${_phoneNumberController.text.trim()}'
+  // //   });
+  //   notifyListeners();
+  // }
 
   Future<void> deActivateAccount() async {
     try {
@@ -61,11 +89,13 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  Future<void> createAccount(Map<String, dynamic> data) async {
+  Future<void> createAccount() async {
     try {
+      log("data:====>>> $userData");
+      // return;
       // setLoading(true);
       showLoader();
-      AuthRepo().register(data).then((value) {
+      AuthRepo().register(userData).then((value) {
         setLoading(false);
         if (value['status'] == false || value['result'] == false) {
           hideLoader();
@@ -83,14 +113,16 @@ class AuthProvider with ChangeNotifier {
           updateAuthToken(value['token']);
           hideLoader();
           updateAuthToken(value['token']);
-          if (data['email'] == 'donnpus@yahoo.com' &&
-              data['password'] == 'ASdflkj123?') {
+          if (userData['email'] == 'donnpus@yahoo.com' &&
+              userData['password'] == 'ASdflkj123?') {
             Get.offAll(BottomNav());
           } else {
-            Get.to(OtpScreen(
-              email: data['email'],
-            ));
-            SuccessToast('An OTP has been sent to your email');
+            // Get.to(OtpScreen(
+            //   email: userData['email'],
+            // ));
+            Get.offAll(BottomNav());
+            // SuccessToast('An OTP has been sent to your email');
+            SuccessToast('Login Successful');
           }
         }
         notifyListeners();
@@ -124,18 +156,19 @@ class AuthProvider with ChangeNotifier {
                 data['password'] == 'ASdflkj123?') {
               Get.offAll(BottomNav());
             } else {
-              Get.to(OtpScreen(
-                  is2Fa: value['login_method'] != null &&
-                      value['login_method'] != 'email',
-                  email: data['email']));
-              if (value['message'] != null && value['message'] != '') {
-                SuccessToast(value['message']);
-              } else {
-                SuccessToast(value['login_method'] != null &&
-                        value['login_method'] != 'email'
-                    ? "Enter Google Authenticator code"
-                    : 'An OTP has been sent to your email');
-              }
+              Get.offAll(BottomNav());
+            //   Get.to(OtpScreen(
+            //       is2Fa: value['login_method'] != null &&
+            //           value['login_method'] != 'email',
+            //       email: data['email']));
+            //   if (value['message'] != null && value['message'] != '') {
+            //     SuccessToast(value['message']);
+            //   } else {
+            //     SuccessToast(value['login_method'] != null &&
+            //             value['login_method'] != 'email'
+            //         ? "Enter Google Authenticator code"
+            //         : 'An OTP has been sent to your email');
+            //   }
             }
           }
           notifyListeners();
@@ -145,75 +178,6 @@ class AuthProvider with ChangeNotifier {
         }
       });
     } catch (e) {
-      ErrorToast(e.toString());
-    }
-  }
-
-  Future<void> googleLogout() async {
-    try {
-      showLoader();
-      await AuthRepo().googleLogout();
-      updateAuthToken('');
-      hideLoader();
-      SuccessToast('Logged out successfully');
-    } catch (e) {
-      hideLoader();
-      ErrorToast(e.toString());
-    }
-  }
-
-  Future<void> googleAuth({
-    required String fcmToken,
-    required DashboardProvider dashProvider,
-    required AccountProvider account,
-  }) async {
-    try {
-      showLoader();
-      await AuthRepo().googleAuth(fcmToken).then((value) async {
-        hideLoader();
-        if (value.isNotEmpty) {
-          if (value['status'] == false || value['result'] == false) {
-            if (value['message'].runtimeType == String) {
-              ErrorToast(value['message']);
-            } else {
-              String message = '';
-              value['message'].forEach((key, value) {
-                message += '$value';
-              });
-              ErrorToast(message);
-            }
-            return;
-          } else {
-            if (value['token'] != null) {
-              updateAuthToken(value['token']);
-            }
-            
-            dashProvider.changeBottomIndex(0);
-            var data = await AccountRepo().getProfile();
-            notifyListeners();
-            if (data['user'] != null) {
-              if (data['user']['enable_pin'] != '1' ||
-                  data['user']['enable_pin'] == 'null' ||
-                  data['user']['enable_pin'] == null) {
-                Get.to(
-                  SetPinLogin(
-                    isFromAuth: true,
-                  ),
-                );
-              } else {
-                Get.offAll(BottomNav());
-                SuccessToast('Login Successful');
-              }
-            }
-          }
-          notifyListeners();
-        } else {
-          ErrorToast('Something went wrong');
-          return;
-        }
-      });
-    } catch (e) {
-      hideLoader();
       ErrorToast(e.toString());
     }
   }
@@ -258,42 +222,6 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  Future<void> pinLogin(
-    String pin,
-  ) async {
-    try {
-      showLoader();
-      await AuthRepo().pinLogin(pin).then((value) async {
-        hideLoader();
-        if (value.isNotEmpty) {
-          if (value['status'] == false || value['result'] == false) {
-            if (value['message'].runtimeType == String) {
-              ErrorToast(value['message']);
-            } else {
-              String message = '';
-              value['message'].forEach((key, value) {
-                message += '$value';
-              });
-              ErrorToast(message);
-            }
-            return;
-          } else {
-            Get.offAll(BottomNav());
-            if (value['message'] != null && value['message'] != '') {
-              SuccessToast(value['message']);
-            }
-          }
-          notifyListeners();
-        } else {
-          ErrorToast('Something went wrong');
-          return;
-        }
-      });
-    } catch (e) {
-      ErrorToast(e.toString());
-    }
-  }
-
   Future<void> resendOtp(String email,
       {bool isForgetPass = false, String? authToken}) async {
     try {
@@ -314,99 +242,96 @@ class AuthProvider with ChangeNotifier {
         } else {
           if (isForgetPass) {
             hideLoader();
-            Get.to(OtpScreen(email: email));
+            Get.back();
+            // Get.to(OtpScreen(email: email));
           }
           updateAuthToken(value['token']);
-         
+
           SuccessToast('An OTP has been sent to your email');
+      
         }
         notifyListeners();
       });
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
-  Future<bool> confirmOtp(Map<String, dynamic> data,
-      {bool isForgetPass = false,
-      bool is2fa = false,
-      String? authToken,
-      bool isEnable2fa = false,
-      AccountProvider? account,
-      DashboardProvider? dashProvider}) async {
-    try {
-      showLoader();
-      AuthRepo()
-          .verifyOTP(
-              authToken: authToken,
-              data,
-              is2fa: is2fa,
-              isEnable2fa: isEnable2fa)
-          .then((value) async {
-       
-        hideLoader();
-        if (value.isEmpty) return false;
-        if (value['status'] == false || value['result'] == false) {
-          if (value['message'].runtimeType == String) {
-            ErrorToast(value['message']);
-          } else {
-            String message = '';
-            value['message'].forEach((key, value) {
-              message += '$value';
-            });
-            ErrorToast(message);
-          }
-        } else {
-          if (isForgetPass || isEnable2fa) {
-            if (isEnable2fa) {
-              await account!.getUserProfile(isLoading: false);
-              Get.back();
-              SuccessToast(value['message']);
-            }
-            return true;
-          } else {
-            if (dashProvider != null && account != null) {
-              dashProvider.changeBottomIndex(0);
-              var data = await AccountRepo().getProfile();
-              updateAuthToken('');
-              notifyListeners();
-              if (data['user'] != null) {
-                if (data['user']['enable_pin'] != '1' ||
-                    data['user']['enable_pin'] == 'null' ||
-                    data['user']['enable_pin'] == null) {
-                  Get.to(
-                    SetPinLogin(
-                      isFromAuth: true,
-                    ),
-                  );
-                } else {
-                  Get.offAll(BottomNav());
-                }
-              }
-              if (value['message'] != null && value['message'] != '') {
-                SuccessToast(value['message']);
-              } else {
-                SuccessToast('Login Successful');
-              }
-            } else {}
-          }
-         
-        }
-      });
-    } catch (e) {
-     
-      hideLoader();
-      ErrorToast(e.toString());
-      return false;
-    }
-    return false;
-  }
+  // Future<bool> confirmOtp(Map<String, dynamic> data,
+  //     {bool isForgetPass = false,
+  //     bool is2fa = false,
+  //     String? authToken,
+  //     bool isEnable2fa = false,
+  //     AccountProvider? account,
+  //     DashboardProvider? dashProvider}) async {
+  //   try {
+  //     showLoader();
+  //     AuthRepo()
+  //         .verifyOTP(
+  //             authToken: authToken,
+  //             data,
+  //             is2fa: is2fa,
+  //             isEnable2fa: isEnable2fa)
+  //         .then((value) async {
+  //       hideLoader();
+  //       if (value.isEmpty) return false;
+  //       if (value['status'] == false || value['result'] == false) {
+  //         if (value['message'].runtimeType == String) {
+  //           ErrorToast(value['message']);
+  //         } else {
+  //           String message = '';
+  //           value['message'].forEach((key, value) {
+  //             message += '$value';
+  //           });
+  //           ErrorToast(message);
+  //         }
+  //       } else {
+  //         if (isForgetPass || isEnable2fa) {
+  //           if (isEnable2fa) {
+  //             await account!.getUserProfile(isLoading: false);
+  //             Get.back();
+  //             SuccessToast(value['message']);
+  //           }
+  //           return true;
+  //         } else {
+  //           if (dashProvider != null && account != null) {
+  //             dashProvider.changeBottomIndex(0);
+  //             var data = await AccountRepo().getProfile();
+  //             updateAuthToken('');
+  //             notifyListeners();
+  //             if (data['user'] != null) {
+  //               if (data['user']['enable_pin'] != '1' ||
+  //                   data['user']['enable_pin'] == 'null' ||
+  //                   data['user']['enable_pin'] == null) {
+  //                 Get.to(
+  //                   SetPinLogin(
+  //                     isFromAuth: true,
+  //                   ),
+  //                 );
+  //               } else {
+  //                 Get.offAll(BottomNav());
+  //               }
+  //             }
+  //             if (value['message'] != null && value['message'] != '') {
+  //               SuccessToast(value['message']);
+  //             } else {
+  //               SuccessToast('Login Successful');
+  //             }
+  //           } else {}
+  //         }
+  //       }
+  //     });
+  //   } catch (e) {
+  //     hideLoader();
+  //     ErrorToast(e.toString());
+  //     return false;
+  //   }
+  //   return false;
+  // }
 
   Future<void> updateProfile(Map<String, dynamic> data,
       {required AccountProvider account}) async {
     try {
       showLoader();
       AuthRepo().updateProfile(data).then((value) async {
-       
         hideLoader();
         if (value.isEmpty) return;
         if (value['status'] == false || value['result'] == false) {

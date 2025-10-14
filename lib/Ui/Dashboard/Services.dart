@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/buy_data.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/purchase_airtime.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Home/widget/service_chip.dart';
-import 'package:jost_pay_wallet/Ui/cable/cable_history.dart';
-import 'package:jost_pay_wallet/Ui/electricity/electricity_history.dart';
+import 'package:jost_pay_wallet/Ui/cable/buy_cable_bills.dart';
+import 'package:jost_pay_wallet/Ui/electricity/buy_electricity.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/common/appbar.dart';
@@ -68,14 +68,14 @@ class _ServicesState extends State<Services> {
             Row(
               children: [
                 ServiceChip(
-                  onTap: () => Get.to(const CableHistory()),
+                  onTap: () => Get.to(const BuyCableBills()),
                   title: 'Cable',
                   icon: 'assets/images/cable_s.svg',
                   height: 110,
                 ),
                 SizedBox(width: 10),
                 ServiceChip(
-                  onTap: () => Get.to(const ElectricityHistory()),
+                  onTap: () => Get.to(const BuyElectricity()),
                   title: 'Electricity',
                   icon: 'assets/images/elect_s.svg',
                   height: 110,

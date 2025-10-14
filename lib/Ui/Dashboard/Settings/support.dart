@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Settings/SettingScreen.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Settings/setting_screen.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Settings/faq.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';

@@ -87,7 +87,7 @@ log("amount:==> $amount");
                     'invoice_number': model.invoiceModel!.invoiceNumber,
                     'amount': int.parse(amount.split('.')[0]),
                     // 'payment_method': 'bank',
-                    'bank_id': int.parse(bankId),
+                    'bank': int.parse(bankId),
                   }),
                 ),
                 SizedBox(height: 40),

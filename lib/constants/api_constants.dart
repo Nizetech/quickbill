@@ -50,7 +50,7 @@ class ApiRoute {
   // static String serviceHistory = 'get-purchases';
   // static String recentDepositHistory = 'get-recent-purchases';
   static String receipt = 'marketplace/receipt';
-  static String creditDeposit = 'add-fund-manual';
+  static String creditDeposit = 'deposits/add-fund-manual';
   // static String creditDeposit = 'create-deposit';
   static String cardBankTransfer = 'deposits/create-payment';
 

@@ -310,7 +310,7 @@ class AccountProvider with ChangeNotifier {
             ErrorToast(message);
           }
         } else {
-          Get.close(3);
+          Get.close(4);
           SuccessToast(value['message']);
         }
         notifyListeners();

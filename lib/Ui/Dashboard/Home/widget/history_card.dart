@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 import 'package:jost_pay_wallet/Models/transactions.dart';
 import 'package:jost_pay_wallet/Provider/service_provider.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Home/receipt_screen.dart';
-import 'package:jost_pay_wallet/Ui/cable/cable_electricity_success.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
@@ -281,15 +280,15 @@ class HistoryCard extends StatelessWidget {
     required String Function(Datum transaction) getOperator,
     required BuildContext context,
   }) {
-    final model = context.read<ServiceProvider>();
-    if (transaction.type == Type.ELECTRICITY) {
-      Get.to(CableElectSuccessScreen(
-        data: model.receiptModel?.info?.toJson() ?? {},
-        isCable: false,
-        amount: transaction.amount!,
-        isTransaction: true,
-      ));
-    } else {
+    // final model = context.read<ServiceProvider>();
+    // if (transaction.type == Type.ELECTRICITY) {
+    //   Get.to(CableElectSuccessScreen(
+    //     data: model.receiptModel?.info?.toJson() ?? {},
+    //     isCable: false,
+    //     amount: transaction.amount!,
+    //     isTransaction: true,
+    //   ));
+    // } else {
       Get.to(
         ReceiptScreen(
           status: '1',
@@ -314,5 +313,6 @@ class HistoryCard extends StatelessWidget {
         ),
       );
     }
-  }
+  // }
+
 }

@@ -42,7 +42,6 @@ class _PurchaseAirtimeState extends State<PurchaseAirtime> {
     super.initState();
     var model = Provider.of<AccountProvider>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      model.getAirtimeServiceDetail();
       if (model.networkProviderModel == null) {
         model.getNetworkProviders(callback: () {
           loadInitData();

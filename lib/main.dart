@@ -1,4 +1,4 @@
-import 'dart:async';
+
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,6 +24,7 @@ void main() async {
     await dotenv.load(fileName: ".env");
 
   } on Exception catch (e) {
+    print('Error: $e');
 
   }
   await ScreenUtil.ensureScreenSize();
@@ -31,7 +32,6 @@ void main() async {
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   await Hive.initFlutter();
   await Hive.openBox(kAppName);
-
   runApp(const MyApp());
 }
 
@@ -47,21 +47,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
-
-  final box = Hive.box(kAppName);
-  String token = '';
-  String pinEnabled = '';
-  bool isExistingUser = false;
-
-  FutureOr getToken() async {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-     
-      isExistingUser = await box.get(kExistingUser, defaultValue: false);
-      if (mounted) {
-        setState(() {});
-      }
-    });
-  }
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {

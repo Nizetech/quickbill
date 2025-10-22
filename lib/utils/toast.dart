@@ -9,7 +9,7 @@ class ErrorToast {
     Flushbar(
       message: message,
       maxWidth: Get.width * 0.7,
-      flushbarPosition: FlushbarPosition.TOP,
+      flushbarPosition: FlushbarPosition.BOTTOM,
       messageSize: 12,
       borderRadius: BorderRadius.circular(10),
       padding: const EdgeInsets.all(10),
@@ -27,7 +27,7 @@ class SuccessToast {
     Flushbar(
       message: message,
       maxWidth: Get.width * 0.7,
-      flushbarPosition: FlushbarPosition.TOP,
+      flushbarPosition: FlushbarPosition.BOTTOM,
       messageSize: 14,
       borderRadius: BorderRadius.circular(10),
       boxShadows: [
@@ -46,7 +46,7 @@ class SuccessToast {
           color: Colors.white,
         ),
       ),
-      backgroundColor: MyColor.greenColor,
+      backgroundColor: MyColor.primaryColor,
       duration: const Duration(seconds: 3),
     ).show(Get.context!);
   }

@@ -227,23 +227,6 @@ class AccountRepo {
     }
   }
 
-  Future<Map<String, dynamic>> createVirtualAccount(
-      Map<String, dynamic> data) async {
-    String token = await box.get(kAccessToken);
-    try {
-      final response = await client.post(
-        ApiRoute.createVirtual,
-        requestHeaders: {
-          'Authorization': token,
-        },
-        body: jsonEncode(data),
-      );
-      return response;
-    } catch (e) {
-      print('Error: $e');
-      return {};
-    }
-  }
 
   Future<Map<String, dynamic>> verifyImageUpload(
       Map<String, dynamic> data) async {

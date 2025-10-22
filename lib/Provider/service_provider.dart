@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jost_pay_wallet/common/success_screen.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -13,7 +14,6 @@ import 'package:jost_pay_wallet/Models/electricity_history.dart';
 import 'package:jost_pay_wallet/Models/paymentOption.dart';
 import 'package:jost_pay_wallet/Models/receipt_model.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
-import 'package:jost_pay_wallet/Ui/cable/cable_electricity_success.dart';
 import 'package:jost_pay_wallet/service/seervice_repo.dart';
 import 'package:jost_pay_wallet/utils/loader.dart';
 import 'package:jost_pay_wallet/utils/toast.dart';
@@ -218,20 +218,36 @@ class ServiceProvider with ChangeNotifier {
           isPending) {
         hideLoader();
        
-        Get.off(CableElectricitySuccessScreen(
-          isCable: true,
-          isPending: true,
-          isShowmax: isShowmax,
+        // Get.off(CableElectricitySuccessScreen(
+        //   isCable: true,
+        //   isPending: true,
+        //   isShowmax: isShowmax,
+        //   amount: data['amount'],
+        // ));
+        showSuccessScreen(
+          title: 'Cable Tv',
+          status: isPending == true ? 'pending' : 'failed',
           amount: data['amount'],
-        ));
+          onTap: () {
+            Get.close(2);
+          },
+        );
        
       } else {
-        Get.off(CableElectricitySuccessScreen(
-          isCable: true,
-          isShowmax: isShowmax,
+        // Get.off(CableElectricitySuccessScreen(
+        //   isCable: true,
+        //   isShowmax: isShowmax,
+        //   amount: data['amount'],
+        //   data: res['data'],
+        // ));
+        showSuccessScreen(
+          title: 'Cable Tv',
           amount: data['amount'],
-          data: res['data'],
-        ));
+          status: 'success',
+          onTap: () {
+            Get.close(2);
+          },
+        );
         notifyListeners();
       }
     } catch (e) {
@@ -270,20 +286,36 @@ class ServiceProvider with ChangeNotifier {
             ErrorToast(message);
           }
         } else {
-          Get.off(CableElectricitySuccessScreen(
-            isCable: false,
-            isPending: true,
+          // Get.off(CableElectricitySuccessScreen(
+          //   isCable: false,
+          //   isPending: true,
+          //   amount: data['amount'],
+          // ));
+          showSuccessScreen(
+            title: 'Electricity',
+            status: isPending == true ? 'pending' : 'failed',
             amount: data['amount'],
-          ));
+            onTap: () {
+              Get.close(2);
+            },
+          );
         }
       }
     
       else {
-        Get.off(CableElectricitySuccessScreen(
-          isCable: false,
-          data: res,
+        // Get.off(CableElectricitySuccessScreen(
+        //   isCable: false,
+        //   data: res,
+        //   amount: data['amount'],
+        // ));
+        showSuccessScreen(
+          title: 'Electricity',
+          status: 'success',
           amount: data['amount'],
-        ));
+          onTap: () {
+            Get.close(2);
+          },
+        );
         notifyListeners();
       }
     } catch (e) {

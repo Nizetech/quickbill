@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:jost_pay_wallet/Provider/theme_provider.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
@@ -102,7 +103,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   });
                 },
                 icon: Icon(
-                  isObscure ? Icons.visibility : Icons.visibility_off,
+                  isObscure ? Iconsax.eye_slash : Iconsax.eye,
                   size: 22,
                   color: Colors.grey,
                 ),

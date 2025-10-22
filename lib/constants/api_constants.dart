@@ -14,7 +14,7 @@ class ApiRoute {
   static String verify2fa = 'verify-2fa';
   static String verifyAuth = 'verify-auth';
   static String enable2fa = 'enable-2fa';
-  static String changePassword = 'change-password';
+  static String changePassword = 'profile/update-password';
   static String resetPassword = 'forget-password';
   static String updatePin = 'pin-update';
   static String pinLogin = 'pin-login';
@@ -23,11 +23,10 @@ class ApiRoute {
   static String kycVerify = 'verification/verify';
   static String getVerificationDetails = 'verification';
   static String verifyImageUpload = 'verification/verify-image-upload';
-  static String createVirtual = '/deposit/fidelity';
   static String deactivateAccount = 'deactivate-account';
   // Dashboard
   static String userProfile = 'get-user-profile';
-  static String updateProfile = 'update-profile';
+  static String updateProfile = 'profile/update-profile';
   static String getProfileImage = 'get-profile-image';
   static String updateProfileImage = 'update-image';
   static String getInvoice = 'deposits/get-invoice';

@@ -5,7 +5,7 @@ import 'package:jost_pay_wallet/Provider/dashboard_provider.dart';
 import 'package:jost_pay_wallet/Provider/internet_provider.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/add_funds.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/services.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/TransactionHistory.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/transaction_history.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Home/home.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';

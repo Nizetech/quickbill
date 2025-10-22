@@ -43,7 +43,7 @@ static Dio createDio() {
   Map<String, String> get _getAuthHeader {
       return {
       "Accept": "application/json",
-      "Content-Type": "application/x-www-form-urlencoded",
+      // "Content-Type": "application/x-www-form-urlencoded",
     };
 
   }

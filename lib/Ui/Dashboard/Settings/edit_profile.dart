@@ -41,7 +41,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     if (_formKey.currentState?.validate() ?? false) {
       // loginAccount();
       model.updateProfile(account: account, {
-        "first_name": "${firstName.text.trim()} ",
+        "first_name": firstName.text.trim(),
         "last_name": lastName.text.trim(),
         "phone": phoneNumber.text.trim(),
       });

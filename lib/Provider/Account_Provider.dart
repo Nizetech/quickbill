@@ -20,6 +20,7 @@ import 'package:jost_pay_wallet/Models/notification_model.dart';
 import 'package:jost_pay_wallet/Models/transactions.dart';
 import 'package:jost_pay_wallet/Models/user_model.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Home/payment_details.dart';
+import 'package:jost_pay_wallet/common/success_screen.dart';
 import 'package:jost_pay_wallet/constants/constants.dart';
 import 'package:jost_pay_wallet/service/account_repo.dart';
 import 'package:jost_pay_wallet/utils/loader.dart';
@@ -53,16 +54,6 @@ class AccountProvider with ChangeNotifier {
   String get profileImage => _profileImage;
   Map<dynamic, List> get transGroupByData => _transGroupByData;
   Map<String, dynamic> kycData = {};
-
-  void clearKycData() {
-    kycData.clear();
-    notifyListeners();
-  }
-
-  void addKycData(Map<String, dynamic> data) {
-    kycData.addAll(data);
-    notifyListeners();
-  }
 
   void setDataPlanModelToNull() {
     dataPlansModel = null;
@@ -107,28 +98,6 @@ class AccountProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // toggle 2Fa
-  Future<dynamic> toogle2Fa(int useGoogleAuth,
-      {bool showMessage = false, AccountProvider? account}) async {
-    try {
-      showLoader();
-      qrcode = await AccountRepo().enableDisable2fa(useGoogleAuth);
-      if (useGoogleAuth == 0) {
-        await account!.getUserProfile();
-      }
-      // hideLoader();
-      Navigator.pop(Get.context!);
-      notifyListeners();
-      if (showMessage) {
-        SuccessToast('Google Authenticator Disabled Successfully');
-      }
-      return qrcode;
-    } catch (e) {
-      hideLoader();
-      ErrorToast(e.toString());
-    } 
-  }
-
   // get User Profile
   Future<Map<String, dynamic>> getUserProfile(
       {bool isLoading = true, VoidCallback? onSuccess}) async {
@@ -150,7 +119,6 @@ class AccountProvider with ChangeNotifier {
           }
         } else {
           userModel = UserModel.fromJson(value);
-          box.put(isPinEnabled, userModel?.user?.enabledPin);
           if (isLoading) hideLoader();
           if (onSuccess != null) {
             onSuccess();
@@ -203,35 +171,6 @@ class AccountProvider with ChangeNotifier {
     } 
   }
 
-  Future<void> createVirtualAccount(
-      {required Map<String, dynamic> data,
-      required VoidCallback onSuccess}) async {
-    try {
-      showLoader();
-      AccountRepo().createVirtualAccount(data).then((value) {
-        //
-        hideLoader();
-        if (value['status'] == false || value['result'] == false ) {
-          if (value['message'].runtimeType == String) {
-            ErrorToast(value['message']);
-          } else {
-            String message = '';
-            value['message'].forEach((key, value) {
-              message += '$value';
-            });
-            ErrorToast(message);
-          }
-        } else {
-          hideLoader();
-          onSuccess();
-        }
-        notifyListeners();
-      });
-    } catch (e) {
-      hideLoader();
-      ErrorToast(e.toString());
-    } 
-  }
 
   // // get data History
   // Future<void> getDataHistory({
@@ -452,12 +391,27 @@ class AccountProvider with ChangeNotifier {
         isPending = value['message'].toString().toLowerCase().contains('pending') || value == {};
         if (value['result'] == null || value['result'] == false || isFailed || isPending) {
           // if (value['message'].toString().toLowerCase().contains('fail')) {
-           //todo add pending page
-         
+ 
+          showSuccessScreen(
+            title: 'Airtime',
+            status: isPending == true ? 'pending' : 'failed',
+            amount: data['amount'],
+            onTap: () {
+              Get.close(2);
+            },
+          );
         }
        
            else {
-          //todo add success page
+      
+           showSuccessScreen(
+            title: 'Airtime',
+            status:'success',
+            amount: data['amount'],
+            onTap: () {
+              Get.close(2);
+            },
+          );
           }
        
 
@@ -483,11 +437,27 @@ class AccountProvider with ChangeNotifier {
           ) {
         
            //todo add pending page
+           showSuccessScreen(
+            title: 'Data',
+            status: isPending == true ? 'pending' : 'failed',
+            amount: data['amount'],
+            onTap: () {
+              Get.close(2);
+            },
+          );
         
         } 
         
            else {
           //todo add success page
+          showSuccessScreen(
+            title: 'Data',
+            status:'success',
+            amount: data['amount'],
+            onTap: () {
+              Get.close(2);
+            },
+          );
           }
 
         

@@ -22,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     getToken();
     Future.delayed(Duration(seconds: 2), () {
-      log("token: $token, isExistingUser: $isExistingUser");
+      // log("token: $token, isExistingUser: $isExistingUser");
       token.isNotEmpty 
           ? Get.offAll(() => BottomNav())
           : isExistingUser 
@@ -33,14 +33,14 @@ class _SplashScreenState extends State<SplashScreen> {
 
   final box = Hive.box(kAppName);
   String token = '';
-  String pinEnabled = '';
   bool isExistingUser = false;
 
   FutureOr getToken() async {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      token = await box.get(kAccessToken, defaultValue: '');
+      token = await box.get(kAccessToken, defaultValue: '') ?? '';
       log("token:==> $token");
-      isExistingUser = await box.get(kExistingUser, defaultValue: false);
+      isExistingUser =
+          await box.get(kExistingUser, defaultValue: false) ?? false;
       if (mounted) {
         setState(() {});
       }
@@ -49,7 +49,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    log("pinEnabled: $pinEnabled, isEmailLogin: $token");
     return Scaffold(
       backgroundColor: Colors.black,
       body: Center(

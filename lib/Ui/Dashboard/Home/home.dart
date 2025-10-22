@@ -15,6 +15,7 @@ import 'package:jost_pay_wallet/Ui/cable/buy_cable_bills.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/common/button.dart';
+import 'package:jost_pay_wallet/common/success_screen.dart';
 import 'package:provider/provider.dart';
 import 'dart:core';
 
@@ -32,7 +33,6 @@ class _HomeScreenState extends State<HomeScreen> {
     accountProvider = Provider.of<AccountProvider>(context, listen: false);
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-   
       await accountProvider.getUserBalance();
       await accountProvider.getNotification();
       // await accountProvider.getProfileImage(isLoading: false);
@@ -64,12 +64,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    
     final dashProvider = Provider.of<DashboardProvider>(context, listen: true);
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Consumer<AccountProvider>(builder: (context, model, _) {
-       
         return RefreshIndicator(
           onRefresh: () async {
             await refreshAll();
@@ -136,6 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Row(
                               children: [
                                 ServiceChip(
+                              
                                   onTap: () => Get.to(const PurchaseAirtime()),
                                   title: 'Airtime',
                                   icon: 'assets/images/call.svg',

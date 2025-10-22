@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Values/MyColor.dart';
 import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/common/button.dart';
@@ -11,7 +12,7 @@ AppBar appBar({
   return AppBar(
     leading: isBack
         ? BackBtn(
-            onTap: onTap,
+            onTap: onTap ?? () => Get.back(),
           )
         : null,
     backgroundColor: Colors.transparent,

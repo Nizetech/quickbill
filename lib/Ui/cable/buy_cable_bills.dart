@@ -46,9 +46,7 @@ class _BuyCableBillsState extends State<BuyCableBills> {
   void initState() {
     super.initState();
     var model = Provider.of<AccountProvider>(context, listen: false);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      model.getCableServiceDetail();
-    });
+   
     phone.text = model.userModel?.user?.phoneNumber?.replaceAll('+', '') ?? '';
     _controller.addListener(() {
       _onTyping();

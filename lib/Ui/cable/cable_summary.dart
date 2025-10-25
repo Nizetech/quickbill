@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/service_provider.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/confirm_airtime_details.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
@@ -37,7 +38,8 @@ class _CableSummaryScreenState extends State<CableSummaryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar(title: 'Cable Package Summary'),
-      body: Consumer<ServiceProvider>(builder: (context, model, _) {
+      body: Consumer2<ServiceProvider, AccountProvider>(
+          builder: (context, model, account, _) {
         return SafeArea(
           child: Padding(
             padding: const EdgeInsets.only(top: 15, left: 24, right: 24),
@@ -106,18 +108,17 @@ class _CableSummaryScreenState extends State<CableSummaryScreen> {
                   text: 'Confirm',
                   onTap: () {
                     Map<String, dynamic> data = {
-                      'code': widget.data['id'],
-                      "service_id": widget.data['service_id'],
-                      "price": widget.data['amount'],
-                      "card": widget.data['card'],
                       "phone": widget.data['phone'],
-                      "package": widget.data['package'],
                       'amount': totalAmount.toString(),
-                      'details': widget.saveDetails ? 1 : 0,
+                      "service_id": widget.data['service_id'],
+                      "card": widget.data['card'],
+                      'code': widget.data['id'],
+                      "price": widget.data['amount'],
+                      "package": widget.data['package'],
                     };
                     model.buyCable(
                       data,
-                      isShowmax: widget.data['showmax'],
+                      account: account,
                     );
                   },
                 ),

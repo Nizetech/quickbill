@@ -11,13 +11,9 @@ import 'package:provider/provider.dart';
 
 class BankWebview extends StatefulWidget {
   final String url;
-  final bool isCard;
-  final bool isCardTransfer;
   const BankWebview({
     super.key,
     required this.url,
-    this.isCard = false,
-    this.isCardTransfer = false,
   });
 
   @override
@@ -26,54 +22,38 @@ class BankWebview extends StatefulWidget {
 
 class _BankWebviewState extends State<BankWebview> {
   bool isLoading = true;
-  bool isDepositDone = false;
   bool finalDepositDone = false;
-  String redirect = 'squard_redirect';
+  String redirect = ' /login';
+  String redirectFullUrl = 'https://jostpay.masterscript.org/login';
+  
   InAppWebViewController? controller;
   
   // Method to handle deposit completion
   Future<void> _handleDepositCompletion(String? path, String? fullPath) async {
-    if (isDepositDone || finalDepositDone) {
-      log('Deposit already processed, skipping...');
-      return;
-    }
+    if (!mounted) return;
+    
+    final account = context.read<AccountProvider>();
 
-    if (path == '/squard_redirect' || (fullPath?.contains(redirect) ?? false)) {
+    if ((path?.contains(redirect) ?? false) || (fullPath == redirectFullUrl)) {
       log('Processing deposit completion...');
-      setState(() {
-        isDepositDone = true;
-      });
-
-      String ref = '';
-
-      // Try to extract reference from different possible locations
-      if (fullPath != null) {
-        if (fullPath.contains('reference=')) {
-          ref = fullPath.split('reference=')[1].split('&')[0];
-        } else if (fullPath.contains('ref=')) {
-          ref = fullPath.split('ref=')[1].split('&')[0];
-        }
-      }
-
-      log('Reference extracted: $ref');
-
-      if (ref.isNotEmpty) {
-        Get.close(2);
-        final account = context.read<AccountProvider>();
-        await account.getSquardCallback(
-            ref: ref,
-            callback: () async {
-              await account.getUserProfile();
-            });
-      } else {
-        log('No reference found in URL: $fullPath');
+      Get.close(3);
+      
+      // Check if widget is still mounted before calling async operation
+      if (mounted) {
+        await account.getUserProfile();
       }
     }
   }
+
+  @override
+  void dispose() {
+    // Cancel any ongoing operations
+    controller = null;
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final account = context.read<AccountProvider>();
-    // log('path:=> ${path.contains(redirect)}');
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     return Scaffold(
         body: SafeArea(
@@ -96,33 +76,25 @@ class _BankWebviewState extends State<BankWebview> {
                   },
                   onLoadStart: (controller, request) async {
                     log('Load start: ${request?.uriValue.path}');
-                    bool isDashboard = request?.uriValue.path == '/dashboard';
-                    
                     // Handle deposit completion
                     await _handleDepositCompletion(
                         request?.uriValue.path, request?.uriValue.toString());
-
-                    // Handle dashboard redirect
-                    if (isDashboard) {
-                      Get.close(2);
-                      await account.getUserProfile();
-                    }
+                  
                   },
                   onUpdateVisitedHistory:
                       (controller, request, isReload) async {
                     log('Update visited history: ${request?.uriValue.path}');
-
-                    // Handle deposit completion
+                    // Handle deposit completion 
                     await _handleDepositCompletion(
-                        request?.uriValue.path, request?.uriValue.toString());
+                      request?.uriValue.path,
+                      request?.uriValue.toString(),
+                    );
                   },
                   onLoadStop: (controller, request) async {
                     setState(() {
                       isLoading = false;
                     });
-                    
                     log('Load stop: ${request?.uriValue.path}');
-
                     // Handle deposit completion
                     await _handleDepositCompletion(
                         request?.uriValue.path, request?.uriValue.toString());
@@ -185,13 +157,11 @@ class _BankWebviewState extends State<BankWebview> {
                   offset: const Offset(10, -8),
                   child: BackBtn(),
                 ),
-                const Spacer(flex: 2),
+                const Spacer(flex: 2),  
                 Text(
-                  widget.isCard ? "Card Transfer" : "Bank Transfer",
+                  "Card Deposit",
                   style: TextStyle(
-                    color: themeProvider.isDarkMode()
-                        ? MyColor.mainWhiteColor
-                        : MyColor.dark01Color,
+                    color: MyColor.dark01Color,
                     fontSize: 20,
                     fontWeight: FontWeight.w500,
                   ),

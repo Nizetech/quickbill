@@ -66,7 +66,9 @@ class _BuyCableBillsState extends State<BuyCableBills> {
         _typingTimer?.cancel();
       }
       _typingTimer = Timer(Duration(seconds: 3), () {
-        resolveCardNumber();
+        if (mounted) {
+          resolveCardNumber();
+        }
       });
     }
   }

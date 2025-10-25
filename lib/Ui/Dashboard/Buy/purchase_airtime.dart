@@ -74,7 +74,9 @@ class _PurchaseAirtimeState extends State<PurchaseAirtime> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar(title: 'Purchase Airtime'),
+      appBar: appBar(
+        title: 'Purchase Airtime',
+      ),
       body: Consumer<AccountProvider>(builder: (context, model, _) {
         return Padding(
           padding: const EdgeInsets.only(

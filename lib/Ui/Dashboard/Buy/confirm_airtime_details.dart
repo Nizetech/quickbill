@@ -93,11 +93,13 @@ class _ConfirmAirtimeDetailsState extends State<ConfirmAirtimeDetails> {
                     text: 'Confirm',
                     onTap: () {
                       model.buyAirtime({
-                        'network_name':
-                            widget.selectedNetwork.network!.toLowerCase(),
+                        // 'network_name':
+                        //     widget.selectedNetwork.network!.toLowerCase(),
                         'phone': widget.number,
                         'amount': widget.amount,
-                        'details': widget.saveDetails ? 1 : 0,
+                        // 'details': widget.saveDetails ? 1 : 0,
+                        'network_id':
+                            widget.selectedNetwork.networkId.toString(),
                       });
                     }),
                 const SizedBox(height: 30),

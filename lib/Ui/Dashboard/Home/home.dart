@@ -183,7 +183,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             const SizedBox(height: 10),
                             if (accountProvider.dashBoardHistory != null &&
                                 accountProvider
-                                    .dashBoardHistory!.data!.isNotEmpty)
+                                    .dashBoardHistory!
+                                    .allTransactions!.isNotEmpty)
                               ListView.separated(
                                 separatorBuilder: (_, i) => SizedBox(
                                   height: 12,
@@ -192,18 +193,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                 physics: const NeverScrollableScrollPhysics(),
                                 itemBuilder: (context, index) {
                                   var item = accountProvider
-                                      .dashBoardHistory!.data![index];
+                                      .dashBoardHistory!
+                                      .allTransactions![index];
                                   return HistoryCard(
                                     transaction: item,
                                   );
                                 },
                                 shrinkWrap: true,
                                 itemCount: accountProvider
-                                            .dashBoardHistory!.data!.length >
+                                            .dashBoardHistory!
+                                            .allTransactions!.length >
                                         5
                                     ? 5
                                     : accountProvider
-                                        .dashBoardHistory!.data!.length,
+                                        .dashBoardHistory!
+                                        .allTransactions!.length,
                               )
                           ],
                         ),

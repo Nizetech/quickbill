@@ -20,9 +20,12 @@ import 'package:jost_pay_wallet/utils/toast.dart';
 import 'package:provider/provider.dart';
 
 class BuyData extends StatefulWidget {
-  final String? phone;
-  final String? network;
-  const BuyData({super.key, this.phone, this.network});
+  // final String? phone;
+  // final String? network;
+  const BuyData({
+    super.key,
+    //  this.phone, this.network
+  });
 
   @override
   State<BuyData> createState() => _BuyDataState();
@@ -45,37 +48,33 @@ class _BuyDataState extends State<BuyData> {
   void initState() {
     var model = Provider.of<AccountProvider>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      model.getDataServiceDetail();
       if (model.networkProviderModel == null) {
         await model.getNetworkProviders(callback: () {
-          loadInitData();
         });
-      } else {
-        loadInitData();
-      }
+      } 
     });
     super.initState();
   }
 
-  void loadInitData() {
-    var model = Provider.of<AccountProvider>(context, listen: false);
-    model.setDataPlanModelToNull();
-    setState(() {
-      if (widget.network != null) {
-        selectedItem = model.networkProviderModel!.networks!.indexWhere(
-            (element) =>
-                element.network!.toLowerCase() ==
-                widget.network!.toLowerCase());
-        selectedNetwork = model.networkProviderModel!.networks![selectedItem];
-      }
-      if (widget.network != null && widget.network != null) {
-        model.getDataPlans(network: widget.network!.toLowerCase());
-      }
-      if (widget.phone != null) {
-        _controller.text = widget.phone!;
-      }
-    });
-  }
+  // void loadInitData() {
+  //   var model = Provider.of<AccountProvider>(context, listen: false);
+  //   model.setDataPlanModelToNull();
+  //   setState(() {
+  // if (widget.network != null) {
+  //   selectedItem = model.networkProviderModel!.networks!.indexWhere(
+  //       (element) =>
+  //           element.network!.toLowerCase() ==
+  //           widget.network!.toLowerCase());
+  //   selectedNetwork = model.networkProviderModel!.networks![selectedItem];
+  // }
+  // if (widget.network != null && widget.network != null) {
+  //   model.getDataPlans(networkId: widget.network!.toLowerCase());
+  // }
+  //     if (widget.phone != null) {
+  //       _controller.text = widget.phone!;
+  //     }
+  //   });
+  // }
 
   Network? selectedNetwork;
 
@@ -136,11 +135,11 @@ class _BuyDataState extends State<BuyData> {
                                                       _controller.text = "";
                                                     }),
                                                     ctrl.getDataPlans(
-                                                        network: model
+                                                        networkId: model
                                                             .networkProviderModel!
                                                             .networks![index]
-                                                            .network!
-                                                            .toLowerCase())
+                                                            .networkId
+                                                            .toString())
                                                   },
                                               child: Stack(
                                                 children: [
@@ -167,7 +166,9 @@ class _BuyDataState extends State<BuyData> {
                                                                             10),
                                                                 child: Image
                                                                     .asset(item[
-                                                                        'img'])),
+                                                                        'img'],
+                                                              ),
+                                                            ),
                                                         errorWidget: (context,
                                                                 url, error) =>
                                                             ClipRRect(

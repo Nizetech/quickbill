@@ -19,15 +19,8 @@ import 'package:jost_pay_wallet/utils/toast.dart';
 import 'package:provider/provider.dart';
 
 class BuyElectricity extends StatefulWidget {
-  final String? package;
-  final String? network;
-  final String? amount;
-  const BuyElectricity({
-    super.key,
-    this.package,
-    this.network,
-    this.amount,
-  });
+
+  const BuyElectricity({super.key});
 
   @override
   State<BuyElectricity> createState() => _BuyElectricityState();
@@ -45,9 +38,7 @@ class _BuyElectricityState extends State<BuyElectricity> {
   void initState() {
     super.initState();
     final account = Provider.of<AccountProvider>(context, listen: false);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      account.getElectServiceDetail();
-    });
+   
     _controller.addListener(_onTyping);
     phone.text = account.userModel?.user?.phoneNumber ?? '';
   }

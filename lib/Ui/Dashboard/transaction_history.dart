@@ -101,7 +101,7 @@ class _TransactionhistoryState extends State<Transactionhistory> {
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
                                 itemBuilder: (context, index) {
-                                  Datum transaction = value[index];
+                                  AllTransaction transaction = value[index];
                                   return HistoryCard(transaction: transaction);
                                 },
                               ),

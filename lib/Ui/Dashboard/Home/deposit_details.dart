@@ -67,11 +67,10 @@ class _DepositDetailsState extends State<DepositDetails> {
                         'Bank',
                         style: MyStyle.tx14Black.copyWith(
                             color: MyColor.blackColor,
-                            fontWeight: FontWeight.w500),
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
-                      SizedBox(
-                        height: 6.h,
-                      ),
+                      SizedBox(height: 6.h),
                       GestureDetector(
                         onTap: () {
                           bankSelectionSheet(
@@ -101,7 +100,6 @@ class _DepositDetailsState extends State<DepositDetails> {
                     ErrorToast('Please select a bank');
                     return;
                   } else {
-                
                     model.getDepositInvoice(
                       bankID: bankID,
                       amount: widget.amount,

@@ -31,7 +31,7 @@ class ApiRoute {
   static String updateProfileImage = 'update-image';
   static String getInvoice = 'deposits/get-invoice';
   static String getBalance = 'get-balance';
-  static String getDataPlans = 'get-data-plans';
+  static String getDataPlans = 'services/get-plans';
   static String getTransactions = 'transactions';
   // static String getTransactions = 'get-purchases';
   static String getNotification = 'get-news';
@@ -43,15 +43,14 @@ class ApiRoute {
 
 
   // Services
-  static String buyAirtime = 'buy-airtime';
-  static String buyData = 'buy-data';
+  static String buyAirtime = 'services/buy-airtime';
+  static String buyData = 'services/buy-data';
 
   // static String serviceHistory = 'get-purchases';
   // static String recentDepositHistory = 'get-recent-purchases';
   static String receipt = 'marketplace/receipt';
-  static String creditDeposit = 'deposits/add-fund-manual';
-  // static String creditDeposit = 'create-deposit';
-  static String cardBankTransfer = 'deposits/create-payment';
+  static String creditDeposit = 'deposits/add-fund-manual'; // manual deposit
+  static String cardDeposit = 'deposits/create-payment'; // card deposit
 
   static String sharePdf = 'services/spray-history/download';
 
@@ -60,8 +59,8 @@ class ApiRoute {
   static String cableMerchant = 'services/cable/merchant';
   static String electricityMerchant = 'services/electricity/merchant';
   static String cableVariations = 'services/get-variationCodes';
-  static String buyCable = 'services/buy-cable';
-  static String buyElectricity = 'services/buy-electricity';
+  static String buyCable = 'services/cable';
+  static String buyElectricity = 'services/electricity';
   static String getHistory = 'services/get-history';
-  static String squardCallback = 'squard_callback';
+  // static String squardCallback = 'squard_callback';
 }

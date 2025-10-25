@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:jost_pay_wallet/Models/data_plans_model.dart';
@@ -10,6 +12,7 @@ import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/Values/utils.dart';
 import 'package:jost_pay_wallet/common/appbar.dart';
 import 'package:jost_pay_wallet/common/button.dart';
+import 'package:jost_pay_wallet/utils/toast.dart';
 import 'package:provider/provider.dart';
 
 class ConfirmDataPurchase extends StatefulWidget {
@@ -92,17 +95,22 @@ class _ConfirmDataPurchaseState extends State<ConfirmDataPurchase> {
                 CustomButton(
                   text: 'Confirm',
                   onTap: () {
-                    model.buyData(
-                      {
-                        "network_name": widget.network.network!.toLowerCase(),
-                        "phone": widget.phone,
-                        "data_type": "SME",
-                        "plan_id": widget.plan.planId,
-                        'details': widget.saveDetails ? 1 : 0,
-                      },
-                      amount: widget.plan.price.toString(),
-                      plan: widget.plan.name!,
-                    );
+                    Map<String, dynamic> data = {
+                      "network_id": widget.network.networkId.toString(),
+                      "phone": widget.phone,
+                      "plan_id": widget.plan.planId,
+                      'data_type': "SME",
+                    };
+                    if (num.parse(widget.plan.price.toString()) >
+                        model.balance!) {
+                      ErrorToast('Insufficient balance');
+                    } else {
+                      model.buyData(
+                        data,
+                        amount: widget.plan.price.toString(),
+                        plan: widget.plan.name!,
+                      );
+                    }
                   },
                 ),
                 const SizedBox(height: 30),

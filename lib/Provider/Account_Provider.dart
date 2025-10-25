@@ -19,6 +19,7 @@ import 'package:jost_pay_wallet/Models/network_provider.dart';
 import 'package:jost_pay_wallet/Models/notification_model.dart';
 import 'package:jost_pay_wallet/Models/transactions.dart';
 import 'package:jost_pay_wallet/Models/user_model.dart';
+import 'package:jost_pay_wallet/Ui/Dashboard/Home/bank_werbview.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Home/payment_details.dart';
 import 'package:jost_pay_wallet/common/success_screen.dart';
 import 'package:jost_pay_wallet/constants/constants.dart';
@@ -64,7 +65,7 @@ class AccountProvider with ChangeNotifier {
     _dashBoardHistory = TransactionModel.fromJson(transactionModel!.toJson());
     // ..sort((a, b) => b.transDate!.compareTo(a.transDate!));
     // Sort the transactions by latest time
-    _dashBoardHistory?.data
+    _dashBoardHistory?.allTransactions
         ?.sort((a, b) => b.transDate!.compareTo(a.transDate!));
     notifyListeners();
   }
@@ -73,7 +74,7 @@ class AccountProvider with ChangeNotifier {
     TransactionModel transactionHistory =
         TransactionModel.fromJson(transactionModel!.toJson());
     _transGroupByData = groupBy(
-      transactionHistory.data!,
+      transactionHistory.allTransactions!,
       (obj) => obj.transDate.toString().substring(0, 10),
     );
     // Sort by date in descending order
@@ -124,7 +125,13 @@ class AccountProvider with ChangeNotifier {
             onSuccess();
           }
         }
-        notifyListeners();
+        // Only notify listeners if the provider is still active
+        try {
+          notifyListeners();
+        } catch (e) {
+          // Provider might be disposed, ignore the error
+          log('Provider disposed, skipping notifyListeners: $e');
+        }
       });
       return res;
     } catch (e) {
@@ -397,7 +404,7 @@ class AccountProvider with ChangeNotifier {
             status: isPending == true ? 'pending' : 'failed',
             amount: data['amount'],
             onTap: () {
-              Get.close(2);
+              Get.close(3);
             },
           );
         }
@@ -408,8 +415,9 @@ class AccountProvider with ChangeNotifier {
             title: 'Airtime',
             status:'success',
             amount: data['amount'],
-            onTap: () {
-              Get.close(2);
+            onTap: () async {
+              Get.close(3);
+              await getUserBalance();
             },
           );
           }
@@ -442,7 +450,7 @@ class AccountProvider with ChangeNotifier {
             status: isPending == true ? 'pending' : 'failed',
             amount: data['amount'],
             onTap: () {
-              Get.close(2);
+              Get.close(3);
             },
           );
         
@@ -454,8 +462,9 @@ class AccountProvider with ChangeNotifier {
             title: 'Data',
             status:'success',
             amount: data['amount'],
-            onTap: () {
-              Get.close(2);
+            onTap: () async {
+              Get.close(3);
+              await getUserBalance();
             },
           );
           }
@@ -529,7 +538,13 @@ class AccountProvider with ChangeNotifier {
         } else {
           balance = num.parse(value['balance'].toString());
         }
-        notifyListeners();
+        // Only notify listeners if the provider is still active
+        try {
+          notifyListeners();
+        } catch (e) {
+          // Provider might be disposed, ignore the error
+          log('Provider disposed, skipping notifyListeners: $e');
+        }
       });
 
     } catch (e) {
@@ -538,13 +553,12 @@ class AccountProvider with ChangeNotifier {
     } 
   }
   
-  Future<void> getSquardCallback({
-    required String ref,
-    required VoidCallback callback,
+  Future<void> cardDeposit({
+   required int amount,
   }) async {
     try {
        showLoader();
-      AccountRepo().getSquardCallback(ref).then((value) {
+      AccountRepo().cardDeposit(amount).then((value) {
         hideLoader();
         if (value['status'] == false || value['result'] == false ) {
           if (value['message'].runtimeType == String) {
@@ -557,11 +571,14 @@ class AccountProvider with ChangeNotifier {
             ErrorToast(message);
           }
         } else {
-          callback();
+          log('${value['checkout_url']}');
+          if(value['checkout_url']!=null){
+
+          Get.to(BankWebview(url: value['checkout_url'],),);
+          }
         }
         notifyListeners();
       });
-
     } catch (e) {
       hideLoader();
       ErrorToast(e.toString());
@@ -781,10 +798,10 @@ class AccountProvider with ChangeNotifier {
 
   // get Data plans
   Future<void> getDataPlans(
-      {bool isLoading = true, required String network}) async {
+      {bool isLoading = true, required String networkId}) async {
     try {
       if (isLoading) showLoader();
-      AccountRepo().getDataPlans(network).then((value) {
+      AccountRepo().getDataPlans(networkId).then((value) {
           if (value['status'] == false || value['result'] == false ) {
           if (isLoading) hideLoader();
           if (value['message'].runtimeType == String) {

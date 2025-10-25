@@ -14,7 +14,7 @@ import 'package:jost_pay_wallet/Values/MyStyle.dart';
 import 'package:jost_pay_wallet/utils/toast.dart';
 
 class HistoryCard extends StatelessWidget {
-  final Datum transaction;
+  final AllTransaction transaction;
   const HistoryCard({
     super.key,
     required this.transaction,
@@ -22,7 +22,7 @@ class HistoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color getStatus(Datum transaction) {
+    Color getStatus(AllTransaction transaction) {
       if (transaction.status == 'pending' ||
           transaction.apiStatus == 'pending') {
         return MyColor.orange01Color;
@@ -37,43 +37,30 @@ class HistoryCard extends StatelessWidget {
       }
     }
 
-    String getPhone(Datum transaction) {
-      return transaction.details!.split(' Phone: ')[1].split(',')[0].toString();
+    String getPhone(AllTransaction transaction) {
+      return transaction.networkName!;
     }
 
-    String getOperator(Datum transaction) {
-      String operator = transaction.details!
-          .split(' Operator: ')[1]
-          .split(',')[0]
-          .toString()
-          .split('Airtime')[0]
-          .capitalizeFirst!;
-      return operator;
+    String getOperator(AllTransaction transaction) {
+      return transaction.networkName!;
     }
 
-    String refundedDesc(Datum transaction) {
-      if (transaction.type == Type.DATA) {
+    String refundedDesc(AllTransaction transaction) {
+      if (transaction.type == 'data') {
         return 'Data | Refunded';
-      } else if (transaction.type == Type.AIRTIME) {
+      } else if (transaction.type == 'airtime') {
         return 'Airtime | Refunded';
-      } else if (transaction.type == Type.ELECTRICITY) {
-        return 'Electricity | Refunded';
-      } else if (transaction.type == Type.CABLE) {
-        return 'Cable | Refunded';
       } else {
-        return '${transaction.type!.name.capitalizeFirst!} | Refunded';
+        return '${transaction.type!.capitalizeFirst!} | Refunded';
       }
     }
 
-    String getDescription(Datum transaction) {
+    String getDescription(AllTransaction transaction) {
       return transaction.apiStatus == 'refunded'
           ? refundedDesc(transaction)
           : transaction.type != null
-              ? (transaction.type == Type.ELECTRICITY ||
-                      transaction.type == Type.CABLE)
-                  ? transaction.details!.split(' ID: ')[1].toString()
-                  : transaction.type!.name.capitalizeFirst!
-              : transaction.details!;
+              ? transaction.type!.capitalizeFirst!
+              : '';
     }
 
     final model = context.read<ServiceProvider>();
@@ -88,10 +75,10 @@ class HistoryCard extends StatelessWidget {
               border: Border.all(color: MyColor.borderColor),
               shape: BoxShape.circle),
           child: Icon(
-            transaction.type != null && transaction.type == Type.DEPOSIT
+            transaction.inOut == 'deposit'
                 ? Iconsax.arrow_down
                 : Iconsax.arrow_up_3,
-            color: transaction.type != null && transaction.type == Type.DEPOSIT
+            color: transaction.inOut == 'deposit'
                 ? MyColor.greenColor
                 : MyColor.redColor,
           ),
@@ -101,8 +88,7 @@ class HistoryCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (transaction.type != Type.DATA &&
-                  transaction.type != Type.AIRTIME)
+              if (transaction.type != null)
                 Text(
                   getDescription(transaction),
                   maxLines: 1,
@@ -113,16 +99,13 @@ class HistoryCard extends StatelessWidget {
                     color: MyColor.blackColor,
                   ),
                 ),
-              if (transaction.type == Type.DATA ||
-                  transaction.type == Type.AIRTIME)
+              if (transaction.type == 'data' || transaction.type == 'airtime')
                 Text(
                   transaction.apiStatus == 'refunded'
                       ? refundedDesc(transaction)
-                      : transaction.type == Type.DATA
-                          ? transaction.details!
-                              .split(' Plan: ')[1]
-                              .split(',')[1]
-                          : '${getPhone(transaction)} - ${getOperator(transaction).toUpperCase()}',
+                      : transaction.type == 'data'
+                          ? transaction.networkName!
+                          : '${getOperator(transaction).toUpperCase()}',
                   maxLines: 1,
                   style: MyStyle.tx12Black.copyWith(
                       overflow: TextOverflow.ellipsis,
@@ -145,7 +128,7 @@ class HistoryCard extends StatelessWidget {
               ],
               SizedBox(height: 5.h),
               Text(
-                formatDateTime(transaction.transDate!),
+                formatDateTime(DateTime.parse(transaction.transDate!)),
                 style: MyStyle.tx12Black.copyWith(
                   fontWeight: FontWeight.w400,
                   fontSize: 12.sp,
@@ -213,16 +196,16 @@ class HistoryCard extends StatelessWidget {
                     } else if ((transaction.apiStatus != null &&
                             transaction.apiStatus!.contains('pending')) ||
                         getStatus(transaction) != MyColor.dark01GreenColor ||
-                        transaction.apiStatus!.contains('pending') ||
+                        (transaction.apiStatus?.contains('pending') ?? false) ||
                         getStatus(transaction) == MyColor.orange01Color) {
                       ErrorToast(
                           'No receipt available yet. Your order has not been completed.');
                     } else {
-                      if (transaction.type == Type.ELECTRICITY ||
-                          transaction.type == Type.CABLE) {
+                      if (transaction.type == 'electricity' ||
+                          transaction.type == 'cable') {
                         model.getReceipt({
                           'id': transaction.id,
-                          'type': transaction.type == Type.ELECTRICITY
+                          'type': transaction.type == 'electricity'
                               ? 'electricity'
                               : 'cable',
                         }, callback: () {
@@ -275,9 +258,9 @@ class HistoryCard extends StatelessWidget {
   }
 
   void viewReceipt({
-    required Datum transaction,
-    required String Function(Datum transaction) getPhone,
-    required String Function(Datum transaction) getOperator,
+    required AllTransaction transaction,
+    required String Function(AllTransaction transaction) getPhone,
+    required String Function(AllTransaction transaction) getOperator,
     required BuildContext context,
   }) {
     // final model = context.read<ServiceProvider>();
@@ -292,23 +275,14 @@ class HistoryCard extends StatelessWidget {
       Get.to(
         ReceiptScreen(
           status: '1',
-          isDeposit: transaction.type == Type.DEPOSIT,
+        isDeposit: transaction.inOut == 'deposit',
           isRefunded: transaction.apiStatus == 'refunded',
-          isElectricity: transaction.type == Type.ELECTRICITY,
-          isCable: transaction.type == Type.CABLE,
-          serviceDetails: transaction.type == Type.DATA
-              ? "Data - ${getPhone(transaction)}"
-              : transaction.type == Type.AIRTIME
-                  ? "Airtime"
-                  : transaction.type != null
-                      ? transaction.type!.name.capitalizeFirst!
-                      : transaction.details!,
+        isElectricity: transaction.type == 'electricity',
+        isCable: transaction.type == 'cable',
+        serviceDetails: transaction.type!.capitalizeFirst!,
           referenceNo: transaction.reference!,
           amount: transaction.amount!,
-          description: transaction.type == Type.DATA ||
-                  transaction.type == Type.AIRTIME
-              ? '${getOperator(transaction).toUpperCase()} - ${transaction.type!.name.capitalizeFirst!}'
-              : transaction.details!,
+        description: transaction.type!.capitalizeFirst!,
           date: transaction.transDate!.toString(),
         ),
       );

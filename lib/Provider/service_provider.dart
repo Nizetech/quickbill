@@ -203,9 +203,8 @@ class ServiceProvider with ChangeNotifier {
   }
 
   Future<void> buyCable(
-    Map<String, dynamic> data, {
-    bool isShowmax = false,
-  }) async {
+    Map<String, dynamic> data,
+      {required AccountProvider account}) async {
     try {
       // showLoader();
       showLoader();
@@ -218,34 +217,24 @@ class ServiceProvider with ChangeNotifier {
           isPending) {
         hideLoader();
        
-        // Get.off(CableElectricitySuccessScreen(
-        //   isCable: true,
-        //   isPending: true,
-        //   isShowmax: isShowmax,
-        //   amount: data['amount'],
-        // ));
         showSuccessScreen(
           title: 'Cable Tv',
           status: isPending == true ? 'pending' : 'failed',
           amount: data['amount'],
-          onTap: () {
-            Get.close(2);
+          onTap: () async {
+            Get.close(4);
+          
           },
         );
        
       } else {
-        // Get.off(CableElectricitySuccessScreen(
-        //   isCable: true,
-        //   isShowmax: isShowmax,
-        //   amount: data['amount'],
-        //   data: res['data'],
-        // ));
         showSuccessScreen(
           title: 'Cable Tv',
           amount: data['amount'],
           status: 'success',
-          onTap: () {
-            Get.close(2);
+          onTap: () async {
+            Get.close(4);
+            await account.getUserBalance();
           },
         );
         notifyListeners();

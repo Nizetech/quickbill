@@ -11,130 +11,96 @@ String transactionModelToJson(TransactionModel data) =>
     json.encode(data.toJson());
 
 class TransactionModel {
-  final bool? result;
-  final String? prevBalance;
-  final List<Datum>? data;
+  DateTime? fromDate;
+  DateTime? toDate;
+  int? balance;
+  List<AllTransaction>? allTransactions;
+  String? api;
+  String? menu;
 
   TransactionModel({
-    this.result,
-    this.prevBalance,
-    this.data,
+    this.fromDate,
+    this.toDate,
+    this.balance,
+    this.allTransactions,
+    this.api,
+    this.menu,
   });
 
   factory TransactionModel.fromJson(Map<String, dynamic> json) =>
       TransactionModel(
-        result: json["result"],
-        prevBalance: json["prev_balance"].toString(),
-        data: json["data"] == null
+        fromDate: json["from_date"] == null
+            ? null
+            : DateTime.parse(json["from_date"]),
+        toDate:
+            json["to_date"] == null ? null : DateTime.parse(json["to_date"]),
+        balance: json["balance"],
+        allTransactions: json["all_transactions"] == null
             ? []
-            : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
+            : List<AllTransaction>.from(json["all_transactions"]!
+                .map((x) => AllTransaction.fromJson(x))),
+        api: json["api"],
+        menu: json["menu"],
       );
 
   Map<String, dynamic> toJson() => {
-        "result": result,
-        "prev_balance": prevBalance,
-        "data": data == null
+        "from_date":
+            "${fromDate!.year.toString().padLeft(4, '0')}-${fromDate!.month.toString().padLeft(2, '0')}-${fromDate!.day.toString().padLeft(2, '0')}",
+        "to_date":
+            "${toDate!.year.toString().padLeft(4, '0')}-${toDate!.month.toString().padLeft(2, '0')}-${toDate!.day.toString().padLeft(2, '0')}",
+        "balance": balance,
+        "all_transactions": allTransactions == null
             ? []
-            : List<dynamic>.from(data!.map((x) => x.toJson())),
+            : List<dynamic>.from(allTransactions!.map((x) => x.toJson())),
+        "api": api,
+        "menu": menu,
       };
 }
 
-class Datum {
-  final Type? type;
-  final InOut? inOut;
-  final DateTime? transDate;
-  final String? amount;
-  final String? id;
-  final String? apiStatus;
-  final String? isPromoRewarded;
-  final String? details;
-  final String? reference;
-  final String? status;
+class AllTransaction {
+  String? id;
+  String? apiStatus;
+  String? type;
+  String? inOut;
+  String? transDate;
+  String? amount;
+  String? networkName;
+  String? reference;
+  String? status;
 
-  Datum({
-    this.type,
-    this.inOut,
+  AllTransaction({
     this.id,
     this.apiStatus,
+    this.type,
+    this.inOut,
     this.transDate,
     this.amount,
-    this.isPromoRewarded,
-    this.details,
+    this.networkName,
     this.reference,
     this.status,
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
-        type: typeValues.map[json["type"]],
-        inOut: inOutValues.map[json["in_out"]],
-        transDate: json["trans_date"] == null
-            ? null
-            : DateTime.parse(json["trans_date"]),
-        amount: json["amount"].toString(),
-        id: json["id"].toString(),
-        apiStatus: json["api_status"].toString(),
-        isPromoRewarded: json["is_promo_rewarded"].toString(),
-        details: json["details"],
+  factory AllTransaction.fromJson(Map<String, dynamic> json) => AllTransaction(
+        id: json["id"],
+        apiStatus: json["api_status"],
+        type: json["type"],
+        inOut: json["in_out"],
+        transDate: json["trans_date"],
+        amount: json["amount"],
+        networkName: json["network_name"],
         reference: json["reference"],
         status: json["status"],
       );
 
   Map<String, dynamic> toJson() => {
-        "type": typeValues.reverse[type],
-        "in_out": inOutValues.reverse[inOut],
-        "trans_date": transDate?.toIso8601String(),
-        "amount": amount,
         "id": id,
         "api_status": apiStatus,
-        "is_promo_rewarded": isPromoRewarded,
-        "details": details,
+        "type": type,
+        "in_out": inOut,
+        "trans_date": transDate,
+        "amount": amount,
+        "network_name": networkName,
         "reference": reference,
         "status": status,
       };
-}
-
-enum InOut { IN, OUT }
-
-final inOutValues = EnumValues({"in": InOut.IN, "out": InOut.OUT});
-
-enum Type {
-  AIRTIME,
-  DATA,
-  DEPOSIT,
-  GIFTCARD,
-  PAY4_ME,
-  SCRIPT,
-  SOCIALBOOST,
-  SPRAY,
-  MOTORS,
-  AUTOREPAIR,
-  ELECTRICITY,
-  CABLE,
-}
-
-final typeValues = EnumValues({
-  "airtime": Type.AIRTIME,
-  "data": Type.DATA,
-  "deposit": Type.DEPOSIT,
-  "giftcard": Type.GIFTCARD,
-  "pay4me": Type.PAY4_ME,
-  "script": Type.SCRIPT,
-  "socialboost": Type.SOCIALBOOST,
-  "spray": Type.SPRAY,
-  "motors": Type.MOTORS,
-  "autorepair": Type.AUTOREPAIR,
-  "electricity": Type.ELECTRICITY,
-  "cable": Type.CABLE,
-});
-
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
-  }
 }

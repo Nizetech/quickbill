@@ -26,19 +26,19 @@ class DepositSummary extends StatefulWidget {
 class _DepositSummaryState extends State<DepositSummary> {
   String bankCharge = '';
   String amount = '';
-  final box = Hive.box(kAppName);
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      setState(() {
-        bankCharge = (num.parse(widget.amount) *
-                (widget.isCard ? 1.2 / 100 : 0.54 / 100))
-            .toString();
-        amount = (num.parse(widget.amount) - num.parse(bankCharge)).toString();
-      });
-    });
-  }
+  // final box = Hive.box(kAppName);
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+  //     setState(() {
+  //       bankCharge = (num.parse(widget.amount) *
+  //               (widget.isCard ? 1.2 / 100 : 0.54 / 100))
+  //           .toString();
+  //       amount = (num.parse(widget.amount) - num.parse(bankCharge)).toString();
+  //     });
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +88,7 @@ class _DepositSummaryState extends State<DepositSummary> {
                       ],
                     ),
                   ),
-                  const SizedBox(width: 20),
+                  SizedBox(width: 20),
                   Image.asset(
                     widget.isCard
                         ? 'assets/images/card_fund.png'
@@ -97,20 +97,19 @@ class _DepositSummaryState extends State<DepositSummary> {
                   ),
                 ],
               ),
-              const Spacer(),
+              Spacer(),
               CustomButton(
                 text: 'Fund Wallet',
                 onTap: widget.isCard
                     ? () async {
-                        String token = await box.get(kAccessToken);
-                        String url =
-                            '${ApiRoute.baseUrlWeb}deposit-fidelity?token=$token&&amount=${widget.amount}';
-                        print(url);
-                        Get.to(BankWebview(url: url));
+                        model.cardDeposit(
+                            amount: int.parse(widget.amount.split('.')[0]));
                       }
-                    : () => Get.to(DepositDetails(
-                          amount: widget.amount,
-                        )),
+                    : () => Get.to(
+                          DepositDetails(
+                            amount: widget.amount,
+                          ),
+                        ),
               ),
               const SizedBox(height: 40),
             ],

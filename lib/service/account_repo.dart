@@ -131,7 +131,7 @@ class AccountRepo {
   }
 
 
-  Future<dynamic> getDataPlans(String network) async {
+  Future<dynamic> getDataPlans(String networkId) async {
     String token = await box.get(kAccessToken);
     try {
       final response = await client.post(
@@ -139,7 +139,7 @@ class AccountRepo {
         requestHeaders: {
           'Authorization': token,
         },
-        body: jsonEncode({"network_name": network}),
+        body: jsonEncode({"network_id": networkId}),
       );
     
       return response;
@@ -277,11 +277,11 @@ class AccountRepo {
     }
   }
 
-  Future<Map<String, dynamic>> getSquardCallback(String ref) async {
+  Future<Map<String, dynamic>> cardDeposit(int amount) async {
     String token = await box.get(kAccessToken);
     try {
-      final response = await client.post(ApiRoute.squardCallback,
-          body: jsonEncode({"reference": ref}),
+      final response = await client.post(ApiRoute.cardDeposit,
+          body: jsonEncode({"amount": amount}),
           requestHeaders: {
             'Authorization': token,
           });

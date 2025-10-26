@@ -418,6 +418,7 @@ class AccountProvider with ChangeNotifier {
             onTap: () async {
               Get.close(3);
               await getUserBalance();
+              await getTrasactions();
             },
           );
           }
@@ -465,6 +466,7 @@ class AccountProvider with ChangeNotifier {
             onTap: () async {
               Get.close(3);
               await getUserBalance();
+               await getTrasactions();
             },
           );
           }

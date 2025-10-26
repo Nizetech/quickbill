@@ -59,8 +59,8 @@ class ApiRoute {
   static String cableMerchant = 'services/cable/merchant';
   static String electricityMerchant = 'services/electricity/merchant';
   static String cableVariations = 'services/get-variationCodes';
-  static String buyCable = 'services/cable';
-  static String buyElectricity = 'services/electricity';
+  static String buyCable = 'services/buy-cable';
+  static String buyElectricity = 'services/buy-electricity';
   static String getHistory = 'services/get-history';
   // static String squardCallback = 'squard_callback';
 }

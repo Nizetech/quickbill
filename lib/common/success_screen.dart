@@ -87,6 +87,7 @@ void showSuccessScreen({
 }) {
   showModalBottomSheet(
     context: Get.context!,
+    isDismissible: false,
     backgroundColor: MyColor.whiteColor,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(

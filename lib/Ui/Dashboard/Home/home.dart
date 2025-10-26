@@ -57,6 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
     await accountProvider.getTrasactions();
     await accountProvider.getNotification();
     await accountProvider.getUserProfile();
+    await accountProvider.getUserBalance();
   }
 
   double showTotalValue = 0.0;

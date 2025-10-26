@@ -235,6 +235,7 @@ class ServiceProvider with ChangeNotifier {
           onTap: () async {
             Get.close(4);
             await account.getUserBalance();
+            await account.getTrasactions();
           },
         );
         notifyListeners();
@@ -246,7 +247,8 @@ class ServiceProvider with ChangeNotifier {
     }
   }
 
-  Future<void> buyElectricity(Map<String, dynamic> data) async {
+  Future<void> buyElectricity(Map<String, dynamic> data,
+      {required AccountProvider account}) async {
     try {
       showLoader();
       bool isFailed = false;
@@ -285,7 +287,7 @@ class ServiceProvider with ChangeNotifier {
             status: isPending == true ? 'pending' : 'failed',
             amount: data['amount'],
             onTap: () {
-              Get.close(2);
+              Get.close(3);
             },
           );
         }
@@ -301,8 +303,10 @@ class ServiceProvider with ChangeNotifier {
           title: 'Electricity',
           status: 'success',
           amount: data['amount'],
-          onTap: () {
-            Get.close(2);
+          onTap: () async {
+            Get.close(3);
+            await account.getUserBalance();
+            await account.getTrasactions();
           },
         );
         notifyListeners();

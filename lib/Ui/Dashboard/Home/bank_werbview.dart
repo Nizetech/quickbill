@@ -40,7 +40,7 @@ class _BankWebviewState extends State<BankWebview> {
       
       // Check if widget is still mounted before calling async operation
       if (mounted) {
-        await account.getUserProfile();
+        await account.getUserBalance();
       }
     }
   }
@@ -54,6 +54,7 @@ class _BankWebviewState extends State<BankWebview> {
 
   @override
   Widget build(BuildContext context) {
+    log('url:==> ${widget.url}');
     final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
     return Scaffold(
         body: SafeArea(
@@ -101,7 +102,6 @@ class _BankWebviewState extends State<BankWebview> {
                   },
                   onPageCommitVisible: (controller, request) async {
                     log('Page commit visible: ${request?.uriValue.path}');
-
                     // Handle deposit completion
                     await _handleDepositCompletion(
                         request?.uriValue.path, request?.uriValue.toString());

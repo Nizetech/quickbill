@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/service_provider.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/confirm_airtime_details.dart';
 import 'package:jost_pay_wallet/Values/Helper/helper.dart';
@@ -35,7 +36,8 @@ class _ElectricitySummaryScreenState extends State<ElectricitySummaryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar(title: 'Electricity Summary'),
-      body: Consumer<ServiceProvider>(builder: (context, model, _) {
+      body: Consumer2<AccountProvider, ServiceProvider>(
+          builder: (context, account, model, _) {
         return SafeArea(
           child: Padding(
             padding: const EdgeInsets.only(top: 15, left: 24, right: 24),
@@ -125,7 +127,7 @@ class _ElectricitySummaryScreenState extends State<ElectricitySummaryScreen> {
                       "phone": widget.data['phone'],
                       "details": widget.saveDetails ? 1 : 0,
                     };
-                    model.buyElectricity(data);
+                    model.buyElectricity(data, account: account);
                   },
                 ),
                 const SizedBox(height: 30),

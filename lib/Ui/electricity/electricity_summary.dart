@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:jost_pay_wallet/Provider/account_provider.dart';
 import 'package:jost_pay_wallet/Provider/service_provider.dart';
 import 'package:jost_pay_wallet/Ui/Dashboard/Buy/confirm_airtime_details.dart';
@@ -32,6 +33,7 @@ class _ElectricitySummaryScreenState extends State<ElectricitySummaryScreen> {
     super.initState();
     totalAmount = num.parse(widget.data['amount']) + 100;
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -125,7 +127,6 @@ class _ElectricitySummaryScreenState extends State<ElectricitySummaryScreen> {
                       "amount": widget.data['amount'],
                       "number": widget.data['meter_number'],
                       "phone": widget.data['phone'],
-                      "details": widget.saveDetails ? 1 : 0,
                     };
                     model.buyElectricity(data, account: account);
                   },

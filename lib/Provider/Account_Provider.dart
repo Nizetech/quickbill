@@ -178,67 +178,6 @@ class AccountProvider with ChangeNotifier {
     } 
   }
 
-
-  // // get data History
-  // Future<void> getDataHistory({
-  //   bool isLoading = true,
-  //   Map<String, dynamic>? filter,
-  // }) async {
-  //   try {
-  //     if (isLoading) showLoader();
-  //     AccountRepo()
-  //         .getServiceHistory('data', filter: filter)
-  //         .then((value) async {
-  //       if (isLoading) hideLoader();
-  //       if (value['status'] == false || value['result'] == false ) {
-  //         if (value['message'].runtimeType == String) {
-  //           ErrorToast(value['message']);
-  //         } else {
-  //           String message = '';
-  //           value['message'].forEach((key, value) {
-  //             message += '$value';
-  //           });
-  //           ErrorToast(message);
-  //         }
-  //       } else {
-  //         dataHistoryModel = DataHistoryModel.fromJson(value);
-  //         await getUserBalance();
-  //       }
-  //       notifyListeners();
-  //     });
-  //   } catch (e) {
-  //     hideLoader();
-  //     ErrorToast(e.toString());
-  //   } 
-  // }
-
-  // // get User Profile
-  // Future<void> getDepositHistory({bool isLoading = true}) async {
-  //   try {
-  //     if (isLoading) showLoader();
-  //     AccountRepo().getDepositHistory().then((value) async {
-  //       if (isLoading) hideLoader();
-  //       if (value['status'] == false || value['result'] == false ) {
-  //         if (value['message'].runtimeType == String) {
-  //           ErrorToast(value['message']);
-  //         } else {
-  //           String message = '';
-  //           value['message'].forEach((key, value) {
-  //             message += '$value';
-  //           });
-  //           ErrorToast(message);
-  //         }
-  //       } else {
-  //         depositHistoryModel = DepositHistoryModel.fromJson(value);
-  //       }
-  //       notifyListeners();
-  //     });
-  //   } catch (e) {
-  //     hideLoader();
-  //     ErrorToast(e.toString());
-  //   } 
-  // }
-
   Future<void> createDeposit(Map<String, dynamic> data) async {
     try {
       showLoader();
@@ -398,25 +337,24 @@ class AccountProvider with ChangeNotifier {
         isPending = value['message'].toString().toLowerCase().contains('pending') || value == {};
         if (value['result'] == null || value['result'] == false || isFailed || isPending) {
           // if (value['message'].toString().toLowerCase().contains('fail')) {
- 
+          hideLoader();
           showSuccessScreen(
             title: 'Airtime',
             status: isPending == true ? 'pending' : 'failed',
             amount: data['amount'],
             onTap: () {
-              Get.close(3);
+              Get.close(2);
             },
           );
         }
-       
            else {
-      
+          hideLoader();
            showSuccessScreen(
             title: 'Airtime',
             status:'success',
             amount: data['amount'],
             onTap: () async {
-              Get.close(3);
+              Get.close(2);
               await getUserBalance();
               await getTrasactions();
             },
@@ -444,27 +382,26 @@ class AccountProvider with ChangeNotifier {
         isPending = value['message'].toString().toLowerCase().contains('pending') || value == {};
           if (value['result'] == null || value['result'] == false || isFailed || isPending
           ) {
-        
-           //todo add pending page
+                 hideLoader();
            showSuccessScreen(
             title: 'Data',
             status: isPending == true ? 'pending' : 'failed',
             amount: data['amount'],
             onTap: () {
-              Get.close(3);
+              Get.close(2);
             },
           );
         
         } 
         
            else {
-          //todo add success page
+          hideLoader();
           showSuccessScreen(
             title: 'Data',
             status:'success',
             amount: data['amount'],
             onTap: () async {
-              Get.close(3);
+              Get.close(2);
               await getUserBalance();
                await getTrasactions();
             },

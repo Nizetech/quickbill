@@ -222,18 +222,19 @@ class ServiceProvider with ChangeNotifier {
           status: isPending == true ? 'pending' : 'failed',
           amount: data['amount'],
           onTap: () async {
-            Get.close(4);
+            Get.close(3);
           
           },
         );
        
       } else {
+        hideLoader();
         showSuccessScreen(
           title: 'Cable Tv',
           amount: data['amount'],
           status: 'success',
           onTap: () async {
-            Get.close(4);
+            Get.close(3);
             await account.getUserBalance();
             await account.getTrasactions();
           },
@@ -265,23 +266,19 @@ class ServiceProvider with ChangeNotifier {
               res['result'] == false ||
               isFailed ||
               isPending)) {
-        if (res['result'] == 'slow') {
-          Get.back();
-          if (res['message'].runtimeType == String) {
-            ErrorToast(res['message']);
-          } else {
-            String message = '';
-            res['message'].forEach((key, value) {
-              message += '$value';
-            });
-            ErrorToast(message);
-          }
-        } else {
-          // Get.off(CableElectricitySuccessScreen(
-          //   isCable: false,
-          //   isPending: true,
-          //   amount: data['amount'],
-          // ));
+        // if (res['result'] == 'slow') {
+        //   Get.back();
+        //   if (res['message'].runtimeType == String) {
+        //     ErrorToast(res['message']);
+        //   } else {
+        //     String message = '';
+        //     res['message'].forEach((key, value) {
+        //       message += '$value';
+        //     });
+        //     ErrorToast(message);
+        //   }
+        // } else {
+        hideLoader();
           showSuccessScreen(
             title: 'Electricity',
             status: isPending == true ? 'pending' : 'failed',
@@ -290,15 +287,11 @@ class ServiceProvider with ChangeNotifier {
               Get.close(3);
             },
           );
-        }
+        // }
       }
     
       else {
-        // Get.off(CableElectricitySuccessScreen(
-        //   isCable: false,
-        //   data: res,
-        //   amount: data['amount'],
-        // ));
+        hideLoader();
         showSuccessScreen(
           title: 'Electricity',
           status: 'success',

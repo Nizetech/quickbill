@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
-import 'package:jost_pay_wallet/Provider/account_provider.dart';
-import 'package:jost_pay_wallet/Provider/auth_provider.dart';
-import 'package:jost_pay_wallet/utils/loader.dart';
+import 'package:quick_bills/Provider/account_provider.dart';
+import 'package:quick_bills/Provider/auth_provider.dart';
+import 'package:quick_bills/utils/loader.dart';
 import 'package:provider/provider.dart';
 
 class CancelLoading {

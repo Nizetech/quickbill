@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jost_pay_wallet/Models/cable_varaitaions.dart';
-import 'package:jost_pay_wallet/Provider/service_provider.dart';
-import 'package:jost_pay_wallet/Provider/theme_provider.dart';
-import 'package:jost_pay_wallet/Values/MyColor.dart';
-import 'package:jost_pay_wallet/Values/MyStyle.dart';
+import 'package:quick_bills/Models/cable_varaitaions.dart';
+import 'package:quick_bills/Provider/service_provider.dart';
+import 'package:quick_bills/Provider/theme_provider.dart';
+import 'package:quick_bills/Values/MyColor.dart';
+import 'package:quick_bills/Values/MyStyle.dart';
 
 void showCableProviderSheet({
   required Function(Plan) onPlanSelected,

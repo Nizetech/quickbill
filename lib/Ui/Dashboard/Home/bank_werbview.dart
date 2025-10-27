@@ -3,10 +3,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
-import 'package:jost_pay_wallet/Provider/account_provider.dart';
-import 'package:jost_pay_wallet/Provider/theme_provider.dart';
-import 'package:jost_pay_wallet/Values/MyColor.dart';
-import 'package:jost_pay_wallet/common/button.dart';
+import 'package:quick_bills/Provider/account_provider.dart';
+import 'package:quick_bills/Provider/theme_provider.dart';
+import 'package:quick_bills/Values/MyColor.dart';
+import 'package:quick_bills/common/button.dart';
 import 'package:provider/provider.dart';
 
 class BankWebview extends StatefulWidget {

@@ -3,20 +3,20 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jost_pay_wallet/common/success_screen.dart';
+import 'package:quick_bills/common/success_screen.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
-import 'package:jost_pay_wallet/Models/cable_merchant.dart';
-import 'package:jost_pay_wallet/Models/cable_transactions.dart';
-import 'package:jost_pay_wallet/Models/cable_varaitaions.dart';
-import 'package:jost_pay_wallet/Models/electricity_history.dart';
-import 'package:jost_pay_wallet/Models/paymentOption.dart';
-import 'package:jost_pay_wallet/Models/receipt_model.dart';
-import 'package:jost_pay_wallet/Provider/account_provider.dart';
-import 'package:jost_pay_wallet/service/seervice_repo.dart';
-import 'package:jost_pay_wallet/utils/loader.dart';
-import 'package:jost_pay_wallet/utils/toast.dart';
+import 'package:quick_bills/Models/cable_merchant.dart';
+import 'package:quick_bills/Models/cable_transactions.dart';
+import 'package:quick_bills/Models/cable_varaitaions.dart';
+import 'package:quick_bills/Models/electricity_history.dart';
+import 'package:quick_bills/Models/paymentOption.dart';
+import 'package:quick_bills/Models/receipt_model.dart';
+import 'package:quick_bills/Provider/account_provider.dart';
+import 'package:quick_bills/service/seervice_repo.dart';
+import 'package:quick_bills/utils/loader.dart';
+import 'package:quick_bills/utils/toast.dart';
 
 class ServiceProvider with ChangeNotifier {
 

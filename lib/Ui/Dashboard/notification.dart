@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:jost_pay_wallet/Models/notification_model.dart';
-import 'package:jost_pay_wallet/Provider/account_provider.dart';
-import 'package:jost_pay_wallet/Provider/theme_provider.dart';
-import 'package:jost_pay_wallet/Values/Helper/helper.dart';
-import 'package:jost_pay_wallet/Values/MyColor.dart';
-import 'package:jost_pay_wallet/Values/MyStyle.dart';
-// import 'package:jost_pay_wallet/Values/NewColor.dart' as color;
-import 'package:jost_pay_wallet/Values/NewStyle.dart';
-import 'package:jost_pay_wallet/common/button.dart';
+import 'package:quick_bills/Models/notification_model.dart';
+import 'package:quick_bills/Provider/account_provider.dart';
+import 'package:quick_bills/Provider/theme_provider.dart';
+import 'package:quick_bills/Values/Helper/helper.dart';
+import 'package:quick_bills/Values/MyColor.dart';
+import 'package:quick_bills/Values/MyStyle.dart';
+// import 'package:quick_bills/Values/NewColor.dart' as color;
+import 'package:quick_bills/Values/NewStyle.dart';
+import 'package:quick_bills/common/button.dart';
 import 'package:provider/provider.dart';
 
 class NotificationScreen extends StatefulWidget {

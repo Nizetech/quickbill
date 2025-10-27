@@ -3,9 +3,9 @@ import 'dart:developer';
 
 
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:jost_pay_wallet/constants/api_constants.dart';
-import 'package:jost_pay_wallet/constants/constants.dart';
-import 'package:jost_pay_wallet/utils/network_clients.dart';
+import 'package:quick_bills/constants/api_constants.dart';
+import 'package:quick_bills/constants/constants.dart';
+import 'package:quick_bills/utils/network_clients.dart';
 
 class AccountRepo {
   final client = NetworkClient();

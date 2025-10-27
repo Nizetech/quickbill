@@ -3,12 +3,12 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart' hide Response;
-import 'package:jost_pay_wallet/Ui/Authentication/signIn_screen.dart';
-import 'package:jost_pay_wallet/common/cancel_loading.dart';
-import 'package:jost_pay_wallet/utils/app_logger.dart';
-import 'package:jost_pay_wallet/utils/exception.dart';
-import 'package:jost_pay_wallet/utils/failure.dart';
-import 'package:jost_pay_wallet/utils/toast.dart';
+import 'package:quick_bills/Ui/Authentication/signIn_screen.dart';
+import 'package:quick_bills/common/cancel_loading.dart';
+import 'package:quick_bills/utils/app_logger.dart';
+import 'package:quick_bills/utils/exception.dart';
+import 'package:quick_bills/utils/failure.dart';
+import 'package:quick_bills/utils/toast.dart';
 
 class AppInterceptors extends Interceptor {
   AppInterceptors(this.dio);

@@ -1,6 +1,6 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
-import 'package:jost_pay_wallet/utils/failure.dart';
+import 'package:quick_bills/utils/failure.dart';
 
 class AudioServiceException extends Failure {
   AudioServiceException(this._title, this._message);

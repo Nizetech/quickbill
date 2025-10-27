@@ -5,13 +5,13 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 
-import 'package:jost_pay_wallet/Models/transactions.dart';
-import 'package:jost_pay_wallet/Provider/service_provider.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Home/receipt_screen.dart';
-import 'package:jost_pay_wallet/Values/Helper/helper.dart';
-import 'package:jost_pay_wallet/Values/MyColor.dart';
-import 'package:jost_pay_wallet/Values/MyStyle.dart';
-import 'package:jost_pay_wallet/utils/toast.dart';
+import 'package:quick_bills/Models/transactions.dart';
+import 'package:quick_bills/Provider/service_provider.dart';
+import 'package:quick_bills/Ui/Dashboard/Home/receipt_screen.dart';
+import 'package:quick_bills/Values/Helper/helper.dart';
+import 'package:quick_bills/Values/MyColor.dart';
+import 'package:quick_bills/Values/MyStyle.dart';
+import 'package:quick_bills/utils/toast.dart';
 
 class HistoryCard extends StatelessWidget {
   final AllTransaction transaction;

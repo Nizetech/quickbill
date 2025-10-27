@@ -1,14 +1,14 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:jost_pay_wallet/Models/transactions.dart';
-import 'package:jost_pay_wallet/Provider/account_provider.dart';
-import 'package:jost_pay_wallet/Provider/dashboard_provider.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Home/widget/history_card.dart';
-import 'package:jost_pay_wallet/Values/Helper/helper.dart';
-import 'package:jost_pay_wallet/Values/MyColor.dart';
-import 'package:jost_pay_wallet/Values/MyStyle.dart';
-import 'package:jost_pay_wallet/common/appbar.dart';
+import 'package:quick_bills/Models/transactions.dart';
+import 'package:quick_bills/Provider/account_provider.dart';
+import 'package:quick_bills/Provider/dashboard_provider.dart';
+import 'package:quick_bills/Ui/Dashboard/Home/widget/history_card.dart';
+import 'package:quick_bills/Values/Helper/helper.dart';
+import 'package:quick_bills/Values/MyColor.dart';
+import 'package:quick_bills/Values/MyStyle.dart';
+import 'package:quick_bills/common/appbar.dart';
 import 'package:provider/provider.dart';
 
 class Transactionhistory extends StatefulWidget {

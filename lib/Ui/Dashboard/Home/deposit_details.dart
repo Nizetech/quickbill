@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:jost_pay_wallet/Provider/account_provider.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Home/widget/select_bank_sheet.dart';
-import 'package:jost_pay_wallet/Values/MyColor.dart';
-import 'package:jost_pay_wallet/Values/MyStyle.dart';
-import 'package:jost_pay_wallet/common/appbar.dart';
-import 'package:jost_pay_wallet/common/button.dart';
-import 'package:jost_pay_wallet/common/text_field.dart';
-import 'package:jost_pay_wallet/utils/toast.dart';
+import 'package:quick_bills/Provider/account_provider.dart';
+import 'package:quick_bills/Ui/Dashboard/Home/widget/select_bank_sheet.dart';
+import 'package:quick_bills/Values/MyColor.dart';
+import 'package:quick_bills/Values/MyStyle.dart';
+import 'package:quick_bills/common/appbar.dart';
+import 'package:quick_bills/common/button.dart';
+import 'package:quick_bills/common/text_field.dart';
+import 'package:quick_bills/utils/toast.dart';
 import 'package:provider/provider.dart';
 
 class DepositDetails extends StatefulWidget {

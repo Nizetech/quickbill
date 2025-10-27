@@ -2,15 +2,15 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jost_pay_wallet/Provider/account_provider.dart';
-import 'package:jost_pay_wallet/Provider/theme_provider.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Home/deposit_summary.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Home/deposit_details.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Home/widget/balance_card.dart';
-import 'package:jost_pay_wallet/Values/MyStyle.dart';
-import 'package:jost_pay_wallet/common/button.dart';
-import 'package:jost_pay_wallet/common/text_field.dart';
-import 'package:jost_pay_wallet/utils/toast.dart';
+import 'package:quick_bills/Provider/account_provider.dart';
+import 'package:quick_bills/Provider/theme_provider.dart';
+import 'package:quick_bills/Ui/Dashboard/Home/deposit_summary.dart';
+import 'package:quick_bills/Ui/Dashboard/Home/deposit_details.dart';
+import 'package:quick_bills/Ui/Dashboard/Home/widget/balance_card.dart';
+import 'package:quick_bills/Values/MyStyle.dart';
+import 'package:quick_bills/common/button.dart';
+import 'package:quick_bills/common/text_field.dart';
+import 'package:quick_bills/utils/toast.dart';
 import 'package:provider/provider.dart';
 
 import '../../Values/MyColor.dart';

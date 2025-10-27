@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jost_pay_wallet/Values/MyColor.dart';
+import 'package:quick_bills/Values/MyColor.dart';
 
 class MyStyle {
   static const tx18White = TextStyle(

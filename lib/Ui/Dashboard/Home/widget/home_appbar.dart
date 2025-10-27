@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:jost_pay_wallet/Provider/account_provider.dart';
-import 'package:jost_pay_wallet/Provider/theme_provider.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/notification.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Home/widget/profile_image.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Settings/setting_screen.dart';
-import 'package:jost_pay_wallet/Values/MyColor.dart';
-import 'package:jost_pay_wallet/Values/MyStyle.dart';
+import 'package:quick_bills/Provider/account_provider.dart';
+import 'package:quick_bills/Provider/theme_provider.dart';
+import 'package:quick_bills/Ui/Dashboard/notification.dart';
+import 'package:quick_bills/Ui/Dashboard/Home/widget/profile_image.dart';
+import 'package:quick_bills/Ui/Dashboard/Settings/setting_screen.dart';
+import 'package:quick_bills/Values/MyColor.dart';
+import 'package:quick_bills/Values/MyStyle.dart';
 import 'package:provider/provider.dart';
 
 class HomeAppBar extends StatelessWidget {

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:jost_pay_wallet/Ui/Authentication/signIn_screen.dart';
-import 'package:jost_pay_wallet/main.dart';
+import 'package:quick_bills/Ui/Authentication/signIn_screen.dart';
+import 'package:quick_bills/main.dart';
 
 const _inactivityTimeout = Duration(minutes: 5);
 Timer? _keepAliveTimer;

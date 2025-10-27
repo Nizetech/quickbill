@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:jost_pay_wallet/Provider/account_provider.dart';
-import 'package:jost_pay_wallet/Values/Helper/helper.dart';
-import 'package:jost_pay_wallet/Values/MyColor.dart';
-import 'package:jost_pay_wallet/Values/MyStyle.dart';
-import 'package:jost_pay_wallet/constants/constants.dart';
+import 'package:quick_bills/Provider/account_provider.dart';
+import 'package:quick_bills/Values/Helper/helper.dart';
+import 'package:quick_bills/Values/MyColor.dart';
+import 'package:quick_bills/Values/MyStyle.dart';
+import 'package:quick_bills/constants/constants.dart';
 import 'package:provider/provider.dart';
 
 class DashboardTile extends StatefulWidget {

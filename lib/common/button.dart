@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/add_funds.dart';
-import 'package:jost_pay_wallet/Values/MyColor.dart';
-import 'package:jost_pay_wallet/Values/MyStyle.dart';
-import 'package:jost_pay_wallet/Values/NewStyle.dart';
+import 'package:quick_bills/Ui/Dashboard/add_funds.dart';
+import 'package:quick_bills/Values/MyColor.dart';
+import 'package:quick_bills/Values/MyStyle.dart';
+import 'package:quick_bills/Values/NewStyle.dart';
 
 import '../Values/NewColor.dart';
 

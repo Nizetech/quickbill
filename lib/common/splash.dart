@@ -4,10 +4,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:jost_pay_wallet/Ui/Authentication/signIn_screen.dart';
-import 'package:jost_pay_wallet/Ui/Authentication/onboarding_screen.dart';
-import 'package:jost_pay_wallet/bottom_nav.dart';
-import 'package:jost_pay_wallet/constants/constants.dart';
+import 'package:quick_bills/Ui/Authentication/signIn_screen.dart';
+import 'package:quick_bills/Ui/Authentication/onboarding_screen.dart';
+import 'package:quick_bills/bottom_nav.dart';
+import 'package:quick_bills/constants/constants.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

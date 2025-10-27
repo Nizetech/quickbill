@@ -1,7 +1,4 @@
 class ApiRoute {
-  // static String projectUrl = 'https://project.jostpay.com/';
-  // static String liveUrl = projectUrl;
-  // static String liveUrl = 'https://jostpay.com/';
   static String liveUrl = 'https://jostpay.masterscript.org/';
   static String baseUrlWeb = liveUrl;
   static String baseUrl = '${liveUrl}apis/';

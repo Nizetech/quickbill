@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jost_pay_wallet/Values/MyColor.dart';
+import 'package:quick_bills/Values/MyColor.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
 void showLoader(

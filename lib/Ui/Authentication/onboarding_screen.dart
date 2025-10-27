@@ -1,11 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jost_pay_wallet/Ui/Authentication/signIn_screen.dart';
-import 'package:jost_pay_wallet/Ui/Authentication/signUp_screen.dart';
-import 'package:jost_pay_wallet/Values/MyColor.dart';
-import 'package:jost_pay_wallet/Values/MyStyle.dart';
-import 'package:jost_pay_wallet/common/button.dart';
+import 'package:quick_bills/Ui/Authentication/signIn_screen.dart';
+import 'package:quick_bills/Ui/Authentication/signUp_screen.dart';
+import 'package:quick_bills/Values/MyColor.dart';
+import 'package:quick_bills/Values/MyStyle.dart';
+import 'package:quick_bills/common/button.dart';
 
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});

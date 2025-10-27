@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:jost_pay_wallet/Provider/account_provider.dart';
-import 'package:jost_pay_wallet/Provider/service_provider.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Home/bank_werbview.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Home/deposit_details.dart';
-import 'package:jost_pay_wallet/Values/Helper/helper.dart';
-import 'package:jost_pay_wallet/Values/MyColor.dart';
-import 'package:jost_pay_wallet/Values/MyStyle.dart';
-import 'package:jost_pay_wallet/common/appbar.dart';
-import 'package:jost_pay_wallet/common/button.dart';
-import 'package:jost_pay_wallet/constants/api_constants.dart';
-import 'package:jost_pay_wallet/constants/constants.dart';
+import 'package:quick_bills/Provider/account_provider.dart';
+import 'package:quick_bills/Provider/service_provider.dart';
+import 'package:quick_bills/Ui/Dashboard/Home/bank_werbview.dart';
+import 'package:quick_bills/Ui/Dashboard/Home/deposit_details.dart';
+import 'package:quick_bills/Values/Helper/helper.dart';
+import 'package:quick_bills/Values/MyColor.dart';
+import 'package:quick_bills/Values/MyStyle.dart';
+import 'package:quick_bills/common/appbar.dart';
+import 'package:quick_bills/common/button.dart';
+import 'package:quick_bills/constants/api_constants.dart';
+import 'package:quick_bills/constants/constants.dart';
 import 'package:provider/provider.dart';
 
 class DepositSummary extends StatefulWidget {

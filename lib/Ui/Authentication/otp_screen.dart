@@ -1,17 +1,17 @@
 // import 'dart:developer';
 
 // import 'package:flutter_screenutil/flutter_screenutil.dart';
-// import 'package:jost_pay_wallet/Provider/account_provider.dart';
-// import 'package:jost_pay_wallet/Provider/auth_provider.dart';
+// import 'package:quick_bills/Provider/account_provider.dart';
+// import 'package:quick_bills/Provider/auth_provider.dart';
 // import 'package:flutter/material.dart';
-// import 'package:jost_pay_wallet/Provider/DashboardProvider.dart';
-// import 'package:jost_pay_wallet/common/button.dart';
-// import 'package:jost_pay_wallet/utils/toast.dart';
+// import 'package:quick_bills/Provider/DashboardProvider.dart';
+// import 'package:quick_bills/common/button.dart';
+// import 'package:quick_bills/utils/toast.dart';
 // import 'package:provider/provider.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 // // ignore: unused_import
-// import 'package:jost_pay_wallet/Values/NewStyle.dart';
-// import 'package:jost_pay_wallet/Values/NewColor.dart';
+// import 'package:quick_bills/Values/NewStyle.dart';
+// import 'package:quick_bills/Values/NewColor.dart';
 // import '../../Values/MyColor.dart';
 // import '../../Values/MyStyle.dart';
 // import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';

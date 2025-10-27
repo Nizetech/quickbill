@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:jost_pay_wallet/Provider/service_provider.dart';
-import 'package:jost_pay_wallet/Values/Helper/helper.dart';
-import 'package:jost_pay_wallet/Values/MyColor.dart';
-import 'package:jost_pay_wallet/Values/MyStyle.dart';
-import 'package:jost_pay_wallet/Values/utils.dart';
-import 'package:jost_pay_wallet/common/appbar.dart';
-import 'package:jost_pay_wallet/common/button.dart';
+import 'package:quick_bills/Provider/service_provider.dart';
+import 'package:quick_bills/Values/Helper/helper.dart';
+import 'package:quick_bills/Values/MyColor.dart';
+import 'package:quick_bills/Values/MyStyle.dart';
+import 'package:quick_bills/Values/utils.dart';
+import 'package:quick_bills/common/appbar.dart';
+import 'package:quick_bills/common/button.dart';
 import 'package:provider/provider.dart';
 
 class ReceiptScreen extends StatefulWidget {

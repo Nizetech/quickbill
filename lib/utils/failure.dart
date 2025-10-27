@@ -1,4 +1,4 @@
-import 'package:jost_pay_wallet/utils/exception.dart';
+import 'package:quick_bills/utils/exception.dart';
 
 abstract class Failure implements Exception {
   String get message;

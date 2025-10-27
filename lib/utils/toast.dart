@@ -2,7 +2,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:jost_pay_wallet/Values/MyColor.dart';
+import 'package:quick_bills/Values/MyColor.dart';
 
 class ErrorToast {
   ErrorToast(String message) {

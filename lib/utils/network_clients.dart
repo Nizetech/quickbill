@@ -4,8 +4,8 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:jost_pay_wallet/constants/api_constants.dart';
-import 'package:jost_pay_wallet/utils/network_interceptors.dart';
+import 'package:quick_bills/constants/api_constants.dart';
+import 'package:quick_bills/utils/network_interceptors.dart';
 
 
 enum FormDataType { post, patch, put }

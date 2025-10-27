@@ -2,12 +2,12 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jost_pay_wallet/Provider/account_provider.dart';
-import 'package:jost_pay_wallet/Ui/Authentication/signIn_screen.dart';
-import 'package:jost_pay_wallet/bottom_nav.dart';
-import 'package:jost_pay_wallet/service/auth_repo.dart';
-import 'package:jost_pay_wallet/utils/loader.dart';
-import 'package:jost_pay_wallet/utils/toast.dart';
+import 'package:quick_bills/Provider/account_provider.dart';
+import 'package:quick_bills/Ui/Authentication/signIn_screen.dart';
+import 'package:quick_bills/bottom_nav.dart';
+import 'package:quick_bills/service/auth_repo.dart';
+import 'package:quick_bills/utils/loader.dart';
+import 'package:quick_bills/utils/toast.dart';
 
 class AuthProvider with ChangeNotifier {
   bool isLoading = false;

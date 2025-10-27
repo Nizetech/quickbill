@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:jost_pay_wallet/Provider/account_provider.dart';
+import 'package:quick_bills/Provider/account_provider.dart';
 import 'package:provider/provider.dart';
 
 class ProfileImage extends StatelessWidget {

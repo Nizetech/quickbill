@@ -2,13 +2,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:jost_pay_wallet/Provider/account_provider.dart';
-import 'package:jost_pay_wallet/Provider/auth_provider.dart';
-import 'package:jost_pay_wallet/Provider/theme_provider.dart';
-import 'package:jost_pay_wallet/Ui/Authentication/change_password.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Home/widget/profile_image.dart';
-import 'package:jost_pay_wallet/Ui/Static/set_pin_login.dart';
-import 'package:jost_pay_wallet/Values/MyStyle.dart';
+import 'package:quick_bills/Provider/account_provider.dart';
+import 'package:quick_bills/Provider/auth_provider.dart';
+import 'package:quick_bills/Provider/theme_provider.dart';
+import 'package:quick_bills/Ui/Authentication/change_password.dart';
+import 'package:quick_bills/Ui/Dashboard/Home/widget/profile_image.dart';
+import 'package:quick_bills/Ui/Static/set_pin_login.dart';
+import 'package:quick_bills/Values/MyStyle.dart';
 import 'package:provider/provider.dart';
 
 import '../../Values/MyColor.dart';

@@ -1,8 +1,8 @@
-import 'package:jost_pay_wallet/Ui/Authentication/signIn_screen.dart';
-import 'package:jost_pay_wallet/Ui/Authentication/signUp_screen.dart';
+import 'package:quick_bills/Ui/Authentication/signIn_screen.dart';
+import 'package:quick_bills/Ui/Authentication/signUp_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:jost_pay_wallet/Values/NewStyle.dart';
-import 'package:jost_pay_wallet/Values/NewColor.dart';
+import 'package:quick_bills/Values/NewStyle.dart';
+import 'package:quick_bills/Values/NewColor.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});

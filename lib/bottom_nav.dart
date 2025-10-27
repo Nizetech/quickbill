@@ -1,15 +1,15 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:jost_pay_wallet/Provider/dashboard_provider.dart';
-import 'package:jost_pay_wallet/Provider/internet_provider.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/add_funds.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/services.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/transaction_history.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Home/home.dart';
-import 'package:jost_pay_wallet/Values/MyColor.dart';
-import 'package:jost_pay_wallet/Values/MyStyle.dart';
-import 'package:jost_pay_wallet/Values/NewStyle.dart';
+import 'package:quick_bills/Provider/dashboard_provider.dart';
+import 'package:quick_bills/Provider/internet_provider.dart';
+import 'package:quick_bills/Ui/Dashboard/add_funds.dart';
+import 'package:quick_bills/Ui/Dashboard/services.dart';
+import 'package:quick_bills/Ui/Dashboard/transaction_history.dart';
+import 'package:quick_bills/Ui/Dashboard/Home/home.dart';
+import 'package:quick_bills/Values/MyColor.dart';
+import 'package:quick_bills/Values/MyStyle.dart';
+import 'package:quick_bills/Values/NewStyle.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

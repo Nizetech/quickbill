@@ -1,14 +1,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Buy/buy_data.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Buy/purchase_airtime.dart';
-import 'package:jost_pay_wallet/Ui/Dashboard/Home/widget/service_chip.dart';
-import 'package:jost_pay_wallet/Ui/cable/buy_cable_bills.dart';
-import 'package:jost_pay_wallet/Ui/electricity/buy_electricity.dart';
-import 'package:jost_pay_wallet/Values/MyColor.dart';
-import 'package:jost_pay_wallet/Values/MyStyle.dart';
-import 'package:jost_pay_wallet/common/appbar.dart';
+import 'package:quick_bills/Ui/Dashboard/Buy/buy_data.dart';
+import 'package:quick_bills/Ui/Dashboard/Buy/purchase_airtime.dart';
+import 'package:quick_bills/Ui/Dashboard/Home/widget/service_chip.dart';
+import 'package:quick_bills/Ui/cable/buy_cable_bills.dart';
+import 'package:quick_bills/Ui/electricity/buy_electricity.dart';
+import 'package:quick_bills/Values/MyColor.dart';
+import 'package:quick_bills/Values/MyStyle.dart';
+import 'package:quick_bills/common/appbar.dart';
 
 class Services extends StatefulWidget {
   const Services({super.key});

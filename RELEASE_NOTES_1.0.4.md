@@ -1,8 +1,8 @@
-# JostPay Wallet v1.0.4 Release Notes
+# Quick Bills v1.0.4 Release Notes
 
 ## 🚀 What's New in Version 1.0.4
 
-We're excited to announce the release of JostPay Wallet version 1.0.4! This update brings significant improvements to performance, security, and user experience.
+We're excited to announce the release of Quick Bills     version 1.0.4! This update brings significant improvements to performance, security, and user experience.
 
 ## ✨ Key Features & Improvements
 
@@ -54,7 +54,7 @@ We're excited to announce the release of JostPay Wallet version 1.0.4! This upda
 ## 🔄 Update Instructions
 
 1. **Automatic Update**: The app will automatically prompt you to update
-2. **Manual Update**: Visit your device's app store and update JostPay Wallet
+2. **Manual Update**: Visit your device's app store and update Quick Bills
 3. **Force Update**: This version (1.0.4) is required - older versions will be blocked
 
 ## ⚠️ Important Notes
@@ -66,13 +66,13 @@ We're excited to announce the release of JostPay Wallet version 1.0.4! This upda
 ## 🆘 Support & Feedback
 
 - **Customer Support**: Available 24/7 through in-app chat
-- **Email**: support@jostpay.com
+- **Email**: support@quickbills.com
 - **Documentation**: Updated user guides available in the app
 - **Community**: Join our user community for tips and discussions
 
 ## 🙏 Thank You
 
-Thank you for choosing JostPay Wallet! We're committed to providing you with the best digital wallet experience. Your feedback helps us improve, so please share your thoughts with us.
+Thank you for choosing Quick Bills! We're committed to providing you with the best digital wallet experience. Your feedback helps us improve, so please share your thoughts with us.
 
 ---
 

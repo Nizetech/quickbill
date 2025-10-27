@@ -1,13 +1,13 @@
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:jost_pay_wallet/Provider/account_provider.dart';
-import 'package:jost_pay_wallet/Provider/auth_provider.dart';
+import 'package:quick_bills/Provider/account_provider.dart';
+import 'package:quick_bills/Provider/auth_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:jost_pay_wallet/Provider/theme_provider.dart';
-import 'package:jost_pay_wallet/common/button.dart';
+import 'package:quick_bills/Provider/theme_provider.dart';
+import 'package:quick_bills/common/button.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:jost_pay_wallet/Values/NewColor.dart';
+import 'package:quick_bills/Values/NewColor.dart';
 import '../../Values/MyColor.dart';
 import '../../Values/MyStyle.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';

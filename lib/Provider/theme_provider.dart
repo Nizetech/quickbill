@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:jost_pay_wallet/Values/MyColor.dart';
-import 'package:jost_pay_wallet/constants/constants.dart';
+import 'package:quick_bills/Values/MyColor.dart';
+import 'package:quick_bills/constants/constants.dart';
 
 class ThemeProvider extends ChangeNotifier {
   final box = Hive.box(kAppName);

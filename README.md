@@ -1,1 +1,1 @@
-# JostPay
+# Quick Bills

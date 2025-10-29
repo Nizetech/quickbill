@@ -285,6 +285,7 @@ class _BuyDataState extends State<BuyData> {
                     }
                   },
                 ),
+                const SizedBox(height: 30),
               ],
             ),
           ),

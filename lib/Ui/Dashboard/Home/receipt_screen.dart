@@ -34,16 +34,12 @@ class ReceiptScreen extends StatefulWidget {
 }
 
 class _ReceiptScreenState extends State<ReceiptScreen> {
-  String electricityDesc = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar(title: 'Transaction Details'),
       body: Consumer<ServiceProvider>(builder: (context, model, child) {
-        if (widget.isElectricity) {
-          electricityDesc =
-              "Electricity: ${model.receiptModel?.info?.title}, Token: ${model.receiptModel?.info?.token}, Units: ${model.receiptModel?.info?.unit}, ${model.receiptModel?.info?.customerName?.contains('N/A') ?? false ? "Customer Name: ${model.receiptModel?.info?.customerName}," : ''} ${model.receiptModel?.info?.kct1 != 'N/A' ? "KCT1: ${model.receiptModel?.info?.kct1}," : ''} ${model.receiptModel?.info?.kct2 != 'N/A' ? "KCT2: ${model.receiptModel?.info?.kct2}," : ''}";
-        }
+       
         return SingleChildScrollView(
           padding: EdgeInsets.all(20),
           child:
@@ -134,9 +130,7 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                 SizedBox(width: 20),
                 Expanded(
                   child: Text(
-                      widget.isElectricity
-                          ? electricityDesc
-                          : widget.description!,
+                    widget.description!,
                       textAlign: TextAlign.end,
                       style: MyStyle.tx18Black.copyWith(
                         fontWeight: FontWeight.w500,

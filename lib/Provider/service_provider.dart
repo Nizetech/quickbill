@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -204,13 +205,20 @@ class ServiceProvider with ChangeNotifier {
 
   Future<void> buyCable(
     Map<String, dynamic> data,
-      {required AccountProvider account}) async {
+      {required AccountProvider account,
+      required bool isShowmax,
+      required}) async {
     try {
       // showLoader();
       showLoader();
       bool isFailed = false;
       bool isPending = false;
       var res = await ServiceRepo().buyCable(data);
+      log('cable response: $res');
+      if (res['result'] == 'slow') {
+        ErrorToast(res['message']);
+        return;
+      }
       if (res['status'] == false ||
           res['result'] == false ||
           isFailed ||
@@ -232,6 +240,8 @@ class ServiceProvider with ChangeNotifier {
         showSuccessScreen(
           title: 'Cable Tv',
           amount: data['amount'],
+          isCable: true,
+          token: isShowmax ? res['data']['purchased_code'].toString() : null,
           status: 'success',
           onTap: () async {
             Get.close(3);
@@ -255,29 +265,23 @@ class ServiceProvider with ChangeNotifier {
       bool isFailed = false;
       bool isPending = false;
       var res = await ServiceRepo().buyElectricity(data);
-      bool noToken = res['token'] == null &&
-          res['data']?['Token'] == null &&
-          res['data']?['mainToken'] == null &&
-          res['data']?['token'] == null;
+      log('electricity response: $res');
+      // bool noToken = res['token'] == null &&
+      //     res['data']?['Token'] == null &&
+      //     res['data']?['mainToken'] == null &&
+      //     res['data']?['token'] == null;
       isFailed = res['result'] == 'failed';
       isPending = res['result'] == 'pending' || res == {};
-      if (noToken ||
+      if (res['result'] == 'slow') {
+        ErrorToast(res['message']);
+        return;
+      }
+      if (
           (res['status'] == false ||
               res['result'] == false ||
               isFailed ||
               isPending)) {
-        // if (res['result'] == 'slow') {
-        //   Get.back();
-        //   if (res['message'].runtimeType == String) {
-        //     ErrorToast(res['message']);
-        //   } else {
-        //     String message = '';
-        //     res['message'].forEach((key, value) {
-        //       message += '$value';
-        //     });
-        //     ErrorToast(message);
-        //   }
-        // } else {
+    
         hideLoader();
           showSuccessScreen(
             title: 'Electricity',
@@ -296,6 +300,11 @@ class ServiceProvider with ChangeNotifier {
           title: 'Electricity',
           status: 'success',
           amount: data['amount'],
+          token: res['token']?.toString() ??
+              res['data']?['Token']?.toString() ??
+              res['data']?['mainToken']?.toString() ??
+              res['data']?['token']?.toString() ??
+              "",
           onTap: () async {
             Get.close(3);
             await account.getUserBalance();

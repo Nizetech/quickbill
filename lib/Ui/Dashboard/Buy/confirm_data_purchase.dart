@@ -102,7 +102,7 @@ class _ConfirmDataPurchaseState extends State<ConfirmDataPurchase> {
                       'data_type': "SME",
                     };
                     if (num.parse(widget.plan.price.toString()) >
-                        model.balance!) {
+                        (model.balance ?? 0)) {
                       ErrorToast('Insufficient balance');
                     } else {
                       model.buyData(

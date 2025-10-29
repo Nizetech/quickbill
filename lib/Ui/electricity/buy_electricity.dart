@@ -365,7 +365,7 @@ class _BuyElectricityState extends State<BuyElectricity> {
                     if (amount.text.isEmpty || phone.text.isEmpty) {
                       ErrorToast('Please fill all fields');
                     } else {
-                      if (num.parse(amount.text) > model.balance!) {
+                      if (num.parse(amount.text) > (model.balance ?? 0)) {
                         ErrorToast('Insufficient balance');
                       } else
                       if (selectedMeterType == 0 &&

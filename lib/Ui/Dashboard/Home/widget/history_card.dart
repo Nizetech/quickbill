@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
@@ -63,7 +62,7 @@ class HistoryCard extends StatelessWidget {
               : '';
     }
 
-    final model = context.read<ServiceProvider>();
+    // final model = context.read<ServiceProvider>();
     return Row(
       children: [
         Container(
@@ -154,36 +153,7 @@ class HistoryCard extends StatelessWidget {
             const SizedBox(height: 5),
             Row(
               children: [
-                transaction.apiStatus == 'refunded'
-                    ? CircleAvatar(
-                        radius: 7,
-                        backgroundColor: MyColor.purpleColor,
-                        child: Icon(
-                          Icons.check,
-                          size: 10,
-                          color: Colors.white,
-                        ),
-                      )
-                    : transaction.apiStatus != null &&
-                                transaction.apiStatus!.contains('pending') ||
-                            getStatus(transaction) == MyColor.orange01Color
-                        ? CircleAvatar(
-                            radius: 7,
-                            backgroundColor: MyColor.pending,
-                            child:
-                                SvgPicture.asset('assets/images/pending.svg'))
-                        : CircleAvatar(
-                            radius: 7,
-                            backgroundColor: getStatus(transaction),
-                            child: Icon(
-                              getStatus(transaction) == MyColor.dark01GreenColor
-                                  ? Icons.done
-                                  : Icons.close,
-                              size: 10,
-                              color: Colors.white,
-                            ),
-                          ),
-                SizedBox(width: 5.w),
+              
                 GestureDetector(
                   onTap: () {
                     if (transaction.apiStatus == 'refunded') {
@@ -201,29 +171,29 @@ class HistoryCard extends StatelessWidget {
                       ErrorToast(
                           'No receipt available yet. Your order has not been completed.');
                     } else {
-                      if (transaction.type == 'electricity' ||
-                          transaction.type == 'cable') {
-                        model.getReceipt({
-                          'id': transaction.id,
-                          'type': transaction.type == 'electricity'
-                              ? 'electricity'
-                              : 'cable',
-                        }, callback: () {
-                          viewReceipt(
-                            transaction: transaction,
-                            getPhone: getPhone,
-                            getOperator: getOperator,
-                            context: context,
-                          );
-                        });
-                      } else {
+                      // if (transaction.type == 'electricity' ||
+                      //     transaction.type == 'cable') {
+                      //   model.getReceipt({
+                      //     'id': transaction.id,
+                      //     'type': transaction.type == 'electricity'
+                      //         ? 'electricity'
+                      //         : 'cable',
+                      //   }, callback: () {
+                      //     viewReceipt(
+                      //       transaction: transaction,
+                      //       getPhone: getPhone,
+                      //       getOperator: getOperator,
+                      //       context: context,
+                      //     );
+                      //   });
+                      // } else {
                         viewReceipt(
                           transaction: transaction,
                           getPhone: getPhone,
                           getOperator: getOperator,
                           context: context,
                         );
-                      }
+                      // }
                     }
                   },
                   child: Container(

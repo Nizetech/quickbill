@@ -15,7 +15,6 @@ import 'package:quick_bills/Ui/cable/buy_cable_bills.dart';
 import 'package:quick_bills/Values/MyColor.dart';
 import 'package:quick_bills/Values/MyStyle.dart';
 import 'package:quick_bills/common/button.dart';
-import 'package:quick_bills/common/success_screen.dart';
 import 'package:provider/provider.dart';
 import 'dart:core';
 

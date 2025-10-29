@@ -15,6 +15,7 @@ AppBar appBar({
             onTap: onTap ?? () => Get.back(),
           )
         : null,
+    centerTitle: true,
     backgroundColor: Colors.transparent,
     elevation: 0,
     title: Text(

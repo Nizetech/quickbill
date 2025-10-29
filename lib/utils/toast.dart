@@ -8,6 +8,7 @@ class ErrorToast {
   ErrorToast(String message) {
     Flushbar(
       message: message,
+      margin: const EdgeInsets.only(bottom: 50),
       maxWidth: Get.width * 0.7,
       flushbarPosition: FlushbarPosition.BOTTOM,
       messageSize: 12,
@@ -26,6 +27,7 @@ class SuccessToast {
   SuccessToast(String message) {
     Flushbar(
       message: message,
+      margin: const EdgeInsets.only(bottom: 50),
       maxWidth: Get.width * 0.7,
       flushbarPosition: FlushbarPosition.BOTTOM,
       messageSize: 14,

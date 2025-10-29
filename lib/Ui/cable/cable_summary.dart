@@ -119,6 +119,7 @@ class _CableSummaryScreenState extends State<CableSummaryScreen> {
                     model.buyCable(
                       data,
                       account: account,
+                      isShowmax: widget.data['showmax'],
                     );
                   },
                 ),

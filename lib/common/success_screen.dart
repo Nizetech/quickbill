@@ -1,5 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:quick_bills/Values/Helper/helper.dart';
 import 'package:quick_bills/Values/MyColor.dart';
@@ -11,16 +13,21 @@ class SuccessScreen extends StatelessWidget {
   final String status;
   final String amount;
   final VoidCallback onTap;
+  final String? token;
+  final bool isCable;
   const SuccessScreen({
     super.key,
     required this.title,
     required this.status,
     required this.onTap,
     required this.amount,
+    this.token,
+    this.isCable = false,
   });
 
   @override
   Widget build(BuildContext context) {
+    print('token: ===> $token, isCable: $isCable');
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(
@@ -66,6 +73,48 @@ class SuccessScreen extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ),
           ),
+          if (token != null && token!.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text.rich(
+                    TextSpan(
+                      text: isCable ? "Purchased Code: \n" : "Token: \n",
+                      children: [
+                        TextSpan(
+                          text: token!,
+                          style: MyStyle.tx14Black.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                    textAlign: TextAlign.center,
+                    style: MyStyle.tx14Black.copyWith(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 14,
+                    ),
+                  ),
+                  SizedBox(width: 5),
+                  IconButton(
+                    onPressed: () {
+                      Clipboard.setData(
+                        ClipboardData(text: token!),
+                      );
+                      Fluttertoast.showToast(msg: "Copied to clipboard");
+                    },
+                    icon: Icon(
+                      Icons.copy,
+                      color: MyColor.primaryColor,
+                      size: 20,
+                    ),
+                  ),
+                ],
+              ),
+            ),
               SizedBox(height: 30),
               CustomButton(
                 text: "Buy More",
@@ -83,6 +132,8 @@ void showSuccessScreen({
   required String title,
   required String status,
   required String amount,
+  String? token,
+  bool isCable = false,
   required VoidCallback onTap,
 }) {
   showModalBottomSheet(
@@ -98,6 +149,8 @@ void showSuccessScreen({
       title: title,
       status: status,
       onTap: onTap,
+      token: token,
+      isCable: isCable,
       amount: amount,
     ),
   );

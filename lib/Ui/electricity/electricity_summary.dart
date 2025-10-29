@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:quick_bills/Provider/account_provider.dart';
 import 'package:quick_bills/Provider/service_provider.dart';
 import 'package:quick_bills/Ui/Dashboard/Buy/confirm_airtime_details.dart';

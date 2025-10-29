@@ -63,20 +63,18 @@ class HomeAppBar extends StatelessWidget {
                   child: Container(
                     width: 15,
                     height: 15,
+                    alignment: Alignment.center,
                     padding: const EdgeInsets.all(2),
                     decoration: BoxDecoration(
                       color: MyColor.redColor,
                       shape: BoxShape.circle,
                     ),
-                    child: Transform.translate(
-                      offset: const Offset(1, -2),
-                      child: Text(
-                        '${accountProvider.notificationModel!.notifications?.length}',
-                        style: MyStyle.tx12Black.copyWith(
-                            color: MyColor.mainWhiteColor,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 10),
-                      ),
+                    child: Text(
+                      '${accountProvider.notificationModel!.notifications?.length}',
+                      style: MyStyle.tx12Black.copyWith(
+                          color: MyColor.mainWhiteColor,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 10),
                     ),
                   ),
                 )

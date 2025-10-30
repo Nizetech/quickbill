@@ -78,7 +78,6 @@ class _SignInScreenState extends State<SignInScreen> {
       backgroundColor: Colors.white,
       body: Consumer2<AuthProvider, AccountProvider>(
           builder: (context, model, account, _) {
-        bool usePin = !useEmailLogin && token.isNotEmpty;
         return SafeArea(
           child: AppUpgrader(
             child: SingleChildScrollView(

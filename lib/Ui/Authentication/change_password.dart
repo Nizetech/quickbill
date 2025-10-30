@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:quick_bills/Provider/account_provider.dart';
 import 'package:quick_bills/Ui/Dashboard/Settings/edit_profile.dart';
 import 'package:provider/provider.dart';
 

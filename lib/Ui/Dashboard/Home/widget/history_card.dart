@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:provider/provider.dart';
 
 import 'package:quick_bills/Models/transactions.dart';
-import 'package:quick_bills/Provider/service_provider.dart';
 import 'package:quick_bills/Ui/Dashboard/Home/receipt_screen.dart';
 import 'package:quick_bills/Values/Helper/helper.dart';
 import 'package:quick_bills/Values/MyColor.dart';

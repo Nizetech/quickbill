@@ -101,7 +101,7 @@ class BadRequestException extends DioException {
   String get message =>
       (serverResponse?.data?["message"] ?? "Invalid request") as String;
 
-  @override
+  // @override
   String get title => "an error occured";
 }
 
@@ -117,7 +117,7 @@ class InternalServerErrorException extends DioException {
   @override
   String get message => "Unknown error occurred, please try again later.";
 
-  @override
+  // @override
   String get title => "Server error";
 }
 
@@ -137,7 +137,7 @@ class ConflictException extends DioError {
   String get message =>
       (serverResponse?.data?["message"] ?? "Conflict occurredd.") as String;
 
-  @override
+  // @override
   String get title => "Network error";
 }
 
@@ -155,7 +155,7 @@ class UnauthorizedException extends DioException {
   @override
   String get message =>
       (serverResponse?.data?["message"] ?? "Invalid request") as String;
-  @override
+  // @override
   String get title => "Access denied";
 }
 
@@ -178,7 +178,7 @@ class NotFoundException extends DioException {
   // @override
   // String get message => "Not Found, please try again.";
 
-  @override
+  // @override
   String get title => "Not Found";
 }
 
@@ -194,7 +194,7 @@ class NoInternetConnectionException extends DioException {
   @override
   String get message => "No internet connection, please try again.";
 
-  @override
+  // @override
   String get title => "Network error";
 }
 
@@ -210,7 +210,7 @@ class BadCertificateException extends DioException {
   String get message =>
       "Server is experiencing temporary issues, please try again.";
 
-  @override
+  // @override
   String get title => "Server error";
 }
 
@@ -226,7 +226,7 @@ class DeadlineExceededException extends DioException {
   @override
   String get message => "The connection has timed out, please try again.";
 
-  @override
+  // @override
   String get title => "Network error";
 }
 

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quick_bills/Provider/account_provider.dart';
 import 'package:quick_bills/Provider/service_provider.dart';
-import 'package:quick_bills/Ui/Dashboard/Settings/edit_profile.dart';
+import 'package:quick_bills/Ui/Settings/edit_profile.dart';
 import 'package:quick_bills/Ui/electricity/electricity_summary.dart';
 import 'package:quick_bills/Ui/electricity/widget/provider_sheet.dart';
 import 'package:quick_bills/Values/MyColor.dart';

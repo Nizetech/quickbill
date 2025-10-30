@@ -2,14 +2,14 @@ import 'package:flutter/gestures.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:quick_bills/Provider/auth_provider.dart';
-import 'package:quick_bills/Ui/Dashboard/Settings/edit_profile.dart';
+import 'package:quick_bills/Ui/settings/edit_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:quick_bills/Values/MyColor.dart';
 import 'package:quick_bills/Values/MyStyle.dart';
 import 'package:quick_bills/common/button.dart';
 import 'package:quick_bills/common/text_field.dart';
 import 'package:quick_bills/common/upgrader.dart';
-import 'package:quick_bills/constants/constants.dart';
+import 'package:quick_bills/constants/constants.dart';  
 import 'package:quick_bills/utils/toast.dart';
 import 'package:provider/provider.dart';
 

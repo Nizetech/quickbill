@@ -1,10 +1,9 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:quick_bills/Models/data_plans_model.dart';
 import 'package:quick_bills/Models/network_provider.dart';
 import 'package:quick_bills/Provider/account_provider.dart';
-import 'package:quick_bills/Ui/Dashboard/Buy/confirm_airtime_details.dart';
+import 'package:quick_bills/Ui/airtime/confirm_airtime_details.dart';
 import 'package:quick_bills/Values/Helper/helper.dart';
 import 'package:quick_bills/Values/MyColor.dart';
 import 'package:quick_bills/Values/MyStyle.dart';

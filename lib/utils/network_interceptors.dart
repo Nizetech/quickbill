@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart' hide Response;
-import 'package:quick_bills/Ui/Authentication/signIn_screen.dart';
+import 'package:quick_bills/Ui/authentication/signIn_screen.dart';
 import 'package:quick_bills/common/cancel_loading.dart';
 import 'package:quick_bills/utils/app_logger.dart';
 import 'package:quick_bills/utils/exception.dart';

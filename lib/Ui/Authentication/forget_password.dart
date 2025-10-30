@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_bills/Provider/auth_provider.dart';
-import 'package:quick_bills/Ui/Dashboard/Settings/edit_profile.dart';
+import 'package:quick_bills/Ui/Settings/edit_profile.dart';
 import 'package:quick_bills/Values/MyStyle.dart';
 import 'package:quick_bills/common/button.dart';
 import 'package:quick_bills/common/text_field.dart';

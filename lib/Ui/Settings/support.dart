@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:quick_bills/Ui/Dashboard/Settings/setting_screen.dart';
-import 'package:quick_bills/Ui/Dashboard/Settings/faq.dart';
+import 'package:quick_bills/Ui/Settings/setting_screen.dart';
+import 'package:quick_bills/Ui/Settings/faq.dart';
 import 'package:quick_bills/Values/MyColor.dart';
 import 'package:quick_bills/Values/MyStyle.dart';
 import 'package:quick_bills/common/appbar.dart';

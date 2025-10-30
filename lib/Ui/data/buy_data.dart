@@ -6,9 +6,9 @@ import 'package:get/get.dart';
 import 'package:quick_bills/Models/data_plans_model.dart';
 import 'package:quick_bills/Models/network_provider.dart';
 import 'package:quick_bills/Provider/account_provider.dart';
-import 'package:quick_bills/Ui/Dashboard/Buy/confirm_data_purchase.dart';
-import 'package:quick_bills/Ui/Dashboard/Buy/widget/package_sheet.dart';
-import 'package:quick_bills/Ui/Dashboard/Settings/edit_profile.dart';
+import 'package:quick_bills/Ui/data/confirm_data_purchase.dart';
+import 'package:quick_bills/Ui/data/widget/package_sheet.dart';
+import 'package:quick_bills/Ui/Settings/edit_profile.dart';
 import 'package:quick_bills/Values/MyColor.dart';
 import 'package:quick_bills/Values/MyStyle.dart';
 import 'package:quick_bills/common/amount_chip.dart';
@@ -49,9 +49,8 @@ class _BuyDataState extends State<BuyData> {
     var model = Provider.of<AccountProvider>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (model.networkProviderModel == null) {
-        await model.getNetworkProviders(callback: () {
-        });
-      } 
+        await model.getNetworkProviders(callback: () {});
+      }
     });
     super.initState();
   }
@@ -160,13 +159,13 @@ class _BuyDataState extends State<BuyData> {
                                                         placeholder: (context,
                                                                 url) =>
                                                             ClipRRect(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            10),
-                                                                child: Image
-                                                                    .asset(item[
-                                                                        'img'],
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10),
+                                                              child:
+                                                                  Image.asset(
+                                                                item['img'],
                                                               ),
                                                             ),
                                                         errorWidget: (context,
@@ -192,10 +191,9 @@ class _BuyDataState extends State<BuyData> {
                                                                 top: 2.r,
                                                                 right: 8.r),
                                                         child: Icon(
-                                                          Icons.check_circle,
+                                                            Icons.check_circle,
                                                             color: MyColor
-                                                                .primaryColor
-                                                        ),
+                                                                .primaryColor),
                                                       ),
                                                     )
                                                 ],
@@ -252,19 +250,17 @@ class _BuyDataState extends State<BuyData> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-
-                          requiredLabel('Amount'),
+                            requiredLabel('Amount'),
                             AmountChip(),
                           ],
                         ),
                         const SizedBox(height: 10),
-                          CustomTextField(
-                            text: 'Enter Amount',
-                            controller: amount,
-                            keyboardType: TextInputType.number,
-                            enabled: false,
-                          ),
-                        
+                        CustomTextField(
+                          text: 'Enter Amount',
+                          controller: amount,
+                          keyboardType: TextInputType.number,
+                          enabled: false,
+                        ),
                         const SizedBox(height: 20),
                       ],
                     ),

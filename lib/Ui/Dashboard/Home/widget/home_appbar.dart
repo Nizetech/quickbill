@@ -5,7 +5,7 @@ import 'package:quick_bills/Provider/account_provider.dart';
 import 'package:quick_bills/Provider/theme_provider.dart';
 import 'package:quick_bills/Ui/Dashboard/notification.dart';
 import 'package:quick_bills/Ui/Dashboard/Home/widget/profile_image.dart';
-import 'package:quick_bills/Ui/Dashboard/Settings/setting_screen.dart';
+import 'package:quick_bills/Ui/settings/setting_screen.dart';
 import 'package:quick_bills/Values/MyColor.dart';
 import 'package:quick_bills/Values/MyStyle.dart';
 import 'package:provider/provider.dart';

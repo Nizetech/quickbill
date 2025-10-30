@@ -1,9 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:quick_bills/Ui/Dashboard/Buy/buy_data.dart';
-import 'package:quick_bills/Ui/Dashboard/Buy/purchase_airtime.dart';
 import 'package:quick_bills/Ui/Dashboard/Home/widget/service_chip.dart';
+import 'package:quick_bills/Ui/airtime/purchase_airtime.dart';
+import 'package:quick_bills/Ui/data/buy_data.dart';
 import 'package:quick_bills/Ui/cable/buy_cable_bills.dart';
 import 'package:quick_bills/Ui/electricity/buy_electricity.dart';
 import 'package:quick_bills/Values/MyColor.dart';
@@ -82,7 +81,6 @@ class _ServicesState extends State<Services> {
                 ),
               ],
             ),
-        
           ],
         ),
       ),

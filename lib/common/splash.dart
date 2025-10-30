@@ -4,8 +4,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:quick_bills/Ui/Authentication/signIn_screen.dart';
-import 'package:quick_bills/Ui/Authentication/onboarding_screen.dart';
+import 'package:quick_bills/Ui/authentication/signIn_screen.dart';
+import 'package:quick_bills/Ui/authentication/onboarding_screen.dart';
 import 'package:quick_bills/bottom_nav.dart';
 import 'package:quick_bills/constants/constants.dart';
 

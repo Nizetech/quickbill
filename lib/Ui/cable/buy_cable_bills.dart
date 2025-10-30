@@ -8,7 +8,7 @@ import 'package:quick_bills/Models/cable_varaitaions.dart';
 import 'package:quick_bills/Models/network_provider.dart';
 import 'package:quick_bills/Provider/account_provider.dart';
 import 'package:quick_bills/Provider/service_provider.dart';
-import 'package:quick_bills/Ui/Dashboard/Settings/edit_profile.dart';
+import 'package:quick_bills/Ui/Settings/edit_profile.dart';
 import 'package:quick_bills/Ui/cable/cable_summary.dart';
 import 'package:quick_bills/Ui/cable/widget/cable_provider_sheet.dart';
 import 'package:quick_bills/Values/MyColor.dart';

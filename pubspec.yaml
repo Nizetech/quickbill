@@ -19,26 +19,17 @@ dependencies:
   provider: ^6.1.1
   clipboard: ^0.1.3
   fluttertoast: ^8.2.4
-  pin_code_fields: ^8.0.1
-  intl_phone_field: ^3.2.0
-  dotted_decoration: ^2.0.0
   flutter_screenutil: ^5.9.3
   loading_indicator: ^3.1.1
   collection:
-  http: ^1.1.2
   path_provider: ^2.1.1
   dio: ^5.3.2
   get: ^4.6.5
   another_flushbar: ^1.12.30
   iconsax: ^0.0.8
   pretty_dio_logger: ^1.3.1
-  gif_view: ^1.0.3
-  dotted_line:
   hive_flutter:
-  flutter_native_contact_picker: ^0.0.10
-  flutter_contacts: ^1.1.9+2
   iconly: 
-  permission_handler: ^12.0.0+1
   upgrader: ^11.5.0
   shared_preferences: ^2.2.2
   connectivity_plus: ^6.1.4
@@ -47,22 +38,11 @@ dependencies:
   cached_network_image: ^3.3.0
   intl: ^0.20.2
   url_launcher: 
-  country_picker: ^2.0.27
-  image: ^4.1.7
-  audioplayers: ^5.2.1
-  country_state_picker: ^0.0.5
   flutter_inappwebview: ^6.1.5   
-  flutter_otp_text_field: ^1.1.0+2
-  file_picker: ^10.1.9
 
   flutter_dotenv: ^5.2.1
 
 
-
-
-
-
-  video_player: any
 dev_dependencies:
   flutter_test:
     sdk: flutter

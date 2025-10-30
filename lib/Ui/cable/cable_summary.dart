@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:quick_bills/Provider/account_provider.dart';
 import 'package:quick_bills/Provider/service_provider.dart';
-import 'package:quick_bills/Ui/Dashboard/Buy/confirm_airtime_details.dart';
+import 'package:quick_bills/Ui/airtime/confirm_airtime_details.dart';
 import 'package:quick_bills/Values/Helper/helper.dart';
 import 'package:quick_bills/Values/MyColor.dart';
 import 'package:quick_bills/Values/MyStyle.dart';

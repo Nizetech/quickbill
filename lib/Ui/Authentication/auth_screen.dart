@@ -1,5 +1,5 @@
-import 'package:quick_bills/Ui/Authentication/signIn_screen.dart';
-import 'package:quick_bills/Ui/Authentication/signUp_screen.dart';
+import 'package:quick_bills/Ui/authentication/signIn_screen.dart';
+import 'package:quick_bills/Ui/authentication/signUp_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:quick_bills/Values/NewStyle.dart';
 import 'package:quick_bills/Values/NewColor.dart';

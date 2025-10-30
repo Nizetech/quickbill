@@ -5,11 +5,11 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:quick_bills/Provider/account_provider.dart';
 import 'package:quick_bills/Provider/dashboard_provider.dart';
 import 'package:quick_bills/Provider/auth_provider.dart';
-import 'package:quick_bills/Ui/Authentication/signIn_screen.dart';
-import 'package:quick_bills/Ui/Authentication/change_password.dart';
+import 'package:quick_bills/Ui/authentication/signIn_screen.dart';
+import 'package:quick_bills/Ui/authentication/change_password.dart';
 import 'package:quick_bills/Ui/Dashboard/Home/widget/profile_image.dart';
-import 'package:quick_bills/Ui/Dashboard/Settings/edit_profile.dart';
-import 'package:quick_bills/Ui/Dashboard/Settings/support.dart';
+import 'package:quick_bills/Ui/Settings/edit_profile.dart';
+import 'package:quick_bills/Ui/Settings/support.dart';
 import 'package:quick_bills/Values/MyColor.dart';
 import 'package:quick_bills/Values/MyStyle.dart';
 import 'package:quick_bills/common/appbar.dart';
@@ -24,9 +24,7 @@ class SettingScreen extends StatefulWidget {
   State<SettingScreen> createState() => _SettingScreenState();
 }
 
-
 class _SettingScreenState extends State<SettingScreen> {
-
   @override
   void initState() {
     super.initState();
@@ -145,8 +143,6 @@ class _SettingScreenState extends State<SettingScreen> {
                 text: "Log out",
                 radius: 30,
                 onTap: () async {
-                 
-                
                   await box.clear();
                   Navigator.push(
                       context,
@@ -162,39 +158,38 @@ class _SettingScreenState extends State<SettingScreen> {
       }),
     );
   }
-
 }
 
 Widget buildInfoCard({
-    required String image,
-    required VoidCallback onTap,
-    required String title,
-  }) {
-    return Container(
-      padding: const EdgeInsets.only(top: 8, bottom: 8),
-      child: InkWell(
-        onTap: onTap,
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: Color(0xffEBEBEB)),
-              child: SvgPicture.asset(image, fit: BoxFit.cover),
-            ),
-            const SizedBox(width: 16),
-            Text(title,
-                style: MyStyle.tx16Black.copyWith(
-                  fontWeight: FontWeight.w400,
-                )),
-            const Spacer(),
-            Icon(
-              Icons.keyboard_arrow_right,
-              color: MyColor.grey,
-            )
-          ],
-        ),
+  required String image,
+  required VoidCallback onTap,
+  required String title,
+}) {
+  return Container(
+    padding: const EdgeInsets.only(top: 8, bottom: 8),
+    child: InkWell(
+      onTap: onTap,
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Color(0xffEBEBEB)),
+            child: SvgPicture.asset(image, fit: BoxFit.cover),
+          ),
+          const SizedBox(width: 16),
+          Text(title,
+              style: MyStyle.tx16Black.copyWith(
+                fontWeight: FontWeight.w400,
+              )),
+          const Spacer(),
+          Icon(
+            Icons.keyboard_arrow_right,
+            color: MyColor.grey,
+          )
+        ],
       ),
+    ),
   );
 }
